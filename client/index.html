@@ -523,14 +523,23 @@
                                 icon: 'md-close'
                             });
 
+                    var payload, zoneActionSheet, zoneButtons,
+                        zoneNumber = 0,
+                        zoneButton = null,
+                        zoneButtonTimer = null,
+                        zoneButtonCancel = false;
+
                     ons.openActionSheet({
-                        title: 'Clean area',
+                        title: 'Clean zone',
                         cancelable: true,
                         buttons: options
                     }).then(function (index) {
                         if(index > -1 && index < config.areas.length){
+                            if (zoneNumber < 2) {
+                                payload = config.areas[index][1];
+                            }
                             fn.requestWithPayload("api/start_cleaning_zone", JSON.stringify(
-                                config.areas[index][1]
+                                payload
                                 ), "PUT", function (err) {
                                     if (err) {
                                         ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
@@ -545,6 +554,75 @@
                                     }, 3000);
                         }
                     });
+                    zoneButtons = document.querySelectorAll('ons-action-sheet-button');
+                    for (var i = 0; i < zoneButtons.length - 1; i++) {
+                        zoneButtons[i].dataset.gnum = i;
+                    }
+                    var calcPayload = function() {
+                        var payload = [];
+                        for (var i = 0; i < zoneButtons.length - 1; i++) {
+                            if (!zoneButtons[i].dataset.znum) {
+                                continue;
+                            }
+                            payload[zoneButtons[i].dataset.znum - 1] = config.areas[i][1];
+                        }
+                        return payload.flat();
+                    }
+                    zoneActionSheet = document.querySelector('ons-action-sheet');
+                    zoneActionSheet.addEventListener('mousedown',function(e) {
+                        if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+                        zoneButtonTimer = window.setTimeout(function() {
+                            zoneButtonCancel = true;
+                            zoneButton = e.target.getAttribute('icon') !== null ? e.target.firstElementChild : e.target;
+                            if (!e.target.dataset.znum) {
+                                let attemptedLength = calcPayload().length + config.areas[e.target.dataset.gnum][1].length;
+                                if (attemptedLength >= 5) {
+                                    ons.notification.alert('You\'ve attempted to choose ' + attemptedLength + ' subzones, while it is possible to use 5 subzones at most.');
+                                    return;
+                                }
+                                e.target.classList.add('zone_selected');
+                                e.target.dataset.znum = ++zoneNumber;
+                                zoneButton.insertAdjacentHTML('beforeend','<span>[' + zoneNumber + '/' + config.areas[e.target.dataset.gnum][1].length + ']</span>');
+                            } else {
+                                e.target.classList.remove('zone_selected');
+                                zoneButton.removeChild(zoneButton.lastChild);
+                                for (var i = 0; i < zoneButtons.length; i++) {
+                                    if (zoneButtons[i].classList.contains('zone_selected') && zoneButtons[i].dataset.znum > e.target.dataset.znum) {
+                                        zoneButtons[i].dataset.znum--;
+                                        zoneButton = zoneButtons[i].getAttribute('icon') !== null ? zoneButtons[i].firstElementChild : zoneButtons[i];
+                                        zoneButton.lastChild.textContent = '[' + zoneButtons[i].dataset.znum + '/' + config.areas[zoneButtons[i].dataset.gnum][1].length + ']';
+                                    }
+                                }
+                                delete e.target.dataset.znum;
+                                zoneNumber--;
+                            }
+                        },1e3);
+                    },true);
+                    zoneActionSheet.addEventListener('click',function(e) {
+                        if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+                        if (zoneButtonCancel) {
+                            e.stopPropagation();
+                            zoneButtonCancel = false;
+                        } else if (zoneNumber > 0) {
+                            if (!e.target.dataset.znum) {
+                                e.stopPropagation();
+                                for (var i = 0; i < zoneButtons.length; i++) {
+                                    if (zoneButtons[i].dataset.znum) {
+                                        zoneButtons[i].classList.remove('zone_selected');
+                                        delete zoneButtons[i].dataset.znum;
+                                        zoneButton = zoneButtons[i].getAttribute('icon') !== null ? zoneButtons[i].firstElementChild : zoneButtons[i];
+                                        zoneButton.removeChild(zoneButton.lastChild);
+                                    }
+                                }
+                                zoneNumber = 0;
+                            } else {
+                                payload = calcPayload();
+                            }
+                        }
+                        if (zoneButtonTimer) {
+                            window.clearTimeout(zoneButtonTimer);
+                        }
+                    },true);
                 }
 
                 function updateHomePage() {
@@ -659,6 +737,15 @@
 
                 #robot-state-details-time {
                     text-align: right;
+                }
+                .action-sheet-button.zone_selected {
+                    background-color: #c9c9c9;
+                }
+                .action-sheet-button.zone_selected span {
+                    position: absolute;
+                    right: 0.5em;
+                    font-size: 0.67em;
+                    font-weight: 700;
                 }
             </style>
 
