@@ -15,6 +15,13 @@ After that you'll find a binary named valetudo in that folder which you should s
 
 Create /etc/init/valetudo.conf using the file located in this directory
 
+Note that pkg package of version 4.4.0 and above uses libstdc++ incompatible with that
+available in stock vacuum firmware. So you should either build Valetudo with pkg v4.3.8 or
+use another stdc++ library (i.e. libstdc++6_5.3.1-14ubuntu2_armhf.deb will do nicely).
+In the latter case it is required to unpack deb file somewhere on the vacuum using
+`dpkg -x file.deb /some/path` and put into valetudo upstart conf `env LD_LIBRARY_PATH=/some/path/usr/lib`
+above `exec` line.
+
 # Preventing communication to the Xiaomi cloud
 
 To prevent the robot from communicating with the Xiaomi cloud you need to setup
