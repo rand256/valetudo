@@ -925,8 +925,8 @@ console.log(payload);
                                 <label>
                                     ${zone.name}
                                 </label>
-                                <span><ons-button class="button-rename" onclick="event.stopPropagation(); renameZone(${index});"><ons-icon icon="fa-pencil"></ons-icon> Rename</ons-button>
-                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button></span>
+                                <span><ons-button class="button-rename" onclick="event.stopPropagation(); renameZone(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> Rename</span></ons-button>
+                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> Delete</span></ons-button></span>
                             </ons-list-item>
                         `;
                     });
@@ -939,7 +939,7 @@ console.log(payload);
                             <ons-input id="add-zone-name" placeholder="Enter name for zone ...">
 
                             </ons-input>
-                            <ons-button class="delete-button-right" onclick="addNewZone()"><ons-icon icon="fa-plus"></ons-icon> Add</ons-button>
+                            <ons-button class="delete-button-right" onclick="addNewZone()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> Add</span></ons-button>
                         </ons-list-item>
                     `;
 
@@ -957,8 +957,8 @@ console.log(payload);
                                 <label>
                                     ${spot.name}
                                 </label>
-                                <span><ons-button class="button-pencil" onclick="event.stopPropagation(); renameSpot(${index});"><ons-icon icon="fa-pencil"></ons-icon> Rename</ons-button>
-                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button></span>
+                                <span><ons-button class="button-pencil" onclick="event.stopPropagation(); renameSpot(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> Rename</span></ons-button>
+                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> Delete</span></ons-button></span>
                             </ons-list-item>
                         `;
                     });
@@ -971,7 +971,7 @@ console.log(payload);
                             <ons-input id="add-spot-name" placeholder="Enter name for spot ...">
 
                             </ons-input>
-                            <ons-button class="delete-button-right" onclick="addNewSpot()"><ons-icon icon="fa-plus"></ons-icon> Add</ons-button>
+                            <ons-button class="delete-button-right" onclick="addNewSpot()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> Add</span></ons-button>
                         </ons-list-item>
                     `;
 
@@ -1020,6 +1020,11 @@ console.log(payload);
 
                 .button-delete {
                     background-color: #f45942; /* Random nice red color :) */
+                }
+
+                @media only screen and (max-width: 600px) {
+                    span.button_title { display: none; }
+                  }
                 }
             </style>
         </ons-page>
