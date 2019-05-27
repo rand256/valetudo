@@ -847,6 +847,7 @@
                 function saveZones() {
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
+                    zonesConfig.sort((a, b) => a.name.localeCompare(b.name));
                     fn.requestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT", function (err) {
                         loadingBarZones.removeAttribute("indeterminate");
                         if (err) {
@@ -860,6 +861,7 @@
                 function saveSpots() {
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
+                    spotConfig.sort((a, b) => a.name.localeCompare(b.name));
                     fn.requestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT", function (err) {
                         loadingBarZones.removeAttribute("indeterminate");
                         if (err) {
