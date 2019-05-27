@@ -820,10 +820,28 @@
                     saveZones();
                 }
 
+                function renameZone(index) {
+                    ons.notification.prompt({message: 'Enter new name for zone \''+ zonesConfig[index].name + '\'?', defaultValue: zonesConfig[index].name, cancelable: true }).then(function(name) {
+                        if (name && name.length && zonesConfig[index].name !== name) {
+                            zonesConfig[index].name = name;
+                            saveZones();
+                        }
+                    });
+                }
+
                 function deleteSpot(index) {
                     spotConfig.splice(index, 1);
 
                     saveSpots();
+                }
+
+                function renameSpot(index) {
+                    ons.notification.prompt({message: 'Enter new name for spot \''+ spotConfig[index].name + '\'?', defaultValue: spotConfig[index].name, cancelable: true }).then(function(name) {
+                        if (name && name.length && spotConfig[index].name !== name) {
+                            spotConfig[index].name = name;
+                            saveSpots();
+                        }
+                    });
                 }
 
                 function saveZones() {
@@ -893,7 +911,8 @@
                                 <label>
                                     ${zone.name}
                                 </label>
-                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button>
+                                <span><ons-button class="button-rename" onclick="event.stopPropagation(); renameZone(${index});"><ons-icon icon="fa-pencil"></ons-icon> Rename</ons-button>
+                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button></span>
                             </ons-list-item>
                         `;
                     });
@@ -924,7 +943,8 @@
                                 <label>
                                     ${spot.name}
                                 </label>
-                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button>
+                                <span><ons-button class="button-pencil" onclick="event.stopPropagation(); renameSpot(${index});"><ons-icon icon="fa-pencil"></ons-icon> Rename</ons-button>
+                                <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon> Delete</ons-button></span>
                             </ons-list-item>
                         `;
                     });
