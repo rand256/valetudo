@@ -523,11 +523,7 @@
                                 icon: 'md-close'
                             });
 
-                    var payload, zoneActionSheet, zoneButtons,
-                        zoneNumber = 0,
-                        zoneButton = null,
-                        zoneButtonTimer = null,
-                        zoneButtonCancel = false;
+                    var payload, calcPayload, zoneNumber = 0;
 
                     ons.openActionSheet({
                         title: 'Clean zone',
@@ -537,6 +533,14 @@
                         if(index > -1 && index < config.areas.length){
                             if (zoneNumber < 2) {
                                 payload = config.areas[index][1];
+                            }
+console.log(payload);
+                            if (!payload.length) {
+                                ons.notification.alert('You\'ve chosen an empty zone to clean. Please set it up first.');
+                                window.setTimeout(function () {
+                                    updateHomePage();
+                                }, 3000);
+                                return;
                             }
                             fn.requestWithPayload("api/start_cleaning_zone", JSON.stringify(
                                 payload
@@ -554,73 +558,74 @@
                                     }, 3000);
                         }
                     });
-                    zoneButtons = document.querySelectorAll('ons-action-sheet-button');
+                    var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
                     for (var i = 0; i < zoneButtons.length - 1; i++) {
-                        zoneButtons[i].dataset.gnum = i;
+                        if (zoneButtons[i].getAttribute('icon') === null) {
+                            zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
+                        }
                     }
-                    var calcPayload = function() {
+                    
+                    calcPayload = function() {
                         var payload = [];
-                        for (var i = 0; i < zoneButtons.length - 1; i++) {
-                            if (!zoneButtons[i].dataset.znum) {
+                        var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                        for (var i = 0; i < zoneCheckboxes.length; i++) {
+                            if (!zoneCheckboxes[i].dataset.num) {
                                 continue;
                             }
-                            payload[zoneButtons[i].dataset.znum - 1] = config.areas[i][1];
+                            payload[zoneCheckboxes[i].dataset.num - 1] = config.areas[zoneCheckboxes[i].dataset.id][1];
                         }
-                        return payload.flat();
+                        return payload.reduce((acc, val) => acc.concat(val), []);
                     }
-                    zoneActionSheet = document.querySelector('ons-action-sheet');
-                    zoneActionSheet.addEventListener('mousedown',function(e) {
+                    document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
                         if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
-                        zoneButtonTimer = window.setTimeout(function() {
-                            zoneButtonCancel = true;
-                            zoneButton = e.target.getAttribute('icon') !== null ? e.target.firstElementChild : e.target;
-                            if (!e.target.dataset.znum) {
-                                let attemptedLength = calcPayload().length + config.areas[e.target.dataset.gnum][1].length;
-                                if (attemptedLength >= 5) {
+                        if (e.target.className === 'zone-cblabel') {
+                            e.stopPropagation();
+                            return;
+                        }
+                        if (e.target.className === 'zone-checkbox') {
+                            e.stopPropagation();
+                            if (e.target.checked) {
+                                // checked right now
+                                var attemptedLength = calcPayload().length + config.areas[e.target.dataset.id][1].length;
+                                if (attemptedLength > 5) {
                                     ons.notification.alert('You\'ve attempted to choose ' + attemptedLength + ' subzones, while it is possible to use 5 subzones at most.');
+                                    e.target.checked = false;
                                     return;
                                 }
-                                e.target.classList.add('zone_selected');
-                                e.target.dataset.znum = ++zoneNumber;
-                                zoneButton.insertAdjacentHTML('beforeend','<span>[' + zoneNumber + '/' + config.areas[e.target.dataset.gnum][1].length + ']</span>');
+                                e.target.dataset.num = ++zoneNumber;
+                                e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + config.areas[e.target.dataset.id][1].length + ']';
+                                e.target.parentNode.parentNode.classList.add('zone_selected');
                             } else {
-                                e.target.classList.remove('zone_selected');
-                                zoneButton.removeChild(zoneButton.lastChild);
-                                for (var i = 0; i < zoneButtons.length; i++) {
-                                    if (zoneButtons[i].classList.contains('zone_selected') && zoneButtons[i].dataset.znum > e.target.dataset.znum) {
-                                        zoneButtons[i].dataset.znum--;
-                                        zoneButton = zoneButtons[i].getAttribute('icon') !== null ? zoneButtons[i].firstElementChild : zoneButtons[i];
-                                        zoneButton.lastChild.textContent = '[' + zoneButtons[i].dataset.znum + '/' + config.areas[zoneButtons[i].dataset.gnum][1].length + ']';
+                                // unchecked
+                                var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                                for (var i = 0; i < zoneCheckboxes.length; i++) {
+                                    if (zoneCheckboxes[i].checked && zoneCheckboxes[i].dataset.num > e.target.dataset.num) {
+                                        zoneCheckboxes[i].dataset.num--;
+                                        zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '[' + zoneCheckboxes[i].dataset.num + '/' + config.areas[zoneCheckboxes[i].dataset.id][1].length + ']';
                                     }
                                 }
-                                delete e.target.dataset.znum;
                                 zoneNumber--;
+                                delete e.target.dataset.num;
+                                e.target.parentNode.nextElementSibling.textContent = '';
+                                e.target.parentNode.parentNode.classList.remove('zone_selected');
                             }
-                        },1e3);
-                    },true);
-                    zoneActionSheet.addEventListener('click',function(e) {
-                        if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
-                        if (zoneButtonCancel) {
-                            e.stopPropagation();
-                            zoneButtonCancel = false;
                         } else if (zoneNumber > 0) {
-                            if (!e.target.dataset.znum) {
+                            let findCheckbox = e.target.querySelector('.zone-checkbox');
+                            if (!findCheckbox || !findCheckbox.checked) {
                                 e.stopPropagation();
-                                for (var i = 0; i < zoneButtons.length; i++) {
-                                    if (zoneButtons[i].dataset.znum) {
-                                        zoneButtons[i].classList.remove('zone_selected');
-                                        delete zoneButtons[i].dataset.znum;
-                                        zoneButton = zoneButtons[i].getAttribute('icon') !== null ? zoneButtons[i].firstElementChild : zoneButtons[i];
-                                        zoneButton.removeChild(zoneButton.lastChild);
+                                var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                                for (var i = 0; i < zoneCheckboxes.length; i++) {
+                                    if (zoneCheckboxes[i].checked) {
+                                        delete zoneCheckboxes[i].dataset.num;
+                                        zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '';
+                                        zoneCheckboxes[i].parentNode.parentNode.classList.remove('zone_selected');
+                                        zoneCheckboxes[i].checked = false;
                                     }
                                 }
                                 zoneNumber = 0;
                             } else {
                                 payload = calcPayload();
                             }
-                        }
-                        if (zoneButtonTimer) {
-                            window.clearTimeout(zoneButtonTimer);
                         }
                     },true);
                 }
@@ -741,11 +746,18 @@
                 .action-sheet-button.zone_selected {
                     background-color: #c9c9c9;
                 }
-                .action-sheet-button.zone_selected span {
-                    position: absolute;
-                    right: 0.5em;
+                .action-sheet-button .zone-numspan {
                     font-size: 0.67em;
                     font-weight: 700;
+                    pointer-events: none;
+                    float: right;
+                }
+                .action-sheet-button .zone-cblabel {
+                    float: right;
+                    padding: 0 0.8em;
+                }
+                .zone-checkbox {
+                    transform: scale(1.5);
                 }
             </style>
 
