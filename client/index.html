@@ -542,16 +542,14 @@ console.log(payload);
                                 }, 3000);
                                 return;
                             }
-                            fn.requestWithPayload("api/start_cleaning_zone", JSON.stringify(
-                                payload
-                                ), "PUT", function (err) {
-                                    if (err) {
-                                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
-                                    }
-                                    window.setTimeout(function () {
-                                        updateHomePage();
-                                    }, 3000);
-                            });
+                            document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+                                fn.updateMapPage(true).then(function(map) {
+                                    map.clearZones();
+                                    payload.forEach(function(zone) {
+                                        map.addZone([zone[0], zone[1], zone[2], zone[3]], true);
+                                    });
+                                }).catch(() => {});
+                            }});
                         } else {
                             window.setTimeout(function () {
                                         updateHomePage();
@@ -559,7 +557,8 @@ console.log(payload);
                         }
                     });
                     var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
-                    for (var i = 0; i < zoneButtons.length - 1; i++) {
+                    for (var i = 0; i < zoneButtons.length; i++) {
+                        zoneButtons[i].title = ''; // get rid of stupid title repeating on all the buttons
                         if (zoneButtons[i].getAttribute('icon') === null) {
                             zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
                         }
@@ -1567,23 +1566,30 @@ console.log(payload);
                 const loadingBar = document.getElementById('loading-bar-map');
                 let map = null;
 
-                function updateMapPage() {
-                    loadingBar.setAttribute("indeterminate", "indeterminate");
-                    fn.request("api/map/latest", "GET", function (err, mapData) {
-                        loadingBar.removeAttribute("indeterminate");
-                        if (!err) {
-                            if(map === null) {
-                                map = new VacuumMap(document.getElementById('map-canvas'));
-                                map.initCanvas(mapData);
-                                map.initWebSocket();
-                            } else {
-                                map.updateMap(mapData);
-                            }
-                        } else {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                function updateMapPage(checkMapExistance) {
+                    return new Promise((resolve, reject) => {
+                        if (checkMapExistance && map !== null) {
+                            resolve(map);
                         }
-                    })
-                }
+                        loadingBar.setAttribute("indeterminate", "indeterminate");
+                        fn.request("api/map/latest", "GET", function (err, mapData) {
+                            loadingBar.removeAttribute("indeterminate");
+                            if (!err) {
+                                if(map === null) {
+                                    map = new VacuumMap(document.getElementById('map-canvas'));
+                                    map.initCanvas(mapData);
+                                    map.initWebSocket();
+                                } else {
+                                    map.updateMap(mapData);
+                                }
+                                resolve(map);
+                            } else {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                                reject();
+                            }
+                        })
+                    });
+                };
 
                 // Register update function to be accessible outside of es6 module (see <script> below)
                 window.fn.updateMapPage = updateMapPage;
@@ -1637,7 +1643,7 @@ console.log(payload);
             <script defer>
                 // Somehow getScriptPage returns null inside the type=module script tag
                 ons.getScriptPage().onShow = function () {
-                    window.fn.updateMapPage();
+                    window.fn.updateMapPage().catch(() => {});
                 };
                 ons.getScriptPage().onHide = function () {
                     window.fn.cancelUpdateMap();

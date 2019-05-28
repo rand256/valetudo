@@ -472,6 +472,11 @@ export function VacuumMap(canvasElement) {
         if (redrawCanvas) redrawCanvas();
     }
 
+    function clearZones() {
+        locations = locations.filter(l => !(l instanceof Zone));
+        if (redrawCanvas) redrawCanvas();
+    }
+
     return {
         initCanvas: initCanvas,
         initWebSocket: initWebSocket,
@@ -479,7 +484,8 @@ export function VacuumMap(canvasElement) {
         updateMap: updateMap,
         getLocations: getLocations,
         addZone: addZone,
-        addSpot: addSpot
+        addSpot: addSpot,
+        clearZones: clearZones
     };
 }
 
