@@ -26,6 +26,7 @@ export function MapDrawer() {
     function draw(mapData) {
         const freeColor = hexToRgb(getComputedStyle(document.documentElement).getPropertyValue('--map-free') || '#0076ff');
         const occupiedColor = hexToRgb(getComputedStyle(document.documentElement).getPropertyValue('--map-occupied') || '#52aeff');
+        const strongOccupiedColor = hexToRgb(getComputedStyle(document.documentElement).getPropertyValue('--map-strong-occupied') || '#52aeff');
 
         mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
         const imgData = mapCtx.createImageData(mapCanvas.width, mapCanvas.height);
@@ -41,7 +42,7 @@ export function MapDrawer() {
                         color = occupiedColor;
                         break;
                     case "obstacle_strong":
-                        color = occupiedColor;
+                        color = strongOccupiedColor;
                         break;
                 }
 

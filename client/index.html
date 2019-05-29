@@ -1652,10 +1652,11 @@ console.log(payload);
             </script>
             <style>
                 :root {
-                    --map-background-1: #efeff4;
-                    --map-background-2: #afafaf;
-                    --map-free: #0076ff;
-                    --map-occupied: #52aeff;
+                    --map-background-1: #33a1f5;
+                    --map-background-2: #046cd4;
+                    --map-free: #56affc;
+                    --map-occupied: #b3edff;
+                    --map-strong-occupied: #a1dbff;
                     --path: #ffffff;
                 }
 
@@ -1669,7 +1670,9 @@ console.log(payload);
                     align-items: stretch;
                 }
 
-                canvas#map-canvas {
+                canvas#map-canvas,
+                canvas#zone-configuration-map,
+                canvas#spot-configuration-map {
                     height: 100%;
                     width: 100%;
                     touch-action: none;
