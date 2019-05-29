@@ -153,7 +153,8 @@ export function VacuumMap(canvasElement) {
      * Sets up the canvas for tracking taps / pans / zooms and redrawing the map accordingly
      * @param {object} data - the json data returned by the "/api/map/latest" route
      */
-    function initCanvas(data) {
+    function initCanvas(data, options) {
+        options = options || {};
         let ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         trackTransforms(ctx);
@@ -175,7 +176,11 @@ export function VacuumMap(canvasElement) {
 
         mapDrawer.draw(data.image);
 
-        updateMapMetadata(data);
+        switch (options.metaData) {
+            case false:
+            case "none": break;
+            default: updateMapMetadata(data);
+        }
 
         const boundingBox = {
             minX: data.image.position.left,
@@ -189,7 +194,11 @@ export function VacuumMap(canvasElement) {
         );
         currentScale = initialScalingFactor;
 
-        pathDrawer.setPath(data.path, data.robot, data.charger, data.goto_predicted_path);
+        if (options.noPath) {
+            pathDrawer.setPath({}, data.robot, data.charger, {});
+        } else {
+            pathDrawer.setPath(data.path, data.robot, data.charger, data.goto_predicted_path);
+        }
         pathDrawer.scale(initialScalingFactor);
 
         ctx.scale(initialScalingFactor, initialScalingFactor);

@@ -1060,7 +1060,7 @@ console.log(payload);
                     const zonesConfig = topPage.data.zonesConfig;
                     const zoneToModify = topPage.data.zoneToModify;
 
-                    map.initCanvas(topPage.data.map);
+                    map.initCanvas(topPage.data.map, {metaData: false, noPath: true});
 
                     document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
                     for(let zone of zonesConfig[zoneToModify].coordinates) {
@@ -1161,7 +1161,7 @@ console.log(payload);
                         const spotConfig = topPage.data.spotConfig;
                         const spotToModify = topPage.data.spotToModify;
 
-                        map.initCanvas(topPage.data.map);
+                        map.initCanvas(topPage.data.map, {metaData: false, noPath: true});
 
                         document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
                         console.log(map)

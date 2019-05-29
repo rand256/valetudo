@@ -109,6 +109,7 @@ export function PathDrawer() {
     }
 
     function drawLines(points, ctx) {
+        if (!points || !points.length) return;
         let first = true;
         for (const coord of points) {
             const [x, y] = mmToCanvasPx(coord);
