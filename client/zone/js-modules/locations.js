@@ -50,7 +50,7 @@ export class Zone {
         this.y2 = Math.max(y1, y2);
     }
 
-    draw(ctx, transformMapToScreenSpace, scaleFactor) {
+    draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
         this.buttonSize = this.buttonSizeInitial * scaleFactor;
         const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
         const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
@@ -58,9 +58,9 @@ export class Zone {
         ctx.save();
         if(!this.active) {
             ctx.strokeStyle = "rgb(255, 255, 255)";
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)"
+            ctx.fillStyle = "rgba(240, 240, 240, 0.5)"
         } else {
-            ctx.setLineDash([15, 5]);
+            ctx.setLineDash([8, 6]);
             ctx.strokeStyle = "rgb(255, 255, 255)";
             ctx.fillStyle = "rgba(255, 255, 255, 0)"
         }
@@ -74,18 +74,41 @@ export class Zone {
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(p2.x, p1.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = 'black';
             ctx.fill();
-            ctx.strokeStyle = '#550000';
+            ctx.strokeStyle = 'black';
             ctx.stroke();
 
             ctx.beginPath();
             ctx.arc(p2.x, p2.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = 'white';
             ctx.fill();
-            ctx.strokeStyle = '#005500';
+            ctx.strokeStyle = 'white';
             ctx.stroke();
+            
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'white';
+            ctx.fillText('\uf00d', p2.x , p1.y - (0 *  this.buttonSize/this.buttonSizeInitial));
+
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'dodgerblue';
+            ctx.fillText('\uf0b2', p2.x , p2.y + (0 *  this.buttonSize/this.buttonSizeInitial));
         }
+
+        ctx.font = 'bold ' + 7*scaleFactor + 'px FontAwesome';
+        ctx.textBaseline = 'bottom';
+        ctx.textAlign = p2.x > p1.x ? 'left' : 'right';
+        ctx.fillStyle = 'white';
+        ctx.fillText(String(idx), p1.x + (p2.x > p1.x ? 4 : -4) * scaleFactor , (p2.y > p1.y ? p1.y : p2.y) - 2 * scaleFactor, Math.abs(p2.x - p1.x) );
+        /* variant: inside zone
+        ctx.textBaseline = p2.y > p1.y ? 'top' : 'bottom';
+        ctx.textAlign = p2.x > p1.x ? 'left' : 'right';
+        ctx.fillStyle = 'white';
+        ctx.fillText(String(idx), p1.x + (p2.x > p1.x ? 4 : -4) * scaleFactor , p1.y + (p2.y > p1.y ? 2 : -2) * scaleFactor, Math.abs(p2.x - p1.x) );*/
     }
 
     /**
@@ -181,7 +204,8 @@ export class Zone {
                     stopPropagation: true
                 };
             } else {
-                this.active = false;
+                // why would we deselect a zone when just moving a map around?
+                //this.active = false;
             }
         }
 

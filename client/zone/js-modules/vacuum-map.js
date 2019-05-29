@@ -235,10 +235,13 @@ export function VacuumMap(canvasElement) {
             ctx.drawImage(pathDrawer.canvas, 0, 0);
             ctx.scale(pathScale, pathScale);
 
-
-            usingOwnTransform(ctx, (ctx, transform, currentScale) => {
+            usingOwnTransform(ctx, (ctx, transform) => {
+                let zoneNumber = 0;
                 locations.forEach(location => {
-                    location.draw(ctx, transform);
+                    if (location instanceof Zone) {
+                        zoneNumber++;
+                    }
+                    location.draw(ctx, transform, currentScale, zoneNumber);
                 });
             });
         }
