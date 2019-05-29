@@ -19,6 +19,8 @@ export function VacuumMap(canvasElement) {
     let ws;
     let heartbeatTimeout;
 
+    let currentScale = 1;
+
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
@@ -185,6 +187,7 @@ export function VacuumMap(canvasElement) {
             canvas.width / (boundingBox.maxX - boundingBox.minX),
             canvas.height / (boundingBox.maxY - boundingBox.minY)
         );
+        currentScale = initialScalingFactor;
 
         pathDrawer.setPath(data.path, data.robot, data.charger, data.goto_predicted_path);
         pathDrawer.scale(initialScalingFactor);
@@ -233,7 +236,7 @@ export function VacuumMap(canvasElement) {
             ctx.scale(pathScale, pathScale);
 
 
-            usingOwnTransform(ctx, (ctx, transform) => {
+            usingOwnTransform(ctx, (ctx, transform, currentScale) => {
                 locations.forEach(location => {
                     location.draw(ctx, transform);
                 });
@@ -362,6 +365,7 @@ export function VacuumMap(canvasElement) {
         function endPinch(evt) {
             const [scaleX, scaleY] = ctx.getScaleFactor2d();
             pathDrawer.scale(scaleX);
+            currentScale = scaleX;
             endTranslate(evt);
         }
 
@@ -379,6 +383,8 @@ export function VacuumMap(canvasElement) {
             lastY = y;
             const p = ctx.transformedPoint(lastX, lastY);
             ctx.translate(p.x - dragStart.x, p.y - dragStart.y);
+
+            [currentScale, currentScale] = ctx.getScaleFactor2d();
 
             redraw();
         }
@@ -399,6 +405,7 @@ export function VacuumMap(canvasElement) {
 
                 const [scaleX, scaleY] = ctx.getScaleFactor2d();
                 pathDrawer.scale(scaleX);
+                currentScale = scaleX;
 
                 redraw();
             }

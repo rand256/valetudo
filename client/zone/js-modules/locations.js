@@ -39,7 +39,7 @@ export class GotoPoint  {
 export class Zone {
 
     constructor(x1 ,y1, x2, y2) {
-        this.buttonSize = 30;
+        this.buttonSize = this.buttonSizeInitial = 12;
 
         this.active = true;
 
@@ -50,7 +50,8 @@ export class Zone {
         this.y2 = Math.max(y1, y2);
     }
 
-    draw(ctx, transformMapToScreenSpace) {
+    draw(ctx, transformMapToScreenSpace, scaleFactor) {
+        this.buttonSize = this.buttonSizeInitial * scaleFactor;
         const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
         const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
 
