@@ -810,6 +810,14 @@ console.log(payload);
                 <ons-list-item>No spots are configured yet.</ons-list-item>
             </ons-list>
 
+            <ons-list-title style="margin-top:20px;">Forbidden markers</ons-list-title>
+            <ons-list id="spot-list">
+                 <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
+                     <label><ons-icon icon="edit"></ons-icon></label>
+                     <label>Configure forbidden zones</label>
+                 </ons-list-item>
+            </ons-list>
+
             <script>
                 let loadingBarZones = document.getElementById('loading-bar-zones');
                 let zonesList = document.getElementById('zones-list');
@@ -852,6 +860,24 @@ console.log(payload);
                                 'map': mapData,
                                 'spotConfig': spotConfig,
                                 'spotToModify': index
+                            }
+                        });
+                    });
+                }
+
+                function switchToForbiddenMarkersEdit(index) {
+                    loadingBarZones.setAttribute("indeterminate", "indeterminate");
+                    fn.request("api/map/latest", "GET", function (err, mapData) {
+                        if (err) {
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                        }
+                        loadingBarZones.removeAttribute("indeterminate");
+
+                        fn.pushPage({
+                            'id': 'forbidden-markers-configuration-map.html',
+                            'title': 'Forbidden markers configuration map',
+                            'data': {
+                                'map': mapData
                             }
                         });
                     });
@@ -1092,7 +1118,8 @@ console.log(payload);
                     const zonesConfig = topPage.data.zonesConfig;
                     const zoneToModify = topPage.data.zoneToModify;
 
-                    map.initCanvas(topPage.data.map, {metaData: false, noPath: true});
+                    map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+                    window.fn.map = map;
 
                     document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
                     for(let zone of zonesConfig[zoneToModify].coordinates) {
@@ -1193,7 +1220,7 @@ console.log(payload);
                         const spotConfig = topPage.data.spotConfig;
                         const spotToModify = topPage.data.spotToModify;
 
-                        map.initCanvas(topPage.data.map, {metaData: false, noPath: true});
+                        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
 
                         document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
                         console.log(map)
@@ -1255,6 +1282,130 @@ console.log(payload);
                     </style>
                 </ons-page>
             </template>
+
+    <template id="forbidden-markers-configuration-map.html">
+            <ons-page id="forbidden-markers-configuration-map-page">
+                <div id="forbidden-markers-configuration-container">
+                    <div class="forbidden-markers-configuration-header">
+                        <ons-back-button>Forbidden Markers</ons-back-button>
+                        <span id="forbidden-markers-configuration-map-page-h1"></span>
+                    </div>
+
+                    <ons-progress-bar id="loading-bar-save-markers" value="0"></ons-progress-bar>
+                    <canvas id="forbidden-markers-configuration-map"></canvas>
+                </div>
+
+                <div class="map-page-buttons">
+                    <ons-fab ripple id="forbidden-markers-configuration-add-wall">
+                        <ons-icon icon="fa-ellipsis-v"></ons-icon>
+                    </ons-fab>
+                    <ons-fab ripple id="forbidden-markers-configuration-add-zone">
+                        <ons-icon icon="fa-window-close-o"></ons-icon>
+                    </ons-fab>
+                    <ons-fab ripple id="forbidden-markers-configuration-save">
+                        <ons-icon icon="fa-save"></ons-icon>
+                    </ons-fab>
+                </div>
+
+                <script type="module">
+                    import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+                    const map = new VacuumMap(document.getElementById('forbidden-markers-configuration-map'));
+                    const loadingBarSaveMarkers = document.getElementById('loading-bar-save-markers');
+                    const saveButton = document.getElementById('forbidden-markers-configuration-save');
+
+                    const topPage = fn.getTopPage();
+                    map.initCanvas(topPage.data.map, {metaData: false, noGotoPoints: true});
+                    window.fn.map = map;
+
+                    if (topPage.data.map.no_go_areas)
+                    for (let zone of topPage.data.map.no_go_areas) {
+                        map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
+                    }
+
+                    if (topPage.data.map.virtual_walls)
+                    for (let wall of topPage.data.map.virtual_walls) {
+                        map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
+                    }
+
+                    document.getElementById("forbidden-markers-configuration-map-page-h1").innerText = 'Editing markers';
+
+                    document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
+                        map.addVirtualWall(null, false, true);
+                    }
+
+                    document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
+                        map.addForbiddenZone(null, false, true);
+                    }
+
+                    saveButton.onclick = () => {
+                        const persistentData = {virtual_walls: map.getLocations().virtualWalls, no_go_areas: map.getLocations().forbiddenZones};
+                        console.log(persistentData)
+
+
+                     /*  fn.request("api/map/latest", "GET", function (err, mapData) {
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                            }
+                            loadingBarZones.removeAttribute("indeterminate");
+
+                            if (map) {
+                                fn.map.updateMap(mapData);
+                            }
+                        });
+                     */
+
+                        loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
+                        saveButton.setAttribute("disabled", "disabled");
+                        fn.requestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT", function (err) {
+                            loadingBarSaveMarkers.removeAttribute("indeterminate");
+                            saveButton.removeAttribute("disabled");
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                            } else {
+                                ons.notification.toast("Successfully saved forbidden markers!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                                fn.popPage();
+                            }
+                        });
+                    }
+                </script>
+                <style>
+                    #forbidden-markers-configuration-container {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: auto auto 1fr;
+
+                        height: 100%;
+                        width: 100%;
+                    }
+
+                    #forbidden-markers-configuration-map {
+                        touch-action: none;
+                        height: 100%;
+                        width: 100%;
+                    }
+
+                    #forbidden-markers-configuration-map-page-h1 {
+                        flex-grow: 1;
+                        text-align: center;
+                    }
+
+                    .forbidden-markers-configuration-header {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .forbidden-markers-configuration-buttons {
+                        position: absolute;
+                        right: 1.5em;
+                        bottom: 1.5em;
+                        display: grid;
+                        grid-template-columns: auto;
+                        grid-template-rows: auto;
+                        grid-gap: 0.5em;
+                    }
+                </style>
+            </ons-page>
+        </template>
 
     <template id="manualcontrol.html">
         <ons-page id="manualcontrol-page">
@@ -1704,7 +1855,8 @@ console.log(payload);
 
                 canvas#map-canvas,
                 canvas#zone-configuration-map,
-                canvas#spot-configuration-map {
+                canvas#spot-configuration-map,
+                canvas#forbidden-markers-configuration-map {
                     height: 100%;
                     width: 100%;
                     touch-action: none;
