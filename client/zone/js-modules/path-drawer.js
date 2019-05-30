@@ -138,9 +138,6 @@ export function PathDrawer() {
         drawLines(path.points, ctx);
         ctx.stroke();
 
-        drawCharger(chargerPosition);
-        drawRobot(robotPosition, path.current_angle);
-
         if(predictedPath) {
             ctx.beginPath();
             ctx.lineWidth = 1;
@@ -150,6 +147,9 @@ export function PathDrawer() {
             ctx.stroke();
             ctx.setLineDash([]);
         }
+
+        drawCharger(chargerPosition);
+        drawRobot(robotPosition, path.current_angle);
     }
 
     // noinspection JSDuplicatedDeclaration
