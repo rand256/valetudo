@@ -42,6 +42,7 @@ export class Zone {
         this.buttonSize = this.buttonSizeInitial = 12;
 
         this.active = true;
+        this.isResizing = false;
 
         this.x1 = Math.min(x1, x2);
         this.x2 = Math.max(x1, x2);
@@ -168,6 +169,9 @@ export class Zone {
             const distanceFromResize = Math.sqrt(
                 Math.pow(last.x - p2.x, 2) + Math.pow(last.y - p2.y, 2)
             );
+            if (!this.isResizing && distanceFromResize <= this.buttonSize / 2) {
+                this.isResizing = true;
+            }
 
             const lastInMapSpace = new  DOMPoint(last.x, last.y).matrixTransform(transformCanvasToMapSpace);
             const currentInMapSpace = new  DOMPoint(current.x, current.y).matrixTransform(transformCanvasToMapSpace);
@@ -175,9 +179,13 @@ export class Zone {
             const dx = currentInMapSpace.x - lastInMapSpace.x;
             const dy = currentInMapSpace.y - lastInMapSpace.y;
 
-            if(distanceFromResize <= this.buttonSize / 2) {
-                this.x2 += dx;
-                this.y2 += dy;
+            if(this.isResizing) {
+                if (currentInMapSpace.x > this.x1 + 5 && this.x2 + dx > this.x1 + 5) {
+                    this.x2 += dx;
+                }
+                if (currentInMapSpace.y > this.y1 + 5 && this.y2 + dy > this.y1 + 5) {
+                    this.y2 += dy;
+                }
 
                 return {
                     updatedLocation: this,
@@ -465,6 +473,7 @@ export class ForbiddenZone  {
 
         if (editable) {
             this.active = true;
+            this.isResizing = false;
             this.buttonSize = this.buttonSizeInitial = 12;
         } else {
             this.active = false;
@@ -616,6 +625,9 @@ export class ForbiddenZone  {
             const distanceFromResize = Math.sqrt(
                 Math.pow(last.x - p3.x, 2) + Math.pow(last.y - p3.y, 2)
             );
+            if (!this.isResizing && distanceFromResize <= this.buttonSize / 2) {
+                this.isResizing = true;
+            }
 
             const lastInMapSpace = new  DOMPoint(last.x, last.y).matrixTransform(transformCanvasToMapSpace);
             const currentInMapSpace = new  DOMPoint(current.x, current.y).matrixTransform(transformCanvasToMapSpace);
@@ -623,11 +635,15 @@ export class ForbiddenZone  {
             const dx = currentInMapSpace.x - lastInMapSpace.x;
             const dy = currentInMapSpace.y - lastInMapSpace.y;
 
-            if (distanceFromResize <= this.buttonSize / 2) {
-                this.x2 += dx;
-                this.x3 += dx;
-                this.y3 += dy;
-                this.y4 += dy;
+            if (this.isResizing) {
+                if (currentInMapSpace.x > this.x1 + 5 && this.x2 + dx > this.x1 + 5) {
+                    this.x2 += dx;
+                    this.x3 += dx;
+                }
+                if (currentInMapSpace.y > this.y1 + 5 && this.y3 + dy > this.y1 + 5) {
+                    this.y3 += dy;
+                    this.y4 += dy;
+                }
 
                 return {
                     updatedLocation: this,

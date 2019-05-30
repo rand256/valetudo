@@ -324,6 +324,7 @@ export function VacuumMap(canvasElement) {
 
         function endTranslate(evt) {
             dragStart = null;
+            locations.forEach(location => location.isResizing && (location.isResizing = false));
             redraw();
         }
 
