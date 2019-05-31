@@ -539,6 +539,7 @@ export function VacuumMap(canvasElement) {
         const p = convertFromRealCoords({x: spotCoordinates[0], y: spotCoordinates[1]});
         const newSpot = new GotoPoint(p.x, p.y);
 
+        locations = locations.filter(l => !(l instanceof GotoPoint));
         locations.forEach(location => location.active = false)
         locations.push(newSpot);
         if (redrawCanvas) redrawCanvas();

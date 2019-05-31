@@ -523,17 +523,11 @@
                         buttons: options
                     }).then(function (index) {
                         if(index > -1 && index < config.spots.length){
-                            fn.requestWithPayload("api/go_to", JSON.stringify({
-                                x: config.spots[index][1],
-                                y: config.spots[index][2]
-                                }), "PUT", function (err) {
-                                    if (err) {
-                                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
-                                    }
-                                    window.setTimeout(function () {
-                                        updateHomePage();
-                                    }, 3000);
-                            });
+                            document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+                                fn.updateMapPage(true).then(function(map) {
+                                    map.addSpot([config.spots[index][1],config.spots[index][2]]);
+                                }).catch(() => {});
+                            }});
                         } else {
                             window.setTimeout(function () {
                                         updateHomePage();
@@ -566,7 +560,6 @@
                             if (zoneNumber < 2) {
                                 payload = config.areas[index][1];
                             }
-console.log(payload);
                             if (!payload.length) {
                                 ons.notification.alert('You\'ve chosen an empty zone to clean. Please set it up first.');
                                 window.setTimeout(function () {
@@ -1220,10 +1213,10 @@ console.log(payload);
                         const spotConfig = topPage.data.spotConfig;
                         const spotToModify = topPage.data.spotToModify;
 
-                        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+                        map.initCanvas(topPage.data.map, {metaData: "forbidden"});
 
                         document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
-                        console.log(map)
+
                         map.addSpot([spotConfig[spotToModify].coordinates[0], spotConfig[spotToModify].coordinates[1]]);
 
                         saveButton.onclick = () => {
@@ -1339,21 +1332,6 @@ console.log(payload);
 
                     saveButton.onclick = () => {
                         const persistentData = {virtual_walls: map.getLocations().virtualWalls, no_go_areas: map.getLocations().forbiddenZones};
-                        console.log(persistentData)
-
-
-                     /*  fn.request("api/map/latest", "GET", function (err, mapData) {
-                            if (err) {
-                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
-                            }
-                            loadingBarZones.removeAttribute("indeterminate");
-
-                            if (map) {
-                                fn.map.updateMap(mapData);
-                            }
-                        });
-                     */
-
                         loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
                         saveButton.setAttribute("disabled", "disabled");
                         fn.requestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT", function (err) {
