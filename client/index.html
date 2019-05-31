@@ -1415,7 +1415,7 @@ console.log(payload);
                     <canvas id="manual-control-area"  class="fit-img fit-img-tight" style="background-color: #9ea7b833; height: 90%; width: 90%; position:relative;"></canvas>
                     <div>
                         <ons-button id="start-manual-control-button" class="button-margin" onclick="startManualControl()">Start Manual Control</ons-button>
-                        <ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" disabled>Stop Manual Control</ons-button>
+                        <ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" style="display:none;">Stop Manual Control</ons-button>
                     </div>
             </div>
 
@@ -1462,8 +1462,8 @@ console.log(payload);
                 function _startManualControl() {
                     if (!manualControlEnabled) {
                         manualControlEnabled = true;
-                        startManualControlButton.setAttribute("disabled", "disabled");
-                        endManualControlButton.removeAttribute("disabled");
+                        startManualControlButton.style.display = 'none';
+                        endManualControlButton.style.display = '';
                         document.getElementById('sidemenu').removeAttribute("swipeable");
                         document.getElementById('appTabbar').removeAttribute("swipeable");
                     }
@@ -1472,8 +1472,8 @@ console.log(payload);
                 function _stopManualControl() {
                     if (manualControlEnabled) {
                         manualControlEnabled = false;
-                        endManualControlButton.setAttribute("disabled", "disabled");
-                        startManualControlButton.removeAttribute("disabled");
+                        endManualControlButton.style.display = 'none';
+                        startManualControlButton.style.display = ''
                         document.getElementById('sidemenu').setAttribute("swipeable", "swipeable");
                         document.getElementById('appTabbar').setAttribute("swipeable", "swipeable");
                         stopManualControlTimer();
