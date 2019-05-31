@@ -308,8 +308,6 @@ export class VirtualWall  {
         ctx.strokeStyle = 'red';
         ctx.stroke();
 
-//console.log(getMatrixTransform(getRotateAngle(p1,p2),0,0).toString(),new DOMMatrix().rotateFromVector(p2.y - p1.y,p2.x - p1.x).toString());
-
         ctx.restore();
 
         if (this.active) {
@@ -342,9 +340,9 @@ export class VirtualWall  {
             ctx.fillText('\uf0b2', p2.x , p2.y);
         }
         if (this.editable) {
-            this.angle = getRotateAngle(p1,p2);
-            this.sp1 = p1.matrixTransform(getMatrixTransform(this.angle,-2.5*scaleFactor,0));
-            this.sp2 = p2.matrixTransform(getMatrixTransform(this.angle,+2.5*scaleFactor,0));
+            this.matrix = new DOMMatrix().rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x);
+            this.sp1 = p1.matrixTransform(new DOMMatrix().translate(-2.5*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
+            this.sp2 = p2.matrixTransform(new DOMMatrix().translate(+2.5*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
         }
     }
     /**
@@ -370,7 +368,7 @@ export class VirtualWall  {
             Math.pow(tappedPoint.x - p1.x, 2) + Math.pow(tappedPoint.y - p1.y, 2)
         );
 
-        const sTappedPoint = new DOMPoint(tappedPoint.x,tappedPoint.y).matrixTransform(getMatrixTransform(this.angle,0,0));
+        const sTappedPoint = new DOMPoint(tappedPoint.x,tappedPoint.y).matrixTransform(this.matrix);
 
         if (this.active && distanceFromDelete <= this.buttonSize / 2) {
             return {
@@ -425,7 +423,7 @@ export class VirtualWall  {
             const dx = currentInMapSpace.x - lastInMapSpace.x;
             const dy = currentInMapSpace.y - lastInMapSpace.y;
 
-            const sLast = new DOMPoint(last.x,last.y).matrixTransform(getMatrixTransform(this.angle,0,0));
+            const sLast = new DOMPoint(last.x,last.y).matrixTransform(this.matrix);
 
             if(distanceFromResize <= this.buttonSize / 2) {
                 this.x2 += dx;
@@ -677,21 +675,4 @@ export class ForbiddenZone  {
         };
     }
 
-}
-
-function getRotateAngle(p1, p2) {
-    let dx, dy, a;
-    dx = Math.abs(p1.x - p2.x),
-    dy = Math.abs(p1.y - p2.y);
-
-    if (p1.x < p2.x && p1.y > p2.y || p1.x > p2.x && p1.y < p2.y) {
-        a = Math.atan(dx/dy) + ((p1.x < p2.x && p1.y > p2.y) ? Math.PI : 0);
-    } else {
-        a = Math.atan(dy/dx) + ((p1.x > p2.x && p1.y > p2.y) ? Math.PI/2 : 3*Math.PI/2);
-    }
-    return a;
-}
-
-function getMatrixTransform(angle, tx, ty) {
-    return new DOMMatrix([Math.cos(angle),-Math.sin(angle),Math.sin(angle),Math.cos(angle),tx,ty]);
 }
