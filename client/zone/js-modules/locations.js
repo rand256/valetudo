@@ -104,7 +104,7 @@ export class Zone {
         ctx.textBaseline = 'bottom';
         ctx.textAlign = p2.x > p1.x ? 'left' : 'right';
         ctx.fillStyle = 'white';
-        ctx.fillText(String(idx), p1.x + (p2.x > p1.x ? 4 : -4) * scaleFactor , (p2.y > p1.y ? p1.y : p2.y) - 2 * scaleFactor, Math.abs(p2.x - p1.x) );
+        ctx.fillText(String(idx), p1.x + 1*scaleFactor , p1.y - 0.25*scaleFactor, Math.abs(p2.x - p1.x) );
     }
 
     /**

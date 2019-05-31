@@ -257,6 +257,8 @@ export function VacuumMap(canvasElement) {
 
             usingOwnTransform(ctx, (ctx, transform) => {
                 let zoneNumber = 0;
+                let locationTypes = {GotoPoint: 1, Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
+                locations.sort((a,b) => {return locationTypes[b.constructor.name] - locationTypes[a.constructor.name]; });
                 locations.forEach(location => {
                     if (location instanceof Zone) {
                         zoneNumber++;
