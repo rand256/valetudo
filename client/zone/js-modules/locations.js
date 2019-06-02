@@ -123,7 +123,7 @@ export class Zone {
             Math.pow(tappedPoint.x - p2.x, 2) + Math.pow(tappedPoint.y - p1.y, 2)
         );
 
-        if(this.active && distanceFromDelete <= this.buttonSize / 2) {
+        if(this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
                 updatedLocation: null,
                 stopPropagation: true
@@ -169,7 +169,7 @@ export class Zone {
             const distanceFromResize = Math.sqrt(
                 Math.pow(last.x - p2.x, 2) + Math.pow(last.y - p2.y, 2)
             );
-            if (!this.isResizing && distanceFromResize <= this.buttonSize / 2) {
+            if (!this.isResizing && distanceFromResize <= this.buttonSize * 1.2 / 2) {
                 this.isResizing = true;
             }
 
@@ -341,8 +341,8 @@ export class VirtualWall  {
         }
         if (this.editable) {
             this.matrix = new DOMMatrix().rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x);
-            this.sp1 = p1.matrixTransform(new DOMMatrix().translate(-2.5*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
-            this.sp2 = p2.matrixTransform(new DOMMatrix().translate(+2.5*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
+            this.sp1 = p1.matrixTransform(new DOMMatrix().translate(-3*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
+            this.sp2 = p2.matrixTransform(new DOMMatrix().translate(+3*scaleFactor).rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x));
         }
     }
     /**
@@ -370,7 +370,7 @@ export class VirtualWall  {
 
         const sTappedPoint = new DOMPoint(tappedPoint.x,tappedPoint.y).matrixTransform(this.matrix);
 
-        if (this.active && distanceFromDelete <= this.buttonSize / 2) {
+        if (this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
                 updatedLocation: null,
                 stopPropagation: true
@@ -425,7 +425,7 @@ export class VirtualWall  {
 
             const sLast = new DOMPoint(last.x,last.y).matrixTransform(this.matrix);
 
-            if(distanceFromResize <= this.buttonSize / 2) {
+            if(distanceFromResize <= this.buttonSize * 1.2 / 2) {
                 this.x2 += dx;
                 this.y2 += dy;
 
@@ -575,7 +575,7 @@ export class ForbiddenZone  {
             Math.pow(tappedPoint.x - p2.x, 2) + Math.pow(tappedPoint.y - p2.y, 2)
         );
 
-        if(this.active && distanceFromDelete <= this.buttonSize / 2) {
+        if(this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
                 updatedLocation: null,
                 stopPropagation: true
@@ -623,7 +623,7 @@ export class ForbiddenZone  {
             const distanceFromResize = Math.sqrt(
                 Math.pow(last.x - p3.x, 2) + Math.pow(last.y - p3.y, 2)
             );
-            if (!this.isResizing && distanceFromResize <= this.buttonSize / 2) {
+            if (!this.isResizing && distanceFromResize <= this.buttonSize * 1.2 / 2) {
                 this.isResizing = true;
             }
 
