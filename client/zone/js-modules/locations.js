@@ -125,7 +125,7 @@ export class Zone {
 
         if(this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
-                updatedLocation: null,
+                removeLocation: true,
                 stopPropagation: true
             };
         } else if (
@@ -134,18 +134,15 @@ export class Zone {
             && tappedPoint.y >= p1.y
             && tappedPoint.y <= p2.y
         ) {
-            this.active = true;
-
             return {
-                updatedLocation: this,
-                stopPropagation: false
+                stopPropagation: false,
+                selectLocation: true
             };
         } else {
             this.active = false;
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }
@@ -161,7 +158,7 @@ export class Zone {
      * This is the transform applied by the vacuum-map canvas.
      */
     translate(start, last, current, transformMapToScreenSpace) {
-        if(this.active) {
+        if (this.active) {
             const transformCanvasToMapSpace = transformMapToScreenSpace.inverse();
             const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
             const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
@@ -210,7 +207,6 @@ export class Zone {
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }
@@ -372,7 +368,7 @@ export class VirtualWall  {
 
         if (this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
-                updatedLocation: null,
+                removeLocation: true,
                 stopPropagation: true
             };
         } else if (
@@ -381,18 +377,15 @@ export class VirtualWall  {
             && sTappedPoint.y >= this.sp1.y
             && sTappedPoint.y <= this.sp2.y
         ) {
-            this.active = true;
-
             return {
-                updatedLocation: this,
-                stopPropagation: false
+                stopPropagation: false,
+                selectLocation: true
             };
         } else {
             this.active = false;
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }
@@ -408,7 +401,7 @@ export class VirtualWall  {
      * This is the transform applied by the vacuum-map canvas.
      */
     translate(start, last, current, transformMapToScreenSpace) {
-        if(this.active) {
+        if (this.active) {
             const transformCanvasToMapSpace = transformMapToScreenSpace.inverse();
             const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
             const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
@@ -452,7 +445,6 @@ export class VirtualWall  {
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }
@@ -577,7 +569,7 @@ export class ForbiddenZone  {
 
         if(this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
             return {
-                updatedLocation: null,
+                removeLocation: true,
                 stopPropagation: true
             };
         } else if (
@@ -586,18 +578,15 @@ export class ForbiddenZone  {
             && tappedPoint.y >= p1.y
             && tappedPoint.y <= p3.y
         ) {
-            this.active = true;
-
             return {
-                updatedLocation: this,
-                stopPropagation: false
+                stopPropagation: false,
+                selectLocation: true
             };
         } else {
             this.active = false;
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }
@@ -670,7 +659,6 @@ export class ForbiddenZone  {
         }
 
         return {
-            updatedLocation: this,
             stopPropagation: false
         };
     }

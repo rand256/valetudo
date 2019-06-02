@@ -303,9 +303,6 @@ export function VacuumMap(canvasElement) {
                         );
                         if(result.updatedLocation) {
                             locations[i] = result.updatedLocation;
-                        } else {
-                            locations.splice(i, 1);
-                            i--;
                         }
                         if(result.stopPropagation === true) {
                             redraw();
@@ -339,21 +336,35 @@ export function VacuumMap(canvasElement) {
             // Let each location handle the tapping event
             // the location can return a stopPropagation bool which
             // stops the event handling by other locations / the main canvas
-            for(let i = 0; i < locations.length; ++i) {
+            // first process active location, rest process later. TODO: try to do it less stupid way
+            var currentlyActive = -1;
+            var processTap = function(i,locations) {
                 const location = locations[i];
-                if(typeof location.translate === "function") {
+                if(typeof location.tap === "function") {
                     const result = location.tap({x: tappedX, y: tappedY}, ctx.getTransform());
                     if(result.updatedLocation) {
                         locations[i] = result.updatedLocation;
-                    } else {
+                    } else if (result.removeLocation) {
                         locations.splice(i, 1);
                         i--;
+                    } else if (result.selectLocation) {
+                        locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
                     }
                     if(result.stopPropagation === true) {
                         redraw();
-                        return;
+                        return true;
                     }
                 }
+                return false;
+            }
+            for(let i = 0; i < locations.length; ++i) {
+                if (!locations[i].active) continue;
+                currentlyActive = i;
+                if (processTap(i,locations)) return;
+            }
+            for(let i = 0; i < locations.length; ++i) {
+                if (i === currentlyActive) continue;
+                if (processTap(i,locations)) return;
             }
 
             // remove previous goto point if there is any
