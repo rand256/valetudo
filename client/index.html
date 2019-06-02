@@ -1798,7 +1798,13 @@
                     const zones = map.getLocations().zones.map(zoneCoordinates => [...zoneCoordinates, repeatNumber]);
                     zoned_cleanup(zones);
                 }
-                document.getElementById("add_zone").onclick = () => map.addZone();
+                document.getElementById("add_zone").onclick = () => {
+                    if (map.getLocations().zones.length < 5) {
+                        map.addZone();
+                    } else {
+                        ons.notification.alert('You can\'t add more than 5 zones onto the map.');
+                    }
+                }
             </script>
             <script defer>
                 // Somehow getScriptPage returns null inside the type=module script tag
