@@ -103,6 +103,10 @@ export class Zone {
         ctx.font = 'bold ' + 7*scaleFactor + 'px FontAwesome';
         ctx.textBaseline = 'bottom';
         ctx.textAlign = p2.x > p1.x ? 'left' : 'right';
+        ctx.fillStyle = 'rgba(100,140,180,0.4)';
+        ctx.beginPath();
+        ctx.arc(p1.x + 0.7*scaleFactor + ctx.measureText(String(idx)).width / 2, p1.y - 3.5*scaleFactor, 3.5*scaleFactor, 0, 2 * Math.PI, false);
+        ctx.fill();
         ctx.fillStyle = 'white';
         ctx.fillText(String(idx), p1.x + 1*scaleFactor , p1.y - 0.25*scaleFactor, Math.abs(p2.x - p1.x) );
     }
