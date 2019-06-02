@@ -337,18 +337,21 @@ export function VacuumMap(canvasElement) {
             // the location can return a stopPropagation bool which
             // stops the event handling by other locations / the main canvas
             // first process active location, rest process later. TODO: try to do it less stupid way
-            var currentlyActive = -1;
+            var currentlyActive = -1, takenAction = false;
             var processTap = function(i,locations) {
                 const location = locations[i];
                 if(typeof location.tap === "function") {
                     const result = location.tap({x: tappedX, y: tappedY}, ctx.getTransform());
                     if(result.updatedLocation) {
                         locations[i] = result.updatedLocation;
+                        takenAction = true;
                     } else if (result.removeLocation) {
                         locations.splice(i, 1);
                         i--;
+                        takenAction = true;
                     } else if (result.selectLocation) {
                         locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
+                        takenAction = true;
                     }
                     if(result.stopPropagation === true) {
                         redraw();
@@ -367,10 +370,9 @@ export function VacuumMap(canvasElement) {
                 if (processTap(i,locations)) return;
             }
 
-            // remove previous goto point if there is any
+            // setting points if allowed
             locations = locations.filter(l => !(l instanceof GotoPoint));
-            const zones = locations.filter(l => l instanceof Zone);
-            if(zones.length === 0 && !options.noGotoPoints) {
+            if(!takenAction && !options.noGotoPoints) {
                 locations.push(new GotoPoint(tappedPoint.x, tappedPoint.y));
             }
 

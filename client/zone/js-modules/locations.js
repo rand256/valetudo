@@ -128,8 +128,8 @@ export class Zone {
                 removeLocation: true,
                 stopPropagation: true
             };
-        } else if (
-            tappedPoint.x >= p1.x
+        } else if (!this.active
+            && tappedPoint.x >= p1.x
             && tappedPoint.x <= p2.x
             && tappedPoint.y >= p1.y
             && tappedPoint.y <= p2.y
@@ -138,8 +138,6 @@ export class Zone {
                 stopPropagation: false,
                 selectLocation: true
             };
-        } else {
-            this.active = false;
         }
 
         return {
@@ -352,7 +350,6 @@ export class VirtualWall  {
     tap(tappedPoint, transformMapToScreenSpace) {
         if (!this.editable) {
             return {
-                updatedLocation: this,
                 stopPropagation: false
             };
         }
@@ -371,8 +368,8 @@ export class VirtualWall  {
                 removeLocation: true,
                 stopPropagation: true
             };
-        } else if (
-            sTappedPoint.x >= this.sp1.x
+        } else if (!this.active
+            && sTappedPoint.x >= this.sp1.x
             && sTappedPoint.x <= this.sp2.x
             && sTappedPoint.y >= this.sp1.y
             && sTappedPoint.y <= this.sp2.y
@@ -381,8 +378,6 @@ export class VirtualWall  {
                 stopPropagation: false,
                 selectLocation: true
             };
-        } else {
-            this.active = false;
         }
 
         return {
@@ -572,8 +567,8 @@ export class ForbiddenZone  {
                 removeLocation: true,
                 stopPropagation: true
             };
-        } else if (
-            tappedPoint.x >= p1.x
+        } else if (!this.active
+            && tappedPoint.x >= p1.x
             && tappedPoint.x <= p3.x
             && tappedPoint.y >= p1.y
             && tappedPoint.y <= p3.y
@@ -582,8 +577,6 @@ export class ForbiddenZone  {
                 stopPropagation: false,
                 selectLocation: true
             };
-        } else {
-            this.active = false;
         }
 
         return {
