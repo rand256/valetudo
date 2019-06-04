@@ -857,7 +857,7 @@
                     });
                 }
 
-                function switchToForbiddenMarkersEdit(index) {
+                function switchToForbiddenMarkersEdit(index) { // todo: check that all zones are loaded before editing anything
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
                     fn.request("api/map/latest", "GET", function (err, mapData) {
                         if (err) {
@@ -3201,27 +3201,31 @@
 
     <template id="settings-timers.html">
         <ons-page id="settings-timers-page">
-                <ons-dialog id="add-timer-dialog">
+                <ons-dialog id="add-zoned-timer-dialog" cancelable>
                     <div style="text-align: left; padding: 10px;">
-                        <form id="add-timer-form">
-                            <!--Date-->
-                            <p>Select the date the timer should be triggered on.<br/><i>Empty means any month/day.</i></p>
+                        <form id="add-zoned-timer-form">
+                            <p>Choose timer name and zone coordinates.</p>
+                            <ons-row>
+                                <ons-col width="100px" align="center">Name:</ons-col>
+                                <ons-col align="left"><ons-input type="text" placeholder="name of a timer" min="1" max="30" name="zoned_timer_name"></ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col width="100px" align="center">Coords:</ons-col>
+                                <ons-col align="left"><ons-button id="add_coordinates" class="button-margin" onclick="addZoneCoordinates()"><ons-icon icon="fa-plus"></ons-icon> Add...</ons-button></ons-col>
+                            </ons-row>
+                            <ons-row id="zone-coordinates"></ons-row>
+                            <hr/>
+                            <!--Date and time-->
+                            <p>Select time and date the timer should be triggered on.<br/><i>Empty means any.</i></p>
                             <ons-row>
                                 <ons-col width="100px" align="center">Month</ons-col>
                                 <ons-col><ons-input type="number" placeholder="*" min="1" max="12" name="month"></ons-input></ons-col>
-                            </ons-row>
-                            <ons-row>
-                                <ons-col width="100px" align="center">Day</ons-col>
-                                <ons-col><ons-input type="number" placeholder="*" min="1" max="31" name="day"></ons-input></ons-col>
-                            </ons-row>
-                            <hr/>
-                            <!--Time-->
-                            <p>Select the time the timer should be triggered on.<br/><i>Empty means any hour/minute.</i></p>
-                            <ons-row>
                                 <ons-col width="100px" align="center">Hour</ons-col>
                                 <ons-col><ons-input type="number" placeholder="*" min="0" max="23" name="hour"></ons-input></ons-col>
                             </ons-row>
                             <ons-row>
+                                <ons-col width="100px" align="center">Day</ons-col>
+                                <ons-col><ons-input type="number" placeholder="*" min="1" max="31" name="day"></ons-input></ons-col>
                                 <ons-col width="100px" align="center">Minute</ons-col>
                                 <ons-col><ons-input type="number" placeholder="*" min="0" max="59" name="minute"></ons-input></ons-col>
                             </ons-row>
@@ -3229,53 +3233,105 @@
                             <!--Days-->
                             <p>Select the days the timer should be triggered on.<br/><i>Empty means any day.</i></p>
                             <ons-row>
-                                <ons-col width="100px">Days</ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="1" input-id="zoned_timer_mo"></ons-checkbox>
+                                    <label for="zoned_timer_mo" class="center">Monday</label>
+                                </ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="5" input-id="zoned_timer_fri"></ons-checkbox>
+                                    <label for="zoned_timer_fri" class="center">Friday</label>
+                                </ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="2" input-id="zoned_timer_tue"></ons-checkbox>
+                                    <label for="zoned_timer_tue" class="center">Tuesday</label>
+                                </ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="6" input-id="zoned_timer_sat"></ons-checkbox>
+                                    <label for="zoned_timer_sat" class="center">Saturday</label>
+                                </ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="3" input-id="zoned_timer_wed"></ons-checkbox>
+                                    <label for="zoned_timer_wed" class="center">Wednesday</label>
+                                </ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="0" input-id="zoned_timer_sun"></ons-checkbox>
+                                    <label for="zoned_timer_sun" class="center">Sunday</label>
+                                </ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="4" input-id="zoned_timer_thu"></ons-checkbox>
+                                    <label for="zoned_timer_thu" class="center">Thursday</label>
+                                </ons-col>
+                                <ons-col></ons-col>
+                            </ons-row>
+                            <div style="text-align: center" class="content-padded" ng-controller="ButtonsController">
+                                    <ons-button onclick="hideNewTimerDialog(true)">Cancel</ons-button>
+                                    <ons-button onclick="addNewTimer(true)">Save</ons-button>
+                            </div>
+                        </form>
+                    </div>
+                </ons-dialog>
+                <ons-dialog id="add-timer-dialog" cancelable>
+                    <div style="text-align: left; padding: 10px;">
+                        <form id="add-timer-form">
+                            <!--Date and time-->
+                            <p>Select time and date the timer should be triggered on.<br/><i>Empty means any.</i></p>
+                            <ons-row>
+                                <ons-col width="100px" align="center">Month</ons-col>
+                                <ons-col><ons-input type="number" placeholder="*" min="1" max="12" name="month"></ons-input></ons-col>
+                                <ons-col width="100px" align="center">Hour</ons-col>
+                                <ons-col><ons-input type="number" placeholder="*" min="0" max="23" name="hour"></ons-input></ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col width="100px" align="center">Day</ons-col>
+                                <ons-col><ons-input type="number" placeholder="*" min="1" max="31" name="day"></ons-input></ons-col>
+                                <ons-col width="100px" align="center">Minute</ons-col>
+                                <ons-col><ons-input type="number" placeholder="*" min="0" max="59" name="minute"></ons-input></ons-col>
+                            </ons-row>
+                            <hr/>
+                            <!--Days-->
+                            <p>Select the days the timer should be triggered on.<br/><i>Empty means any day.</i></p>
+                            <ons-row>
                                 <ons-col style="padding-bottom:10px;">
                                     <ons-checkbox name="days" value="1" input-id="timer_mo"></ons-checkbox>
                                     <label for="timer_mo" class="center">Monday</label>
                                 </ons-col>
-                            </ons-row>
-                            <ons-row>
-                                <ons-col width="100px"></ons-col>
-                                <ons-col style="padding-bottom:10px;">
-                                    <ons-checkbox name="days" value="2" input-id="timer_tue"></ons-checkbox>
-                                    <label for="timer_tue" class="center">Tuesday</label>
-                                </ons-col>
-                            </ons-row>
-                            <ons-row>
-                                <ons-col width="100px"></ons-col>
-                                <ons-col style="padding-bottom:10px;">
-                                    <ons-checkbox name="days" value="3" input-id="timer_wed"></ons-checkbox>
-                                    <label for="timer_wed" class="center">Wednesday</label>
-                                </ons-col>
-                            </ons-row>
-                            <ons-row>
-                                <ons-col width="100px"></ons-col>
-                                <ons-col style="padding-bottom:10px;">
-                                    <ons-checkbox name="days" value="4" input-id="timer_thu"></ons-checkbox>
-                                    <label for="timer_thu" class="center">Thursday</label>
-                                </ons-col>
-                            </ons-row>
-                            <ons-row>
-                                <ons-col width="100px"></ons-col>
                                 <ons-col style="padding-bottom:10px;">
                                     <ons-checkbox name="days" value="5" input-id="timer_fri"></ons-checkbox>
                                     <label for="timer_fri" class="center">Friday</label>
                                 </ons-col>
                             </ons-row>
                             <ons-row>
-                                <ons-col width="100px"></ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="2" input-id="timer_tue"></ons-checkbox>
+                                    <label for="timer_tue" class="center">Tuesday</label>
+                                </ons-col>
                                 <ons-col style="padding-bottom:10px;">
                                     <ons-checkbox name="days" value="6" input-id="timer_sat"></ons-checkbox>
                                     <label for="timer_sat" class="center">Saturday</label>
                                 </ons-col>
                             </ons-row>
                             <ons-row>
-                                <ons-col width="100px"></ons-col>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="3" input-id="timer_wed"></ons-checkbox>
+                                    <label for="timer_wed" class="center">Wednesday</label>
+                                </ons-col>
                                 <ons-col style="padding-bottom:10px;">
                                     <ons-checkbox name="days" value="0" input-id="timer_sun"></ons-checkbox>
                                     <label for="timer_sun" class="center">Sunday</label>
                                 </ons-col>
+                            </ons-row>
+                            <ons-row>
+                                <ons-col style="padding-bottom:10px;">
+                                    <ons-checkbox name="days" value="4" input-id="timer_thu"></ons-checkbox>
+                                    <label for="timer_thu" class="center">Thursday</label>
+                                </ons-col>
+                                <ons-col></ons-col>
                             </ons-row>
                             <div style="text-align: center" class="content-padded" ng-controller="ButtonsController">
                                     <ons-button onclick="hideNewTimerDialog()">Cancel</ons-button>
@@ -3334,22 +3390,81 @@
             <ons-progress-bar id="loading-bar-settings-timers" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
             <ons-list-title style="margin-top:5px;">
-                Cleaning - Timers <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showAddTimerDialog(-1);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
+                Zoned Cleaning Schedule (beta) <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showAddTimerDialog(-1,true);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
             </ons-list-title>
-            <ons-list id="settings-timers-timer-list"></ons-list>
+            <ons-list id="settings-zoned-timers-timer-list">
+                <ons-list-item>No zoned cleaning schedule is configured yet.</ons-list-item>
+            </ons-list>
+
+            <ons-list-title style="margin-top:5px;">
+                Cleaning Schedule <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showAddTimerDialog(-1);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
+            </ons-list-title>
+            <ons-list id="settings-timers-timer-list">
+                <ons-list-item>No cleaning schedule is configured yet.</ons-list-item>
+            </ons-list>
 
             <ons-list-title style="margin-top:5px;">"Do Not Disturb" - Timer</ons-list-title>
-            <ons-list id="settings-dnd-timer-list"></ons-list>
+            <ons-list id="settings-dnd-timer-list">
+                <ons-list-item>No DND schedule is configured yet.</ons-list-item>
+            </ons-list>
 
             <script>
                 var loadingBarSettingsTimers = document.getElementById('loading-bar-settings-timers');
                 var timersSettingsTimersList = document.getElementById('settings-timers-timer-list');
+                var timersSettingsZonedTimersList = document.getElementById('settings-zoned-timers-timer-list');
                 var dndTimerList = document.getElementById('settings-dnd-timer-list');
+                var addZoneCoordinatesButton = document.getElementById('add_coordinates');
+
+                var zTimers = [];
 
                 ons.getScriptPage().onShow = function () {
+                    updateSettingsZonedTimersPage();
                     updateSettingsTimersPage();
                     updateDndTimerPage();
                 };
+
+                function addZoneCoordinates() {
+                    addZoneCoordinatesButton.disabled = true;
+                    loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+                    const getZones = fetch("api/zones")
+                        .then(res => res.json())
+                        .then(res => {
+                            let zones = res;
+
+                            let options = []
+                            for (var i = 0; i < zones.length; i++){
+                                options.push(zones[i].name);
+                            }
+                            options.push({
+                                label: 'Cancel',
+                                icon: 'md-close'
+                            });
+                            ons.openActionSheet({
+                                title: 'Choose a zone',
+                                cancelable: true,
+                                buttons: options
+                            }).then(function (index) {
+                                if(index > -1 && index < zones.length) {
+                                    let anchor = document.querySelector('#add-zoned-timer-form > hr');
+                                    anchor.parentNode.insertBefore(ons.createElement(
+                                        '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey;" onclick="removeTimerZone(this);">[x] ' + zones[index].name + '</ons-col><ons-col><ons-input type="text" name="zoned_timer_coords[]" value="' + JSON.stringify(zones[index].coordinates) + '" disabled></ons-col></ons-row>'
+                                    ),anchor);
+                                }
+                            })
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        })
+                        .finally(() => {
+                            loadingBarSettingsTimers.removeAttribute("indeterminate");
+                            addZoneCoordinatesButton.disabled = false;
+                        });
+                }
+
+                function removeTimerZone(elem) {
+                    elem.parentNode.parentNode.removeChild(elem.parentNode);
+                }
 
                 function showTimeZoneDialog() {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
@@ -3468,45 +3583,44 @@
 
                 function updateDndTimerPage() {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-                    while (dndTimerList.lastChild) {
-                        dndTimerList.removeChild(dndTimerList.lastChild);
+                    while (dndTimerList.lastElementChild !== dndTimerList.firstElementChild) {
+                        dndTimerList.removeChild(dndTimerList.lastElementChild);
                     }
                     fn.request("api/get_dnd", "GET", function (err, res) {
                         loadingBarSettingsTimers.removeAttribute("indeterminate");
-                        if (!err) {
-                            //TODO: Check if multiple dnd timers can be created!
-                            if (res.length == 0 || res[0].enabled  == 0) {
-                                //no timer is enabled yet, show possibility to add dnd timer
-                                dndTimerList.appendChild(ons.createElement(
+                   
+                        if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        if (err || res.length == 0 || res[0].enabled == 0) {
+                            //no timer is enabled yet, show possibility to add dnd timer
+                            dndTimerList.appendChild(ons.createElement(
+                                "<ons-list-item>\n" +
+                                "    <div class='left'>There is no DND timer enabled yet.</div>" +
+                                "    <div class='right'>" +
+                                "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='showDndTimerDialog(-1, -1, -1, -1);'>" +
+                                "            <ons-icon icon='fa-edit'></ons-icon>" +
+                                "        </ons-button>" +
+                                "    </div>" +
+                                "</ons-list-item>"
+                            ));
+                            dndTimerList.firstElementChild.style.display = "none";
+                        } else {
+                            //Show current active timer
+                            res.forEach(function (dndTimer) {
+                                 dndTimerList.appendChild(ons.createElement(
                                     "<ons-list-item>\n" +
-                                    "    <div class='left'>There is no DND timer enabled yet.</div>" +
+                                    "    <div class='left'>DND will start at " + dndTimer.start_hour + ":" + asTwoDigitNumber(dndTimer.start_minute) + " and end on " + dndTimer.end_hour + ":" + asTwoDigitNumber(dndTimer.end_minute) + "</div>" +
                                     "    <div class='right'>" +
-                                    "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='showDndTimerDialog(-1, -1, -1, -1);'>" +
+                                    "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='showDndTimerDialog(" + dndTimer.start_hour + ", " + dndTimer.start_minute + ", " + dndTimer.end_hour + ", " + dndTimer.end_minute +");'>" +
                                     "            <ons-icon icon='fa-edit'></ons-icon>" +
+                                    "        </ons-button>" +
+                                    "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='deleteDndTimer();'>" +
+                                    "            <ons-icon icon='fa-trash'></ons-icon>" +
                                     "        </ons-button>" +
                                     "    </div>" +
                                     "</ons-list-item>"
                                 ));
-                            } else {
-                                //Show current active timer
-                                res.forEach(function (dndTimer) {
-                                    dndTimerList.appendChild(ons.createElement(
-                                        "<ons-list-item>\n" +
-                                        "    <div class='left'>DND will start at " + dndTimer.start_hour + ":" + asTwoDigitNumber(dndTimer.start_minute) + " and end on " + dndTimer.end_hour + ":" + asTwoDigitNumber(dndTimer.end_minute) + "</div>" +
-                                        "    <div class='right'>" +
-                                        "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='showDndTimerDialog(" + dndTimer.start_hour + ", " + dndTimer.start_minute + ", " + dndTimer.end_hour + ", " + dndTimer.end_minute +");'>" +
-                                        "            <ons-icon icon='fa-edit'></ons-icon>" +
-                                        "        </ons-button>" +
-                                        "        <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='deleteDndTimer();'>" +
-                                        "            <ons-icon icon='fa-trash'></ons-icon>" +
-                                        "        </ons-button>" +
-                                        "    </div>" +
-                                        "</ons-list-item>"
-                                    ));
-                                });
-                            }
-                        } else {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            });
+                            dndTimerList.firstElementChild.style.display = "none";
                         }
                     });
                 }
@@ -3545,23 +3659,63 @@
                     }
                 }
 
+                function updateSettingsZonedTimersPage() {
+                    loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+                    while (timersSettingsZonedTimersList.lastElementChild !== timersSettingsZonedTimersList.firstElementChild) {
+                        timersSettingsZonedTimersList.removeChild(timersSettingsZonedTimersList.lastElementChild);
+                    }
+
+                    fn.request("api/ztimers", "GET", function (err, res) {
+                        loadingBarSettingsTimers.removeAttribute("indeterminate");
+
+                        if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        if (err || res == null || res.length == 0) {
+                            timersSettingsZonedTimersList.firstElementChild.style.display = "";
+                        } else {
+                            let index = 0;
+                            res.forEach(function (timer) {
+                                timer.id = index++;
+                                //ADD EDIT (equals create new + delete!)
+                                var elem = ons.createElement(
+                                    "<ons-list-item data-id='" + timer.id + "'>\n" +
+                                    "    <div class='left'>" + timer.name + ' - ' + timer.human_desc + " (" + timer.cron + ")</div>" +
+                                    "    <div class='right'>" +
+                                    "        <ons-switch class='timer-active-switch'" + (timer.enabled ? " checked='checked' " : "") + "></ons-switch> " +
+                                    "        <ons-button modifier='quiet' class='button-margin timer-delete'>" +
+                                    "            <ons-icon icon='fa-trash'></ons-icon>" +
+                                    "        </ons-button>" +
+                                    "    </div>" +
+                                    "</ons-list-item>"
+                                );
+
+                                elem.querySelector('.timer-active-switch').addEventListener('change', function (event) {
+                                    toggleTimer(timer.id, event.value, true);
+                                });
+
+                                elem.querySelector('.timer-delete').addEventListener('click', function (event) {
+                                    deleteTimer(timer.id, true);
+                                });
+
+                                timersSettingsZonedTimersList.appendChild(elem);
+                            });
+                            timersSettingsZonedTimersList.firstElementChild.style.display = "none";
+                        }
+                    });
+                }
+
                 function updateSettingsTimersPage() {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-                    while (timersSettingsTimersList.lastChild) {
-                        timersSettingsTimersList.removeChild(timersSettingsTimersList.lastChild);
+                    while (timersSettingsTimersList.lastElementChild !== timersSettingsTimersList.firstElementChild) {
+                        timersSettingsTimersList.removeChild(timersSettingsTimersList.lastElementChild);
                     }
 
                     fn.request("api/timers", "GET", function (err, res) {
                         loadingBarSettingsTimers.removeAttribute("indeterminate");
-                        if (!err) {
-                            if (res == null ||  res.length == 0) {
-                                timersSettingsTimersList.appendChild(ons.createElement(
-                                    "<ons-list-item>\n" +
-                                    "    <div class='center'>There is no timer configured yet.</div>" +
-                                    "</ons-list-item>"
-                                ));
-                            }
 
+                        if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        if (err || res == null || res.length == 0) {
+                            timersSettingsTimersList.firstElementChild.style.display = "";
+                        } else {
                             res.forEach(function (timer) {
                                 //ADD EDIT (equals create new + delete!)
                                 var elem = ons.createElement(
@@ -3586,77 +3740,110 @@
 
                                 timersSettingsTimersList.appendChild(elem);
                             });
-                        } else {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            timersSettingsTimersList.firstElementChild.style.display = "none";
                         }
                     });
                 }
 
-                function toggleTimer(id, enabled) {
-                    disableTimerInputElements();
+                function toggleTimer(id, enabled, zoned) {
+                    disableTimerInputElements(zoned);
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
 
-                    fn.requestWithPayload("api/timers/" + id, JSON.stringify({ enabled: enabled }), "PUT", function (err, res) {
-                        if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
-                        }
-                        window.setTimeout(function () {
-                            updateSettingsTimersPage();
-                        }, 350);
-                    })
-                }
-
-                function disableTimerInputElements() {
-                    timersSettingsTimersList.querySelectorAll('.timer-active-switch').forEach(function (elem) {
-                        elem.setAttribute("disabled", "disabled");
-                    });
-                    timersSettingsTimersList.querySelectorAll('.timer-delete').forEach(function (elem) {
-                        elem.setAttribute("disabled", "disabled");
-                    });
-                }
-
-                function enableTimerInputElements() {
-                    timersSettingsTimersList.querySelectorAll('.timer-active-switch').forEach(function (elem) {
-                        elem.removeAttribute("disabled");
-                    });
-                    timersSettingsTimersList.querySelectorAll('.timer-delete').forEach(function (elem) {
-                        elem.removeAttribute("disabled");
-                    });
-                }
-
-                function deleteTimer(id) {
-                    disableTimerInputElements();
-                    ons.notification.confirm('Do you really want to delete this timer?').then(function (answer) {
-                        if (answer === 1) {
-                            loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-
-                            fn.request("api/timers/" + id, "DELETE", function (err, res) {
-                                if (err) {
-                                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
-                                }
-
+                    if (zoned) {
+                        fn.requestWithPayload("api/ztimers/" + id, JSON.stringify({ enabled: enabled }), "PUT", function (err, res) {
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            }
+                            window.setTimeout(function () {
+                                updateSettingsZonedTimersPage();
+                            }, 350);
+                        });
+                    } else {
+                        fn.requestWithPayload("api/timers/" + id, JSON.stringify({ enabled: enabled }), "PUT", function (err, res) {
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            }
+                            window.setTimeout(function () {
                                 updateSettingsTimersPage();
-                            })
-                        } else {
-                            enableTimerInputElements();
-                        }
-                    });
-                }
-
-                function clearNewTimerDialog() {
-                    document.getElementById('add-timer-form').month.value = "";
-                    document.getElementById('add-timer-form').day.value = "";
-                    document.getElementById('add-timer-form').hour.value = "";
-                    document.getElementById('add-timer-form').minute.value = "";
-                    var daysRunner;
-                    for(daysRunner = 0; daysRunner<document.getElementById('add-timer-form').days.length; daysRunner++) {
-                        document.getElementById('add-timer-form').days[daysRunner].checked = false;
+                            }, 350);
+                        });
                     }
                 }
 
-                function addNewTimer() {
+                function disableTimerInputElements(zoned) {
+                    let list = zoned ? timersSettingsZonedTimersList : timersSettingsTimersList;
+                    list.querySelectorAll('.timer-active-switch').forEach(function (elem) {
+                        elem.setAttribute("disabled", "disabled");
+                    });
+                    list.querySelectorAll('.timer-delete').forEach(function (elem) {
+                        elem.setAttribute("disabled", "disabled");
+                    });
+                }
+
+                function enableTimerInputElements(zoned) {
+                    let list = zoned ? timersSettingsZonedTimersList : timersSettingsTimersList;
+                    list.querySelectorAll('.timer-active-switch').forEach(function (elem) {
+                        elem.removeAttribute("disabled");
+                    });
+                    list.querySelectorAll('.timer-delete').forEach(function (elem) {
+                        elem.removeAttribute("disabled");
+                    });
+                }
+
+                function deleteTimer(id,zoned) {
+                    disableTimerInputElements(zoned);
+                    ons.notification.confirm('Do you really want to delete this timer?').then(function (answer) {
+                        if (answer === 1) {
+                            loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+                            if (zoned) {
+                                fn.request("api/ztimers/" + id, "DELETE", function (err, res) {
+                                    if (err) {
+                                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                                    }
+                                    updateSettingsZonedTimersPage();
+                                });
+                            } else {
+                                fn.request("api/timers/" + id, "DELETE", function (err, res) {
+                                    if (err) {
+                                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                                    }
+                                    updateSettingsTimersPage();
+                                });
+                            }
+                        } else {
+                            enableTimerInputElements(zoned);
+                        }
+                    });
+                }
+
+                function clearNewTimerDialog(zoned) {
+                    let form = document.getElementById(zoned ? 'add-zoned-timer-form' : 'add-timer-form');
+                    form.month.value = "";
+                    form.day.value = "";
+                    form.hour.value = "";
+                    form.minute.value = "";
+                    var daysRunner;
+                    for(daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
+                        form.days[daysRunner].checked = false;
+                    }
+                    if (zoned) {
+                        form.zoned_timer_name.value = "";
+                        let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
+                        if (inputs.length) {
+                            Array.from(inputs).forEach(a => {
+                                while (a.parentNode && a.nodeName !== "ONS-ROW") { a = a.parentNode; };
+                                if (a) {
+                                    a.parentNode.removeChild(a);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                function addNewTimer(zoned) {
+                    let form = document.getElementById(zoned ? 'add-zoned-timer-form' : 'add-timer-form');
                     //get and validate selected month
-                    var monthValue = document.getElementById('add-timer-form').month.value;
+                    let monthValue = form.month.value;
                     if (monthValue === "") {
                         monthValue = "*";
                     } else {
@@ -3669,7 +3856,7 @@
                         }
                     }
                     //get and validate selected day
-                    var dayValue = document.getElementById('add-timer-form').day.value;
+                    let dayValue = form.day.value;
                     if (dayValue === "") {
                         dayValue = "*";
                     } else {
@@ -3682,7 +3869,7 @@
                         }
                     }
                     //get and validate selected hour
-                    var hoursValue = document.getElementById('add-timer-form').hour.value;
+                    let hoursValue = form.hour.value;
                     if (hoursValue === "") {
                         hoursValue = "*";
                     } else {
@@ -3695,7 +3882,7 @@
                         }
                     }
                     //get and validate selected minute
-                    var minutesValue = document.getElementById('add-timer-form').minute.value;
+                    let minutesValue = form.minute.value;
                     if (minutesValue === "") {
                         minutesValue = "*";
                     } else {
@@ -3708,10 +3895,10 @@
                         }
                     }
                     //get and validate selected days
-                    var daySelection = "";
-                    var daysElementArray =  document.getElementById('add-timer-form').days;
-                    var daysTotal = daysElementArray.length;
-                    var daysRunner;
+                    let daySelection = "",
+                        daysElementArray =  form.days,
+                        daysTotal = daysElementArray.length,
+                        daysRunner;
                     for(daysRunner = 0; daysRunner<daysTotal; daysRunner++) {
                         if (daysElementArray[daysRunner].checked) {
                             var currentDayValue = daysElementArray[daysRunner].value;
@@ -3725,30 +3912,76 @@
                     if (daySelection === "") {
                         daySelection = "*";
                     }
+                    // do not allow meaningless timers
+                    if (minutesValue === "*" || hoursValue === "*") {
+                        ons.notification.toast("Both minutes and hours must be specified.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                        return;
+                    }
                     //build cron timer
                     var cronTimer = "" + minutesValue + " " + hoursValue + " " + dayValue + " " + monthValue + " " + daySelection;
                     //save timer
-                    fn.requestWithPayload("api/timers", JSON.stringify({ cron: cronTimer }), "POST", function (err, res) {
-                        if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                    if (zoned) {
+                        let timerName = form.zoned_timer_name.value.trim();
+                        if (timerName.length < 3) {
+                            ons.notification.toast("You should specify a name.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                            return;
                         }
-                        updateSettingsTimersPage();
-                    })
-                    hideNewTimerDialog();
+                        let coords, coordInputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
+                        if (coordInputs.length) {
+                            coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
+                        }
+                        if (!coords || !coords.length) {
+                            ons.notification.toast("One or more non-empty zones must be specified.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                            return;
+                        }
+                        console.log(coords)
+                        let newTimer = { enabled: false, name: timerName, cron: cronTimer, coordinates: coords };
+                        zTimers.push(newTimer);
+                        fn.requestWithPayload("api/ztimers", JSON.stringify(zTimers), "PUT", function (err, res) {
+                            if (err) {
+                               ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            }
+                            updateSettingsZonedTimersPage();
+                            hideNewTimerDialog(zoned);
+                        });
+                    } else {
+                        fn.requestWithPayload("api/timers", JSON.stringify({ cron: cronTimer }), "POST", function (err, res) {
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            }
+                            updateSettingsTimersPage();
+                            hideNewTimerDialog(zoned);
+                        });
+                    }
                 }
 
                 //if timerId is set to -1, the timer is deleted
-                var showAddTimerDialog = function(timerId) {
+                var showAddTimerDialog = function(timerId,zoned) {
+                    let dialog = document.getElementById(zoned ? 'add-zoned-timer-dialog' : 'add-timer-dialog');
                     if (timerId == -1) {
-                        clearNewTimerDialog();
+                        clearNewTimerDialog(zoned);
                     }
-                    document.getElementById('add-timer-dialog').show();
+                    dialog.querySelector('.dialog-container').style.cssText = "height: " + Math.min(zoned ? 470 : 400,window.innerHeight * 0.75) + "px; overflow: auto;";
+                    if (zoned) {
+                        // (re-)load current timers list before adding anything
+                        loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+                        fn.request("api/ztimers", "GET", function (err, res) {
+                            loadingBarSettingsTimers.removeAttribute("indeterminate");
+                            if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            else {
+                                zTimers = res;
+                                dialog.show();
+                            }
+                        });
+                    } else {
+                        dialog.show();
+                    }
                 };
 
-                var hideNewTimerDialog = function() {
-                    document.getElementById('add-timer-dialog').hide();
+                var hideNewTimerDialog = function(zoned) {
+                    let dialog = document.getElementById(zoned ? 'add-zoned-timer-dialog' : 'add-timer-dialog');
+                    dialog.hide();
                 };
-
             </script>
             <style>
                 .timer-delete {
