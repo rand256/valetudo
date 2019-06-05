@@ -168,7 +168,7 @@
                 <ons-tab label="Home" icon="ion-home" page="home.html" active></ons-tab>
                 <ons-tab label="Map" icon="fa-map-marker" page="map.html"></ons-tab>
                 <ons-tab label="Zones" icon="fa-share-square" page="zones.html"></ons-tab>
-                <ons-tab label="ManualControl" icon="fa-gamepad" page="manualcontrol.html"></ons-tab>
+                <ons-tab label="Manual Control" icon="fa-gamepad" page="manualcontrol.html"></ons-tab>
                 <ons-tab label="Settings" icon="fa-cog" page="settings.html"></ons-tab>
             </ons-tabbar>
 
@@ -1451,7 +1451,9 @@
                     if (!manualControlEnabled) {
                         manualControlEnabled = true;
                         startManualControlButton.style.display = 'none';
+                        endManualControlButton.disabled = true;
                         endManualControlButton.style.display = '';
+                        setTimeout(() => { endManualControlButton.disabled = false; }, 1e3);
                         document.getElementById('sidemenu').removeAttribute("swipeable");
                         document.getElementById('appTabbar').removeAttribute("swipeable");
                     }
@@ -1461,7 +1463,9 @@
                     if (manualControlEnabled) {
                         manualControlEnabled = false;
                         endManualControlButton.style.display = 'none';
-                        startManualControlButton.style.display = ''
+                        startManualControlButton.disabled = true;
+                        startManualControlButton.style.display = '';
+                        setTimeout(() => { startManualControlButton.disabled = false; }, 1e3);
                         document.getElementById('sidemenu').setAttribute("swipeable", "swipeable");
                         document.getElementById('appTabbar').setAttribute("swipeable", "swipeable");
                         stopManualControlTimer();
