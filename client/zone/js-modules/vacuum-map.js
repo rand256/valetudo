@@ -347,10 +347,11 @@ export function VacuumMap(canvasElement) {
                         takenAction = true;
                     } else if (result.removeLocation) {
                         locations.splice(i, 1);
-                        i--;
+                        emitZoneSelection(false);
                         takenAction = true;
                     } else if (result.selectLocation) {
                         locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
+                        emitZoneSelection(locations[i] instanceof Zone);
                         takenAction = true;
                     }
                     if(result.stopPropagation === true) {
@@ -360,12 +361,12 @@ export function VacuumMap(canvasElement) {
                 }
                 return false;
             }
-            for(let i = 0; i < locations.length; ++i) {
+            for(let i = locations.length - 1; i >= 0; i--) {
                 if (!locations[i].active) continue;
                 currentlyActive = i;
                 if (processTap(i,locations)) return;
             }
-            for(let i = 0; i < locations.length; ++i) {
+            for(let i = locations.length - 1; i >= 0; i--) {
                 if (i === currentlyActive) continue;
                 if (processTap(i,locations)) return;
             }
@@ -539,12 +540,15 @@ export function VacuumMap(canvasElement) {
             newZone = new Zone(480, 480, 550, 550);
         }
 
-        if(addZoneInactive) {
-            newZone.active = false;
-        }
-
         locations.forEach(location => location.active = false)
         locations.push(newZone);
+
+        if(addZoneInactive) {
+            newZone.active = false;
+        } else {
+            emitZoneSelection(true);
+        }
+
         if (redrawCanvas) redrawCanvas();
     }
 
@@ -603,6 +607,26 @@ export function VacuumMap(canvasElement) {
         if (redrawCanvas) redrawCanvas();
     }
 
+    function emitZoneSelection(enabled) {
+        canvas.dispatchEvent(new CustomEvent('zoneSelection', {detail: { state: enabled }}));
+    }
+
+    function promoteCurrentZone() {
+        let index, activeLocation = locations.filter(location => location.active)[0];
+        if (!(activeLocation instanceof Zone)) {
+            return;
+        }
+        index = locations.indexOf(activeLocation);
+        for (let i = index - 1; i >= 0; i--) {
+            if (locations[i] instanceof Zone) {
+                locations[index] = locations[i];
+                locations[i] = activeLocation;
+                if (redrawCanvas) redrawCanvas();
+                break;
+            }
+        }
+    }
+
     return {
         initCanvas: initCanvas,
         initWebSocket: initWebSocket,
@@ -613,7 +637,8 @@ export function VacuumMap(canvasElement) {
         addSpot: addSpot,
         clearZones: clearZones,
         addVirtualWall: addVirtualWall,
-        addForbiddenZone: addForbiddenZone
+        addForbiddenZone: addForbiddenZone,
+        promoteCurrentZone: promoteCurrentZone
     };
 }
 

@@ -1092,6 +1092,9 @@
                 </div>
 
                 <div class="map-page-buttons">
+                    <ons-fab ripple id="promote_configuration_zone" style="display: none;">
+                        <ons-icon icon="fa-angle-double-up"></ons-icon>
+                    </ons-fab>
                     <ons-fab ripple id="zones-configuration-add-zone">
                         <ons-icon icon="fa-plus"></ons-icon>
                     </ons-fab>
@@ -1125,7 +1128,15 @@
                             ons.notification.alert('You can\'t add more than 5 subzones into a single zone.');
                         }
                     }
-
+                    document.getElementById("promote_configuration_zone").onclick = () => {
+                         map.promoteCurrentZone();
+                    }
+                    document.getElementById("zone-configuration-map").addEventListener('zoneSelection', (e) => {
+                        if (e.detail.state && map.getLocations().zones.length < 2) {
+                            e.detail.state = false;
+                        }
+                        document.getElementById("promote_configuration_zone").style.display = e.detail.state ? "" : "none";
+                    })
 
                     saveButton.onclick = () => {
                         const zonesOnMap = map.getLocations().zones.map(zoneCoordinates => [...zoneCoordinates, 1]);
@@ -1710,6 +1721,9 @@
             </div>
 
             <div class="map-page-buttons">
+                <ons-fab ripple id="promote_zone" style="display: none;">
+                    <ons-icon icon="fa-angle-double-up"></ons-icon>
+                </ons-fab>
                 <ons-fab ripple id="add_zone">
                     <ons-icon icon="fa-plus"></ons-icon>
                 </ons-fab>
@@ -1805,6 +1819,15 @@
                         ons.notification.alert('You can\'t add more than 5 zones onto the map.');
                     }
                 }
+                document.getElementById("promote_zone").onclick = () => {
+                    map.promoteCurrentZone();
+                }
+                document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
+                    if (e.detail.state && map.getLocations().zones.length < 2) {
+                        e.detail.state = false;
+                    }
+                    document.getElementById("promote_zone").style.display = e.detail.state ? "" : "none";
+                });
             </script>
             <script defer>
                 // Somehow getScriptPage returns null inside the type=module script tag
