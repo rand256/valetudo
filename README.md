@@ -6,9 +6,10 @@ This is a bit modified version of [Valetudo by Hypher](https://github.com/Hypfer
 * Selected zones are then shown at the map tab to see and edit what's actually going to be cleaned;
 * Renaming zones and spots, since why not?
 * Configurable virtual walls and forbidden zones, finally!
-* Random minor changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
+* Scheduled zoned cleaning - when you do not need to clean the whole house.
+* Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
-Beware, I'm not a qualified coder - that's for sure, so the code is awful in places, also I'm not familiar with github at all. All these things are done only for my personal use, so if someone may find them handy one day then you're welcome.
+Beware, I'm not a qualified coder - that's for sure, so the code is awful in places, also I'm not familiar with github at all. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
 
 ----
 
