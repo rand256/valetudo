@@ -1702,6 +1702,12 @@
                 <canvas id="map-canvas"></canvas>
             </div>
 
+            <div class="map-page-buttons map-page-reload-button">
+                <ons-fab ripple id="map_reload_button">
+                    <ons-icon icon="fa-refresh"></ons-icon>
+                </ons-fab>
+            </div>
+
             <div class="map-page-buttons">
                 <ons-fab ripple id="promote_zone" style="display: none;">
                     <ons-icon icon="fa-angle-double-up"></ons-icon>
@@ -1804,6 +1810,15 @@
                 document.getElementById("promote_zone").onclick = () => {
                     map.promoteCurrentZone();
                 }
+                document.getElementById("map_reload_button").onclick = () => {
+                    loadingBar.setAttribute("indeterminate", "indeterminate");
+                    fn.request("api/poll_map", "GET", function (err, data) {
+                        setTimeout(() => {
+                            loadingBar.removeAttribute("indeterminate");
+                            updateMapPage();
+                        }, 300);
+                    });
+                }
                 document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
                     if (e.detail.state && map.getLocations().zones.length < 2) {
                         e.detail.state = false;
@@ -1849,6 +1864,10 @@
                     width: 100%;
                     touch-action: none;
                     background-image: linear-gradient(var(--map-background-1), var(--map-background-2));
+                }
+
+                .map-page-reload-button.map-page-buttons {
+                    top: 1.5em;
                 }
 
                 .map-page-buttons {
