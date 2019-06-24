@@ -1,0 +1,113 @@
+<ons-page id="zones-configuration-map-page">
+    <div id="zones-configuration-container">
+        <div class="zones-configuration-header">
+            <ons-back-button>Zones</ons-back-button>
+            <span id="zones-configuration-map-page-h1"></span>
+        </div>
+
+        <ons-progress-bar id="loading-bar-save-zones" value="0"></ons-progress-bar>
+        <canvas id="zone-configuration-map"></canvas>
+    </div>
+
+    <div class="map-page-buttons">
+        <ons-fab ripple id="promote_configuration_zone" style="display: none;">
+            <ons-icon icon="fa-angle-double-up"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="zones-configuration-add-zone">
+            <ons-icon icon="fa-plus"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="zones-configuration-save">
+            <ons-icon icon="fa-save"></ons-icon>
+        </ons-fab>
+    </div>
+
+    <script type="module">
+        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+        const map = new VacuumMap(document.getElementById('zone-configuration-map'));
+        const loadingBarSaveZones = document.getElementById('loading-bar-save-zones');
+        const saveButton = document.getElementById('zones-configuration-save');
+
+        const topPage = fn.getTopPage();
+        const zonesConfig = topPage.data.zonesConfig;
+        const zoneToModify = topPage.data.zoneToModify;
+
+        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+        window.fn.map = map;
+
+        document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
+        for(let zone of zonesConfig[zoneToModify].coordinates) {
+            map.addZone([zone[0], zone[1], zone[2], zone[3]], true);
+        }
+
+        document.getElementById("zones-configuration-add-zone").onclick = () => {
+            if (map.getLocations().zones.length < 5) {
+                map.addZone();
+            } else {
+                ons.notification.alert('You can\'t add more than 5 subzones into a single zone.');
+            }
+        }
+        document.getElementById("promote_configuration_zone").onclick = () => {
+             map.promoteCurrentZone();
+        }
+        document.getElementById("zone-configuration-map").addEventListener('zoneSelection', (e) => {
+            if (e.detail.state && map.getLocations().zones.length < 2) {
+                e.detail.state = false;
+            }
+            document.getElementById("promote_configuration_zone").style.display = e.detail.state ? "" : "none";
+        })
+
+        saveButton.onclick = () => {
+            const zonesOnMap = map.getLocations().zones.map(zoneCoordinates => [...zoneCoordinates, 1]);
+            zonesConfig[zoneToModify].coordinates = zonesOnMap;
+
+            loadingBarSaveZones.setAttribute("indeterminate", "indeterminate");
+            saveButton.setAttribute("disabled", "disabled");
+            fn.requestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT", function (err) {
+                loadingBarSaveZones.removeAttribute("indeterminate");
+                saveButton.removeAttribute("disabled");
+                if (err) {
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                } else {
+                    ons.notification.toast("Successfully saved zones!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    fn.popPage();
+                }
+            });
+        }
+    </script>
+    <style>
+        #zones-configuration-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto 1fr;
+
+            height: 100%;
+            width: 100%;
+        }
+
+        #zone-configuration-map {
+            touch-action: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        #zones-configuration-map-page-h1 {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .zones-configuration-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .zone-configuration-buttons {
+            position: absolute;
+            right: 1.5em;
+            bottom: 1.5em;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto;
+            grid-gap: 0.5em;
+        }
+    </style>
+</ons-page>

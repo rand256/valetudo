@@ -1,0 +1,88 @@
+<ons-page id="spot-configuration-map-page">
+    <div id="spot-configuration-container">
+        <div class="spot-configuration-header">
+            <ons-back-button>Spots</ons-back-button>
+            <span id="spot-configuration-map-page-h1"></span>
+        </div>
+
+        <ons-progress-bar id="loading-bar-save-spot" value="0"></ons-progress-bar>
+        <canvas id="spot-configuration-map"></canvas>
+    </div>
+
+    <div class="map-page-buttons">
+        <ons-fab ripple id="spot-configuration-save">
+            <ons-icon icon="fa-save"></ons-icon>
+        </ons-fab>
+    </div>
+
+    <script type="module">
+        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+        const map = new VacuumMap(document.getElementById('spot-configuration-map'));
+        const loadingBarSavespot = document.getElementById('loading-bar-save-spot');
+        const saveButton = document.getElementById('spot-configuration-save');
+
+        const topPage = fn.getTopPage();
+        const spotConfig = topPage.data.spotConfig;
+        const spotToModify = topPage.data.spotToModify;
+
+        map.initCanvas(topPage.data.map, {metaData: "forbidden"});
+
+        document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
+
+        map.addSpot([spotConfig[spotToModify].coordinates[0], spotConfig[spotToModify].coordinates[1]]);
+
+        saveButton.onclick = () => {
+            const spotOnMap = map.getLocations().gotoPoints[0];
+            spotConfig[spotToModify].coordinates = [spotOnMap.x, spotOnMap.y];
+
+            loadingBarSavespot.setAttribute("indeterminate", "indeterminate");
+            saveButton.setAttribute("disabled", "disabled");
+            fn.requestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT", function (err) {
+                loadingBarSavespot.removeAttribute("indeterminate");
+                saveButton.removeAttribute("disabled");
+                if (err) {
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                } else {
+                    ons.notification.toast("Successfully saved spot!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    fn.popPage();
+                }
+            });
+        }
+    </script>
+    <style>
+        #spot-configuration-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto 1fr;
+
+            height: 100%;
+            width: 100%;
+        }
+
+        #spot-configuration-map {
+            touch-action: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        #spot-configuration-map-page-h1 {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .spot-configuration-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .spot-configuration-buttons {
+            position: absolute;
+            right: 1.5em;
+            bottom: 1.5em;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto;
+            grid-gap: 0.5em;
+        }
+    </style>
+</ons-page>
