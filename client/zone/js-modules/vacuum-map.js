@@ -256,15 +256,24 @@ export function VacuumMap(canvasElement) {
             ctx.scale(pathScale, pathScale);
 
             usingOwnTransform(ctx, (ctx, transform) => {
+                // we'll define locations drawing order (currently it's reversed) so the former location types is drawn over the latter ones
                 let zoneNumber = 0;
-                let locationTypes = {GotoPoint: 1, Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
+                let activeLocation = null, locationTypes = {GotoPoint: 1, Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
                 locations.sort((a,b) => {return locationTypes[b.constructor.name] - locationTypes[a.constructor.name]; });
                 locations.forEach(location => {
                     if (location instanceof Zone) {
                         zoneNumber++;
                     }
-                    location.draw(ctx, transform, currentScale, zoneNumber);
+                    // also we would like to draw currently active location whatever is it over the all other locations, so we'll do it via this ugly way
+                    if (activeLocation || !location.active) {
+                        location.draw(ctx, transform, currentScale, zoneNumber);
+                    } else {
+                        activeLocation = [location,zoneNumber];
+                    }
                 });
+                if (activeLocation) {
+                    activeLocation[0].draw(ctx, transform, Math.min(5,currentScale), activeLocation[1]);
+                }
             });
         }
         redraw();
