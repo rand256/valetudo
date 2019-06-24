@@ -142,8 +142,17 @@ export class Zone {
                 stopPropagation: false,
                 selectLocation: true
             };
+        } else if (this.active &&
+            !(tappedPoint.x >= p1.x
+            && tappedPoint.x <= p2.x
+            && tappedPoint.y >= p1.y
+            && tappedPoint.y <= p2.y)
+        ) {
+            return {
+                stopPropagation: false,
+                deselectLocation: true
+            };
         }
-
         return {
             stopPropagation: false
         };
@@ -382,6 +391,16 @@ export class VirtualWall  {
                 stopPropagation: false,
                 selectLocation: true
             };
+        } else if (this.active &&
+            !(sTappedPoint.x >= this.sp1.x
+            && sTappedPoint.x <= this.sp2.x
+            && sTappedPoint.y >= this.sp1.y
+            && sTappedPoint.y <= this.sp2.y)
+        ) {
+            return {
+                stopPropagation: false,
+                deselectLocation: true
+            };
         }
 
         return {
@@ -477,17 +496,6 @@ export class ForbiddenZone  {
         this.y2 = y2;
         this.y3 = y3;
         this.y4 = y4;
-
-        /*this.x1 = Math.min(x1, x3);
-        this.x2 = Math.min(x2, x4);
-        this.x3 = Math.max(x1, x3);
-        this.x4 = Math.max(x2, x4);
-
-        this.y1 = Math.min(y1, y3);
-        this.y2 = Math.max(y2, y4);
-        this.y3 = Math.max(y1, y3);
-        this.y4 = Math.max(y2, y4);*/
-
     }
 
     draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
@@ -580,6 +588,16 @@ export class ForbiddenZone  {
             return {
                 stopPropagation: false,
                 selectLocation: true
+            };
+        } else if (this.active &&
+            !(tappedPoint.x >= p1.x
+            && tappedPoint.x <= p3.x
+            && tappedPoint.y >= p1.y
+            && tappedPoint.y <= p3.y)
+        ) {
+            return {
+                stopPropagation: false,
+                deselectLocation: true
             };
         }
 

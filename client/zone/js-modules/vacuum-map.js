@@ -353,6 +353,9 @@ export function VacuumMap(canvasElement) {
                         locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
                         emitZoneSelection(locations[i] instanceof Zone);
                         takenAction = true;
+                    } else if (result.deselectLocation) {
+                        locations.forEach(l => l === locations[i] && (l.active = false));
+                        takenAction = true;
                     }
                     if(result.stopPropagation === true) {
                         redraw();
