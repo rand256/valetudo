@@ -123,9 +123,6 @@
             });
         }
         document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
-            if (e.detail.state && map.getLocations().zones.length < 2) {
-                e.detail.state = false;
-            }
             document.getElementById("promote_zone").style.display = e.detail.state ? "" : "none";
         });
     </script>

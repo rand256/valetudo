@@ -360,10 +360,13 @@ export function VacuumMap(canvasElement) {
                         takenAction = true;
                     } else if (result.selectLocation) {
                         locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
-                        emitZoneSelection(locations[i] instanceof Zone);
+                        if (locations[i] instanceof Zone) {
+                            emitZoneSelection(locations.filter(location => location instanceof Zone).indexOf(locations[i]) > 0);
+                        }
                         takenAction = true;
                     } else if (result.deselectLocation) {
                         locations.forEach(l => l === locations[i] && (l.active = false));
+                        emitZoneSelection(false);
                         takenAction = true;
                     }
                     if(result.stopPropagation === true) {
@@ -558,7 +561,7 @@ export function VacuumMap(canvasElement) {
         if(addZoneInactive) {
             newZone.active = false;
         } else {
-            emitZoneSelection(true);
+            emitZoneSelection(locations.filter(location => location instanceof Zone).length > 1);
         }
 
         if (redrawCanvas) redrawCanvas();
@@ -637,6 +640,7 @@ export function VacuumMap(canvasElement) {
                 break;
             }
         }
+        emitZoneSelection(locations.filter(location => location instanceof Zone).indexOf(activeLocation) > 0);
     }
 
     return {
