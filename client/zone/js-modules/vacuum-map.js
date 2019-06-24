@@ -266,7 +266,7 @@ export function VacuumMap(canvasElement) {
                     }
                     // also we would like to draw currently active location whatever is it over the all other locations, so we'll do it via this ugly way
                     if (activeLocation || !location.active) {
-                        location.draw(ctx, transform, currentScale, zoneNumber);
+                        location.draw(ctx, transform, Math.min(5,currentScale), zoneNumber);
                     } else {
                         activeLocation = [location,zoneNumber];
                     }
