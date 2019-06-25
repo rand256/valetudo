@@ -5,13 +5,13 @@
         <canvas id="map-canvas"></canvas>
     </div>
 
-    <div class="map-page-buttons map-page-reload-button">
+    <div class="map-page-buttons map-page-top">
         <ons-fab ripple id="map_reload_button">
             <ons-icon icon="fa-refresh"></ons-icon>
         </ons-fab>
     </div>
 
-    <div class="map-page-buttons">
+    <div class="map-page-buttons map-page-bottom">
         <ons-fab ripple id="promote_zone" style="display: none;">
             <ons-icon icon="fa-angle-double-up"></ons-icon>
         </ons-fab>
@@ -166,18 +166,21 @@
             background-image: linear-gradient(var(--map-background-1), var(--map-background-2));
         }
 
-        .map-page-reload-button.map-page-buttons {
-            top: 1.5em;
-        }
-
         .map-page-buttons {
             position: absolute;
             right: 1.5em;
-            bottom: 1.5em;
             display: grid;
             grid-template-columns: auto;
             grid-template-rows: auto;
             grid-gap: 0.5em;
+        }
+
+        .map-page-top {
+            top: 1.5em;
+        }
+
+        .map-page-bottom {
+            bottom: 1.5em;
         }
 
         .map-page-buttons > ons-fab {
