@@ -241,9 +241,18 @@
                         buttons: options
                     }).then(function (index) {
                         if(index > -1 && index < zones.length) {
+                            let coords = [], coordInputs = document.querySelectorAll("#add-zoned-timer-form input[name='zoned_timer_coords[]']");
+                            if (coordInputs.length) {
+                                coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
+                            }
+                            coords = coords.concat(zones[index].coordinates);
+                            if (coords.length > 5) {
+                                ons.notification.alert('You can\'t use more than 5 zones in one cleaning session.', { buttonLabel: 'Dismiss', timeout: 1500 });
+                                return;
+                            }
                             let anchor = document.querySelector('#add-zoned-timer-form > hr');
                             anchor.parentNode.insertBefore(ons.createElement(
-                                '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey;" onclick="removeTimerZone(this);">[x] ' + zones[index].name + '</ons-col><ons-col><ons-input type="text" name="zoned_timer_coords[]" value="' + JSON.stringify(zones[index].coordinates) + '" disabled></ons-col></ons-row>'
+                                '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey;" onclick="removeTimerZone(this);">[x] (' + zones[index].coordinates.length + ' zone' + (zones[index].coordinates.length > 1 ? 's' : '') + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(zones[index].coordinates) + '" disabled>' + zones[index].name + '</ons-col></ons-row>'
                             ),anchor);
                         }
                     })
@@ -730,7 +739,7 @@
                     ons.notification.toast("One or more non-empty zones must be specified.", { buttonLabel: 'Dismiss', timeout: 1500 });
                     return;
                 }
-                console.log(coords)
+                console.log(coords);
                 let newTimer = { enabled: false, name: timerName, cron: cronTimer, coordinates: coords };
                 zTimers.push(newTimer);
                 fn.requestWithPayload("api/ztimers", JSON.stringify(zTimers), "PUT", function (err, res) {
