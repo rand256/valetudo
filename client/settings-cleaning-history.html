@@ -23,7 +23,7 @@
         var remainingShownCount = 5;
         var historyArray, timeZone;
 
-        ons.getScriptPage().onShow = function () {
+        ons.getScriptPage().onInit = function () {
             updateSettingsCleaningHistoryPage();
         };
 
@@ -59,9 +59,11 @@
         }
 
         function formatTwoDigitNumber(number) {
-            if (number >= 0 && number<=9) {
-                return "0"+number;
-            } else return number;
+            return ('0' + number).slice(-2);
+        }
+
+        function formatDate(date) {
+            return date.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][date.getMonth()] + ' ' + date.getFullYear() + ', ' + formatTwoDigitNumber(date.getHours()) + ':' + formatTwoDigitNumber(date.getMinutes());
         }
 
         function loadNextRemainingElements() {
@@ -78,7 +80,7 @@
                         remainingShownCount--;
                         //set variables
                         var currentEntryId = historyArray.length+1;
-                        var fromTime = new Date(res.startTime).toLocaleString("default", { timeZone: timeZone });
+                        var fromTime = formatDate(new Date(new Date(res.startTime).toLocaleString("en-US", { timeZone: timeZone })));
                         var durationTotalSeconds = res.duration;
                         var durationHours = Math.floor(durationTotalSeconds / 3600);
                         var remsecs = durationTotalSeconds % 3600;
@@ -89,7 +91,7 @@
                         var errorDescription = res.errorDescription;
                         var completedFlag = res.finishedFlag;
                         settingsCleaningHistory.appendChild(ons.createElement(
-                            "<ons-list-item>\n" +
+                            "<ons-list-item title='Show cleaning map' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
                             "   <ons-row>" +
                             "       <ons-col></ons-col>" +
                             "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>#" + currentEntryId + " started on " + fromTime + "</ons-col>" +
@@ -134,6 +136,31 @@
                     settingsCleaningHistoryLoadMoreButtons.style.display="none";
                 }
             }
+        }
+
+        function switchToMapView(timestamp) {
+            loadingBarSettingsCleaningHistory.setAttribute("indeterminate", "indeterminate");
+            fn.requestWithPayload("api/clean_record_map", JSON.stringify({recordId : timestamp}) , "PUT", function (err, res) {
+                if (!err)
+                    fn.request("api/map/latest", "GET", function (err, mapData) {
+                        if (err) {
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                        }
+                        loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
+                        fn.pushPage({
+                            'id': 'settings-cleaning-history-map.html',
+                            'title': 'Cleaning history map',
+                            'data': {
+                                'map': mapData,
+                                'cleaningDate': formatDate(new Date(new Date(timestamp*1000).toLocaleString("en-US", { timeZone: timeZone })))
+                            }
+                        });
+                    });
+                else {
+                    loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                }
+            });
         }
     </script>
 </ons-page>

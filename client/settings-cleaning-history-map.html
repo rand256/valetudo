@@ -1,0 +1,48 @@
+<ons-page id="settings-cleaning-history-map-page">
+    <div id="settings-cleaning-history-container">
+        <div class="settings-cleaning-history-header">
+            <ons-back-button>Cleaning history</ons-back-button>
+            <span id="settings-cleaning-history-map-page-h1"></span>
+        </div>
+        <ons-progress-bar id="loading-bar-none" value="0"></ons-progress-bar>
+        <canvas id="cleaning-history-map"></canvas>
+    </div>
+
+    <script type="module">
+        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+        const map = new VacuumMap(document.getElementById('cleaning-history-map'));
+
+        const topPage = fn.getTopPage();
+        const cleaningDate = topPage.data.cleaningDate;
+
+        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+        window.fn.map = map;
+
+        document.getElementById("settings-cleaning-history-map-page-h1").innerText = `Cleaning map from ${cleaningDate}`;
+    </script>
+    <style>
+        #settings-cleaning-history-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto 1fr;
+            height: 100%;
+            width: 100%;
+        }
+
+        #cleaning-history-map {
+            touch-action: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        #settings-cleaning-history-map-page-h1 {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .settings-cleaning-history-header {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</ons-page>
