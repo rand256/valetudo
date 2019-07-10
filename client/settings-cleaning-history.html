@@ -21,7 +21,7 @@
 
         var shownCleaningCount = 0;
         var remainingShownCount = 5;
-        var historyArray;
+        var historyArray, timeZone;
 
         ons.getScriptPage().onShow = function () {
             updateSettingsCleaningHistoryPage();
@@ -38,12 +38,21 @@
                 settingsCleaningHistory.removeChild(settingsCleaningHistory.lastChild);
             }
             fn.request("api/clean_summary", "GET", function (err, res) {
-                loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
                 if (!err) {
                     //summary succeeded
                     historyArray = res[3];
-                    loadNextRemainingElements();
+                    // getting current timezone for properly showing local time
+                    fn.request("api/get_timezone", "GET", function (err, res) {
+                        loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
+                        if (!err) {
+                            timeZone = res;
+                            loadNextRemainingElements();
+                        } else {
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                        }
+                    });
                 } else {
+                    loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
                     ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
                 }
             });
@@ -69,7 +78,7 @@
                         remainingShownCount--;
                         //set variables
                         var currentEntryId = historyArray.length+1;
-                        var fromTime = new Date(res.startTime).toUTCString();
+                        var fromTime = new Date(res.startTime).toLocaleString("default", { timeZone: timeZone });
                         var durationTotalSeconds = res.duration;
                         var durationHours = Math.floor(durationTotalSeconds / 3600);
                         var remsecs = durationTotalSeconds % 3600;
