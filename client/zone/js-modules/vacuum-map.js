@@ -37,6 +37,7 @@ export function VacuumMap(canvasElement) {
 
         closeWebSocket();
         ws = new WebSocket(`${protocol}://${window.location.host}/`);
+        ws.binaryType = 'arraybuffer';
 
         ws.onclose = function() {
             if (wsPreventReconnecting) {
@@ -48,9 +49,12 @@ export function VacuumMap(canvasElement) {
         ws.onmessage = function(event) {
             if(event.data !== "") {
                 try {
-                    updateMap(JSON.parse(event.data));
+                    let data = new TextDecoder().decode(pako.inflate(event.data));
+                    console.log('map decompressed: ' + (event.data.byteLength/1024).toFixed(1) + 'k to ' + (data.length/1024).toFixed(1) + 'k (' + (data.length/event.data.byteLength*100).toFixed(2) + '%)');
+                    updateMap(JSON.parse(data));
                 } catch(e) {
                     //TODO something reasonable
+                    console.log(e);
                 }
             }
         };
