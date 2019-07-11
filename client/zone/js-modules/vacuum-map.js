@@ -16,7 +16,8 @@ export function VacuumMap(canvasElement) {
     const mapDrawer = new MapDrawer();
     const pathDrawer = new PathDrawer();
     let coords = [];
-    let ws;
+
+    let ws, wsPreventReconnecting = false;
     let heartbeatTimeout;
 
     let options = {};
@@ -38,7 +39,10 @@ export function VacuumMap(canvasElement) {
         ws = new WebSocket(`${protocol}://${window.location.host}/`);
 
         ws.onclose = function() {
-            console.log('ws connection was closed. will try to reconnect in 10 seconds');
+            if (wsPreventReconnecting) {
+                wsPreventReconnecting = false;
+                return;
+            }
             setTimeout(() => { initWebSocket() },10e3);
         };
         ws.onmessage = function(event) {
@@ -53,7 +57,10 @@ export function VacuumMap(canvasElement) {
     }
 
     function closeWebSocket() {
-        if (ws) ws.close();
+        if (ws) {
+            wsPreventReconnecting = true;
+            ws.close();
+        }
     }
 
     function updateForbiddenZones(forbiddenZoneData) {
