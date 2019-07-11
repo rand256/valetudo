@@ -30,21 +30,18 @@ export function VacuumMap(canvasElement) {
 
     let redrawCanvas = null;
 
-
     function initWebSocket() {
         const protocol = location.protocol === "https:" ? "wss" : "ws";
         coords = [];
-        if (ws) ws.close();
 
+        closeWebSocket();
         ws = new WebSocket(`${protocol}://${window.location.host}/`);
-        ws.onmessage = function(event) {
-            // reset connection timeout
-            clearTimeout(heartbeatTimeout);
-            heartbeatTimeout = setTimeout(function() {
-                // try to reconnect
-                initWebSocket();
-            }, 5000);
 
+        ws.onclose = function() {
+            console.log('ws connection was closed. will try to reconnect in 10 seconds');
+            setTimeout(() => { initWebSocket() },10e3);
+        };
+        ws.onmessage = function(event) {
             if(event.data !== "") {
                 try {
                     updateMap(JSON.parse(event.data));
@@ -52,11 +49,6 @@ export function VacuumMap(canvasElement) {
                     //TODO something reasonable
                 }
             }
-
-        };
-        ws.onerror = function(event) {
-            // try to reconnect
-            initWebSocket();
         };
     }
 
