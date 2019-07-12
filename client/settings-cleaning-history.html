@@ -18,8 +18,6 @@
         var loadingBarSettingsCleaningHistory = document.getElementById('loading-bar-settings-cleaning-history');
         var settingsCleaningHistory = document.getElementById('settings-cleaning-history');
         var settingsCleaningHistoryLoadMoreButtons = document.getElementById('settings-cleaning-history-load-more');
-
-        var shownCleaningCount = 0;
         var remainingShownCount = 5;
         var historyArray, timeZone;
 
@@ -67,6 +65,10 @@
         }
 
         function loadNextRemainingElements() {
+            if (!historyArray.length) {
+                remainingShownCount = 0;
+                return;
+            }
             if (remainingShownCount>0) {
                 loadingBarSettingsCleaningHistory.setAttribute("indeterminate", "indeterminate");
                 var historyTimestamp = historyArray.shift(); //array is sorted with latest items in the beginning
@@ -76,7 +78,6 @@
                         ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
                     } else {
                         //adjust counters
-                        shownCleaningCount++;
                         remainingShownCount--;
                         //set variables
                         var currentEntryId = historyArray.length+1;
