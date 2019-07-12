@@ -58,7 +58,7 @@
                     callback(null, JSON.parse(request.responseText));
                 } else {
                     console.error(request);
-                    callback("There was an error: " + request.status);
+                    callback("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                 }
             };
 
@@ -80,7 +80,7 @@
                     callback(null, JSON.parse(request.responseText));
                 } else {
                     console.error(request);
-                    callback("There was an error: " + request.status);
+                    callback("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                 }
             };
 
