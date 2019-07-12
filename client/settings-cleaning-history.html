@@ -46,12 +46,12 @@
                             timeZone = res;
                             loadNextRemainingElements();
                         } else {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                         }
                     });
                 } else {
                     loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 }
             });
         }
@@ -75,7 +75,7 @@
                 fn.requestWithPayload("api/clean_record", JSON.stringify({recordId : historyTimestamp}) , "PUT", function (err, res) {
                     loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
                     if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     } else {
                         //adjust counters
                         remainingShownCount--;
@@ -145,7 +145,7 @@
                 if (!err)
                     fn.request("api/map/latest", "GET", function (err, mapData) {
                         if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                         }
                         loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
                         fn.pushPage({
@@ -159,7 +159,7 @@
                     });
                 else {
                     loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 }
             });
         }

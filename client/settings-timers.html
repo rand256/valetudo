@@ -247,7 +247,7 @@
                             }
                             coords = coords.concat(zones[index].coordinates);
                             if (coords.length > 5) {
-                                ons.notification.alert('You can\'t use more than 5 zones in one cleaning session.', { buttonLabel: 'Dismiss', timeout: 1500 });
+                                ons.notification.alert('You can\'t use more than 5 zones in one cleaning session.', { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                                 return;
                             }
                             let anchor = document.querySelector('#add-zoned-timer-form > hr');
@@ -259,7 +259,7 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 })
                 .finally(() => {
                     loadingBarSettingsTimers.removeAttribute("indeterminate");
@@ -340,7 +340,7 @@
                     }
                     document.getElementById('edit-timezone-dialog').show();
                 } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 }
             });
         }
@@ -359,7 +359,7 @@
                     fn.requestWithPayload("/api/set_timezone", JSON.stringify({ new_zone : newTimezone }), "POST", function (err, res) {
                         loadingBarSettingsTimers.removeAttribute("indeterminate");
                         if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                         } else {
                             hideTimeZoneDialog();
                         }
@@ -394,7 +394,7 @@
             fn.request("api/get_dnd", "GET", function (err, res) {
                 loadingBarSettingsTimers.removeAttribute("indeterminate");
            
-                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 if (err || res.length == 0 || res[0].enabled == 0) {
                     //no timer is enabled yet, show possibility to add dnd timer
                     dndTimerList.appendChild(ons.createElement(
@@ -437,7 +437,7 @@
                     fn.request("api/delete_dnd", "PUT", function (err) {
                         loadingBarSettingsTimers.removeAttribute("indeterminate");
                         if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                         } else {
                             updateDndTimerPage();
                         }
@@ -454,13 +454,13 @@
             if (start_hour && start_minute && end_hour && end_minute) {
                 fn.requestWithPayload("/api/set_dnd", JSON.stringify({ start_hour, start_minute, end_hour, end_minute}), "POST", function (err, res) {
                 if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 }
                 hideDndTimerDialog();
                 updateDndTimerPage();
             });
             } else {
-                ons.notification.toast("Could not save DND Timer since not all required attributes are provided!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                ons.notification.toast("Could not save DND Timer since not all required attributes are provided!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
             }
         }
 
@@ -473,7 +473,7 @@
             fn.request("api/ztimers", "GET", function (err, res) {
                 loadingBarSettingsTimers.removeAttribute("indeterminate");
 
-                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 if (err || res == null || res.length == 0) {
                     timersSettingsZonedTimersList.firstElementChild.style.display = "";
                 } else {
@@ -517,7 +517,7 @@
             fn.request("api/timers", "GET", function (err, res) {
                 loadingBarSettingsTimers.removeAttribute("indeterminate");
 
-                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 if (err || res == null || res.length == 0) {
                     timersSettingsTimersList.firstElementChild.style.display = "";
                 } else {
@@ -557,7 +557,7 @@
             if (zoned) {
                 fn.requestWithPayload("api/ztimers/" + id, JSON.stringify({ enabled: enabled }), "PUT", function (err, res) {
                     if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     }
                     window.setTimeout(function () {
                         updateSettingsZonedTimersPage();
@@ -566,7 +566,7 @@
             } else {
                 fn.requestWithPayload("api/timers/" + id, JSON.stringify({ enabled: enabled }), "PUT", function (err, res) {
                     if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     }
                     window.setTimeout(function () {
                         updateSettingsTimersPage();
@@ -603,14 +603,14 @@
                     if (zoned) {
                         fn.request("api/ztimers/" + id, "DELETE", function (err, res) {
                             if (err) {
-                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                             }
                             updateSettingsZonedTimersPage();
                         });
                     } else {
                         fn.request("api/timers/" + id, "DELETE", function (err, res) {
                             if (err) {
-                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                             }
                             updateSettingsTimersPage();
                         });
@@ -719,7 +719,7 @@
             }
             // do not allow meaningless timers
             if (minutesValue === "*" || hoursValue === "*") {
-                ons.notification.toast("Both minutes and hours must be specified.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                ons.notification.toast("Both minutes and hours must be specified.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                 return;
             }
             //build cron timer
@@ -728,7 +728,7 @@
             if (zoned) {
                 let timerName = form.zoned_timer_name.value.trim();
                 if (timerName.length < 3) {
-                    ons.notification.toast("You should specify a name.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast("You should specify a name.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     return;
                 }
                 let coords, coordInputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
@@ -736,7 +736,7 @@
                     coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
                 }
                 if (!coords || !coords.length) {
-                    ons.notification.toast("One or more non-empty zones must be specified.", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast("One or more non-empty zones must be specified.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     return;
                 }
                 console.log(coords);
@@ -744,7 +744,7 @@
                 zTimers.push(newTimer);
                 fn.requestWithPayload("api/ztimers", JSON.stringify(zTimers), "PUT", function (err, res) {
                     if (err) {
-                       ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                       ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     }
                     updateSettingsZonedTimersPage();
                     hideNewTimerDialog(zoned);
@@ -752,7 +752,7 @@
             } else {
                 fn.requestWithPayload("api/timers", JSON.stringify({ cron: cronTimer }), "POST", function (err, res) {
                     if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     }
                     updateSettingsTimersPage();
                     hideNewTimerDialog(zoned);
@@ -772,7 +772,7 @@
                 loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                 fn.request("api/ztimers", "GET", function (err, res) {
                     loadingBarSettingsTimers.removeAttribute("indeterminate");
-                    if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 });
+                    if (err) ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     else {
                         zTimers = res;
                         dialog.show();

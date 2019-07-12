@@ -131,6 +131,9 @@
             return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
         };
 
+        window.fn.toastErrorTimeout = 5e3;
+        window.fn.toastOKTimeout = 15e2;
+
         //TODO: Fix this routing mess
         ons.ready(function () {
             window.addEventListener('popstate', function (e) {

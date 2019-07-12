@@ -49,7 +49,7 @@
                         map.initWebSocket();
                         resolve(map);
                     } else {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                         reject();
                     }
                 })
@@ -75,9 +75,9 @@
                 loadingBar.removeAttribute("indeterminate");
                 button.removeAttribute("disabled");
                 if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 } else {
-                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
                 }
             });
         }
@@ -93,9 +93,9 @@
                 loadingBar.removeAttribute("indeterminate");
                 button.removeAttribute("disabled");
                 if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 } else {
-                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: 1500 });
+                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
                 }
             });
         }

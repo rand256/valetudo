@@ -128,7 +128,7 @@
                         loadingBarSettingsAccessControl.removeAttribute("indeterminate");
                     });
                 } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 }
             });
         }
@@ -138,7 +138,7 @@
                  keys: sshKeysTextArea.value
             }), "PUT", function (err) {
                 if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 }
                 loadingBarSettingsAccessControl.removeAttribute("indeterminate");
             });
@@ -149,7 +149,7 @@
                  confirmation: sshKeysInputDisableConfirmation.value
             }), "PUT", function (err) {
                 if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                     } else {
                     sshKeysTitle.style.display = "none";
                     sshKeysList.style.display = "none";
@@ -160,7 +160,7 @@
         function handleHttpAuthSettingsSaveButton() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
             if (httpAuthInputPassword.value !== httpAuthInputPasswordConfirm.value) {
-                return ons.notification.toast("Passwords don't match", { buttonLabel: 'Dismiss', timeout: 1500 });
+                return ons.notification.toast("Passwords don't match", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
             }
             fn.requestWithPayload("api/http_auth_config", JSON.stringify({
                 enabled: httpAuthInputEnabled.checked === true,
@@ -168,7 +168,7 @@
                 password: httpAuthInputPassword.value,
             }), "PUT", function (err) {
                 if (err) {
-                      ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: 1500 })
+                      ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
                 }
                 loadingBarSettingsAccessControl.removeAttribute("indeterminate");
             });
