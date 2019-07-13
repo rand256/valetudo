@@ -32,7 +32,6 @@
         const zoneToModify = topPage.data.zoneToModify;
 
         map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
-        window.fn.map = map;
 
         document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
         for(let zone of zonesConfig[zoneToModify].coordinates) {

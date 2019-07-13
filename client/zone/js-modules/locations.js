@@ -278,9 +278,6 @@ export class CurrentCleaningZone  {
  */
 export class VirtualWall  {
 
-    /**
-     * represents vitrual wall, which can be editable or display-only
-     */
     constructor(x1 ,y1, x2, y2, editable) {
         this.editable = editable || false;
 
@@ -473,9 +470,6 @@ export class VirtualWall  {
  */
 export class ForbiddenZone  {
 
-    /**
-     * represents forbidden no-go zone
-     */
     constructor(x1, y1, x2, y2, x3, y3, x4, y4, editable) {
         this.editable = editable || false;
 
