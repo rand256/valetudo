@@ -7,7 +7,7 @@
         <div class="right">
         </div>
     </ons-toolbar>
-    <ons-progress-bar id="loading-bar-settings-cleaning-history" value="0"></ons-progress-bar>
+    <div class="progress-bar-container"><ons-progress-bar id="loading-bar-settings-cleaning-history" value="0"></ons-progress-bar></div>
 
     <ons-list-title style="margin-top:5px;">Last cleaning runs</ons-list-title>
     <ons-list id="settings-cleaning-history">
@@ -26,7 +26,7 @@
         };
 
         function loadMoreItems() {
-            remainingShownCount = 5;
+            remainingShownCount = historyArray.length > 5 ? 5 : historyArray.length;
             loadNextRemainingElements();
         }
 
@@ -67,7 +67,6 @@
         function loadNextRemainingElements() {
             if (!historyArray.length) {
                 remainingShownCount = 0;
-                return;
             }
             if (remainingShownCount>0) {
                 loadingBarSettingsCleaningHistory.setAttribute("indeterminate", "indeterminate");
@@ -139,28 +138,52 @@
             }
         }
 
+        hashCode = function(text) {
+            var hash = 0, i, chr;
+            if (text.length === 0) return hash;
+            for (i = 0; i < text.length; i++) {
+            chr   = text.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        };
+
         function switchToMapView(timestamp) {
             loadingBarSettingsCleaningHistory.setAttribute("indeterminate", "indeterminate");
-            fn.requestWithPayload("api/clean_record_map", JSON.stringify({recordId : timestamp}) , "PUT", function (err, res) {
-                if (!err)
-                    fn.request("api/map/latest", "GET", function (err, mapData) {
-                        if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                        }
-                        loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                        fn.pushPage({
-                            'id': 'settings-cleaning-history-map.html',
-                            'title': 'Cleaning history map',
-                            'data': {
-                                'map': mapData,
-                                'cleaningDate': formatDate(new Date(new Date(timestamp*1000).toLocaleString("en-US", { timeZone: timeZone })))
-                            }
-                        });
-                    });
-                else {
+            fn.request("api/map/latest", "GET", function (err, mapDataCurrent) {
+                if (err) {
                     loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
                     ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    return;
                 }
+                mapDataCurrent = hashCode(JSON.stringify(mapDataCurrent));
+                fn.requestWithPayload("api/clean_record_map", JSON.stringify({recordId : timestamp}) , "PUT", function (err, res) {
+                    if (!err)
+                        fn.request("api/map/latest", "GET", function (err, mapData) {
+                            loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
+                            if (err) {
+                                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                                return;
+                            }
+                            if (mapDataCurrent === hashCode(JSON.stringify(mapData))) {
+                                ons.notification.toast("Fetching map snapshot failed, please try again.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                                return;
+                            }
+                            fn.pushPage({
+                                'id': 'settings-cleaning-history-map.html',
+                                'title': 'Cleaning history map',
+                                'data': {
+                                    'map': mapData,
+                                    'cleaningDate': formatDate(new Date(new Date(timestamp*1000).toLocaleString("en-US", { timeZone: timeZone })))
+                                }
+                            });
+                        });
+                    else {
+                        loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    }
+                });
             });
         }
     </script>

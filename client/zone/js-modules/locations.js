@@ -541,7 +541,7 @@ export class ForbiddenZone  {
             ctx.fill();
             ctx.strokeStyle = 'white';
             ctx.stroke();
-            
+
             ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
@@ -565,6 +565,12 @@ export class ForbiddenZone  {
      * This is the transform applied by the vacuum-map canvas.
      */
     tap(tappedPoint, transformMapToScreenSpace) {
+        if (!this.editable) {
+            return {
+                stopPropagation: false
+            };
+        }
+
         const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
         const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
         const p3 = new DOMPoint(this.x3, this.y3).matrixTransform(transformMapToScreenSpace);
