@@ -50,7 +50,7 @@ export function VacuumMap(canvasElement) {
             if(event.data !== "") {
                 try {
                     let data = new TextDecoder().decode(pako.inflate(event.data));
-                    console.log('map decompressed: ' + (event.data.byteLength/1024).toFixed(1) + 'k to ' + (data.length/1024).toFixed(1) + 'k (' + (data.length/event.data.byteLength*100).toFixed(2) + '%)');
+                    //console.log('map decompressed: ' + (event.data.byteLength/1024).toFixed(1) + 'k to ' + (data.length/1024).toFixed(1) + 'k (' + (data.length/event.data.byteLength*100).toFixed(2) + '%)');
                     updateMap(JSON.parse(data));
                 } catch(e) {
                     //TODO something reasonable

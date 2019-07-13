@@ -739,7 +739,6 @@
                     ons.notification.toast("One or more non-empty zones must be specified.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     return;
                 }
-                console.log(coords);
                 let newTimer = { enabled: false, name: timerName, cron: cronTimer, coordinates: coords };
                 zTimers.push(newTimer);
                 fn.requestWithPayload("api/ztimers", JSON.stringify(zTimers), "PUT", function (err, res) {
