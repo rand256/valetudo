@@ -1,37 +1,46 @@
-### Building and installing Valetudo
+### Downloading pre-built Valetudo
 
-For building, you need a reasonably new NodeJS. You can install this from your
-distro (preferred), or using one of the official pre-compiled binaries on the
-node-website …. `pkg` is able to create armv7-binaries on x86 (and other
-platforms) just fine — as long as it does not need to pre-compile its JS
-bytecode. This is why we specify `--no-bytecode`.
+You can simply download pre-built binaries of Valetudo from the [releases](https://github.com/rand256/valetudo/releases) section of the repo. If downloaded binary is compressed to .tar.gz format, you need to unpack it first.
+
+### Acquiring sources and building Valetudo
+
+If you wish to build Valetudo yourself, you will need a reasonably new NodeJS.
+You can install this from your distro (preferred), or using one of the official
+pre-compiled binaries on the node website. `pkg` is able to create armv7-binaries
+on x86 (and other platforms) just fine — as long as it does not need to pre-compile
+its JS bytecode. This is why we specify `--no-bytecode`.
 ```
 git clone http://github.com/rand256/valetudo
 cd valetudo
 npm install
 npm run build
 ```
-After that you'll find a binary named valetudo in that folder which you should scp to /usr/local/bin/
 
-Next you need to install updated C++ library.
+Next things get a bit more complicated.
 
-Current `pkg` versions (4.4.0 and above) use libstdc++ incompatible with
-that available in stock vacuum's firmware. Unfortunately the last compatible pkg
-includes node-10.4.1, which is known for issues with timers in the long run.
+Current `pkg` version (4.4.0 and above) that we use to pack Valetudo into a single
+binary file has libstdc++ library incompatible with that available in stock vacuum's
+firmware. Unfortunately the last `pkg` which was compatible used node-10.4.1 binaries
+that are quiet outdated and also known for issues with timers in the long run.
 
-Thus Valetudo RE requires to install a bit updated libstdc++ debian package
+Thus Valetudo RE based on newer `pkg` requires to install a bit updated libstdc++ package
 into the vacuum. The *.deb files needed could be found on launchpad.net
 but since Ubuntu 14.04 is EOL they are slowly getting deleted from there.
 The copy of suitable library (from gcc-6.2.0) is available in `deps` directory.
 To install scp `*.deb`s to the vacuum and run `dpkg -i file.deb`.
 
-Create `/etc/init/valetudo.conf` using the file located in `etc` directory to auto-start Valetudo.
+Another way to deal with this issue is to manually rebuild `pkg` binaries to link
+libstd++ statically. This is the way how prebuilt Valetudo binary was created here.
 
-### Getting maps into Valetudo and preventing communication to the cloud
+### Installing and configuring
 
-To see the map in Valetudo, you need to prevent the robot from communicating with
-the Xiaomi cloud by setting up iptables and configuring the `/etc/hosts`, so that
-xiaomi hostnames are redirected locally back to Valetudo.
+When you'll get a binary named `valetudo`, you should scp it to `/usr/local/bin/` directory.
+
+Then create `/etc/init/valetudo.conf` using the file located in `etc` directory to auto-start Valetudo.
+
+To see maps in Valetudo you will need to prevent the robot from communicating with
+Xiaomi cloud by setting up iptables and configuring the `/etc/hosts`, so that
+Xiaomi hostnames were redirected locally back to Valetudo.
 
 First add the content of `deployment/etc/hosts` to your `/etc/hosts`
 file on the robot.
