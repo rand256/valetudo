@@ -1,4 +1,4 @@
-# Building Valetudo
+### Building and installing Valetudo
 
 For building, you need a reasonably new NodeJS. You can install this from your
 distro (preferred), or using one of the official pre-compiled binaries on the
@@ -6,34 +6,39 @@ node-website …. `pkg` is able to create armv7-binaries on x86 (and other
 platforms) just fine — as long as it does not need to pre-compile its JS
 bytecode. This is why we specify `--no-bytecode`.
 ```
-git clone http://github.com/hypfer/Valetudo
-cd Valetudo
+git clone http://github.com/rand256/valetudo
+cd valetudo
 npm install
 npm run build
 ```
 After that you'll find a binary named valetudo in that folder which you should scp to /usr/local/bin/
 
-Create /etc/init/valetudo.conf using the file located in this directory
+Next you need to install updated C++ library.
 
-Note that pkg package of version 4.4.0 and above uses libstdc++ incompatible with that
-available in stock vacuum firmware. So you should either build Valetudo with pkg v4.3.8 or
-use another stdc++ library (i.e. libstdc++6_5.3.1-14ubuntu2_armhf.deb will do nicely).
-In the latter case it is required to unpack deb file somewhere on the vacuum using
-`dpkg -x file.deb /some/path` and put into valetudo upstart conf `env LD_LIBRARY_PATH=/some/path/usr/lib`
-above `exec` line.
+Current `pkg` versions (4.4.0 and above) use libstdc++ incompatible with
+that available in stock vacuum's firmware. Unfortunately the last compatible pkg
+includes node-10.4.1, which is known for issues with timers in the long run.
 
-# Preventing communication to the Xiaomi cloud
+Thus Valetudo RE requires to install a bit updated libstdc++ debian package
+into the vacuum. The *.deb files needed could be found on launchpad.net
+but since Ubuntu 14.04 is EOL they are slowly getting deleted from there.
+The copy of suitable library (from gcc-6.2.0) is available in `deps` directory.
+To install scp `*.deb`s to the vacuum and run `dpkg -i file.deb`.
 
-To prevent the robot from communicating with the Xiaomi cloud you need to setup
-iptables and configure the `/etc/hosts` so that xiaomi hostnames are redirected
-locally back to Valetudo.
+Create `/etc/init/valetudo.conf` using the file located in `etc` directory to auto-start Valetudo.
+
+### Getting maps into Valetudo and preventing communication to the cloud
+
+To see the map in Valetudo, you need to prevent the robot from communicating with
+the Xiaomi cloud by setting up iptables and configuring the `/etc/hosts`, so that
+xiaomi hostnames are redirected locally back to Valetudo.
 
 First add the content of `deployment/etc/hosts` to your `/etc/hosts`
 file on the robot.
 
-Second edit the `/etc/rc.local` file and add the contet of
-`deployment/etc/rc.local` befor the `exit 0` line.
+Second edit the `/etc/rc.local` file and add the content of
+`deployment/etc/rc.local` before the `exit 0` line.
 
-# Reboot
+### Reboot
 
-You can now reboot robot.
+You can now reboot the robot.

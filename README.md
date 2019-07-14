@@ -7,6 +7,8 @@ This is a bit modified version of [Valetudo by Hypher](https://github.com/Hypfer
 * Renaming zones and spots, since why not?
 * Configurable virtual walls and forbidden zones, finally!
 * Scheduled zoned cleaning - when you do not need to clean the whole house.
+* Viewing maps of finished cleanings to know how it was going exactly.
+* Compressing map data to reduce network bandwidth when watching cleaning progress online.
 * Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
 Beware, I'm not a qualified coder - that's for sure, so the code is awful in places, also I'm not familiar with github at all. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
@@ -19,6 +21,10 @@ Beware, I'm not a qualified coder - that's for sure, so the code is awful in pla
 </div>
 
 ----
+
+### Installing
+
+Check [deployment](/deployment) on how to install Valetudo onto your device.
 
 ### Screenshots of this mod:
 ![image](https://user-images.githubusercontent.com/30267719/58707398-7b2b3e80-83bd-11e9-81be-ea3148e18f88.jpg)
