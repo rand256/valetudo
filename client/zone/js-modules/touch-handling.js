@@ -188,6 +188,9 @@ export class TouchHandler {
     }
 
     pointerDown(evt, changedTouches) {
+        // we don't need clicks from buttons other than left
+        if (evt.button > 0) return;
+
         evt.stopPropagation();
         evt.preventDefault();
 
@@ -224,6 +227,9 @@ export class TouchHandler {
     }
 
     pointerUp(evt, changedTouches) {
+        // we don't need clicks from buttons other than left
+        if (evt.button > 0) return;
+
         evt.stopPropagation();
         evt.preventDefault();
 
