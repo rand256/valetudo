@@ -23,8 +23,9 @@
             document.getElementById('appSplitter').left.toggle();
         };
 
-        window.fn.loadView = function (index) {
-            document.getElementById('appTabbar').setActiveTab(index);
+        window.fn.loadView = function (index, options) {
+            options = options || {};
+            document.getElementById('appTabbar').setActiveTab(index, options);
             document.getElementById('sidemenu').close();
         };
 
@@ -38,7 +39,13 @@
             } else {
                 document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } });
             }
-            history.pushState({}, page.title);
+            let stateObj = {moveView: (history.state && history.state.moveView || 0)};
+            if (history.state && history.state.moveSubPage) {
+                stateObj.moveSubPage = history.state.moveSubPage.splice(0).concat(page);
+            } else {
+                stateObj.moveSubPage = [page];
+            }
+            history.pushState(stateObj, page.id);
         };
 
         window.fn.popPage = function() {
@@ -134,13 +141,26 @@
         window.fn.toastErrorTimeout = 5e3;
         window.fn.toastOKTimeout = 15e2;
 
-        //TODO: Fix this routing mess
+        var pushView = function(idx,hash) {
+            history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
+            document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
+        }
+
         ons.ready(function () {
+            history.replaceState({},'','#home.html');
             window.addEventListener('popstate', function (e) {
-                e.preventDefault();
-                document.getElementById('appNavigator').popPage({});
-                history.pushState(null, null, window.location.pathname); //What
-                //this is just broken
+                if (document.getElementById('appNavigator').pages.length > 1) {
+                    document.getElementById('appNavigator').popPage({times: (document.getElementById('appNavigator').pages.length - 1), animation: "none"});
+                }
+                if (history.state && history.state.moveView !== undefined) {
+                    fn.loadView(history.state.moveView, {animation: history.state.moveSubPage ? "none" : "default"});
+                } else {
+                    fn.loadView(0, {animation: history.state.moveSubPage ? "none" : "default"});
+                }
+                if (history.state && Array.isArray(history.state.moveSubPage)) {
+                    let i = j = 0, max = history.state.moveSubPage.length;
+                    history.state.moveSubPage.forEach(page => setTimeout(() => { j++; document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: (j === max ? "default" : "none") }); }, ++i*150))
+                }
             }, false);
         });
 
@@ -169,11 +189,11 @@
                 <div class="center">Home</div>
             </ons-toolbar>
             <ons-tabbar swipeable id="appTabbar" position="auto">
-                <ons-tab label="Home" icon="ion-home" page="home.html" active></ons-tab>
-                <ons-tab label="Map" icon="fa-map-marker" page="map.html"></ons-tab>
-                <ons-tab label="Zones" icon="fa-share-square" page="zones.html"></ons-tab>
-                <ons-tab label="Manual Control" icon="fa-gamepad" page="manualcontrol.html"></ons-tab>
-                <ons-tab label="Settings" icon="fa-cog" page="settings.html"></ons-tab>
+                <ons-tab label="Home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
+                <ons-tab label="Map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
+                <ons-tab label="Zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
+                <ons-tab label="Manual Control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'manualcontrol.html');"></ons-tab>
+                <ons-tab label="Settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
             </ons-tabbar>
 
             <script>
@@ -192,7 +212,7 @@
                 <span>Valetudo</span>
             </div>
             <ons-list>
-                <ons-list-item onclick="fn.loadView(0)">
+                <ons-list-item onclick="pushView(0,'home.html'); fn.loadView(0);">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="ion-home, material:md-home"></ons-icon>
                     </div>
@@ -203,7 +223,7 @@
                         <ons-icon icon="fa-link"></ons-icon>
                     </div>
                 </ons-list-item>
-                <ons-list-item onclick="fn.loadView(1)">
+                <ons-list-item onclick="pushView(1,'map.html'); fn.loadView(1);">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-map-marker, material:fa-map-marker"></ons-icon>
                     </div>
@@ -214,7 +234,7 @@
                         <ons-icon icon="fa-link"></ons-icon>
                     </div>
                 </ons-list-item>
-                <ons-list-item onclick="fn.loadView(2)">
+                <ons-list-item onclick="pushView(2,'zones.html'); fn.loadView(2);">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-share-square, material:fa-share-square"></ons-icon>
                     </div>
@@ -225,7 +245,7 @@
                         <ons-icon icon="fa-link"></ons-icon>
                     </div>
                 </ons-list-item>
-                <ons-list-item onclick="fn.loadView(3)">
+                <ons-list-item onclick="pushView(3,'manualcontrol.html'); fn.loadView(3);">
                         <div class="left">
                             <ons-icon fixed-width class="list-item__icon" icon="fa-gamepad, material:fa-gamepad"></ons-icon>
                         </div>
@@ -236,7 +256,7 @@
                             <ons-icon icon="fa-link"></ons-icon>
                         </div>
                     </ons-list-item>
-                <ons-list-item onclick="fn.loadView(4)">
+                <ons-list-item onclick="pushView(4,'settings.html'); fn.loadView(4);">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-cog, material: md-settings"></ons-icon>
                     </div>
