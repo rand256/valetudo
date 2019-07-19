@@ -240,6 +240,9 @@
 
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
+            // request map update
+            fn.prequest("api/poll_map", "GET").then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+
             /* check for area and go to configuration */
 
             const getZones = fetch("api/zones")

@@ -136,6 +136,7 @@
         // Somehow getScriptPage returns null inside the type=module script tag
         ons.getScriptPage().onShow = function () {
             window.fn.updateMapPage().catch(() => {});
+            window.fn.prequest("api/poll_map", "GET").then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
         };
         ons.getScriptPage().onHide = function () {
             window.fn.cancelUpdateMap();
