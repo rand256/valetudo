@@ -128,6 +128,47 @@
             request.send(formData);
         }
 
+        window.fn.prequest = function (url, method) {
+            return new Promise(function(resolve, reject) {
+                var request = new XMLHttpRequest();
+                request.open(method, url, true);
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 400) {
+                        resolve(JSON.parse(request.responseText));
+                    } else {
+                        console.error(request);
+                        reject("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                    }
+                };
+                request.onerror = function () {
+                    reject("Connection error");
+                };
+                request.send();
+            });
+        };
+
+        window.fn.prequestWithPayload = function (url, payload, method) {
+            return new Promise(function(resolve, reject) {
+                var request = new XMLHttpRequest();
+                request.open(method, url, true);
+                request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                request.send(payload);
+
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 400) {
+                        resolve(JSON.parse(request.responseText));
+                    } else {
+                        console.error(request);
+                        reject("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                    }
+                };
+
+                request.onerror = function () {
+                    reject("Connection error");
+                };
+            });
+        };
+
         window.fn.secondsToHms = function (d) {
             d = Number(d);
 
