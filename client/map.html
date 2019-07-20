@@ -37,29 +37,30 @@
                     resolve(map);
                 }
                 loadingBar.setAttribute("indeterminate", "indeterminate");
-                fn.request("api/map/latest", "GET", function (err, mapData) {
-                    loadingBar.removeAttribute("indeterminate");
-                    if (!err) {
-                        if(map === null) {
-                            map = new VacuumMap(document.getElementById('map-canvas'));
-                            map.initCanvas(mapData);
-                        } else {
-                            map.updateMap(mapData);
-                        }
-                        map.initWebSocket();
-                        resolve(map);
+                fn.prequest("api/map/latest", "GET")
+                .then(mapData => {
+                    if(map === null) {
+                        map = new VacuumMap(document.getElementById('map-canvas'));
+                        map.initCanvas(mapData);
                     } else {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                        reject();
+                        map.updateMap(mapData);
                     }
+                    map.initWebSocket();
+                    resolve(map);
+                }, err => {
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    reject();
                 })
+                .finally(() => {
+                    loadingBar.removeAttribute("indeterminate");
+                });
             });
         };
 
         // Register update function to be accessible outside of es6 module (see <script> below)
         window.fn.updateMapPage = updateMapPage;
         window.fn.cancelUpdateMap = () => {
-            if(map !== null) {
+            if (map !== null) {
                 map.closeWebSocket();
             }
         };
@@ -71,16 +72,16 @@
             let button = document.getElementById("goto");
             loadingBar.setAttribute("indeterminate", "indeterminate");
             button.setAttribute("disabled", "disabled");
-            fn.requestWithPayload("api/go_to", JSON.stringify(point), "PUT", function (err) {
+            fn.prequestWithPayload("api/go_to", JSON.stringify(point), "PUT")
+            .then(
+                (res) => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
                 button.removeAttribute("disabled");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                }
             });
-        }
+        };
 
         /**
          * Calls the zoned_cleanup api route with the currently set zone
@@ -89,16 +90,16 @@
             let button = document.getElementById("start_zoned_cleanup");
             loadingBar.setAttribute("indeterminate", "indeterminate");
             button.setAttribute("disabled", "disabled");
-            fn.requestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT", function (err) {
+            fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT")
+            .then(
+                (res) => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
                 button.removeAttribute("disabled");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                }
             });
-        }
+        };
 
         document.getElementById("goto").onclick = () => {
             const gotoPoint = map.getLocations().gotoPoints[0];
@@ -121,12 +122,9 @@
         }
         document.getElementById("map_reload_button").onclick = () => {
             loadingBar.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/poll_map", "GET", function (err, data) {
-                setTimeout(() => {
-                    loadingBar.removeAttribute("indeterminate");
-                    updateMapPage();
-                }, 300);
-            });
+            fn.prequest("api/poll_map", "GET")
+            .then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally (() => loadingBar.removeAttribute("indeterminate"));
         }
         document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
             document.getElementById("promote_zone").style.display = e.detail.state ? "" : "none";

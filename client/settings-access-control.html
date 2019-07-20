@@ -115,65 +115,54 @@
         };
         function updateSettingsAccessControlPage() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/http_auth_config", "GET", function (err, res) {
-                if (!err) {
-                    httpAuthInputEnabled.checked = res.enabled;
-                    httpAuthInputUsername.value = res.username;
-                    httpAuthInputPassword.value = "";
-                    fn.request("api/get_ssh_keys", "GET", function (err, res) {
-                        if (!err) {
-                            sshKeysTextArea.value = res;
 
-                            sshKeysTitle.style.display = "block";
-                            sshKeysList.style.display = "block";
-                        }
-                        loadingBarSettingsAccessControl.removeAttribute("indeterminate");
-                    });
-                } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-            });
-        }
+            const getAuthCfg = fn.prequest("api/http_auth_config", "GET")
+            .then((res) => {
+                httpAuthInputEnabled.checked = res.enabled;
+                httpAuthInputUsername.value = res.username;
+                httpAuthInputPassword.value = "";
+            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+
+            const getSshCfg = fn.prequest("api/get_ssh_keys", "GET")
+            .then((res) => {
+                sshKeysTextArea.value = res;
+                sshKeysTitle.style.display = "block";
+                sshKeysList.style.display = "block";
+            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+
+            Promise.all([getAuthCfg, getSshCfg]).finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
+        };
         function handleSSHKeysSettingsSaveButton() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
-            fn.requestWithPayload("api/set_ssh_keys", JSON.stringify({
+            fn.prequestWithPayload("api/set_ssh_keys", JSON.stringify({
                  keys: sshKeysTextArea.value
-            }), "PUT", function (err) {
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-                loadingBarSettingsAccessControl.removeAttribute("indeterminate");
-            });
-        }
+            }), "PUT")
+            .then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
+        };
         function handleSSHKeysSettingsPermanentlyDisableButton() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
-            fn.requestWithPayload("api/ssh_keys_permanently_disable", JSON.stringify({
+            fn.prequestWithPayload("api/ssh_keys_permanently_disable", JSON.stringify({
                  confirmation: sshKeysInputDisableConfirmation.value
-            }), "PUT", function (err) {
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                    } else {
-                    sshKeysTitle.style.display = "none";
-                    sshKeysList.style.display = "none";
-                }
-                loadingBarSettingsAccessControl.removeAttribute("indeterminate");
-            });
-        }
+            }), "PUT")
+            .then((res) => {
+                sshKeysTitle.style.display = "none";
+                sshKeysList.style.display = "none";
+            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
+        };
         function handleHttpAuthSettingsSaveButton() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
             if (httpAuthInputPassword.value !== httpAuthInputPasswordConfirm.value) {
                 return ons.notification.toast("Passwords don't match", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
             }
-            fn.requestWithPayload("api/http_auth_config", JSON.stringify({
+            fn.prequestWithPayload("api/http_auth_config", JSON.stringify({
                 enabled: httpAuthInputEnabled.checked === true,
                 username: httpAuthInputUsername.value,
                 password: httpAuthInputPassword.value,
-            }), "PUT", function (err) {
-                if (err) {
-                      ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-                loadingBarSettingsAccessControl.removeAttribute("indeterminate");
-            });
-        }
+            }), "PUT")
+            .then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
+        };
     </script>
 </ons-page>

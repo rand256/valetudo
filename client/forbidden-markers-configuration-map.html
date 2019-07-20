@@ -56,15 +56,14 @@
             const persistentData = {virtual_walls: map.getLocations().virtualWalls, no_go_areas: map.getLocations().forbiddenZones};
             loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
             saveButton.setAttribute("disabled", "disabled");
-            fn.requestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT", function (err) {
+            fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
+            .then(() => {
+                ons.notification.toast("Successfully saved forbidden markers!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                fn.popPage();
+            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => {
                 loadingBarSaveMarkers.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    ons.notification.toast("Successfully saved forbidden markers!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                    fn.popPage();
-                }
             });
         }
     </script>

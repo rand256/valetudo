@@ -1,4 +1,4 @@
-<ons-page>
+<ons-page id="home-page">
     <ons-progress-bar id="loading-bar-home" value="0" indeterminate="indeterminate"></ons-progress-bar>
     <section>
         <p id="robot-state">
@@ -43,7 +43,7 @@
 
 
     <script>
-        var currentRefreshTimer;
+        var currentRefreshTimer, refreshInProgress = false;
 
         var startButton = document.getElementById("start-button");
         var pauseButton = document.getElementById("pause-button");
@@ -105,20 +105,16 @@
                 throw new Error("Invalid button");
             } else {
                 btn.button.setAttribute("disabled", "disabled");
-
                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                fn.request(btn.url, "PUT", function (err) {
-                    if (err) {
-                        btn.button.removeAttribute("disabled");
-                        loadingBarHome.removeAttribute("indeterminate");
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                    } else {
-                        window.clearTimeout(currentRefreshTimer);
-                        window.setTimeout(function () {
-                            updateHomePage();
-                        }, 500);
-                    }
-                })
+                fn.prequest(btn.url, "PUT")
+                .then(() => {
+                    window.clearTimeout(currentRefreshTimer);
+                    window.setTimeout(function () { updateHomePage(); }, 500);
+                }, (err) => {
+                    btn.button.removeAttribute("disabled");
+                    loadingBarHome.removeAttribute("indeterminate");
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                });
             }
         }
 
@@ -144,26 +140,24 @@
                         icon: 'md-close'
                     }
                 ]
-            }).then(function (index) {
+            })
+            .then(index => {
                 var level = Object.keys(fanspeedPresets)[index];
 
                 if (level) {
                     loadingBarHome.setAttribute("indeterminate", "indeterminate");
                     fanspeedButton.setAttribute("disabled", "disabled");
-                    fn.requestWithPayload("api/fanspeed", JSON.stringify({ speed: level }), "PUT", function (err, res) {
-                        if (err) {
-                            fanspeedButton.removeAttribute("disabled");
-                            loadingBarHome.removeAttribute("indeterminate");
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                        } else {
-                            window.clearTimeout(currentRefreshTimer);
-                            window.setTimeout(function () {
-                                updateHomePage();
-                            }, 150);
-                        }
-                    })
+                    fn.prequestWithPayload("api/fanspeed", JSON.stringify({ speed: level }), "PUT")
+                    .then(() => {
+                        window.clearTimeout(currentRefreshTimer);
+                        window.setTimeout(function () { updateHomePage(); }, 500);
+                    }, (err) => {
+                        fanspeedButton.removeAttribute("disabled");
+                        loadingBarHome.removeAttribute("indeterminate");
+                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    });
                 } else {
-                    window.setTimeout(function () {
+                    currentRefreshTimer = window.setTimeout(function () {
                         updateHomePage();
                     }, 3000);
                 }
@@ -172,48 +166,50 @@
 
         function handleGoToButton() {
             window.clearTimeout(currentRefreshTimer);
-            var options = []
+            var options = [];
 
-            for(var i=0; i < config.spots.length; i++){
+            for(var i = 0; i < config.spots.length; i++) {
                 options.push(config.spots[i][0]);
             }
 
             options.push({
-                        label: 'Cancel',
-                        icon: 'md-close'
-                    });
+                label: 'Cancel',
+                icon: 'md-close'
+            });
 
             ons.openActionSheet({
                 title: 'Go to',
                 cancelable: true,
                 buttons: options
-            }).then(function (index) {
+            }).then(index => {
                 if(index > -1 && index < config.spots.length){
                     document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                        fn.updateMapPage(true).then(function(map) {
+                        fn.updateMapPage(true)
+                        .then(function(map) {
                             map.addSpot([config.spots[index][1],config.spots[index][2]]);
-                        }).catch(() => {});
+                        })
+                        .catch(() => {});
                     }});
                 } else {
-                    window.setTimeout(function () {
-                                updateHomePage();
-                            }, 3000);
+                    currentRefreshTimer = window.setTimeout(function () {
+                        updateHomePage();
+                    }, 3000);
                 }
             });
         }
 
         function handleAreaButton() {
             window.clearTimeout(currentRefreshTimer);
-            var options = []
+            var options = [];
 
-            for(var i=0; i < config.areas.length; i++){
+            for(var i = 0; i < config.areas.length; i++) {
                 options.push(config.areas[i][0]);
             }
 
             options.push({
-                        label: 'Cancel',
-                        icon: 'md-close'
-                    });
+                label: 'Cancel',
+                icon: 'md-close'
+            });
 
             var payload, calcPayload, zoneNumber = 0;
 
@@ -221,30 +217,33 @@
                 title: 'Clean zone',
                 cancelable: true,
                 buttons: options
-            }).then(function (index) {
+            })
+            .then(index => {
                 if(index > -1 && index < config.areas.length){
                     if (zoneNumber < 2) {
                         payload = config.areas[index][1];
                     }
                     if (!payload.length) {
                         ons.notification.alert('You\'ve chosen an empty zone to clean. Please set it up first.');
-                        window.setTimeout(function () {
+                        currentRefreshTimer = window.setTimeout(function () {
                             updateHomePage();
                         }, 3000);
                         return;
                     }
                     document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                        fn.updateMapPage(true).then(function(map) {
+                        fn.updateMapPage(true)
+                        .then(function(map) {
                             map.clearZones();
                             payload.forEach(function(zone) {
                                 map.addZone([zone[0], zone[1], zone[2], zone[3]], true);
                             });
-                        }).catch(() => {});
+                        })
+                        .catch(() => {});
                     }});
                 } else {
-                    window.setTimeout(function () {
-                                updateHomePage();
-                            }, 3000);
+                    currentRefreshTimer = window.setTimeout(function () {
+                        updateHomePage();
+                    }, 3000);
                 }
             });
             var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
@@ -254,7 +253,6 @@
                     zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
                 }
             }
-            
             calcPayload = function() {
                 var payload = [];
                 var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
@@ -321,82 +319,89 @@
         }
 
         function updateHomePage() {
+            if (refreshInProgress) {
+                return;
+            }
+            refreshInProgress = true;
+            window.clearTimeout(currentRefreshTimer);
             loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/current_status", "GET", function (err, res) {
+            fn.prequest("api/current_status", "GET")
+            .then((res) => {
+                batteryStatusText.innerHTML = "Battery: " + res.battery + "%";
+                batteryStatusBar.value = res.battery;
+
+                robotState.innerHTML = res.human_state;
+                if (res.error_code != 0) {
+                    robotState.innerHTML +=
+                        '<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
+                        res.human_error +
+                        ' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
+                }
+
+                if (res.in_cleaning === 1 || res.in_cleaning === 2 || res.state === 11 || res.state === 16) {
+                    if (res.state === 3 || res.state === 10 || res.state === 2) {
+                        pauseButton.setAttribute("disabled", "disabled");
+                        startButton.removeAttribute("disabled");
+                    } else {
+                        pauseButton.removeAttribute("disabled");
+                        startButton.setAttribute("disabled", "disabled");
+                    }
+                    spotButton.setAttribute("disabled", "disabled");
+                } else {
+                    spotButton.removeAttribute("disabled");
+                    pauseButton.setAttribute("disabled", "disabled");
+                    if (res.state !== 6) {
+                        startButton.removeAttribute("disabled");
+                    } else {
+                        pauseButton.removeAttribute("disabled");
+                        startButton.setAttribute("disabled", "disabled");
+                    }
+                }
+
+                if (res.state === 8 || res.state === 15 || res.state === 10 || res.state === 11 || res.state === 3 || res.state === 6 || res.state === 16) {
+                    stopButton.setAttribute("disabled", "disabled");
+                } else {
+                    stopButton.removeAttribute("disabled");
+                }
+
+                if (res.state === 5 || res.state === 6 || res.state === 8 || res.state === 9 ||  res.state === 11 || res.state === 16 || res.state === 17) {
+                    homeButton.setAttribute("disabled", "disabled");
+                } else {
+                    homeButton.removeAttribute("disabled");
+                }
+
+                robotStateDetailsM2.innerHTML = "Area: " + ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6) + " m²";
+                robotStateDetailsTime.innerHTML = "Time: " + window.fn.secondsToHms(res.clean_time);
+                fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
+            }, (err) => {
+                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            })
+            .finally(() => {
+                refreshInProgress = false;
                 loadingBarHome.removeAttribute("indeterminate");
                 fanspeedButton.removeAttribute("disabled");
                 findRobotButton.removeAttribute("disabled");
                 spotButton.removeAttribute("disabled");
 
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    batteryStatusText.innerHTML = "Battery: " + res.battery + "%";
-                    batteryStatusBar.value = res.battery;
-
-                    robotState.innerHTML = res.human_state;
-                    if (res.error_code != 0) {
-                        robotState.innerHTML +=
-                            '<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
-                            res.human_error +
-                            ' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
-                    }
-
-                    if (res.in_cleaning === 1 || res.in_cleaning === 2 || res.state === 11 || res.state === 16) {
-                        if (res.state === 3 || res.state === 10 || res.state === 2) {
-                            pauseButton.setAttribute("disabled", "disabled");
-                            startButton.removeAttribute("disabled");
-                        } else {
-                            pauseButton.removeAttribute("disabled");
-                            startButton.setAttribute("disabled", "disabled");
-                        }
-                        spotButton.setAttribute("disabled", "disabled");
-                    } else {
-                        spotButton.removeAttribute("disabled");
-                        pauseButton.setAttribute("disabled", "disabled");
-                        if (res.state !== 6) {
-                            startButton.removeAttribute("disabled");
-                        } else {
-                            pauseButton.removeAttribute("disabled");
-                            startButton.setAttribute("disabled", "disabled");
-                        }
-                    }
-
-                    if (res.state === 8 || res.state === 15 || res.state === 10 || res.state === 11 || res.state === 3 || res.state === 6 || res.state === 16) {
-                        stopButton.setAttribute("disabled", "disabled");
-                    } else {
-                        stopButton.removeAttribute("disabled");
-                    }
-
-                    if (res.state === 5 || res.state === 6 || res.state === 8 || res.state === 9 ||  res.state === 11 || res.state === 16 || res.state === 17) {
-                        homeButton.setAttribute("disabled", "disabled");
-                    } else {
-                        homeButton.removeAttribute("disabled");
-                    }
-
-                    robotStateDetailsM2.innerHTML = "Area: " + ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6) + " m²";
-                    robotStateDetailsTime.innerHTML = "Time: " + window.fn.secondsToHms(res.clean_time);
-                    fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
-
-                    currentRefreshTimer = window.setTimeout(function () {
-                        updateHomePage();
-                    }.bind(this), 5000);
-                }
-            })
-        }
+                currentRefreshTimer = window.setTimeout(function () {
+                    updateHomePage();
+                }.bind(this), 5000);
+            });
+        };
 
         ons.getScriptPage().onShow = function () {
             /* check for area and go to configuration */
-            fn.request("api/get_config", "GET", function (err, res) {
+            fn.prequest("api/get_config", "GET")
+            .then((res) => {
                 config = res;
-                if(config.spots)
-                    if(config.spots.length > 0)
-                        goToButton.removeAttribute("disabled");
-                if(config.areas)
-                    if(config.areas.length > 0)
-                        areaButton.removeAttribute("disabled");
+                if (config.spots && config.spots.length > 0)
+                    goToButton.removeAttribute("disabled");
+                if (config.areas && config.areas.length > 0)
+                    areaButton.removeAttribute("disabled");
+            })
+            .finally(() => {
+                updateHomePage();
             });
-            updateHomePage();
         };
 
         ons.getScriptPage().onHide = function () {

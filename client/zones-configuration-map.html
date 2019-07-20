@@ -63,15 +63,14 @@
 
             loadingBarSaveZones.setAttribute("indeterminate", "indeterminate");
             saveButton.setAttribute("disabled", "disabled");
-            fn.requestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT", function (err) {
+            fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
+            .then(() => {
+                ons.notification.toast("Successfully saved zones!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                fn.popPage();
+            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => {
                 loadingBarSaveZones.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    ons.notification.toast("Successfully saved zones!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                    fn.popPage();
-                }
             });
         }
     </script>

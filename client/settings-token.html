@@ -34,14 +34,12 @@
 
         function updateSettingsTokenPage() {
             loadingBarSettingsToken.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/token", "GET", function (err, res) {
-                loadingBarSettingsToken.removeAttribute("indeterminate");
-                if (!err) {
-                    settingsTokenLabel.innerHTML = res.token;
-                } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-            });
+            fn.prequest("api/token", "GET")
+            .then(
+                (res) => { settingsTokenLabel.innerHTML = res.token; },
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => loadingBarSettingsToken.removeAttribute("indeterminate"));
         }
     </script>
 </ons-page>

@@ -28,12 +28,8 @@
 
         function switchToMapZoneEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/map/latest", "GET", function (err, mapData) {
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-                loadingBarZones.removeAttribute("indeterminate");
-
+            fn.prequest("api/map/latest", "GET")
+            .then(mapData => {
                 fn.pushPage({
                     'id': 'zones-configuration-map.html',
                     'title': 'Zone configuration map',
@@ -43,17 +39,14 @@
                         'zoneToModify': index
                     }
                 });
-            });
-        }
+            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
 
         function switchToMapSpotEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/map/latest", "GET", function (err, mapData) {
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-                loadingBarZones.removeAttribute("indeterminate");
-
+            fn.prequest("api/map/latest", "GET")
+            .then(mapData => {
                 fn.pushPage({
                     'id': 'spot-configuration-map.html',
                     'title': 'Spot configuration map',
@@ -63,17 +56,14 @@
                         'spotToModify': index
                     }
                 });
-            });
-        }
+            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
 
         function switchToForbiddenMarkersEdit(index) { // todo: check that all zones are loaded before editing anything
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/map/latest", "GET", function (err, mapData) {
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-                loadingBarZones.removeAttribute("indeterminate");
-
+            fn.prequest("api/map/latest", "GET")
+            .then(mapData => {
                 fn.pushPage({
                     'id': 'forbidden-markers-configuration-map.html',
                     'title': 'Forbidden markers configuration map',
@@ -81,70 +71,64 @@
                         'map': mapData
                     }
                 });
-            });
-        }
+            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
 
         function deleteZone(index) {
             zonesConfig.splice(index, 1);
-
             saveZones();
-        }
+        };
 
         function renameZone(index) {
-            ons.notification.prompt({message: 'Enter new name for zone \''+ zonesConfig[index].name + '\'?', defaultValue: zonesConfig[index].name, cancelable: true }).then(function(name) {
+            ons.notification.prompt({message: 'Enter new name for zone \''+ zonesConfig[index].name + '\'?', defaultValue: zonesConfig[index].name, cancelable: true })
+            .then(name => {
                 if (name && name.length && zonesConfig[index].name !== name) {
                     zonesConfig[index].name = name;
                     saveZones();
                 }
             });
-        }
+        };
 
         function deleteSpot(index) {
             spotConfig.splice(index, 1);
-
             saveSpots();
-        }
+        };
 
         function renameSpot(index) {
-            ons.notification.prompt({message: 'Enter new name for spot \''+ spotConfig[index].name + '\'?', defaultValue: spotConfig[index].name, cancelable: true }).then(function(name) {
+            ons.notification.prompt({message: 'Enter new name for spot \''+ spotConfig[index].name + '\'?', defaultValue: spotConfig[index].name, cancelable: true })
+            .then(name => {
                 if (name && name.length && spotConfig[index].name !== name) {
                     spotConfig[index].name = name;
                     saveSpots();
                 }
             });
-        }
+        };
 
         function saveZones() {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-
             zonesConfig.sort((a, b) => a.name.localeCompare(b.name));
-            fn.requestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT", function (err) {
-                loadingBarZones.removeAttribute("indeterminate");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    generateZonesList();
-                }
-            });
-        }
+            fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
+            .then(
+                (res) => generateZonesList(),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
 
         function saveSpots() {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-
             spotConfig.sort((a, b) => a.name.localeCompare(b.name));
-            fn.requestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT", function (err) {
-                loadingBarZones.removeAttribute("indeterminate");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    generateSpotList();
-                }
-            });
-        }
+            fn.prequestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT")
+            .then(
+                (res) => generateSpotList(),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
 
         function addNewZone() {
             const newZoneName = document.getElementById("add-zone-name").value;
-
             if(newZoneName.trim() === "") {
                 ons.notification.toast("Please enter a zone name", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
             } else {
@@ -153,13 +137,11 @@
                     coordinates: []
                 });
             }
-
             saveZones();
-        }
+        };
 
         function addNewSpot() {
             const newSpotName = document.getElementById("add-spot-name").value;
-
             if(newSpotName.trim() === "") {
                 ons.notification.toast("Please enter a spot name", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
             } else {
@@ -168,9 +150,8 @@
                     coordinates: [25000, 25000]
                 });
             }
-
             saveSpots();
-        }
+        };
 
         function generateZonesList() {
             let out = "";
@@ -237,38 +218,25 @@
         }
 
         ons.getScriptPage().onShow = function () {
-
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
             // request map update
             fn.prequest("api/poll_map", "GET").then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
 
-            /* check for area and go to configuration */
+            // check for area and go to configuration
+            const getZones = fn.prequest("api/zones", "GET")
+            .then(res => {
+                zonesConfig = res;
+                generateZonesList();
+            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
 
-            const getZones = fetch("api/zones")
-                .then(res => res.json())
-                .then(res => {
-                    zonesConfig = res;
-                    generateZonesList();
-                })
-                .catch(err => {
-                    console.error(err);
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                });
-            const getSpots = fetch("api/spots")
-                .then(res => res.json())
-                .then(res => {
-                    spotConfig = res;
-                    generateSpotList();
-                })
-                .catch(err => {
-                    console.error(err);
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                });
+            const getSpots = fn.prequest("api/spots", "GET")
+            .then(res => {
+                spotConfig = res;
+                generateSpotList();
+            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
 
-            Promise.all([getZones, getSpots]).then(_ => {
-                loadingBarZones.removeAttribute("indeterminate");
-            });
+            Promise.all([getZones, getSpots]).finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
     </script>
     <style>

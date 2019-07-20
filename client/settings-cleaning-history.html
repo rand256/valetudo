@@ -38,25 +38,19 @@
             while (settingsCleaningHistory.lastChild) {
                 settingsCleaningHistory.removeChild(settingsCleaningHistory.lastChild);
             }
-            fn.request("api/clean_summary", "GET", function (err, res) {
-                if (!err) {
-                    //summary succeeded
-                    historyArray = res[3];
-                    // getting current timezone for properly showing local time
-                    fn.request("api/get_timezone", "GET", function (err, res) {
-                        loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                        if (!err) {
-                            timeZone = res;
-                            loadNextRemainingElements();
-                        } else {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                        }
-                    });
-                } else {
-                    loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
+            const getSummary = fn.prequest("api/clean_summary", "GET")
+            .then((res) => {
+                historyArray = res[3];
             });
+            const getTimezone = fn.prequest("api/get_timezone", "GET")
+            .then((res) => {
+                timeZone = res;
+            });
+            Promise.all([getSummary, getTimezone])
+            .then(() => {
+                loadNextRemainingElements();
+            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         }
 
         function formatTwoDigitNumber(number) {
@@ -74,62 +68,59 @@
             if (remainingShownCount>0) {
                 loadingBarSettingsCleaningHistory.setAttribute("indeterminate", "indeterminate");
                 var historyTimestamp = historyArray.shift(); //array is sorted with latest items in the beginning
-                fn.requestWithPayload("api/clean_record", JSON.stringify({recordId : historyTimestamp}) , "PUT", function (err, res) {
-                    loadingBarSettingsCleaningHistory.removeAttribute("indeterminate");
-                    if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                    } else {
-                        //adjust counters
-                        remainingShownCount--;
-                        //set variables
-                        var currentEntryId = historyArray.length+1;
-                        var fromTime = formatDate(new Date(new Date(res.startTime).toLocaleString("en-US", { timeZone: timeZone })));
-                        var durationTotalSeconds = res.duration;
-                        var durationHours = Math.floor(durationTotalSeconds / 3600);
-                        var remsecs = durationTotalSeconds % 3600;
-                        var durationMinutes = Math.floor(remsecs / 60);
-                        var durationSeconds = (remsecs % 60);
-                        var area = Math.round(res.area / 1000000);
-                        var errorCode = res.errorCode;
-                        var errorDescription = res.errorDescription;
-                        var completedFlag = res.finishedFlag;
-                        settingsCleaningHistory.appendChild(ons.createElement(
-                            "<ons-list-item title='Show cleaning map' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
-                            "   <ons-row>" +
-                            "       <ons-col></ons-col>" +
-                            "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>#" + currentEntryId + " started on " + fromTime + "</ons-col>" +
-                            "       <ons-col></ons-col>" +
-                            "   </ons-row>" +
-                            "   <ons-row>" +
-                            "       <ons-col></ons-col>" +
-                            "       <ons-col vertical-align='center' width='100px'>Duration</ons-col>" +
-                            "       <ons-col vertical-align='center' width='150px'>" + durationHours + ":" + formatTwoDigitNumber(durationMinutes) + ":" + formatTwoDigitNumber(durationSeconds) + "</ons-col>" +
-                            "       <ons-col></ons-col>" +
-                            "   </ons-row>"+
-                            "   <ons-row>" +
-                            "       <ons-col></ons-col>" +
-                            "       <ons-col vertical-align='center' width='100px'>Area</ons-col>" +
-                            "       <ons-col vertical-align='center' width='150px'>" + area + " m<sup>2</sup></ons-col>" +
-                            "       <ons-col></ons-col>" +
-                            "   </ons-row>"+
-                            "   <ons-row>" +
-                            "       <ons-col></ons-col>" +
-                            "       <ons-col vertical-align='center' width='100px'>Completed</ons-col>" +
-                            "       <ons-col vertical-align='center' width='150px'>" + (completedFlag?"<ons-icon icon='fa-check-circle' style='color:green;'>":"<ons-icon icon='fa-times-circle' style='color:red;'>") + "</ons-col>" +
-                            "       <ons-col></ons-col>" +
-                            "   </ons-row>"+
-                            (errorCode>0?
-                            "   <ons-row>" +
-                            "       <ons-col></ons-col>" +
-                            "       <ons-col vertical-align='center' width='400px' style='text-align:center;'><ons-icon icon='fa-warning' style='color:red;'></ons-icon>&nbsp;" + errorDescription + " (Code: " + errorCode + ")</ons-col>" +
-                            "       <ons-col></ons-col>" +
-                            "   </ons-row>"
-                            : "" ) +
-                            "</ons-list-item>"));
-                        //load next element
-                        loadNextRemainingElements();
-                    }
-                });
+                fn.prequestWithPayload("api/clean_record", JSON.stringify({recordId : historyTimestamp}), "PUT")
+                .then((res) => {
+                    //adjust counters
+                    remainingShownCount--;
+                    //set variables
+                    var currentEntryId = historyArray.length+1;
+                    var fromTime = formatDate(new Date(new Date(res.startTime).toLocaleString("en-US", { timeZone: timeZone })));
+                    var durationTotalSeconds = res.duration;
+                    var durationHours = Math.floor(durationTotalSeconds / 3600);
+                    var remsecs = durationTotalSeconds % 3600;
+                    var durationMinutes = Math.floor(remsecs / 60);
+                    var durationSeconds = (remsecs % 60);
+                    var area = Math.round(res.area / 1000000);
+                    var errorCode = res.errorCode;
+                    var errorDescription = res.errorDescription;
+                    var completedFlag = res.finishedFlag;
+                    settingsCleaningHistory.appendChild(ons.createElement(
+                        "<ons-list-item title='Show cleaning map' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
+                        "   <ons-row>" +
+                        "       <ons-col></ons-col>" +
+                        "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>#" + currentEntryId + " started on " + fromTime + "</ons-col>" +
+                        "       <ons-col></ons-col>" +
+                        "   </ons-row>" +
+                        "   <ons-row>" +
+                        "       <ons-col></ons-col>" +
+                        "       <ons-col vertical-align='center' width='100px'>Duration</ons-col>" +
+                        "       <ons-col vertical-align='center' width='150px'>" + durationHours + ":" + formatTwoDigitNumber(durationMinutes) + ":" + formatTwoDigitNumber(durationSeconds) + "</ons-col>" +
+                        "       <ons-col></ons-col>" +
+                        "   </ons-row>"+
+                        "   <ons-row>" +
+                        "       <ons-col></ons-col>" +
+                        "       <ons-col vertical-align='center' width='100px'>Area</ons-col>" +
+                        "       <ons-col vertical-align='center' width='150px'>" + area + " m<sup>2</sup></ons-col>" +
+                        "       <ons-col></ons-col>" +
+                        "   </ons-row>"+
+                        "   <ons-row>" +
+                        "       <ons-col></ons-col>" +
+                        "       <ons-col vertical-align='center' width='100px'>Completed</ons-col>" +
+                        "       <ons-col vertical-align='center' width='150px'>" + (completedFlag?"<ons-icon icon='fa-check-circle' style='color:green;'>":"<ons-icon icon='fa-times-circle' style='color:red;'>") + "</ons-col>" +
+                        "       <ons-col></ons-col>" +
+                        "   </ons-row>"+
+                        (errorCode>0?
+                        "   <ons-row>" +
+                        "       <ons-col></ons-col>" +
+                        "       <ons-col vertical-align='center' width='400px' style='text-align:center;'><ons-icon icon='fa-warning' style='color:red;'></ons-icon>&nbsp;" + errorDescription + " (Code: " + errorCode + ")</ons-col>" +
+                        "       <ons-col></ons-col>" +
+                        "   </ons-row>"
+                        : "" ) +
+                        "</ons-list-item>"));
+                    //load next element
+                    loadNextRemainingElements();
+                }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
             } else {
                 if (historyArray.length>0) {
                     //show link to load more
@@ -163,7 +154,7 @@
                     });
                 } else if (res && res[0] === "map_upload_handler") {
                     if (mapDataCached) {
-                        // the thing is when this is reply to the first request then map snapshot isn't actually being sent it seems
+                        // the thing is when this reply is received after the first request then map snapshot isn't actually being sent it seems
                         fn.pushPage({
                             'id': 'settings-cleaning-history-map.html',
                             'title': 'Cleaning history map',
@@ -194,7 +185,9 @@
                     }
                 });
             }, (err) => { throw err; })
-            .catch((err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .catch((err) => {
+                if (err !== "ok") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+            })
             .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         };
     </script>

@@ -116,56 +116,48 @@
             } else {
                 resetMapButton.removeAttribute("disabled");
             }
-        }
+        };
 
         function initForm(currentStatus) {
             var persistentDataForm = document.getElementById('persistent_data_form');
             document.getElementById('lab_mode_enabled').checked = (currentStatus.lab_status === 1);
             disableResetMap(currentStatus.lab_status !== 1);
-        }
+        };
 
         function updateSettingsPersistentDataPage() {
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/current_status", "GET", function (err, res) {
-                loadingBarSettingsPersistentData.removeAttribute("indeterminate");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            fn.prequest("api/current_status", "GET")
+            .then((res) => {
+                const isS50 = res.model === "roborock.vacuum.s5"; //TODO: Magic string
+                if(isS50) {
+                    document.getElementById('persistent_data_form').classList.remove("hidden");
+                    initForm(res);
                 } else {
-                    const isS50 = res.model === "roborock.vacuum.s5"; //TODO: Magic string
-                    if(isS50) {
-                        document.getElementById('persistent_data_form').classList.remove("hidden");
-                        initForm(res);
-                    } else {
-                        document.getElementById('persistent_data_not_supported').classList.remove("hidden");
-                    }
+                    document.getElementById('persistent_data_not_supported').classList.remove("hidden");
                 }
-            })
-        }
+            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+        };
 
         function resetMap() {
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/reset_map", "PUT", function (err, res) {
-                loadingBarSettingsPersistentData.removeAttribute("indeterminate");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                } else {
-                    ons.notification.toast("Map resetted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                }
-            });
-        }
+            fn.prequest("api/reset_map", "PUT")
+            .then(
+                (res) => ons.notification.toast("Map resetted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+        };
 
         function savePersistentData() {
             const labStatus = true === document.getElementById('lab_mode_enabled').checked;
-
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-            fn.requestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT", function (err, res) {
-                loadingBarSettingsPersistentData.removeAttribute("indeterminate");
-                if (err) {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                } else {
-                    ons.notification.toast("Saved settings!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
-                }
-            });
-        }
+            fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT")
+            .then(
+                (res) => ons.notification.toast("Saved settings!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
+                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            )
+            .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+        };
     </script>
 </ons-page>
