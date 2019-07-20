@@ -12,6 +12,8 @@
         import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
         const map = new VacuumMap(document.getElementById('cleaning-history-map'));
 
+        document.querySelector("#settings-cleaning-history-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         const topPage = fn.getTopPage();
         const cleaningDate = topPage.data.cleaningDate;
 

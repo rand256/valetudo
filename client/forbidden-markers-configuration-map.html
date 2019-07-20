@@ -29,7 +29,8 @@
 
         const topPage = fn.getTopPage();
         map.initCanvas(topPage.data.map, {metaData: false, noGotoPoints: true});
-        window.fn.map = map;
+
+        document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         if (topPage.data.map.no_go_areas)
         for (let zone of topPage.data.map.no_go_areas) {

@@ -50,6 +50,12 @@
 
         window.fn.popPage = function() {
             document.getElementById('appNavigator').popPage();
+            let stateObj = {moveView: (history.state && history.state.moveView || 0)};
+            if (history.state && history.state.moveSubPage && history.state.moveSubPage.length > 1) {
+                stateObj.moveSubPage = history.state.moveSubPage.splice(0);
+                stateObj.moveSubPage.shift();
+            }
+            history.pushState(stateObj, "");
         }
 
         window.fn.getTopPage = function() {

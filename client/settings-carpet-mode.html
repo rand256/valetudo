@@ -62,6 +62,8 @@
     <script>
         var loadingBarSettingsCarpetMode = document.getElementById('loading-bar-settings-carpet-mode');
 
+        document.querySelector("#settings-carpet-mode-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function () {
             updateSettingsCarpetModePage();
         };

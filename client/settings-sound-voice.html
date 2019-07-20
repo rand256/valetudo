@@ -66,6 +66,8 @@
         var voicePackUploadButton = document.getElementById('settings-sound-voice-upload-pack-button');
         var voicePackFileBrowser = document.getElementById('settings-sound-voice-upload-browser');
 
+        document.querySelector("#settings-sound-voice ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function() {
             updateSettingsSoundVolumePage();
         };

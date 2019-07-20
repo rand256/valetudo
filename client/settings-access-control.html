@@ -108,6 +108,8 @@
         var sshKeysTitle = document.getElementById('settings-access-control-ssh-keys-title');
         var sshKeysList = document.getElementById('settings-access-control-ssh-keys-list');
 
+        document.querySelector("#settings-access-control ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function() {
             updateSettingsAccessControlPage();
         };

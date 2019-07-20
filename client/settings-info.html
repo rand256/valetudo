@@ -107,11 +107,11 @@
         </ons-list-item>
     </ons-list>
 
-
-
-
     <script>
         var loadingBarSettingsInfo = document.getElementById('loading-bar-settings-info');
+
+        document.querySelector("#settings-info-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function() {
             updateSettingsInfoPage();
         };

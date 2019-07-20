@@ -85,6 +85,7 @@
         wifiInputSSID.addEventListener('input', updateWifiCredentialsSaveButton);
         wifiInputPassword.addEventListener('input', updateWifiCredentialsSaveButton);
 
+        document.querySelector("#settings-wifi-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         ons.getScriptPage().onShow = function() {
             updateSettingsWifiPage();

@@ -99,6 +99,8 @@
     <script>
         var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data');
 
+        document.querySelector("#settings-persistent-data-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function () {
             document.getElementById('lab_mode_enabled').addEventListener("change", function(event) {
                 disableResetMap(!event.target.checked)

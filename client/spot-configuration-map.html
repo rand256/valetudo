@@ -27,6 +27,8 @@
 
         map.initCanvas(topPage.data.map, {metaData: "forbidden"});
 
+        document.querySelector("#spot-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
 
         map.addSpot([spotConfig[spotToModify].coordinates[0], spotConfig[spotToModify].coordinates[1]]);

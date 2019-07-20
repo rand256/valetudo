@@ -22,6 +22,8 @@
         var historyArray, timeZone;
         var mapDataCached = null;
 
+        document.querySelector("#settings-cleaning-history-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onInit = function () {
             updateSettingsCleaningHistoryPage();
         };

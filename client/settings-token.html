@@ -26,6 +26,8 @@
         var loadingBarSettingsToken = document.getElementById('loading-bar-settings-token');
         var settingsTokenLabel = document.getElementById('settings-token-label');
 
+        document.querySelector("#settings-token-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function () {
             updateSettingsTokenPage();
         };

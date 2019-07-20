@@ -33,6 +33,8 @@
 
         map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
 
+        document.querySelector("#zones-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
         for(let zone of zonesConfig[zoneToModify].coordinates) {
             map.addZone([zone[0], zone[1], zone[2], zone[3]], true);

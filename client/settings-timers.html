@@ -213,6 +213,8 @@
 
         var zTimers = [];
 
+        document.querySelector("#settings-timers-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
         ons.getScriptPage().onShow = function () {
             updateSettingsZonedTimersPage();
             updateSettingsTimersPage();
