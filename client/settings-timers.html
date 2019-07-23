@@ -463,7 +463,9 @@
                 if (res == null || res.length == 0) {
                     timersList.firstElementChild.style.display = "";
                 } else {
+                    let index = 0;
                     res.forEach(function (timer) {
+                        if (zoned) timer.id = index++;
                         //ADD EDIT (equals create new + delete!)
                         var elem = ons.createElement(
                             "<ons-list-item data-id='" + timer.id + "'>\n" +
@@ -478,11 +480,11 @@
                         );
 
                         elem.querySelector('.timer-active-switch').addEventListener('change', function (event) {
-                            toggleTimer(timer.id, event.value);
+                            toggleTimer(timer.id, event.value, zoned);
                         });
 
                         elem.querySelector('.timer-delete').addEventListener('click', function (event) {
-                            deleteTimer(timer.id);
+                            deleteTimer(timer.id, zoned);
                         });
 
                         timersList.appendChild(elem);
@@ -527,7 +529,7 @@
             });
         }
 
-        function deleteTimer(id,zoned) {
+        function deleteTimer(id, zoned) {
             zoned = zoned || false;
             disableTimerInputElements(zoned);
             ons.notification.confirm('Do you really want to delete this timer?').then(function (answer) {
