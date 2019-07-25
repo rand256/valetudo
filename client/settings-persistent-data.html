@@ -48,15 +48,53 @@
         </ons-row>
         <ons-row>
             <ons-col></ons-col>
-            <ons-col width="100px" vertical-align='center'><ons-button modifier="large" class="button-margin" onclick="savePersistentData();">Save</ons-button></ons-col>
+            <ons-col width="150px" vertical-align='center'>Export forbidden markers to Valetudo config</ons-col>
+            <ons-col width="150px" vertical-align='center'>
+                <ons-button id="export_persistent_data" title="This exports forbidden zones and virtual walls data from firmware and saves it in Valetudo" modifier="large" class="button-margin" onclick="document.getElementById('confirm_export_data').show();">
+                    Export
+                </ons-button>
+            </ons-col>
+            <ons-col></ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col><br/></ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col></ons-col>
+            <ons-col width="150px" vertical-align='center'>Import forbidden markers from Valetudo config</ons-col>
+            <ons-col width="150px" vertical-align='center'>
+                <ons-button id="export_persistent_data" title="This imports forbidden zones and virtual walls data from Valetudo and sets it in firmware" modifier="large" class="button-margin" onclick="document.getElementById('confirm_import_data').show();">
+                    Import
+                </ons-button>
+            </ons-col>
+            <ons-col></ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col><br/></ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col></ons-col>
+            <ons-col width="100px" vertical-align='center'><ons-button modifier="large" class="button-margin" onclick="saveLabMode();">Save</ons-button></ons-col>
             <ons-col></ons-col>
         </ons-row>
     </form>
 
-    <ons-dialog id="confirm_reset_map">
-        <p id="reset_map_warning">This deletes the currently saved map, all no-go areas and virtual walls. Are you sure to proceed?</p>
+    <ons-dialog id="confirm_reset_map" class="persistent-data-confirm">
+        <p class="persistent-data-warning">This deletes the currently saved map, all forbidden zones and virtual walls.<br/> Are you sure to proceed?</p>
         <ons-button onclick="resetMap(); document.getElementById('confirm_reset_map').hide();"><ons-icon icon="fa-exclamation-triangle"></ons-icon> Delete now!</ons-button>
         <ons-button onclick="document.getElementById('confirm_reset_map').hide()">Cancel</ons-button>
+    </ons-dialog>
+
+    <ons-dialog id="confirm_export_data" class="persistent-data-confirm">
+        <p class="persistent-data-warning">This exports forbidden zones and virtual walls from device's firmware and saves them to Valetudo configuration.<br/> All previously saved data will be overwritten. Are you sure to proceed?</p>
+        <ons-button onclick="exportPersistentData(); document.getElementById('confirm_export_data').hide();"><ons-icon icon="fa-exclamation-triangle"></ons-icon> Export data</ons-button>
+        <ons-button onclick="document.getElementById('confirm_export_data').hide()">Cancel</ons-button>
+    </ons-dialog>
+
+    <ons-dialog id="confirm_import_data" class="persistent-data-confirm">
+        <p class="persistent-data-warning">This imports forbidden zones and virtual walls from Valetudo configuration and sets them in device's firmware.<br/> All previously set data will be overwritten. Are you sure to proceed?</p>
+        <ons-button onclick="importPersistentData(); document.getElementById('confirm_import_data').hide();"><ons-icon icon="fa-exclamation-triangle"></ons-icon> Import data</ons-button>
+        <ons-button onclick="document.getElementById('confirm_import_data').hide()">Cancel</ons-button>
     </ons-dialog>
 
     <style>
@@ -72,7 +110,7 @@
             display: none;
         }
 
-        #confirm_reset_map .dialog-container {
+        .persistent-data-confirm .dialog-container {
             display: grid;
             grid-template-rows: auto auto;
             grid-template-columns: 1fr 1fr;
@@ -82,12 +120,12 @@
             gap: 0.5em;
         }
 
-        #reset_map_warning {
+        .persistent-data-warning {
             grid-area: text;
         }
 
         @media(max-width: 800px) {
-            #confirm_reset_map .dialog-container {
+            .persistent-data-confirm .dialog-container {
                 grid-template-rows: auto auto auto;
                 grid-template-columns: 1fr;
                 grid-template-areas: "text" "button1" "button2";
@@ -103,25 +141,27 @@
 
         ons.getScriptPage().onShow = function () {
             document.getElementById('lab_mode_enabled').addEventListener("change", function(event) {
-                disableResetMap(!event.target.checked)
+                disableMapFunctions(!event.target.checked)
             });
 
             updateSettingsPersistentDataPage();
         };
 
-        function disableResetMap(flag) {
-            const resetMapButton = document.getElementById("reset_map_button");
-            if(flag) {
-                resetMapButton.setAttribute("disabled", "true");
-            } else {
-                resetMapButton.removeAttribute("disabled");
-            }
+        function disableMapFunctions(flag) {
+            const dataButtons = document.querySelectorAll("#reset_map_button, #export_persistent_data, #import_persistent_data");
+            Array.from(dataButtons).forEach(button => {
+                if (flag) {
+                    button.setAttribute("disabled", "true");
+                } else {
+                    button.removeAttribute("disabled");
+                }
+            });
         };
 
         function initForm(currentStatus) {
             var persistentDataForm = document.getElementById('persistent_data_form');
             document.getElementById('lab_mode_enabled').checked = (currentStatus.lab_status === 1);
-            disableResetMap(currentStatus.lab_status !== 1);
+            disableMapFunctions(currentStatus.lab_status !== 1);
         };
 
         function updateSettingsPersistentDataPage() {
@@ -149,12 +189,42 @@
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
 
-        function savePersistentData() {
+        function exportPersistentData() {
+            loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/map/latest", "GET")
+            .then(res => { return {virtual_walls: res.virtual_walls, forbidden_zones: res.forbidden_zones}; })
+            .then(res => fn.prequestWithPayload("api/forbidden_markers", JSON.stringify(res), "PUT"))
+            .then(res => ons.notification.toast("Persistent data exported to configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
+            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+        };
+
+        function importPersistentData() {
+            let forbiddenMarkers;
+            loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/forbidden_markers", "GET")
+            .then(res => {
+                forbiddenMarkers = res;
+                let virtualWalls = res.virtual_walls && res.virtual_walls.length || 0;
+                let forbiddenZones = res.forbidden_zones && res.forbidden_zones.length || 0;
+                return ons.notification.confirm("You're going to import " + virtualWalls + " virtual wall" + (virtualWalls !== 1 ? "s" :"") + " and " + forbiddenZones + " forbidden zone" + (forbiddenZones !== 1 ? "s" :"") + ". Continue?");
+            })
+            .then(res => {
+                if (res === 1) return forbiddenMarkers;
+                else return Promise.reject("Cancelled.");
+            })
+            .then(res => fn.prequestWithPayload("api/persistent_data", JSON.stringify(res), "PUT"))
+            .then(res => ons.notification.toast("Persistent data imported from configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
+            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+        };
+
+        function saveLabMode() {
             const labStatus = true === document.getElementById('lab_mode_enabled').checked;
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT")
             .then(
-                (res) => ons.notification.toast("Saved settings!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
+                (res) => ons.notification.toast("Settings saved!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
                 (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
             )
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
