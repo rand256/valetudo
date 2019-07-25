@@ -79,7 +79,7 @@
                 carpetForm.current_integral.value = result.current_integral;
                 carpetForm.stall_time.value = result.stall_time;
                 document.getElementById('carpet_mode_enabled').checked = (result.enable==1);
-            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsCarpetMode.removeAttribute("indeterminate"));
         };
 
@@ -95,8 +95,8 @@
                     var enable = (document.getElementById('carpet_mode_enabled').checked == true);
                     fn.prequestWithPayload("api/set_carpet_mode", JSON.stringify({ enable, current_low, current_high, current_integral, stall_time }), "PUT")
                     .then(
-                        (res) => updateSettingsCarpetModePage(),
-                        (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                        (res) => { updateSettingsCarpetModePage() },
+                        (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
                     )
                     .finally(() => loadingBarSettingsCarpetMode.removeAttribute("indeterminate"));
                 }

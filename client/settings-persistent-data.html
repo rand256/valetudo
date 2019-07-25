@@ -175,7 +175,7 @@
                 } else {
                     document.getElementById('persistent_data_not_supported').classList.remove("hidden");
                 }
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
 
@@ -183,8 +183,8 @@
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/reset_map", "PUT")
             .then(
-                (res) => ons.notification.toast("Map resetted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { ons.notification.toast("Map resetted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
@@ -194,8 +194,8 @@
             fn.prequest("api/map/latest", "GET")
             .then(res => { return {virtual_walls: res.virtual_walls, forbidden_zones: res.forbidden_zones}; })
             .then(res => fn.prequestWithPayload("api/forbidden_markers", JSON.stringify(res), "PUT"))
-            .then(res => ons.notification.toast("Persistent data exported to configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
-            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(res => { ons.notification.toast("Persistent data exported to configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .catch(err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
 
@@ -214,8 +214,8 @@
                 else return Promise.reject("Cancelled.");
             })
             .then(res => fn.prequestWithPayload("api/persistent_data", JSON.stringify(res), "PUT"))
-            .then(res => ons.notification.toast("Persistent data imported from configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
-            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(res => { ons.notification.toast("Persistent data imported from configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .catch(err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
 
@@ -224,8 +224,8 @@
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT")
             .then(
-                (res) => ons.notification.toast("Settings saved!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { ons.notification.toast("Settings saved!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };

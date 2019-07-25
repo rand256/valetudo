@@ -67,7 +67,7 @@
             .then(() => {
                 ons.notification.toast("Successfully saved zones!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
                 fn.popPage();
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => {
                 loadingBarSaveZones.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");

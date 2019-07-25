@@ -257,7 +257,7 @@
                         ),anchor);
                     }
                 });
-            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => {
                 loadingBarSettingsTimers.removeAttribute("indeterminate");
                 addZoneCoordinatesButton.disabled = false;
@@ -335,7 +335,7 @@
                     }
                 }
                 document.getElementById('edit-timezone-dialog').show();
-            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
         };
 
@@ -352,8 +352,8 @@
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                     fn.prequestWithPayload("/api/set_timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
                     .then(
-                        (res) => hideTimeZoneDialog(),
-                        (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                        (res) => { hideTimeZoneDialog() },
+                        (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
                     )
                     .finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
                 }
@@ -416,7 +416,7 @@
                     });
                     dndTimerList.firstElementChild.style.display = "none";
                 }
-            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
         };
 
@@ -426,8 +426,8 @@
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                     fn.prequest("api/delete_dnd", "PUT")
                     .then(
-                        (res) => updateDndTimerPage(),
-                        (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                        (res) => { updateDndTimerPage() },
+                        (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
                     )
                     .finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
                 }
@@ -444,7 +444,7 @@
                 .then((res) => {
                     hideDndTimerDialog();
                     updateDndTimerPage();
-                },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+                },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
             } else {
                 ons.notification.toast("Could not save DND Timer since not all required attributes are provided!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
             }
@@ -503,7 +503,7 @@
             disableTimerInputElements(zoned);
             loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload((zoned ? "api/ztimers/" : "api/timers/") + id, JSON.stringify({ enabled: enabled }), "PUT")
-            .then(null,(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(null,(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => setTimeout(() => updateSettingsTimersPage(zoned),350));
         }
 
@@ -536,7 +536,7 @@
                 if (answer === 1) {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                     fn.prequest((zoned ? "api/ztimers/" : "api/timers/") + id, "DELETE")
-                    .then(null,(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                    .then(null,(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                     .finally(() => updateSettingsTimersPage(zoned));
                 } else {
                     enableTimerInputElements(zoned);
@@ -666,7 +666,7 @@
                 zTimers.push(newTimer);
             }
             fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify(zoned ? zTimers : { cron: cronTimer }), zoned ? "PUT" : "POST")
-            .then(null,(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(null,(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => {
                 updateSettingsTimersPage(zoned);
                 hideNewTimerDialog(zoned);
@@ -687,7 +687,7 @@
                 .then((res) => {
                     zTimers = res;
                     dialog.show();
-                },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                 .finally(loadingBarSettingsTimers.removeAttribute("indeterminate"));
             } else {
                 dialog.show();

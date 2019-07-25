@@ -42,10 +42,7 @@
                 duration: manualControlDurationMS*2,
                 sequenceId: manualControlSequenceId++
             }), "PUT")
-            .then(
-                _ => {},
-                err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-            )
+            .then(null, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => {
                 manualControlLoadingBar.removeAttribute("indeterminate");
             });
@@ -90,7 +87,7 @@
                 .then(() => {
                     _startManualControl();
                     postponeRefreshManualControlMode();
-                }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                 .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
             }
         }
@@ -102,7 +99,7 @@
                 .then(() => {
                     _stopManualControl();
                     postponeRefreshManualControlMode();
-                }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                 .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
             }
         }
@@ -277,7 +274,7 @@
                 } else {
                     _stopManualControl();
                 }
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
         };
 

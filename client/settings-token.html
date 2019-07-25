@@ -37,7 +37,7 @@
             fn.prequest("api/token", "GET")
             .then(
                 (res) => { settingsTokenLabel.innerHTML = res.token; },
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarSettingsToken.removeAttribute("indeterminate"));
         }

@@ -48,7 +48,7 @@
                     map.initWebSocket();
                     resolve(map);
                 }, err => {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
                     reject();
                 })
                 .finally(() => {
@@ -74,8 +74,8 @@
             button.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/go_to", JSON.stringify(point), "PUT")
             .then(
-                (res) => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
@@ -92,8 +92,8 @@
             button.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT")
             .then(
-                (res) => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
@@ -123,7 +123,7 @@
         document.getElementById("map_reload_button").onclick = () => {
             loadingBar.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/poll_map", "GET")
-            .then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally (() => loadingBar.removeAttribute("indeterminate"));
         }
         document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
@@ -134,7 +134,7 @@
         // Somehow getScriptPage returns null inside the type=module script tag
         ons.getScriptPage().onShow = function () {
             window.fn.updateMapPage().catch(() => {});
-            window.fn.prequest("api/poll_map", "GET").then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+            window.fn.prequest("api/poll_map", "GET").then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
         };
         ons.getScriptPage().onHide = function () {
             window.fn.cancelUpdateMap();

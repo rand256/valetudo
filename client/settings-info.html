@@ -123,7 +123,7 @@
                 document.getElementById('info_fw_build').innerHTML = res.build;
                 document.getElementById('info_valetudo_version').innerHTML = res.valetudoVersion;
                 updateAppLocale();
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
         function updateAppLocale() {
@@ -137,7 +137,7 @@
                 document.getElementById('app_locale_language').innerHTML = appLocale.language;
                 document.getElementById('app_locale_timezone').innerHTML = appLocale.timezone;
                 document.getElementById('app_locale_logserver').innerHTML = appLocale.logserver;
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
 
@@ -156,7 +156,7 @@
                 } catch (e) {
                     ons.notification.toast(e, { buttonLabel: 'Dismiss', timeout: 1500 });
                 }
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
     </script>

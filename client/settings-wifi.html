@@ -103,7 +103,7 @@
 
                     wifiInputSSID.value = res.connection_info.ssid;
                 }
-            },(err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
         };
 
@@ -132,7 +132,7 @@
                                 'However, you will most likely need to change the URL since the robot will connect to a new wifi.').then(function () {
                                     location.reload();
                                 }),
-                        (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                        (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
                     )
                     .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
                 }

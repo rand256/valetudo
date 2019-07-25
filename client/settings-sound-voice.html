@@ -77,7 +77,7 @@
             fn.prequest("api/get_sound_volume", "GET")
             .then(
                 (res) => { soundVolumeInputVolume.value = res; },
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
@@ -96,8 +96,8 @@
                  volume: soundVolumeInputVolume.value
             }), "PUT")
             .then(
-                (res) => ons.notification.toast("Volume successfully saved.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { ons.notification.toast("Volume successfully saved.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
@@ -105,7 +105,7 @@
         function handleSoundVolumeSettingsTestButton() {
             loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/test_sound_volume", "PUT")
-            .then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
 

@@ -39,7 +39,7 @@
                         'zoneToModify': index
                     }
                 });
-            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
@@ -56,7 +56,7 @@
                         'spotToModify': index
                     }
                 });
-            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
@@ -71,7 +71,7 @@
                         'map': mapData
                     }
                 });
-            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
@@ -110,8 +110,8 @@
             zonesConfig.sort((a, b) => a.name.localeCompare(b.name));
             fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
             .then(
-                (res) => generateZonesList(),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { generateZonesList() },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
@@ -121,8 +121,8 @@
             spotConfig.sort((a, b) => a.name.localeCompare(b.name));
             fn.prequestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT")
             .then(
-                (res) => generateSpotList(),
-                (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                (res) => { generateSpotList() },
+                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
             )
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
@@ -221,20 +221,20 @@
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
             // request map update
-            fn.prequest("api/poll_map", "GET").then(null, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+            fn.prequest("api/poll_map", "GET").then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
 
             // check for area and go to configuration
             const getZones = fn.prequest("api/zones", "GET")
             .then(res => {
                 zonesConfig = res;
                 generateZonesList();
-            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
 
             const getSpots = fn.prequest("api/spots", "GET")
             .then(res => {
                 spotConfig = res;
                 generateSpotList();
-            }, err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }));
+            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
 
             Promise.all([getZones, getSpots]).finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };

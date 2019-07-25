@@ -49,7 +49,7 @@
             Promise.all([getSummary, getTimezone])
             .then(() => {
                 loadNextRemainingElements();
-            }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
             .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         }
 
@@ -119,7 +119,7 @@
                         "</ons-list-item>"));
                     //load next element
                     loadNextRemainingElements();
-                }, (err) => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                 .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
             } else {
                 if (historyArray.length>0) {
@@ -155,6 +155,7 @@
                 } else if (res && res[0] === "map_upload_handler") {
                     if (mapDataCached) {
                         // the thing is when this reply is received after the first request then map snapshot isn't actually being sent it seems
+                        // todo: maybe somehow stop requesting new maps (in dummycloud) when we're viewing history?
                         fn.pushPage({
                             'id': 'settings-cleaning-history-map.html',
                             'title': 'Cleaning history map',
