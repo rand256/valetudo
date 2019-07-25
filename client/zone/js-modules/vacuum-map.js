@@ -118,7 +118,7 @@ export function VacuumMap(canvasElement) {
     function updateMapMetadata(mapData) {
         updateGotoTarget(mapData.goto_target);
         updateCurrentZones(mapData.currently_cleaned_zones || []);
-        updateForbiddenZones(mapData.no_go_areas || []);
+        updateForbiddenZones(mapData.forbidden_zones || []);
         updateVirtualWalls(mapData.virtual_walls|| []);
     }
 
@@ -138,7 +138,7 @@ export function VacuumMap(canvasElement) {
 
         switch (options.metaData) {
             case "none": break;
-            case "forbidden": updateForbiddenZones(mapData.no_go_areas || []); updateVirtualWalls(mapData.virtual_walls|| []); break;
+            case "forbidden": updateForbiddenZones(mapData.forbidden_zones || []); updateVirtualWalls(mapData.virtual_walls|| []); break;
             default: updateMapMetadata(mapData);
         }
 
@@ -164,9 +164,9 @@ export function VacuumMap(canvasElement) {
 
     /**
      * Sets up the canvas for tracking taps / pans / zooms and redrawing the map accordingly
-     * @param {object} data - the json data returned by the "/api/map/latest" route
+     * @param {object} mapData - the json data returned by the "/api/map/latest" route
      */
-    function initCanvas(data, opts) {
+    function initCanvas(mapData, opts) {
         if (opts) options = opts;
         let ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
@@ -187,20 +187,20 @@ export function VacuumMap(canvasElement) {
             redraw();
         });
 
-        mapDrawer.draw(data.image);
+        mapDrawer.draw(mapData.image);
 
         switch (options.metaData) {
             case false:
             case "none": break;
-            case "forbidden": updateForbiddenZones(data.no_go_areas || []); updateVirtualWalls(data.virtual_walls|| []); break;
-            default: updateMapMetadata(data);
+            case "forbidden": updateForbiddenZones(mapData.forbidden_zones || []); updateVirtualWalls(mapData.virtual_walls|| []); break;
+            default: updateMapMetadata(mapData);
         }
 
         const boundingBox = {
-            minX: data.image.position.left,
-            minY: data.image.position.top,
-            maxX: data.image.position.left + data.image.dimensions.width,
-            maxY: data.image.position.top + data.image.dimensions.height
+            minX: mapData.image.position.left,
+            minY: mapData.image.position.top,
+            maxX: mapData.image.position.left + mapData.image.dimensions.width,
+            maxY: mapData.image.position.top + mapData.image.dimensions.height
         }
         const initialScalingFactor = Math.min(
             canvas.width / (boundingBox.maxX - boundingBox.minX),
@@ -209,9 +209,9 @@ export function VacuumMap(canvasElement) {
         currentScale = initialScalingFactor;
 
         if (options.noPath) {
-            pathDrawer.setPath({}, data.robot, data.charger, {});
+            pathDrawer.setPath({}, mapData.robot, mapData.charger, {});
         } else {
-            pathDrawer.setPath(data.path, data.robot, data.charger, data.goto_predicted_path);
+            pathDrawer.setPath(mapData.path, mapData.robot, mapData.charger, mapData.goto_predicted_path);
         }
         pathDrawer.scale(initialScalingFactor);
 

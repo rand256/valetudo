@@ -32,8 +32,8 @@
 
         document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        if (topPage.data.map.no_go_areas)
-        for (let zone of topPage.data.map.no_go_areas) {
+        if (topPage.data.map.forbidden_zones)
+        for (let zone of topPage.data.map.forbidden_zones) {
             map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
         }
 
@@ -53,7 +53,7 @@
         }
 
         saveButton.onclick = () => {
-            const persistentData = {virtual_walls: map.getLocations().virtualWalls, no_go_areas: map.getLocations().forbiddenZones};
+            const persistentData = {virtual_walls: map.getLocations().virtualWalls, forbidden_zones: map.getLocations().forbiddenZones};
             loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
             saveButton.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")

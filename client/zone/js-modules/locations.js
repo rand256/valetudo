@@ -1,6 +1,6 @@
 /**
  * The idea behind "locations" (for lack of a better term)
- * is that we can manage multiple goto points / zones or in the future nogo areas etc.
+ * is that we can manage multiple goto points / zones etc.
  *
  * They include the drawing logic (draw function) which is called by the vacuum-map,
  * and can define hooks for user-interaction such as tapping or panning.
@@ -466,7 +466,7 @@ export class VirtualWall  {
 }
 
 /**
- * Represents a nogo zone the robot does not enter
+ * Represents a forbidden zone the robot does not enter
  */
 export class ForbiddenZone  {
 
