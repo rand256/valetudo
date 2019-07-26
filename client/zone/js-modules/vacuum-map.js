@@ -17,8 +17,8 @@ export function VacuumMap(canvasElement) {
     const pathDrawer = new PathDrawer();
     let coords = [];
 
-    let ws, wsPreventReconnecting = false;
-    let heartbeatTimeout;
+    let ws;
+    let probeTimeout;
 
     let options = {};
 
@@ -31,23 +31,36 @@ export function VacuumMap(canvasElement) {
 
     let redrawCanvas = null;
 
+    function probeWebSocket() {
+        clearTimeout(probeTimeout);
+        probeTimeout = setTimeout(() => {
+            if (ws.isAlive === false || ws.readyState !== 1) {
+                initWebSocket();
+                return;
+            }
+            ws.isAlive = false;
+            ws.send("p");
+            probeWebSocket();
+        }, 5e3);
+    };
+
     function initWebSocket() {
         const protocol = location.protocol === "https:" ? "wss" : "ws";
         coords = [];
 
         closeWebSocket();
+        clearTimeout(probeTimeout);
         ws = new WebSocket(`${protocol}://${window.location.host}/`);
-        ws.binaryType = 'arraybuffer';
+        ws.binaryType = "arraybuffer";
 
-        ws.onclose = function() {
-            if (wsPreventReconnecting) {
-                wsPreventReconnecting = false;
-                return;
-            }
-            setTimeout(() => { initWebSocket() },10e3);
+        ws.onerror = function() {
+            setTimeout(() => { initWebSocket() },5e3);
         };
+
         ws.onmessage = function(event) {
-            if(event.data !== "") {
+            ws.isAlive = true;
+            probeWebSocket();
+            if (event.data !== "" && event.data !== "r") {
                 try {
                     let data = new TextDecoder().decode(pako.inflate(event.data));
                     //console.log('map decompressed: ' + (event.data.byteLength/1024).toFixed(1) + 'k to ' + (data.length/1024).toFixed(1) + 'k (' + (data.length/event.data.byteLength*100).toFixed(2) + '%)');
@@ -58,13 +71,17 @@ export function VacuumMap(canvasElement) {
                 }
             }
         };
+
+        ws.onopen = function(event) {
+            probeWebSocket();
+        }
     }
 
     function closeWebSocket() {
         if (ws) {
-            wsPreventReconnecting = true;
             ws.close();
         }
+        clearTimeout(probeTimeout);
     }
 
     function updateForbiddenZones(forbiddenZoneData) {

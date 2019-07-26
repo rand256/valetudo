@@ -44,6 +44,7 @@
 
     <script>
         var currentRefreshTimer, refreshInProgress = false;
+        var toastInProgress = false;
 
         var startButton = document.getElementById("start-button");
         var pauseButton = document.getElementById("pause-button");
@@ -374,7 +375,10 @@
                 robotStateDetailsTime.innerHTML = "Time: " + window.fn.secondsToHms(res.clean_time);
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
             }, (err) => {
-                ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                if (!toastInProgress) {
+                    toastInProgress = true;
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }).then(() => { toastInProgress = false; });
+                }
             })
             .finally(() => {
                 refreshInProgress = false;

@@ -23,13 +23,13 @@
         var currentOmega = 0;
         var manualControlStateRefreshTimerMS = 2000;      //refresh manual control state each x ms
         var manualControlEnabled = false;
-        var manualControlStateRefreshTimer;
+        var manualControlStateRefreshTimer, manualControlRefreshInProgress = false;
+        var manualControlToastInProgress = false;
         var timedManualControlLoop;
 
         var startManualControlButton = document.getElementById("start-manual-control-button");
         var endManualControlButton = document.getElementById("stop-manual-control-button");
         var manualControlLoadingBar = document.getElementById('loading-bar-manualcontrol');
-
 
         //API / Manual Control Handling
         function manualMoveRobot(angle, velocity) {
@@ -267,6 +267,10 @@
 
         //Page Handling (refresh/update/onload/onhide)
         function refreshManualControlMode() {
+            if (manualControlRefreshInProgress) {
+                return;
+            }
+            manualControlRefreshInProgress = true;
             fn.prequest("api/current_status", "GET")
             .then((res) => {
                 if (res.state === 7) { //7: manual
@@ -274,8 +278,16 @@
                 } else {
                     _stopManualControl();
                 }
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
-            .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
+            }, (err) => {
+                if (!manualControlToastInProgress) {
+                    manualControlToastInProgress = true;
+                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }).then(() => { manualControlToastInProgress = false; });
+                }
+            })
+            .finally(() => {
+                manualControlRefreshInProgress = false;
+                manualControlLoadingBar.removeAttribute("indeterminate");
+            });
         };
 
         ons.getScriptPage().onShow = function () {
