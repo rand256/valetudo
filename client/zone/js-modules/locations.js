@@ -87,17 +87,17 @@ export class Zone {
             ctx.strokeStyle = 'white';
             ctx.stroke();
             
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'white';
             ctx.fillText('\uf00d', p2.x , p1.y);
 
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'dodgerblue';
-            ctx.fillText('\uf0b2', p2.x , p2.y);
+            ctx.fillText('\uf31e', p2.x , p2.y);
         }
 
         ctx.font = 'bold ' + 7*scaleFactor + 'px FontAwesome';
@@ -331,17 +331,17 @@ export class VirtualWall  {
             ctx.strokeStyle = 'white';
             ctx.stroke();
 
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'white';
             ctx.fillText('\uf00d', p1.x , p1.y);
 
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'red';
-            ctx.fillText('\uf0b2', p2.x , p2.y);
+            ctx.fillText('\uf31e', p2.x , p2.y);
         }
         if (this.editable) {
             this.matrix = new DOMMatrix().rotateFromVectorSelf(p2.y - p1.y,p2.x - p1.x);
@@ -536,17 +536,17 @@ export class ForbiddenZone  {
             ctx.strokeStyle = 'white';
             ctx.stroke();
 
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'white';
             ctx.fillText('\uf00d', p2.x , p2.y);
 
-            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px FontAwesome';
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'red';
-            ctx.fillText('\uf0b2', p3.x , p3.y);
+            ctx.fillText('\uf31e', p3.x , p3.y);
         }
     }
 
