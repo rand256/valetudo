@@ -350,7 +350,7 @@
             ons.notification.confirm('Do you really want to set your timezone to "' + newTimezone + '"?').then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-                    fn.prequestWithPayload("/api/set_timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
+                    fn.prequestWithPayload("api/set_timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
                     .then(
                         (res) => { hideTimeZoneDialog() },
                         (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
@@ -440,7 +440,7 @@
             var end_hour = document.getElementById('edit-dnd-form').end_hour.value;
             var end_minute = document.getElementById('edit-dnd-form').end_minute.value;
             if (start_hour && start_minute && end_hour && end_minute) {
-                fn.prequestWithPayload("/api/set_dnd", JSON.stringify({ start_hour, start_minute, end_hour, end_minute}), "POST")
+                fn.prequestWithPayload("api/set_dnd", JSON.stringify({ start_hour, start_minute, end_hour, end_minute}), "POST")
                 .then((res) => {
                     hideDndTimerDialog();
                     updateDndTimerPage();
