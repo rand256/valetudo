@@ -236,7 +236,7 @@
                         .then(function(map) {
                             map.clearZones();
                             payload.forEach(function(zone) {
-                                map.addZone([zone[0], zone[1], zone[2], zone[3]], true);
+                                map.addZone(zone, true);
                             });
                         })
                         .catch(() => {});

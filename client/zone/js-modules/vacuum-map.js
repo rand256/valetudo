@@ -381,7 +381,7 @@ export function VacuumMap(canvasElement) {
                     } else if (result.selectLocation) {
                         locations.forEach(l => l === locations[i] && (l.active = true) || (l.active = false));
                         if (locations[i] instanceof Zone) {
-                            emitZoneSelection(locations.filter(location => location instanceof Zone).indexOf(locations[i]) > 0);
+                            emitZoneSelection(true, locations.filter(location => location instanceof Zone).indexOf(locations[i]) > 0);
                         }
                         takenAction = true;
                     } else if (result.deselectLocation) {
@@ -507,7 +507,8 @@ export function VacuumMap(canvasElement) {
             Math.min(p1Real.x, p2Real.x),
             Math.min(p1Real.y, p2Real.y),
             Math.max(p1Real.x, p2Real.x),
-            Math.max(p1Real.y, p2Real.y)
+            Math.max(p1Real.y, p2Real.y),
+            zone.iterations
         ];
     };
 
@@ -570,9 +571,9 @@ export function VacuumMap(canvasElement) {
         if (zoneCoordinates) {
             const p1 = convertFromRealCoords({x: zoneCoordinates[0], y: zoneCoordinates[1]});
             const p2 = convertFromRealCoords({x: zoneCoordinates[2], y: zoneCoordinates[3]});
-            newZone = new Zone(p1.x, p1.y, p2.x, p2.y);
+            newZone = new Zone(p1.x, p1.y, p2.x, p2.y, zoneCoordinates[4]);
         } else {
-            newZone = new Zone(480, 480, 550, 550);
+            newZone = new Zone(480, 480, 550, 550, 1);
         }
 
         locations.forEach(location => location.active = false)
@@ -581,7 +582,7 @@ export function VacuumMap(canvasElement) {
         if(addZoneInactive) {
             newZone.active = false;
         } else {
-            emitZoneSelection(locations.filter(location => location instanceof Zone).length > 1);
+            emitZoneSelection(true, locations.filter(location => location instanceof Zone).length > 1);
         }
 
         if (redrawCanvas) redrawCanvas();
@@ -642,8 +643,10 @@ export function VacuumMap(canvasElement) {
         if (redrawCanvas) redrawCanvas();
     }
 
-    function emitZoneSelection(enabled) {
-        canvas.dispatchEvent(new CustomEvent('zoneSelection', {detail: { state: enabled }}));
+    // enabled = any zone is selected,
+    // nf = current zone is non-first
+    function emitZoneSelection(enabled, nf) {
+        canvas.dispatchEvent(new CustomEvent('zoneSelection', {detail: { state: enabled, nf: nf || false }}));
     }
 
     function promoteCurrentZone() {
@@ -660,7 +663,18 @@ export function VacuumMap(canvasElement) {
                 break;
             }
         }
-        emitZoneSelection(locations.filter(location => location instanceof Zone).indexOf(activeLocation) > 0);
+        emitZoneSelection(true, locations.filter(location => location instanceof Zone).indexOf(activeLocation) > 0);
+    }
+
+    function addIterationsToZone() {
+        let index, activeLocation = locations.filter(location => location.active)[0];
+        if (!(activeLocation instanceof Zone)) {
+            return;
+        }
+        if (++activeLocation.iterations > 3) {
+            activeLocation.iterations = 1;
+        };
+        if (redrawCanvas) redrawCanvas();
     }
 
     return {
@@ -674,7 +688,8 @@ export function VacuumMap(canvasElement) {
         clearZones: clearZones,
         addVirtualWall: addVirtualWall,
         addForbiddenZone: addForbiddenZone,
-        promoteCurrentZone: promoteCurrentZone
+        promoteCurrentZone: promoteCurrentZone,
+        addIterationsToZone: addIterationsToZone
     };
 }
 

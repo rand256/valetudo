@@ -10,8 +10,11 @@
     </div>
 
     <div class="map-page-buttons map-page-bottom">
-        <ons-fab ripple id="promote_configuration_zone" style="display: none;">
+        <ons-fab ripple id="zones-configuration-promote" style="display: none;">
             <ons-icon icon="fa-angle-double-up"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="zones-configuration-iterations" style="display: none;">
+            <span style="font-weight: 700; font-family: monospace;">&#x00D7;k</span>
         </ons-fab>
         <ons-fab ripple id="zones-configuration-add-zone">
             <ons-icon icon="fa-plus"></ons-icon>
@@ -37,7 +40,7 @@
 
         document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
         for(let zone of zonesConfig[zoneToModify].coordinates) {
-            map.addZone([zone[0], zone[1], zone[2], zone[3]], true);
+            map.addZone(zone, true);
         }
 
         document.getElementById("zones-configuration-add-zone").onclick = () => {
@@ -47,18 +50,20 @@
                 ons.notification.alert('You can\'t add more than 5 subzones into a single zone.');
             }
         }
-        document.getElementById("promote_configuration_zone").onclick = () => {
+        document.getElementById("zones-configuration-iterations").onclick = () => {
+             map.addIterationsToZone();
+        }
+        document.getElementById("zones-configuration-promote").onclick = () => {
              map.promoteCurrentZone();
         }
         document.getElementById("zone-configuration-map").addEventListener('zoneSelection', (e) => {
-            if (e.detail.state && map.getLocations().zones.length < 2) {
-                e.detail.state = false;
-            }
-            document.getElementById("promote_configuration_zone").style.display = e.detail.state ? "" : "none";
+            document.getElementById("zones-configuration-promote").style.display = e.detail.nf ? "" : "none";
+            document.getElementById("zones-configuration-iterations").style.display = e.detail.state ? "" : "none";
+            document.getElementById("zones-configuration-add-zone").style.display = e.detail.state ? "none" : "";
         })
 
         saveButton.onclick = () => {
-            const zonesOnMap = map.getLocations().zones.map(zoneCoordinates => [...zoneCoordinates, 1]);
+            const zonesOnMap = map.getLocations().zones;
             zonesConfig[zoneToModify].coordinates = zonesOnMap;
 
             loadingBarSaveZones.setAttribute("indeterminate", "indeterminate");

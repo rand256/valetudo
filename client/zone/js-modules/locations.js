@@ -38,7 +38,7 @@ export class GotoPoint  {
  */
 export class Zone {
 
-    constructor(x1 ,y1, x2, y2) {
+    constructor(x1 ,y1, x2, y2, iterations) {
         this.buttonSize = this.buttonSizeInitial = 12;
 
         this.active = true;
@@ -49,6 +49,8 @@ export class Zone {
 
         this.y1 = Math.min(y1, y2);
         this.y2 = Math.max(y1, y2);
+
+        this.iterations = parseInt(iterations) || 1;
     }
 
     draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
@@ -105,7 +107,13 @@ export class Zone {
         ctx.textAlign = p2.x > p1.x ? 'left' : 'right';
         ctx.fillStyle = 'rgba(100,140,180,0.4)';
         ctx.beginPath();
-        ctx.arc(p1.x + 0.7*scaleFactor + ctx.measureText(String(idx)).width / 2, p1.y - 3.5*scaleFactor, 3.5*scaleFactor, 0, 2 * Math.PI, false);
+        if (this.iterations > 1) {
+            idx += '\u00D7' + this.iterations;
+            ctx.arc(p1.x + 0*scaleFactor + ctx.measureText(String(idx)).width / 3, p1.y - 4.2*scaleFactor, 3.5*scaleFactor, Math.PI / 2, 3 * Math.PI / 2, false);
+            ctx.arc(p1.x + 2*scaleFactor + ctx.measureText(String(idx)).width * 2 / 3, p1.y - 4.2*scaleFactor, 3.5*scaleFactor, 3 * Math.PI / 2, 5 * Math.PI / 2, false);
+        } else {
+            ctx.arc(p1.x + 1.2*scaleFactor + ctx.measureText(String(idx)).width / 2, p1.y - 4.2*scaleFactor, 3.5*scaleFactor, 0, 2 * Math.PI, false);
+        }
         ctx.fill();
         ctx.fillStyle = 'white';
         ctx.fillText(String(idx), p1.x + 1*scaleFactor , p1.y - 0.25*scaleFactor, Math.abs(p2.x - p1.x) );

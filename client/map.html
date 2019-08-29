@@ -15,6 +15,9 @@
         <ons-fab ripple id="promote_zone" style="display: none;">
             <ons-icon icon="fa-angle-double-up"></ons-icon>
         </ons-fab>
+        <ons-fab ripple id="set_iterations" style="display: none;">
+            <span style="font-weight: 700; font-family: monospace;">&#x00D7;k</span>
+        </ons-fab>
         <ons-fab ripple id="add_zone">
             <ons-icon icon="fa-plus"></ons-icon>
         </ons-fab>
@@ -106,8 +109,7 @@
             if(gotoPoint) goto_point(gotoPoint);
         }
         document.getElementById("start_zoned_cleanup").onclick = () => {
-            const repeatNumber = 1;
-            const zones = map.getLocations().zones.map(zoneCoordinates => [...zoneCoordinates, repeatNumber]);
+            const zones = map.getLocations().zones;
             zoned_cleanup(zones);
         }
         document.getElementById("add_zone").onclick = () => {
@@ -116,6 +118,9 @@
             } else {
                 ons.notification.alert('You can\'t add more than 5 zones onto the map.');
             }
+        }
+        document.getElementById("set_iterations").onclick = () => {
+            map.addIterationsToZone();
         }
         document.getElementById("promote_zone").onclick = () => {
             map.promoteCurrentZone();
@@ -127,7 +132,9 @@
             .finally (() => loadingBar.removeAttribute("indeterminate"));
         }
         document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
-            document.getElementById("promote_zone").style.display = e.detail.state ? "" : "none";
+            document.getElementById("promote_zone").style.display = e.detail.nf ? "" : "none";
+            document.getElementById("set_iterations").style.display = e.detail.state ? "" : "none";
+            document.getElementById("add_zone").style.display = e.detail.state ? "none" : "";
         });
     </script>
     <script defer>
