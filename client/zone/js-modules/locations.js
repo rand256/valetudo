@@ -531,10 +531,17 @@ export class ForbiddenZone  {
         if (this.active) {
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(p2.x, p2.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'black';
+            ctx.arc(p1.x, p1.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'white';
             ctx.fill();
-            ctx.strokeStyle = 'black';
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(p2.x, p2.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
             ctx.stroke();
 
             ctx.beginPath();
@@ -544,18 +551,83 @@ export class ForbiddenZone  {
             ctx.strokeStyle = 'white';
             ctx.stroke();
 
+            ctx.beginPath();
+            ctx.arc(p4.x, p4.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc((p1.x + p2.x)/2, (p1.y + p2.y)/2, this.buttonSize / 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
             ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
-            ctx.fillStyle = 'white';
-            ctx.fillText('\uf00d', p2.x , p2.y);
+            ctx.fillStyle = 'red';
+            ctx.fillText('\uf31e', p1.x , p1.y);
+
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'red';
+            ctx.fillText('\uf31e', p2.x , p2.y);
 
             ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'red';
             ctx.fillText('\uf31e', p3.x , p3.y);
+
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'red';
+            ctx.fillText('\uf31e', p4.x , p4.y);
+
+            ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'white';
+            ctx.fillText('\uf00d', (p1.x + p2.x)/2, (p1.y + p2.y)/2);
         }
+    }
+
+    /**
+     * Function to calculate whether the tap location was inside or outside of the quadrilateral
+     * Used for selecting the forbidden zone
+     *
+     * @param {{x: number, y: number}} p - The coordinates of the tap
+     * @param {{x: number, y: number}} p1, p2, p3, p4 - The coordinates of the quadrilateral angles
+     *
+     * @returns {bool} true if tapped inside, false otherwise
+     */
+    tapQuadrilateral(p,p1,p2,p3,p4) {
+        let intersects = 0,
+           a = [p4,p1,p2,p3],
+           b = [p1,p2,p3,p4];
+        for (let i = 0; i < 4; ++i) {
+           intersects += this.intersectsRight(p.x, p.y, a[i].x, a[i].y, b[i].x, b[i].y);
+        }
+        return intersects % 2 !== 0;
+    }
+    /**
+     * Auxiliary function for counting intersections
+     */
+    intersectsRight(px, py, x1, y1, x2, y2) {
+        let tmp;
+        if (y1 === y2) return 0;
+        if (y1 > y2) {
+            tmp = x1; x1 = x2; x2 = tmp;
+            tmp = y1; y1 = y2; y2 = tmp;
+        }
+        if (py < y1 || py >= y2) return 0;
+        if (x1 === x2) return px <= x1 ? 1 : 0;
+        return px <= x1 + (py - y1) * (x2 - x1) / (y2 - y1) ? 1 : 0;
     }
 
     /**
@@ -579,7 +651,7 @@ export class ForbiddenZone  {
         const p4 = new DOMPoint(this.x4, this.y4).matrixTransform(transformMapToScreenSpace);
 
         const distanceFromDelete = Math.sqrt(
-            Math.pow(tappedPoint.x - p2.x, 2) + Math.pow(tappedPoint.y - p2.y, 2)
+            Math.pow(tappedPoint.x - (p1.x + p2.x)/2, 2) + Math.pow(tappedPoint.y - (p1.y + p2.y)/2, 2)
         );
 
         if(this.active && distanceFromDelete <= this.buttonSize * 1.2 / 2) {
@@ -587,28 +659,20 @@ export class ForbiddenZone  {
                 removeLocation: true,
                 stopPropagation: true
             };
-        } else if (!this.active
-            && tappedPoint.x >= p1.x
-            && tappedPoint.x <= p3.x
-            && tappedPoint.y >= p1.y
-            && tappedPoint.y <= p3.y
-        ) {
-            return {
-                stopPropagation: false,
-                selectLocation: true
-            };
-        } else if (this.active &&
-            !(tappedPoint.x >= p1.x
-            && tappedPoint.x <= p3.x
-            && tappedPoint.y >= p1.y
-            && tappedPoint.y <= p3.y)
-        ) {
-            return {
-                stopPropagation: false,
-                deselectLocation: true
-            };
+        } else {
+            let tap_inside = this.tapQuadrilateral(tappedPoint,p1,p2,p3,p4);
+            if (!this.active && tap_inside) {
+                return {
+                    stopPropagation: false,
+                    selectLocation: true
+                };
+            } else if (this.active && !tap_inside) {
+                return {
+                    stopPropagation: false,
+                    deselectLocation: true
+                };
+            }
         }
-
         return {
             stopPropagation: false
         };
@@ -632,11 +696,18 @@ export class ForbiddenZone  {
             const p3 = new DOMPoint(this.x3, this.y3).matrixTransform(transformMapToScreenSpace);
             const p4 = new DOMPoint(this.x4, this.y4).matrixTransform(transformMapToScreenSpace);
 
-            const distanceFromResize = Math.sqrt(
-                Math.pow(last.x - p3.x, 2) + Math.pow(last.y - p3.y, 2)
+            const distanceFromResize = (p) => Math.sqrt(
+                Math.pow(last.x - p.x, 2) + Math.pow(last.y - p.y, 2)
             );
-            if (!this.isResizing && distanceFromResize <= this.buttonSize * 1.2 / 2) {
-                this.isResizing = true;
+            const distanceFromResizes = () => Math.min(distanceFromResize(p1),distanceFromResize(p2),distanceFromResize(p3),distanceFromResize(p4));
+            if (!this.isResizing && distanceFromResizes() <= this.buttonSize * 1.2 / 2) {
+                for (let i = 1, p = [p1,p2,p3,p4]; i <= 4; i++) {
+                    if (distanceFromResize(p[i-1]) <= this.buttonSize * 1.2 / 2) {
+                        this.isResizing = true;
+                        this.resizePoint = i
+                        break;
+                    }
+                }
             }
 
             const lastInMapSpace = new  DOMPoint(last.x, last.y).matrixTransform(transformCanvasToMapSpace);
@@ -646,25 +717,38 @@ export class ForbiddenZone  {
             const dy = currentInMapSpace.y - lastInMapSpace.y;
 
             if (this.isResizing) {
-                if (currentInMapSpace.x > this.x1 + 5 && this.x2 + dx > this.x1 + 5) {
-                    this.x2 += dx;
-                    this.x3 += dx;
-                }
-                if (currentInMapSpace.y > this.y1 + 5 && this.y3 + dy > this.y1 + 5) {
-                    this.y3 += dy;
-                    this.y4 += dy;
+                switch (this.resizePoint) {
+                case 1:
+                    if (currentInMapSpace.x < this.x2 - 5 && currentInMapSpace.x < this.x3 - 5)
+                        this.x1 += dx;
+                    if (currentInMapSpace.y < this.y3 - 5 && currentInMapSpace.y < this.y4 - 5)
+                        this.y1 += dy;
+                    break;
+                case 2:
+                    if (currentInMapSpace.x > this.x1 + 5 && currentInMapSpace.x > this.x4 + 5)
+                        this.x2 += dx;
+                    if (currentInMapSpace.y < this.y3 - 5 && currentInMapSpace.y < this.y4 - 5)
+                        this.y2 += dy;
+                    break;
+                case 3:
+                    if (currentInMapSpace.x > this.x1 + 5 && currentInMapSpace.x > this.x4 + 5)
+                        this.x3 += dx;
+                    if (currentInMapSpace.y > this.y1 + 5 && currentInMapSpace.y > this.y2 + 5)
+                        this.y3 += dy;
+                    break;
+                case 4:
+                    if (currentInMapSpace.x < this.x2 - 5 && currentInMapSpace.x < this.x3 - 5)
+                        this.x4 += dx;
+                    if (currentInMapSpace.y > this.y1 + 5 && currentInMapSpace.y > this.y2 + 5)
+                        this.y4 += dy;
+                    break;
                 }
 
                 return {
                     updatedLocation: this,
                     stopPropagation: true
                 };
-            } else if (
-                last.x >= p1.x
-                && last.x <= p3.x
-                && last.y >= p1.y
-                && last.y <= p3.y
-            ) {
+            } else if (this.tapQuadrilateral(last,p1,p2,p3,p4)) {
                 this.x1 += dx;
                 this.y1 += dy;
                 this.x2 += dx;

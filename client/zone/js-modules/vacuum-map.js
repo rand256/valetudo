@@ -528,17 +528,7 @@ export function VacuumMap(canvasElement) {
         const p2Real = convertToRealCoords({x: Zone.x2, y: Zone.y2});
         const p3Real = convertToRealCoords({x: Zone.x3, y: Zone.y3});
         const p4Real = convertToRealCoords({x: Zone.x4, y: Zone.y4});
-        // right now will make this a mandatory rectangle - custom quadrilaterals would do later, if ever
-        return [
-            Math.min(p1Real.x, p3Real.x),
-            Math.min(p1Real.y, p3Real.y),
-            Math.max(p1Real.x, p3Real.x),
-            Math.min(p1Real.y, p3Real.y),
-            Math.max(p1Real.x, p3Real.x),
-            Math.max(p1Real.y, p3Real.y),
-            Math.min(p1Real.x, p3Real.x),
-            Math.max(p1Real.y, p3Real.y)
-        ];
+        return [p1Real.x,p1Real.y,p2Real.x,p2Real.y,p3Real.x,p3Real.y,p4Real.x,p4Real.y];
     };
 
     function getLocations() {
