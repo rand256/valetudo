@@ -45,10 +45,18 @@
         document.getElementById("forbidden-markers-configuration-map-page-h1").innerText = 'Editing markers';
 
         document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
+            if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 66) {
+                ons.notification.toast("You can't add more forbidden markers on the map!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                return;
+            }
             map.addVirtualWall(null, false, true);
         }
 
         document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
+            if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 64) {
+                ons.notification.toast("You can't add more forbidden markers on the map!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                return;
+            }
             map.addForbiddenZone(null, false, true);
         }
 
