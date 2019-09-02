@@ -1,14 +1,13 @@
 ### Preamble:
 
-This is a bit modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), hackishly _enhanced_ by me since I found too many features missing in the original package when I've tried to use it. So this is a quick list of changes here:
+This is a bit modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), hackishly _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. So this is a quick list of changes first appeared here:
 
 * Ability to select multiple saved zones at once;
 * Selected zones are then shown at the map tab to see and edit what's actually going to be cleaned;
 * Renaming zones and spots, since why not?
 * Configurable virtual walls and forbidden zones, finally!
-* Scheduled zoned cleaning - when you do not need to clean the whole house.
-* Viewing maps of finished cleanings to know how it was going exactly.
-* Compressing map data to reduce network bandwidth when watching cleaning progress online.
+* Scheduled zoned cleaning - when you do not need to clean the whole house;
+* Ability to specify in webGUI the number of iterations to clean the same zone multiple times;
 * Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
 Beware, I'm not a qualified coder - that's for sure, so the code is awful in places, also I'm not familiar with github at all. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
