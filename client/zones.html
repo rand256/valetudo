@@ -60,9 +60,14 @@
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
-        function switchToForbiddenMarkersEdit(index) { // todo: check that all zones are loaded before editing anything
+        function switchToForbiddenMarkersEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/map/latest", "GET")
+            fn.prequest("api/current_status", "GET")
+            .then ((res) => {
+                if (res['lab_status'] !== 1) return Promise.reject("Persistent data is disabled or unavailable, unable to edit forbidden markers.");
+                return true;
+            })
+            .then(() => fn.prequest("api/map/latest", "GET"))
             .then(mapData => {
                 fn.pushPage({
                     'id': 'forbidden-markers-configuration-map.html',
@@ -71,7 +76,8 @@
                         'map': mapData
                     }
                 });
-            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            })
+            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
