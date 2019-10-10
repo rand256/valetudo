@@ -208,14 +208,17 @@
             }
 
             options.push({
+                label: 'Submit',
+                icon: 'md-collection-item'
+            },{
                 label: 'Cancel',
                 icon: 'md-close'
             });
 
-            var payload, calcPayload, zoneNumber = 0;
+            var payload, calcPayload, markSubmitButton, zoneNumber = 0;
 
             ons.openActionSheet({
-                title: 'Clean zone',
+                title: 'Zones for cleaning:',
                 cancelable: true,
                 buttons: options
             })
@@ -249,9 +252,14 @@
             });
             var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
             for (var i = 0; i < zoneButtons.length; i++) {
-                zoneButtons[i].title = ''; // get rid of stupid title repeating on all the buttons
+                if (!i) zoneButtons[i].parentNode.parentNode.title = '';
+                zoneButtons[i].title = ''; // get rid of stupid title repeating on all buttons
                 if (zoneButtons[i].getAttribute('icon') === null) {
                     zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
+                } else if (zoneButtons[i].getAttribute('icon') === 'md-close') {
+                    zoneButtons[i].classList.add('action-sheet-button-zcancel','action-sheet-button-half');
+                } else {
+                    zoneButtons[i].classList.add('action-sheet-button-zsubmit','action-sheet-button-half', 'zdisabled');
                 }
             }
             calcPayload = function() {
@@ -264,6 +272,11 @@
                     payload[zoneCheckboxes[i].dataset.num - 1] = config.areas[zoneCheckboxes[i].dataset.id][1];
                 }
                 return payload.reduce((acc, val) => acc.concat(val), []);
+            }
+            markSubmitButton = function() {
+                var submitButton = document.querySelector('.action-sheet-button[icon="md-collection-item"]');
+                if (!submitButton) return;
+                submitButton.classList.toggle('zdisabled',!calcPayload().length);
             }
             document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
                 if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
@@ -298,6 +311,18 @@
                         e.target.parentNode.nextElementSibling.textContent = '';
                         e.target.parentNode.parentNode.classList.remove('zone_selected');
                     }
+                    markSubmitButton();
+                } else if (e.target.getAttribute('icon') === 'md-collection-item') {
+                    e.stopPropagation();
+                    if (calcPayload().length) {
+                        var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                        for (var i = 0; i < zoneCheckboxes.length; i++) {
+                            if (zoneCheckboxes[i].checked) {
+                                zoneCheckboxes[i].parentNode.parentNode.click();
+                                break;
+                            }
+                        }
+                    }
                 } else if (zoneNumber > 0) {
                     let findCheckbox = e.target.querySelector('.zone-checkbox');
                     if (!findCheckbox || !findCheckbox.checked) {
@@ -315,6 +340,7 @@
                     } else {
                         payload = calcPayload();
                     }
+                    markSubmitButton();
                 }
             },true);
         }
@@ -455,6 +481,41 @@
             position: absolute;
             right: 0;
             padding: 0 0.8em;
+        }
+        .action-sheet-button:nth-last-of-type(3) {
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+        .action-sheet-button--material:nth-last-of-type(3) {
+            border-radius: 0;
+        }
+        .action-sheet-button-half {
+            width: 49.86%;
+            border-radius: 12px;
+            margin: 8px 0 0;
+            background-color: #fff;
+            background-image: none;
+            font-weight: 600;
+        }
+        .action-sheet-button--material.action-sheet-button-half {
+            width: 50%;
+            border-radius: 0;
+            margin: 0;
+            background-color: #fff;
+            background-image: none;
+            font-weight: 400;
+        }
+        .action-sheet-button-zsubmit {
+            float: left;
+        }
+        .action-sheet-button-zcancel {
+            float: right;
+        }
+        .action-sheet-button-zsubmit.zdisabled {
+            color: darkgray;
+        }
+        .action-sheet-button-zsubmit.zdisabled:active {
+            background-color: #fff;
         }
         .zone-checkbox {
             transform: scale(1.5);
