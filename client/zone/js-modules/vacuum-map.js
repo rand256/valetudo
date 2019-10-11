@@ -60,11 +60,22 @@ export function VacuumMap(canvasElement) {
         ws.onmessage = function(event) {
             ws.isAlive = true;
             probeWebSocket();
-            if (event.data !== "" && event.data !== "r") {
+            if (event.data.constructor === ArrayBuffer) {
                 try {
-                    let data = new TextDecoder().decode(pako.inflate(event.data));
-                    //console.log('map decompressed: ' + (event.data.byteLength/1024).toFixed(1) + 'k to ' + (data.length/1024).toFixed(1) + 'k (' + (data.length/event.data.byteLength*100).toFixed(2) + '%)');
-                    updateMap(JSON.parse(data));
+                    let data = JSON.parse(new TextDecoder().decode(pako.inflate(event.data)));
+                    if (data.map)
+                        updateMap(data.map);
+                    if (data.status)
+                        updateStatus(data.status);
+                } catch(e) {
+                    //TODO something reasonable
+                    console.log(e);
+                }
+            }
+            if (event.data.slice(0,10) === '{"status":') {
+                try {
+                    let data = JSON.parse(event.data);
+                    updateStatus(data.status);
                 } catch(e) {
                     //TODO something reasonable
                     console.log(e);
@@ -160,6 +171,14 @@ export function VacuumMap(canvasElement) {
         }
 
         if (redrawCanvas) redrawCanvas();
+    }
+
+    /**
+     * Private function to fire status updates onto the map page (currently got from websocket connections only)
+     * @param {object} status - the json data as in dummycloud.connectedRobot.status
+     */
+    function updateStatus(status) {
+        canvas.dispatchEvent(new CustomEvent('updateStatus', {detail: status}));
     }
 
     /**
@@ -672,6 +691,7 @@ export function VacuumMap(canvasElement) {
         initWebSocket: initWebSocket,
         closeWebSocket: closeWebSocket,
         updateMap: updateMap,
+        updateStatus: updateStatus,
         getLocations: getLocations,
         addZone: addZone,
         addSpot: addSpot,

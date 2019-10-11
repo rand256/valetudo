@@ -5,6 +5,12 @@
         <canvas id="map-canvas"></canvas>
     </div>
 
+    <div class="map-page-stats map-page-top">
+        <div>Status: <span class="map-page-status">Connecting...</span></div>
+        <div style="display: none;">Reason: <span class="map-page-error"></span></div>
+        <div>Battery: <span class="map-page-battery">0%</span></div>
+    </div>
+
     <div class="map-page-buttons map-page-top">
         <ons-fab ripple id="map_reload_button">
             <ons-icon icon="fa-refresh"></ons-icon>
@@ -136,6 +142,19 @@
             document.getElementById("set_iterations").style.display = e.detail.state ? "" : "none";
             document.getElementById("add_zone").style.display = e.detail.state ? "none" : "";
         });
+        document.getElementById("map-canvas").addEventListener('updateStatus', (e) => {
+            console.log(e.detail);
+            if (e.detail.stateHR !== undefined) document.querySelector('.map-page-status').textContent = e.detail.stateHR;
+            if (e.detail.battery !== undefined) document.querySelector('.map-page-battery').textContent = e.detail.battery + '%';
+            let error_desc = document.querySelector('map-page-error');
+            if (e.detail.state === 12 && e.detail.error_code !== 0) {
+                error_desc.textContent = e.detail.errorHR;
+                error_desc.parentNode.style.display = '';
+            } else {
+                error_desc.textContent = '';
+                error_desc.parentNode.style.display = 'none';
+            }
+        });
     </script>
     <script defer>
         // Somehow getScriptPage returns null inside the type=module script tag
@@ -177,6 +196,13 @@
             width: 100%;
             touch-action: none;
             background-image: linear-gradient(var(--map-background-1), var(--map-background-2));
+        }
+
+        .map-page-stats {
+            position: absolute;
+            left: 1.5em;
+            color: #fff;
+            font-size: 11px;
         }
 
         .map-page-buttons {
