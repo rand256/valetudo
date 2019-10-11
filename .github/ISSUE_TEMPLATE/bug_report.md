@@ -13,7 +13,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 -->
 
-**To Reproduce**
+**How to Reproduce**
 <!--
 Steps to reproduce the behavior:
 1. Go to '...'
@@ -32,7 +32,7 @@ A clear and concise description of what you expected to happen.
 
 **Vacuum Model:** <!-- e.g. Gen2/S5/etc -->
 
-**Valetudo Version: ** <!-- e.g. 0.4.0 -->
+**Valetudo Version:** <!-- e.g. 0.4.0 -->
 
 **User-Agent** <!-- e.g. Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36 -->
 
