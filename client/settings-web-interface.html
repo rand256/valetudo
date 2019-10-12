@@ -1,0 +1,86 @@
+<ons-page id="settings-web-interface-page">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Settings</ons-back-button>
+        </div>
+        <div class="center">Web Interface</div>
+        <div class="right"></div>
+    </ons-toolbar>
+    <ons-progress-bar id="loading-bar-settings-web-interface" value="0"></ons-progress-bar>
+    <ons-list-item>
+        <label class="right" style="width:100%">
+            <ons-row>
+                <ons-col vertical-align='center'>These parameters affect some functionality of the web interface itself. They are local to your browser only and applied instantly.</ons-col>
+            </ons-row>
+        </label>
+    </ons-list-item>
+    <ons-list-title style="margin-top:5px;">
+        Home tab
+    </ons-list-title>
+    <ons-list>
+        <ons-list-item>
+            <div class='left'><div><div>Run zoned cleaning immediately</div><div class="small">instead of proceeding to the map tab</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-zoned-immediate"></ons-switch></div>
+        </ons-list-item>
+        <ons-list-item>
+            <div class='left'><div><div>Goto spot immediately</div><div class="small">instead of proceeding to the map tab</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-goto-immediate"></ons-switch></div>
+        </ons-list-item>
+    </ons-list>
+    <ons-list-title style="margin-top:5px;">
+        Map tab
+    </ons-list-title>
+    <ons-list>
+        <ons-list-item>
+            <div class='left'><div><div>Do not show status on map</div><div class="small">hide the block with status text</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-status"></ons-switch></div>
+        </ons-list-item>
+        <ons-list-item>
+            <div class='left'><div><div>Disable map reload button</div><div class="small">hide force reload button on the map</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-reload"></ons-switch></div>
+        </ons-list-item>
+        <ons-list-item>
+            <div class='left'><div><div>Disable dynamic buttons</div><div class="small">show on map basic buttons only</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-static-map-buttons"></ons-switch></div>
+        </ons-list-item>
+    </ons-list>
+
+    <script>
+        var switches = document.querySelectorAll('.settings-webif-switch');
+        document.querySelector("#settings-web-interface-page ons-back-button").onClick = () => fn.popPage();
+
+        ons.getScriptPage().onInit = function() {
+            switches.forEach(sw => {
+                sw.addEventListener('change', function (event) {
+                    if (event.value) {
+                        localStorage.setItem(getOptionName(sw.id),true);
+                    } else {
+                        localStorage.removeItem(getOptionName(sw.id));
+                    }
+                });
+            });
+        };
+
+        ons.getScriptPage().onShow = function () {
+            switches.forEach(sw => {
+                if (localStorage.getItem(getOptionName(sw.id))) {
+                    sw.checked = true;
+                }
+            });
+        };
+
+        function getOptionName(id) {
+            let parts = id.split('-');
+            for (let k = 1; k < parts.length; k++) {
+                parts[k] = parts[k][0].toUpperCase() + parts[k].slice(1);
+            }
+            return parts.join('');
+        };
+    </script>
+    <style>
+        div.small {
+            font-size: 0.8em;
+            color: darkgray;
+        }
+    </style>
+</ons-page>
