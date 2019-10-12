@@ -35,9 +35,9 @@
 
         window.fn.pushPage = function (page, anim) {
             if (anim) {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim });
+                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim }).catch((e) => ons.notification.alert("Error: " + e));
             } else {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } });
+                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } }).catch((e) => ons.notification.alert("Error: " + e));
             }
             let stateObj = {moveView: (history.state && history.state.moveView || 0)};
             if (history.state && history.state.moveSubPage) {

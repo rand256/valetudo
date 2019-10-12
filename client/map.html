@@ -5,18 +5,18 @@
         <canvas id="map-canvas"></canvas>
     </div>
 
-    <div class="map-page-stats map-page-top">
+    <div class="map-page-stats map-page-top" style="display: none;">
         <div>Status: <span class="map-page-status">Connecting...</span></div>
         <div>Battery: <span class="map-page-battery">0%</span></div>
     </div>
 
-    <div class="map-page-buttons map-page-top">
-        <ons-fab ripple id="map_reload_button">
+    <div class="map-page-buttons map-page-top" style="display: none;">
+        <ons-fab ripple id="map_reload_button" style="display: none;">
             <ons-icon icon="fa-refresh"></ons-icon>
         </ons-fab>
     </div>
 
-    <div class="map-page-buttons map-page-bottom">
+    <div class="map-page-buttons map-page-bottom" style="display: none;">
         <ons-fab ripple id="promote_zone" style="display: none;">
             <ons-icon icon="fa-angle-double-up"></ons-icon>
         </ons-fab>
@@ -29,10 +29,10 @@
         <ons-fab ripple id="start_cleaning">
             <ons-icon icon="fa-play"></ons-icon>
         </ons-fab>
-        <ons-fab ripple id="pause_cleaning" style="display: ;">
+        <ons-fab ripple id="pause_cleaning" style="display: none;">
             <ons-icon icon="fa-pause"></ons-icon>
         </ons-fab>
-        <ons-fab ripple id="stop_cleaning" style="display: ;">
+        <ons-fab ripple id="stop_cleaning" style="display: none;">
             <ons-icon icon="fa-stop"></ons-icon>
         </ons-fab>
         <ons-fab ripple id="spot_clean" style="display: none;">
@@ -137,6 +137,58 @@
             });
         };
 
+        window.fn.reload_map_buttons = function(res) {
+            res = res || document.querySelector('.map-page-status').dataset;
+            if (res.in_cleaning === 1 || res.in_cleaning === 2 || res.state === 11 || res.state === 16) {
+                if ([2,3,10].includes(res.state)) {
+                    document.getElementById("pause_cleaning").style.display = 'none';
+                    document.getElementById("start_cleaning").style.display = '';
+                    if (res.in_cleaning !== 2) {
+                        document.getElementById("add_zone").style.display = '';
+                    }
+                } else {
+                    document.getElementById("pause_cleaning").style.display = '';
+                    document.getElementById("start_cleaning").style.display = 'none';
+                    document.getElementById("add_zone").style.display = 'none';
+                }
+            } else {
+                document.getElementById("add_zone").style.display = '';
+                if (res.state !== 6) {
+                    document.getElementById("pause_cleaning").style.display = 'none';
+                    document.getElementById("start_cleaning").style.display = '';
+                } else {
+                    document.getElementById("pause_cleaning").style.display = '';
+                    document.getElementById("start_cleaning").style.display = 'none';
+                }
+            }
+            // stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
+            if ([3,6,8,9,10,11,14,15,16].includes(res.state)) { 
+                document.getElementById("stop_cleaning").style.display = 'none';
+            } else {
+                document.getElementById("stop_cleaning").style.display = '';
+            }
+            // goto available in paused, idle and charging states
+            if ([2,3,8,10].includes(res.state)) {
+                document.getElementById("goto").style.display = '';
+            } else {
+                document.getElementById("goto").style.display = 'none';
+            }
+            // spot available in paused and idle states
+            if ([2,3,10].includes(res.state)) {
+                document.getElementById("spot_clean").style.display = '';
+            } else {
+                document.getElementById("spot_clean").style.display = 'none';
+            }
+        };
+
+        window.fn.reset_map_buttons = function() {
+            document.getElementById("start_cleaning").style.display = '';
+            document.getElementById("goto").style.display = '';
+            document.getElementById("pause_cleaning").style.display = 'none';
+            document.getElementById("spot_clean").style.display = 'none';
+            document.getElementById("stop_cleaning").style.display = 'none';
+        };
+
         document.getElementById("goto").onclick = () => {
             const gotoPoint = map.getLocations().gotoPoints[0];
             if(gotoPoint) goto_point(gotoPoint);
@@ -202,6 +254,9 @@
         });
         document.getElementById("map-canvas").addEventListener('updateStatus', (e) => {
             let res = e.detail;
+            if (res.battery !== undefined) {
+                document.querySelector('.map-page-battery').textContent = res.battery + '%';
+            }
             if (res.stateHR !== undefined) {
                 let mapPageStatus = document.querySelector('.map-page-status');
                 mapPageStatus.textContent = res.stateHR;
@@ -211,55 +266,23 @@
                 mapPageStatus.dataset['state'] = res['state'];
                 mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
                 mapPageStatus.dataset['in_returning'] = res['in_returning'];
-                if (res.in_cleaning === 1 || res.in_cleaning === 2 || res.state === 11 || res.state === 16) {
-                    if ([2,3,10].includes(res.state)) {
-                        document.getElementById("pause_cleaning").style.display = 'none';
-                        document.getElementById("start_cleaning").style.display = '';
-                        if (res.in_cleaning !== 2) {
-                            document.getElementById("add_zone").style.display = '';
-                        }
-                    } else {
-                        document.getElementById("pause_cleaning").style.display = '';
-                        document.getElementById("start_cleaning").style.display = 'none';
-                        document.getElementById("add_zone").style.display = 'none';
-                    }
-                } else {
-                    document.getElementById("add_zone").style.display = '';
-                    if (res.state !== 6) {
-                        document.getElementById("pause_cleaning").style.display = 'none';
-                        document.getElementById("start_cleaning").style.display = '';
-                    } else {
-                        document.getElementById("pause_cleaning").style.display = '';
-                        document.getElementById("start_cleaning").style.display = 'none';
-                    }
+                if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
+                    window.fn.reload_map_buttons(res);
                 }
-                // stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
-                if ([3,6,8,9,10,11,14,15,16].includes(res.state)) { 
-                    document.getElementById("stop_cleaning").style.display = 'none';
-                } else {
-                    document.getElementById("stop_cleaning").style.display = '';
-                }
-                // goto available in paused, idle and charging states
-                if ([2,3,8,10].includes(res.state)) {
-                    document.getElementById("goto").style.display = '';
-                } else {
-                    document.getElementById("goto").style.display = 'none';
-                }
-                // spot available in paused and idle states
-                if ([2,3,10].includes(res.state)) {
-                    document.getElementById("spot_clean").style.display = '';
-                } else {
-                    document.getElementById("spot_clean").style.display = 'none';
-                }
-            }
-            if (res.battery !== undefined) {
-                document.querySelector('.map-page-battery').textContent = res.battery + '%';
             }
         });
     </script>
     <script defer>
         // Somehow getScriptPage returns null inside the type=module script tag
         ons.getScriptPage().onShow = function () {
+            document.querySelector('.map-page-stats').style.display = localStorage.getItem('settingsWebifHideMapStatus') ? 'none' : '';
+            document.getElementById('map_reload_button').style.display = localStorage.getItem('settingsWebifHideMapReload') ? 'none' : '';
+            if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
+                window.fn.reload_map_buttons();
+            } else {
+                window.fn.reset_map_buttons();
+            }
+            document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
             window.fn.updateMapPage().catch(() => {});
             window.fn.prequest("api/poll_map", "GET").then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
         };

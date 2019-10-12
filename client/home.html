@@ -183,14 +183,26 @@
                 cancelable: true,
                 buttons: options
             }).then(index => {
-                if(index > -1 && index < config.spots.length){
-                    document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                        fn.updateMapPage(true)
-                        .then(function(map) {
-                            map.addSpot([config.spots[index][1],config.spots[index][2]]);
-                        })
-                        .catch(() => {});
-                    }});
+                if(index > -1 && index < config.spots.length) {
+                    if (!localStorage.getItem('settingsWebifGotoImmediate')) {
+                        document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+                            fn.updateMapPage(true)
+                            .then(function(map) {
+                                map.addSpot([config.spots[index][1],config.spots[index][2]]);
+                            })
+                            .catch(() => {});
+                        }});
+                    } else {
+                        loadingBarHome.setAttribute("indeterminate", "indeterminate");
+                        fn.prequestWithPayload("api/go_to", JSON.stringify({x: config.spots[index][1],y: config.spots[index][2]}), "PUT")
+                        .then(res => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
+                        .catch(e => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                        .finally(() => {
+                            window.setTimeout(function () {
+                                updateHomePage();
+                            }, 200);
+                        });
+                    }
                 } else {
                     currentRefreshTimer = window.setTimeout(function () {
                         updateHomePage();
@@ -234,16 +246,28 @@
                         }, 3000);
                         return;
                     }
-                    document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                        fn.updateMapPage(true)
-                        .then(function(map) {
-                            map.clearZones();
-                            payload.forEach(function(zone) {
-                                map.addZone(zone, true);
-                            });
-                        })
-                        .catch(() => {});
-                    }});
+                    if (!localStorage.getItem('settingsWebifZonedImmediate')) {
+                        document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+                            fn.updateMapPage(true)
+                            .then(function(map) {
+                                map.clearZones();
+                                payload.forEach(function(zone) {
+                                    map.addZone(zone, true);
+                                });
+                            })
+                            .catch(() => {});
+                        }});
+                    } else {
+                        loadingBarHome.setAttribute("indeterminate", "indeterminate");
+                        fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
+                        .then(res => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
+                        .catch(e => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                        .finally(() => {
+                            window.setTimeout(function () {
+                                updateHomePage();
+                            }, 200);
+                        });
+                    }
                 } else {
                     currentRefreshTimer = window.setTimeout(function () {
                         updateHomePage();
