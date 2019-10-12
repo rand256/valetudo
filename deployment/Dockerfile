@@ -1,4 +1,4 @@
-FROM node:10.16.0-alpine
+FROM node:alpine
 
 WORKDIR /deploy
 
@@ -14,7 +14,7 @@ RUN apk update \
 ; npm install -g pkg \
 ; mkdir "/deploy" \
 ; echo "#!/bin/sh" >> /deploy/build.sh \
-; echo "git clone https://github.com/Hypfer/Valetudo.git tmp && mv tmp/.git /deploy && rm -rf tmp && git reset --hard" >> /deploy/build.sh \
+; echo "git clone https://github.com/rand256/valetudo.git tmp && mv tmp/.git /deploy && rm -rf tmp && git reset --hard" >> /deploy/build.sh \
 ; echo "npm install" >> /deploy/build.sh \
 ; echo "npm run build" >> /deploy/build.sh \
 ; echo cp /deploy/valetudo /build >> /deploy/build.sh
