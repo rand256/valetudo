@@ -17,7 +17,7 @@ RUN apk update \
 ; wget http://smeetsinkasso.nl/fetched-v10.15.3-linux-armv7 \
 ; cp fetched-v10.15.3-linux-armv7 /root/.pkg-cache/v2.6/fetched-v10.15.3-linux-armv7 \
 ; echo "#!/bin/sh" >> /deploy/build.sh \
-; echo "git clone https://github.com/Hypfer/Valetudo.git tmp && mv tmp/.git /deploy && rm -rf tmp && git reset --hard" >> /deploy/build.sh \
+; echo "git clone https://github.com/rand256/valetudo.git tmp && mv tmp/.git /deploy && rm -rf tmp && git reset --hard" >> /deploy/build.sh \
 ; echo "npm install" >> /deploy/build.sh \
 ; echo "rm /root/.pkg-cache/v2.6/fetched-v10.15.3-linux-armv7" >> /deploy/build.sh \
 ; echo "cp /deploy/fetched-v10.15.3-linux-armv7 /root/.pkg-cache/v2.6/fetched-v10.15.3-linux-armv7" >> /deploy/build.sh \
