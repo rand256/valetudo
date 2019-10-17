@@ -26,6 +26,10 @@
             <div class='left'><div><div>Goto spot immediately</div><div class="small">instead of proceeding to the map tab</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-goto-immediate"></ons-switch></div>
         </ons-list-item>
+        <ons-list-item>
+            <div class='left'><div><div>Show multimap buttons</div><div class="small">allows saving and restoring maps (highly experimental!)</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-show-multimap"></ons-switch></div>
+        </ons-list-item>
     </ons-list>
     <ons-list-title style="margin-top:5px;">
         Map tab
@@ -50,6 +54,17 @@
         document.querySelector("#settings-web-interface-page ons-back-button").onClick = () => fn.popPage();
 
         ons.getScriptPage().onInit = function() {
+            document.getElementById('settings-webif-show-multimap').addEventListener('change', function (event) {
+                if (event.value === true)
+                ons.notification.confirm("This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?",{buttonLabels: ["Cancel", "Continue"], title: "Attention!"})
+                .then(res => {
+                    if (res === 0) {
+                        event.switch.setAttribute('checked',true); // it won't allow to uncheck the switch without explicitly adding this attribute to its html
+                        event.switch.removeAttribute('checked');
+                        localStorage.removeItem(getOptionName(event.switch.id));
+                    }
+                });
+            });
             switches.forEach(sw => {
                 sw.addEventListener('change', function (event) {
                     if (event.value) {

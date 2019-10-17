@@ -14,20 +14,19 @@
     <hr style="width:98%; opacity: 0.3">
 
     <section id="robot-control-buttons">
-        <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> Start</ons-button>
-        <ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> Pause</ons-button>
-        <br>
-        <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> Stop</ons-button>
-        <ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> Home</ons-button>
-        <br>
-        <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> Spot</ons-button>
-        <ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> Find</ons-button>
-        <br>
-        <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> Go to </ons-button>
-        <ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> Zones </ons-button>
-
-        <br>
-        <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> Unknown power</ons-button>
+        <div>
+            <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> Start</ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> Pause</ons-button>
+        </div><div>
+            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> Stop</ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> Home</ons-button>
+        </div><div>
+            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> Spot</ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> Find</ons-button>
+        </div><div>
+            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> Go to </ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> Zones </ons-button>
+        </div><div id="multimap-buttons" style="display: none;">
+        <ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-save"></ons-icon> Store Map </ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> Load Map </ons-button>
+        </div><div>
+           <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> Unknown power</ons-button>
+        </div>
     </section>
     <hr style="width:98%; opacity: 0.3">
 
@@ -35,7 +34,6 @@
         <p id="battery-status-text">
             Battery: ??%
         </p>
-
         <p>
             <ons-progress-bar id="battery-status-bar" secondary-value="100"></ons-progress-bar>
         </p>
@@ -52,6 +50,8 @@
         var spotButton = document.getElementById("spot-button");
         var goToButton = document.getElementById("go-to-button");
         var areaButton = document.getElementById("area-button");
+        var storeMapButton = document.getElementById("store-map-button");
+        var loadMapButton = document.getElementById("load-map-button");
         var fanspeedButton = document.getElementById("fanspeed-button");
         var findRobotButton = document.getElementById("find-robot-button");
         var homeButton = document.getElementById("home-button");
@@ -179,7 +179,7 @@
             });
 
             ons.openActionSheet({
-                title: 'Go to',
+                title: 'Go to:',
                 cancelable: true,
                 buttons: options
             }).then(index => {
@@ -195,8 +195,8 @@
                     } else {
                         loadingBarHome.setAttribute("indeterminate", "indeterminate");
                         fn.prequestWithPayload("api/go_to", JSON.stringify({x: config.spots[index][1],y: config.spots[index][2]}), "PUT")
-                        .then(res => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
-                        .catch(e => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                        .then(res => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+                        .catch(e => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                         .finally(() => {
                             window.setTimeout(function () {
                                 updateHomePage();
@@ -260,8 +260,8 @@
                     } else {
                         loadingBarHome.setAttribute("indeterminate", "indeterminate");
                         fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
-                        .then(res => ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }))
-                        .catch(e => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+                        .then(res => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+                        .catch(e => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
                         .finally(() => {
                             window.setTimeout(function () {
                                 updateHomePage();
@@ -274,6 +274,7 @@
                     }, 3000);
                 }
             });
+            document.querySelector('ons-action-sheet').classList.add('ons-action-sheet-zoned');
             var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
             for (var i = 0; i < zoneButtons.length; i++) {
                 if (!i) zoneButtons[i].parentNode.parentNode.title = '';
@@ -369,6 +370,135 @@
             },true);
         }
 
+        function handleStoreMapButton() {
+            window.clearTimeout(currentRefreshTimer);
+            let slotName;
+            ons.notification.prompt({message: "Choose a slot number to save the map files into (0-9):", title: "Prompt", placeholder: "1", cancelable: true, buttonLabels: ["Cancel", "OK"] })
+            .then(slot => {
+                if (slot === null) {
+                    return Promise.reject("cancel");
+                }
+                if (!/^[0-9]$/.test(slot)) {
+                    return Promise.reject("Slot should be a number from 0 to 9.");
+                }
+                slotName = slot;
+                loadingBarHome.setAttribute("indeterminate", "indeterminate");
+                return fn.prequest("api/list_maps", "GET");
+            })
+            .then(res => {
+                if (res.includes(slotName)) {
+                    return ons.notification.confirm("Slot #" + slotName + " is already occupied. Overwrite?",{buttonLabels: ["Cancel", "Overwrite"]});
+                }
+                return 1;
+            })
+            .then(res => {
+                if (res === 0) {
+                    return Promise.reject("cancel");
+                }
+                return fn.prequestWithPayload("api/store_map", JSON.stringify({name: slotName}), "PUT");
+            })
+            .then(res => { ons.notification.toast("Map stored successfully!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .catch(err => {
+                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            })
+            .finally(() => {
+                loadingBarHome.removeAttribute("indeterminate");
+                window.setTimeout(function () {
+                    updateHomePage();
+                }, 500);
+            });
+        }
+
+        function handleLoadMapButton() {
+            window.clearTimeout(currentRefreshTimer);
+            loadingBarHome.setAttribute("indeterminate", "indeterminate");
+            let slots = [], options = [];
+            fn.prequest("api/list_maps", "GET")
+            .then(data => {
+                loadingBarHome.removeAttribute("indeterminate");
+                slots = data;
+                for (var i = 0; i < data.length; i++) {
+                    options.push("slot #" + data[i]);
+                }
+                options.push({
+                    label: options.length ? 'Cancel' : 'No saved maps!',
+                    icon: 'md-close'
+                });
+                let slotsList = ons.openActionSheet({
+                    title: 'Choose a slot to load the map from:',
+                    cancelable: true,
+                    buttons: options
+                });
+                var slotsButtons = document.querySelectorAll('ons-action-sheet-button');
+                for (var i = 0; i < slotsButtons.length; i++) {
+                    if (!i) slotsButtons[i].parentNode.parentNode.title = '';
+                    slotsButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+                    if (slotsButtons[i].getAttribute('icon') === null) {
+                        slotsButtons[i].insertAdjacentHTML('beforeend','<span class="remove-stored-map" data-id="' + i + '"><i class="fas fa-times"></i></span>')
+                    }
+                }
+                document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
+                    if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+                    if (e.target.className === 'remove-stored-map') {
+                        e.stopPropagation();
+                        let slotName = slots[e.target.dataset.id];
+                        ons.notification.confirm("Are you sure you want to clear " + options[e.target.dataset.id] + "?").then(answer => {
+                            if (answer === 1) {
+                                loadingBarHome.setAttribute("indeterminate", "indeterminate");
+                                fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
+                                    (res) => { ons.notification.toast("Map slot cleared!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                                    (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                                )
+                                .finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
+                            }
+                        });
+                    }
+                },true);
+                return slotsList;
+            })
+            .then(index => {
+                if (index > -1 && index < slots.length) {
+                    document.querySelectorAll('#robot-control-buttons ons-button').forEach(button => button.setAttribute('disabled','disabled'));
+                    loadingBarHome.setAttribute("indeterminate", "indeterminate");
+                    return fn.prequestWithPayload("api/load_map", JSON.stringify({ name: slots[index] }), "PUT");
+                } else {
+                    return Promise.reject("cancel");
+                }
+            })
+            .then(res => {
+                if (res.message === 'wait') {
+                    let waiting = ons.notification.alert('Map replacement routines are running. Please wait for 30 seconds...',{class: 'load-map-waiting', title: 'Wait', cancelable: false});
+                    let adb = document.querySelector('.load-map-waiting .alert-dialog-button'),
+                        adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
+                        adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
+                        adi = setInterval(() => {
+                           let seconds = +(adc.textContent.match(/for (\d+) sec/) || [])[1] || 0;
+                           if (seconds <= 1) {
+                               clearInterval(adi);
+                               adb.classList.remove('ok-disabled');
+                               adt.textContent = "Finished";
+                               adc.textContent = "Requested routines should be completed now.";
+                           } else {
+                               adc.textContent = adc.textContent.replace(seconds,--seconds);
+                           }
+                        },1e3);
+                    adb.classList.add('ok-disabled');
+                    return waiting;
+                }
+                return true;
+            })
+            .then(res => { ons.notification.toast("Map restored successfully!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .catch(err => {
+                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            })
+            .finally(() => {
+                loadingBarHome.removeAttribute("indeterminate");
+                window.setTimeout(function () {
+                    updateHomePage();
+                }, 500);
+            });
+        }
+
         function updateHomePage() {
             if (refreshInProgress) {
                 return;
@@ -425,6 +555,14 @@
                     spotButton.setAttribute("disabled", "disabled");
                 }
 
+                if ([3,8].includes(res.state)) {
+                    storeMapButton.removeAttribute("disabled");
+                    loadMapButton.removeAttribute("disabled");
+                } else {
+                    storeMapButton.setAttribute("disabled", "disabled");
+                    loadMapButton.setAttribute("disabled", "disabled");
+                }
+
                 robotStateDetailsM2.innerHTML = "Area: " + ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6) + " m²";
                 robotStateDetailsTime.innerHTML = "Time: " + window.fn.secondsToHms(res.clean_time);
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
@@ -447,6 +585,8 @@
         };
 
         ons.getScriptPage().onShow = function () {
+            /* multimap visibility */
+            document.getElementById('multimap-buttons').style.display = localStorage.getItem('settingsWebifShowMultimap') ? '' : 'none';
             /* check for area and go to configuration */
             fn.prequest("api/get_config", "GET")
             .then((res) => {
@@ -482,10 +622,10 @@
             text-align: center;
         }
 
-            #robot-control-buttons > ons-button {
-                margin: 5px;
-                font-size: 1.2em;
-            }
+        #robot-control-buttons > ons-button {
+            margin: 5px;
+            font-size: 1.2em;
+        }
 
         #robot-state-details-m2 {
             margin-right: 5%;
@@ -493,6 +633,9 @@
 
         #robot-state-details-time {
             text-align: right;
+        }
+        .button-margin {
+            margin: 0.2em;
         }
         .action-sheet-button.zone_selected {
             background-color: #c9c9c9;
@@ -509,14 +652,24 @@
             right: 0;
             padding: 0 0.8em;
         }
-        .action-sheet-button:nth-last-of-type(3) {
+        .action-sheet-button .remove-stored-map {
+            position: absolute;
+            right: 5px;
+            padding: 0 0.8em;
+            cursor: pointer;
+            color: black;
+        }
+        .action-sheet-button .remove-stored-map i {
+            pointer-events: none;
+        }
+        .ons-action-sheet-zoned .action-sheet-button:nth-last-of-type(3) {
             border-bottom-right-radius: 12px;
             border-bottom-left-radius: 12px;
         }
-        .action-sheet-button--material:nth-last-of-type(3) {
+        .ons-action-sheet-zoned .action-sheet-button--material:nth-last-of-type(3) {
             border-radius: 0;
         }
-        .action-sheet-button-half {
+        .ons-action-sheet-zoned .action-sheet-button-half {
             width: 49.86%;
             border-radius: 12px;
             margin: 8px 0 0;
@@ -524,7 +677,7 @@
             background-image: none;
             font-weight: 600;
         }
-        .action-sheet-button--material.action-sheet-button-half {
+        .ons-action-sheet-zoned .action-sheet-button--material.action-sheet-button-half {
             width: 50%;
             border-radius: 0;
             margin: 0;
@@ -532,20 +685,27 @@
             background-image: none;
             font-weight: 400;
         }
-        .action-sheet-button-zsubmit {
+        .ons-action-sheet-zoned .action-sheet-button-zsubmit {
             float: left;
         }
-        .action-sheet-button-zcancel {
+        .ons-action-sheet-zoned .action-sheet-button-zcancel {
             float: right;
         }
-        .action-sheet-button-zsubmit.zdisabled {
+        .ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled {
             color: darkgray;
         }
-        .action-sheet-button-zsubmit.zdisabled:active {
+        .ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled:active {
             background-color: #fff;
         }
-        .zone-checkbox {
+        .ons-action-sheet-zoned .zone-checkbox {
             transform: scale(1.5);
+        }
+        .load-map-waiting .ok-disabled {
+            color: silver;
+            pointer-events: none;
+        }
+        .load-map-waiting .ok-disabled:active {
+            background-color: inherit;
         }
     </style>
 
