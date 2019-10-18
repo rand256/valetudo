@@ -27,6 +27,14 @@
                 ???
             </div>
         </ons-list-item>
+        <ons-list-item>
+            <div class="left">
+                Firmware update:
+            </div>
+            <div class="right" id="info_fw_build">
+                <a id="sendUpdateRequestButton" onclick="sendUpdateRequest();">[send request]</a>
+            </div>
+        </ons-list-item>
     </ons-list>
     <ons-list-title style="margin-top:5px;">Current Token</ons-list-title>
     <ons-list>
@@ -150,6 +158,28 @@
             Promise.all([updateSystemInfo, updateAppLocaleInfo, updateCurrentTokenInfo]).finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         };
 
+        function sendUpdateRequest() {
+            let url, md5;
+            ons.notification.alert("This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value.",{title: "Warning"})
+            .then(() => ons.notification.prompt("Please enter URL to firmware pkg file:",{title: "Prompt", cancelable: true, buttonLabels: ["Cancel", "Continue"]}))
+            .then((res) => {
+                if (!res) return Promise.reject("cancel");
+                url = res;
+                return ons.notification.prompt("Please enter MD5 hash of the file you just specified:",{title: "Prompt", cancelable: true, buttonLabels: ["Cancel", "Send!"]});
+            })
+            .then((res) => {
+                if (!res) return Promise.reject("cancel");
+                md5 = res;
+                loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
+                return fn.prequestWithPayload("api/send_update_request", JSON.stringify({url: url, md5: md5}), "PUT");
+            })
+            .then(res => { ons.notification.toast("Update request should be sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .catch(err => {
+                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+            })
+            .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
+        }
+
         function checkNewValetudoVersion() {
             loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
             fn.prequest("https://api.github.com/repos/rand256/valetudo/releases", "GET")
@@ -169,4 +199,12 @@
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
     </script>
+    <style>
+        #sendUpdateRequestButton {
+            font-size: 0.8em;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
 </ons-page>
