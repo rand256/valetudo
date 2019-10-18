@@ -194,7 +194,15 @@
         }
 
         ons.ready(function () {
-            history.replaceState({},'','#home.html');
+            // todo: make it work without timeouts somehow? map.html is terribly broken
+            switch (window.location.hash) {
+                case '#home': break;
+                case '#map.html': setTimeout(()=>fn.loadView(1),500); break;
+                case '#zones.html': setTimeout(()=>fn.loadView(2),500); break;
+                case '#control.html': setTimeout(()=>fn.loadView(3),500); break;
+                case '#settings.html': setTimeout(()=>fn.loadView(4),500); break;
+                default: history.replaceState({},'','#home.html');
+            }
             window.addEventListener('popstate', function (e) {
                 if (document.getElementById('appNavigator').pages.length > 1) {
                     document.getElementById('appNavigator').popPage({times: (document.getElementById('appNavigator').pages.length - 1), animation: "none"});
@@ -239,7 +247,7 @@
                 <ons-tab label="Home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
                 <ons-tab label="Map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
                 <ons-tab label="Zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
-                <ons-tab label="Control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'manualcontrol.html');"></ons-tab>
+                <ons-tab label="Control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'control.html');"></ons-tab>
                 <ons-tab label="Settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
             </ons-tabbar>
 
