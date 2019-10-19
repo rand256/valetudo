@@ -29,6 +29,10 @@
         <ons-fab ripple id="start_cleaning">
             <ons-icon icon="fa-play"></ons-icon>
         </ons-fab>
+        <ons-fab ripple id="resume_cleaning" style="display: none;">
+            <span class="resume_pause"><ons-icon icon="fa-pause"></ons-icon></span>
+            <span class="resume_play"><ons-icon icon="fa-play"></ons-icon></span>
+        </ons-fab>
         <ons-fab ripple id="pause_cleaning" style="display: none;">
             <ons-icon icon="fa-pause"></ons-icon>
         </ons-fab>
@@ -161,6 +165,12 @@
                     document.getElementById("start_cleaning").style.display = 'none';
                 }
             }
+            // resume available in paused and charger disconnected while in zoned cleaning states
+            if (res.state === 10 || (res.state === 2 && res.in_cleaning === 2)) {
+                document.getElementById("resume_cleaning").style.display = '';
+            } else {
+                document.getElementById("resume_cleaning").style.display = 'none';
+            }
             // stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
             if ([3,6,8,9,10,11,14,15,16].includes(res.state)) { 
                 document.getElementById("stop_cleaning").style.display = 'none';
@@ -184,6 +194,7 @@
         window.fn.reset_map_buttons = function() {
             document.getElementById("start_cleaning").style.display = '';
             document.getElementById("goto").style.display = '';
+            document.getElementById("resume_cleaning").style.display = 'none';
             document.getElementById("pause_cleaning").style.display = 'none';
             document.getElementById("spot_clean").style.display = 'none';
             document.getElementById("stop_cleaning").style.display = 'none';
@@ -196,33 +207,28 @@
         document.getElementById("start_cleaning").onclick = () => {
             const zones = map.getLocations().zones;
             const res = document.querySelector('.map-page-status').dataset;
-            if (+res.state === 10 || (+res.state === 2 && +res.in_cleaning === 2)) {
-                if (+res.in_returning === 1) {
-                    put_command("drive_home","start_cleaning");
-                    return;
-                }
-                if (+res.in_cleaning === 2 && zones.length) {
-                    ons.notification.confirm("Zoned cleaning is on pause. Would you like to continue it or start a new one?",{buttonLabels: ["Continue", "Start new"]}).then(function (answer) {
-                        if (answer === 0) {
-                            put_command("start_cleaning");
-                        } else {
-                            zoned_cleanup(zones);
-                        }
-                    });
-                    return;
-                }
-                put_command("start_cleaning");
-                return;
-            }
             if (zones.length) {
                 zoned_cleanup(zones);
             } else {
                 ons.notification.confirm("Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?").then(function (answer) {
                     if (answer === 1) {
-                        put_command("start_cleaning");
+                        put_command("start_cleaning_only");
                     }
                 });
             }
+        }
+        document.getElementById("resume_cleaning").onclick = () => {
+            const zones = map.getLocations().zones;
+            const res = document.querySelector('.map-page-status').dataset;
+            if (+res.state === 10 || (+res.state === 2 && +res.in_cleaning === 2)) {
+                if (+res.in_returning === 1) {
+                    put_command("drive_home","resume_cleaning");
+                    return;
+                }
+                put_command("start_cleaning","resume_cleaning");
+                return;
+            }
+            ons.notification.toast("Nothing to resume!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
         }
         document.getElementById("stop_cleaning").onclick = () => { put_command("stop_cleaning"); };
         document.getElementById("pause_cleaning").onclick = () => { put_command("pause_cleaning"); };
@@ -353,6 +359,22 @@
         .map-page-buttons > ons-fab {
             background-color: #ffffff;
             color: #31313a;
+        }
+
+        .map-page-buttons .resume_pause {
+            position: absolute;
+            left: 0.55em;
+            width: 0.45em;
+            overflow-x: hidden;
+        }
+
+        .map-page-buttons .resume_play {
+            position: absolute;
+            left: 0.97em;
+            top: -0.02em;
+            width: 0.9em;
+            overflow-x: hidden;
+            transform: scale(0.86);
         }
     </style>
 </ons-page>
