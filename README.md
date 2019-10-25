@@ -1,3 +1,10 @@
+<div align="center">
+    <img src="https://github.com/rand256/valetudo/blob/testing/assets/logo/valetudo_logo_with_name.svg" width="800" alt="valetudo">
+    <p align="center"><h2>Free your vacuum from the cloud</h2></p>
+</div>
+
+----
+
 ### Preamble:
 
 This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), hackishly _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. So this is a quick list of changes first appeared here:
@@ -13,20 +20,13 @@ This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Val
 * Experimental ability to save/restore maps;
 * Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
-Beware, I'm not a qualified coder - that's for sure, so the code is awful in places, also I'm not familiar with github at all. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
-
-----
-
-<div align="center">
-    <img src="https://github.com/rand256/valetudo/blob/testing/assets/logo/valetudo_logo_with_name.svg" width="800" alt="valetudo">
-    <p align="center"><h2>Free your vacuum from the cloud</h2></p>
-</div>
+Beware, I'm not a qualified coder - so the code is awful in places, also I'm not that familiar with github. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
 
 ----
 
 ### Installing
 
-Check [deployment](/deployment) on how to install Valetudo onto your device.
+Check [deployment section](/deployment) or [this wiki page](https://github.com/rand256/valetudo/wiki/Installation-process) on how to install Valetudo onto your device.
 
 ### Screenshots of this mod:
 
@@ -47,3 +47,8 @@ Check [deployment](/deployment) on how to install Valetudo onto your device.
   
 </details>
 
+### Join the Discussion
+* [Valetudo Telegram group](https://t.me/joinchat/AR1z8xOGJQwkApTulyBx1w)
+
+### Resources
+* [valetudo-mapper](https://github.com/rand256/valetudo-mapper) - A companion service for PNG Maps
