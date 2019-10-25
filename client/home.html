@@ -373,13 +373,14 @@
         function handleStoreMapButton() {
             window.clearTimeout(currentRefreshTimer);
             let slotName;
-            ons.notification.prompt({message: "Choose a slot number to save the map files into (0-9):", title: "Prompt", placeholder: "1", cancelable: true, buttonLabels: ["Cancel", "OK"] })
+            ons.notification.prompt({message: "Choose a title to save the map files as:", title: "Prompt", placeholder: "name", cancelable: true, buttonLabels: ["Cancel", "OK"] })
             .then(slot => {
                 if (slot === null) {
                     return Promise.reject("cancel");
                 }
-                if (!/^[0-9]$/.test(slot)) {
-                    return Promise.reject("Slot should be a number from 0 to 9.");
+                slot = slot.trim();
+                if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
+                    return Promise.reject("Title may contain only latin letters or numbers, spaces and hyphen.");
                 }
                 slotName = slot;
                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
@@ -387,7 +388,7 @@
             })
             .then(res => {
                 if (res.includes(slotName)) {
-                    return ons.notification.confirm("Slot #" + slotName + " is already occupied. Overwrite?",{buttonLabels: ["Cancel", "Overwrite"]});
+                    return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? "Slot #" + slotName + " is already occupied" : "Name \"" + slotName + "\" is already taken") + ". Overwrite?",{buttonLabels: ["Cancel", "Overwrite"]});
                 }
                 return 1;
             })
@@ -418,7 +419,7 @@
                 loadingBarHome.removeAttribute("indeterminate");
                 slots = data;
                 for (var i = 0; i < data.length; i++) {
-                    options.push("slot #" + data[i]);
+                    options.push((/^[0-9]+$/.test(data[i]) ? "slot #" : "") + data[i]);
                 }
                 options.push({
                     label: options.length ? 'Cancel' : 'No saved maps!',
@@ -442,11 +443,11 @@
                     if (e.target.className === 'remove-stored-map') {
                         e.stopPropagation();
                         let slotName = slots[e.target.dataset.id];
-                        ons.notification.confirm("Are you sure you want to clear " + options[e.target.dataset.id] + "?").then(answer => {
+                        ons.notification.confirm("Are you sure you want to delete \"" + options[e.target.dataset.id] + "\"?").then(answer => {
                             if (answer === 1) {
                                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
                                 fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
-                                    (res) => { ons.notification.toast("Map slot cleared!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
+                                    (res) => { ons.notification.toast("Stored map successfully deleted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
                                     (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
                                 )
                                 .finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
