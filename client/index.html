@@ -134,13 +134,18 @@
             request.send(formData);
         }
 
-        window.fn.prequest = function (url, method) {
+        window.fn.prequest = function (url, method, type) {
             return new Promise(function(resolve, reject) {
                 var request = new XMLHttpRequest();
-                request.open(method, url, true);
+                if (type) request.responseType = type;
+                request.open(method, url, true); /* 'http://172.16.10.134/' + */
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
-                        resolve(JSON.parse(request.responseText));
+                        if (request.responseType === "") {
+                            resolve(JSON.parse(request.responseText));
+                        } else {
+                            resolve(request.response);
+                        }
                     } else {
                         console.error(request);
                         reject("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
@@ -153,10 +158,11 @@
             });
         };
 
-        window.fn.prequestWithPayload = function (url, payload, method) {
+        window.fn.prequestWithPayload = function (url, payload, method, type) {
             return new Promise(function(resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open(method, url, true);
+                if (type) request.responseType = type;
                 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 request.send(payload);
 

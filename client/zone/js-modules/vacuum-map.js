@@ -1,3 +1,5 @@
+import { RRMapParser } from "./rr-map-parser.js";
+import { FallbackMap } from "./fallback-map.js";
 import { MapDrawer } from "./map-drawer.js";
 import { PathDrawer } from "./path-drawer.js";
 import { trackTransforms } from "./tracked-canvas.js";
@@ -16,6 +18,8 @@ export function VacuumMap(canvasElement) {
     const mapDrawer = new MapDrawer();
     const pathDrawer = new PathDrawer();
     let coords = [];
+
+    let parsedForbiddenMarkers = {forbidden_zones: [], virtual_walls: []};
 
     let ws;
     let probeTimeout;
@@ -61,18 +65,9 @@ export function VacuumMap(canvasElement) {
             ws.isAlive = true;
             probeWebSocket();
             if (event.data.constructor === ArrayBuffer) {
-                try {
-                    let data = JSON.parse(new TextDecoder().decode(pako.inflate(event.data)));
-                    if (data.map)
-                        updateMap(data.map);
-                    if (data.status)
-                        updateStatus(data.status);
-                } catch(e) {
-                    //TODO something reasonable
-                    console.log(e);
-                }
-            }
-            if (event.data.slice(0,10) === '{"status":') {
+                let data = parseMap(event.data);
+                updateMap(data);
+            } else if (event.data.slice(0,10) === '{"status":') {
                 try {
                     let data = JSON.parse(event.data);
                     updateStatus(data.status);
@@ -93,6 +88,13 @@ export function VacuumMap(canvasElement) {
             ws.close();
         }
         clearTimeout(probeTimeout);
+    }
+
+    function parseMap(gzippedMap) {
+        try {
+            return gzippedMap && gzippedMap.byteLength && RRMapParser.PARSE(pako.inflate(gzippedMap)) || FallbackMap.parsedData;
+        } catch (e) { console.log(e); };
+        return null;
     }
 
     function updateForbiddenZones(forbiddenZoneData) {
@@ -153,9 +155,10 @@ export function VacuumMap(canvasElement) {
     /**
      * Public function to update the displayed mapdata periodically.
      * Data is distributed into the subcomponents for rendering the map / path.
-     * @param {object} mapData - the json data returned by the "/api/map/latest" route
+     * @param {object} mapData - parsed by RRMapParser data from "/api/map/latest" route
      */
     function updateMap(mapData) {
+        parsedForbiddenMarkers = {forbidden_zones: mapData.forbidden_zones, virtual_walls: mapData.virtual_walls}; // todo: move it somewhere more reasonable?
         mapDrawer.draw(mapData.image);
         if (options.noPath) {
             pathDrawer.setPath({}, mapData.robot, mapData.charger, {});
@@ -200,9 +203,11 @@ export function VacuumMap(canvasElement) {
 
     /**
      * Sets up the canvas for tracking taps / pans / zooms and redrawing the map accordingly
-     * @param {object} mapData - the json data returned by the "/api/map/latest" route
+     * @param {object} mapData - parsed by RRMapParser data from "/api/map/latest" route
      */
-    function initCanvas(mapData, opts) {
+    function initCanvas(gzippedMapData, opts) {
+        const mapData = parseMap(gzippedMapData);
+        parsedForbiddenMarkers = {forbidden_zones: mapData.forbidden_zones, virtual_walls: mapData.virtual_walls}; // todo: move it somewhere more reasonable?
         if (opts) options = opts;
         let ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
@@ -575,6 +580,10 @@ export function VacuumMap(canvasElement) {
         };
     }
 
+    function getParsedForbiddenMarkers() {
+        return parsedForbiddenMarkers;
+    }
+
     function addZone(zoneCoordinates, addZoneInactive) {
         let newZone;
         if (zoneCoordinates) {
@@ -690,9 +699,11 @@ export function VacuumMap(canvasElement) {
         initCanvas: initCanvas,
         initWebSocket: initWebSocket,
         closeWebSocket: closeWebSocket,
+        parseMap: parseMap,
         updateMap: updateMap,
         updateStatus: updateStatus,
         getLocations: getLocations,
+        getParsedForbiddenMarkers: getParsedForbiddenMarkers,
         addZone: addZone,
         addSpot: addSpot,
         clearZones: clearZones,

@@ -28,7 +28,7 @@
 
         function switchToMapZoneEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/map/latest", "GET")
+            fn.prequest("api/map/latest", "GET", "arraybuffer")
             .then(mapData => {
                 fn.pushPage({
                     'id': 'zones-configuration-map.html',
@@ -45,7 +45,7 @@
 
         function switchToMapSpotEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/map/latest", "GET")
+            fn.prequest("api/map/latest", "GET", "arraybuffer")
             .then(mapData => {
                 fn.pushPage({
                     'id': 'spot-configuration-map.html',
@@ -67,7 +67,7 @@
                 if (res['lab_status'] !== 1) return Promise.reject("Persistent data is disabled or unavailable, unable to edit forbidden markers.");
                 return true;
             })
-            .then(() => fn.prequest("api/map/latest", "GET"))
+            .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then(mapData => {
                 fn.pushPage({
                     'id': 'forbidden-markers-configuration-map.html',

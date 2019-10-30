@@ -32,13 +32,13 @@
 
         document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        if (topPage.data.map.forbidden_zones)
-        for (let zone of topPage.data.map.forbidden_zones) {
+        if (map.getParsedForbiddenMarkers().forbidden_zones)
+        for (let zone of map.getParsedForbiddenMarkers().forbidden_zones) {
             map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
         }
 
-        if (topPage.data.map.virtual_walls)
-        for (let wall of topPage.data.map.virtual_walls) {
+        if (map.getParsedForbiddenMarkers().virtual_walls)
+        for (let wall of map.getParsedForbiddenMarkers().virtual_walls) {
             map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
         }
 

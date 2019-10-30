@@ -58,13 +58,13 @@
                     resolve(map);
                 }
                 loadingBar.setAttribute("indeterminate", "indeterminate");
-                fn.prequest("api/map/latest", "GET")
-                .then(mapData => {
+                fn.prequest("api/map/latest", "GET", "arraybuffer")
+                .then(gzippedMapData => {
                     if(map === null) {
                         map = new VacuumMap(document.getElementById('map-canvas'));
-                        map.initCanvas(mapData);
+                        map.initCanvas(gzippedMapData);
                     } else {
-                        map.updateMap(mapData);
+                        map.updateMap(map.parseMap(gzippedMapData));
                     }
                     map.initWebSocket();
                     resolve(map);

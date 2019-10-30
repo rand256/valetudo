@@ -184,8 +184,8 @@
 
         function exportPersistentData() {
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/map/latest", "GET")
-            .then(res => { return {virtual_walls: res.virtual_walls, forbidden_zones: res.forbidden_zones}; })
+            fn.prequest("api/map/latest", "GET", "arraybuffer")
+            .then(res => window.fn.getForbiddenMarkers(res))
             .then(res => fn.prequestWithPayload("api/forbidden_markers", JSON.stringify(res), "PUT"))
             .then(res => { ons.notification.toast("Persistent data exported to configuration.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
             .catch(err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
@@ -222,5 +222,17 @@
             )
             .finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
         };
+    </script>
+    <script type="module" crossorigin>
+        import { RRMapParser } from "./zone/js-modules/rr-map-parser.js"
+        window.fn.getForbiddenMarkers = function(gzippedMap) {
+            try {
+                const mapData = RRMapParser.PARSE(pako.inflate(gzippedMap)) || {};
+                return {
+                    virtual_walls: mapData.virtual_walls || [],
+                    forbidden_zones: mapData.forbidden_zones || []
+                };
+            } catch (e) {}
+        }
     </script>
 </ons-page>
