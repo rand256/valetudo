@@ -65,6 +65,10 @@ export function PathDrawer() {
         return coords.map(d => Math.floor(d / 50 * scaleFactor));
     }
 
+    function mmToCanvasPxPath(coord) {
+        return Math.floor(coord / 50 * scaleFactor);
+    }
+
     function drawCharger(position) {
         const ctx = canvas.getContext("2d");
 
@@ -111,8 +115,8 @@ export function PathDrawer() {
     function drawLines(points, ctx) {
         if (!points || !points.length) return;
         let first = true;
-        for (const coord of points) {
-            const [x, y] = mmToCanvasPx(coord);
+        for (let i = 0, len = points.length; i < len; i += 2) {
+            const x = mmToCanvasPxPath(points[i]), y = mmToCanvasPxPath(points[i+1]);
             if (first) {
                 ctx.moveTo(x, y);
                 first = false;

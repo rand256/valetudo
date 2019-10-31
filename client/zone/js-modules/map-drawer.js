@@ -45,10 +45,8 @@ export function MapDrawer() {
                         color = strongOccupiedColor;
                         break;
                 }
-
                 mapData.pixels[key].forEach(function(px){
-                    const imgDataOffset = (px[0] + mapData.position.left + (px[1] + mapData.position.top) * mapCanvas.width) * 4;
-
+                    const imgDataOffset = ((px % mapData.dimensions.width) + mapData.position.left + ((mapData.dimensions.height - 1 - Math.floor(px / mapData.dimensions.width)) + mapData.position.top) * mapCanvas.width) * 4;
                     imgData.data[imgDataOffset] = color.r;
                     imgData.data[imgDataOffset + 1] = color.g;
                     imgData.data[imgDataOffset + 2] = color.b;
@@ -56,7 +54,6 @@ export function MapDrawer() {
                 })
             });
         }
-
 
         mapCtx.putImageData(imgData, 0, 0);
     }

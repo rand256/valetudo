@@ -86,26 +86,16 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
                 };
 
                 for (let i = 0; i < length; i++) {
-                    const val = buf.readUInt8(0x18 + offset + i);
-                    let coords;
-
-                    if(val !== 0) {
-                        coords = [
-                            i % parameters.dimensions.width,
-                            parameters.dimensions.height-1 - Math.floor(i / parameters.dimensions.width)
-                        ];
-
-                        switch(val) {
-                            case 1:
-                                parameters.pixels.obstacle_strong.push(coords);
-                                break;
-                            case 8:
-                                parameters.pixels.obstacle_weak.push(coords);
-                                break;
-                            case 255:
-                                parameters.pixels.floor.push(coords);
-                                break;
-                        }
+                    switch(buf.readUInt8(0x18 + offset + i)) {
+                        case 1:
+                            parameters.pixels.obstacle_strong.push(i);
+                            break;
+                        case 8:
+                            parameters.pixels.obstacle_weak.push(i);
+                            break;
+                        case 255:
+                            parameters.pixels.floor.push(i);
+                            break;
                     }
                 }
             }
@@ -120,10 +110,10 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
             const points = [];
             for (let i = 0; i < length; i = i + 4) {
                 //to draw these coordinates onto the map pixels, they have to be divided by 50
-                points.push([
+                points.push(
                     buf.readUInt16LE(0x14 + offset + i),
                     buf.readUInt16LE(0x14 + offset + i + 2)
-                ]);
+                );
             }
 
             result[type] = {
@@ -250,20 +240,15 @@ RRMapParser.PARSE = function parse(inputMapBuf) {
             ].forEach(item => {
                 if (blocks[item.type]) {
                     parsedMapData[item.path] = blocks[item.type];
-                    parsedMapData[item.path].points = parsedMapData[item.path].points.map(point => {
-                        point[1] = Tools.DIMENSION_MM - point[1];
-                        return point;
-                    });
-
-                    if (parsedMapData[item.path].points.length >= 2) {
+                    let len = parsedMapData[item.path].points.length;
+                    for (let i = 0; i < len; i += 2) {
+                        parsedMapData[item.path].points[i+1] = Tools.DIMENSION_MM - parsedMapData[item.path].points[i+1];
+                    }
+                    if (len >= 4) {
                         parsedMapData[item.path].current_angle =
                             Math.atan2(
-                                parsedMapData[item.path].points[parsedMapData[item.path].points.length - 1][1] -
-                                parsedMapData[item.path].points[parsedMapData[item.path].points.length - 2][1],
-
-                                parsedMapData[item.path].points[parsedMapData[item.path].points.length - 1][0] -
-                                parsedMapData[item.path].points[parsedMapData[item.path].points.length - 2][0]
-
+                                parsedMapData[item.path].points[len - 1] - parsedMapData[item.path].points[len - 3],
+                                parsedMapData[item.path].points[len - 2] - parsedMapData[item.path].points[len - 4],
                             ) * 180 / Math.PI;
                     }
                 }
