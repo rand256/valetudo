@@ -199,14 +199,22 @@
             document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
         }
 
+        var preSwitchTab = function(targetID) {
+            if (!document.querySelectorAll('.ons-swiper-target > .page')[targetID]) {
+                setTimeout(() => preSwitchTab(targetID),100);
+                return;
+            }
+            fn.loadView(targetID);
+        }
+
         ons.ready(function () {
-            // todo: make it work without timeouts somehow? map.html is terribly broken
+            // todo: make it work without timeout hacks
             switch (window.location.hash) {
                 case '#home': break;
-                case '#map.html': setTimeout(()=>fn.loadView(1),500); break;
-                case '#zones.html': setTimeout(()=>fn.loadView(2),500); break;
-                case '#control.html': setTimeout(()=>fn.loadView(3),500); break;
-                case '#settings.html': setTimeout(()=>fn.loadView(4),500); break;
+                case '#map.html': preSwitchTab(1); break;
+                case '#zones.html': preSwitchTab(2); break;
+                case '#control.html': preSwitchTab(3); break;
+                case '#settings.html': preSwitchTab(4); break;
                 default: history.replaceState({},'','#home.html');
             }
             window.addEventListener('popstate', function (e) {
