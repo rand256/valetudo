@@ -1,18 +1,18 @@
-<ons-page id="settings-sound-voice">
+<ons-page id="settings-sound-voice-page">
     <ons-toolbar>
         <div class="left">
-            <ons-back-button>Settings</ons-back-button>
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
         </div>
-        <div class="center">Sound Volume & Voice Pack</div>
+        <div class="center" data-i18n="settings.soundAndVoiceTitle">Sound Volume & Voice Pack</div>
         <div class="right">
         </div>
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-sound-voice" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
-    <ons-list-title style="margin-top:20px;">Sound Volume Settings</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="settings.soundAndVoice.volumeSettings">Sound Volume Settings</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.soundAndVoice.volume">
                 Volume:
             </div>
             <label class="right" style="width:75%">
@@ -31,27 +31,27 @@
         </ons-list-item>
         <ons-list-item>
             <div class="center">
-                <ons-button id="settings-sound-voice-input-save-button" modifier="large" class="button-margin" onclick="handleSoundVolumeSettingsSaveButton();">Save sound volume</ons-button>
+                <ons-button id="settings-sound-voice-input-save-button" modifier="large" class="button-margin" onclick="handleSoundVolumeSettingsSaveButton();" data-i18n="settings.soundAndVoice.saveVolume">Save sound volume</ons-button>
             </div>
         </ons-list-item>
         <ons-list-item>
             <div class="center">
-                <ons-button id="settings-sound-voice-input-test-button" modifier="large" class="button-margin" onclick="handleSoundVolumeSettingsTestButton();">Test sound volume</ons-button>
+                <ons-button id="settings-sound-voice-input-test-button" modifier="large" class="button-margin" onclick="handleSoundVolumeSettingsTestButton();" data-i18n="settings.soundAndVoice.testVolume">Test sound volume</ons-button>
             </div>
         </ons-list-item>
     </ons-list>
-    <ons-list-title style="margin-top:20px;">Install Voice Pack</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="settings.soundAndVoice.installVoicePack">Install Voice Pack</ons-list-title>
     <ons-list>
         <form id="voice-upload-form">
             <ons-list-item>
-                    <div class="left">
+                    <div class="left" data-i18n="settings.soundAndVoice.voicePackFile">
                         Voice Pack File:
                     </div>
                     <input id="settings-sound-voice-upload-browser" type="file" placeholder="" size="50" accept=".pkg"></input>
             </ons-list-item>
             <ons-list-item>
                 <div class="center">
-                    <button id="settings-sound-voice-upload-pack-button" modifier="large" class="button-margin button button--large" type="submit">Upload Voice Pack</button>
+                    <button id="settings-sound-voice-upload-pack-button" modifier="large" class="button-margin button button--large" type="submit" data-i18n="settings.soundAndVoice.uploadVoicePack">Upload Voice Pack</button>
                 </div>
             </ons-list-item>
         </form>
@@ -66,7 +66,11 @@
         var voicePackUploadButton = document.getElementById('settings-sound-voice-upload-pack-button');
         var voicePackFileBrowser = document.getElementById('settings-sound-voice-upload-browser');
 
-        document.querySelector("#settings-sound-voice ons-back-button").onClick = () => fn.popPage(); // case matters!
+        document.querySelector("#settings-sound-voice-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#settings-sound-voice-page');
+        };
 
         ons.getScriptPage().onShow = function() {
             updateSettingsSoundVolumePage();
@@ -77,7 +81,7 @@
             fn.prequest("api/get_sound_volume", "GET")
             .then(
                 (res) => { soundVolumeInputVolume.value = res; },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
@@ -96,8 +100,8 @@
                  volume: soundVolumeInputVolume.value
             }), "PUT")
             .then(
-                (res) => { ons.notification.toast("Volume successfully saved.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (res) => fn.notificationToastOK(i18next.t('settings.soundAndVoice.volumeSavedOK',"Volume successfully saved.")),
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
@@ -105,7 +109,7 @@
         function handleSoundVolumeSettingsTestButton() {
             loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/test_sound_volume", "PUT")
-            .then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            .then(null, (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
 
@@ -113,22 +117,22 @@
             event.preventDefault();
             var file = voicePackFileBrowser.files[0];
             if(file == undefined){
-                ons.notification.toast("Please select a voice pack before uploading.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-            }else{
+                fn.notificationToastError(i18next.t('settings.soundAndVoice.voicePackMissing',"Please select a voice pack before uploading."));
+            } else {
                 loadingBarSettingsSoundVolume.removeAttribute("indeterminate");
                 voicePackUploadButton.disabled = true
-                var uploadText = voicePackUploadButton.innerText;
-                voicePackUploadButton.innerText = 'Uploading voice pack...';
+                var uploadText = voicePackUploadButton.textContent;
+                voicePackUploadButton.textContent = i18next.t('settings.soundAndVoice.voicePackUploading',"Uploading voice pack...");
                 fn.postFile("api/install_voice_pack", file, function (p){
                     loadingBarSettingsSoundVolume.value = (p * 0.9);
                 }, function (err, res){
                     if (err) {
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                        voicePackUploadButton.innerText = uploadText;
+                        fn.notificationToastError(err);
+                        voicePackUploadButton.textContent = uploadText;
                         voicePackUploadButton.disabled = false;
                         loadingBarSettingsSoundVolume.value = 0;
                     } else {
-                        voicePackUploadButton.innerText = 'Installing voice pack...';
+                        voicePackUploadButton.textContent = i18next.t('settings.soundAndVoice.voicePackInstalling',"Installing voice pack...");
                         getVoicePackInstallStatus();
                     }
                 });
@@ -142,11 +146,11 @@
                     loadingBarSettingsSoundVolume.value = 90 + (res.progress * 0.1);
                     if (res.progress == 100 || res.error != 0) {
                         if (res.error != 0){
-                            ons.notification.toast("Failed to install voice pack.", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                            fn.notificationToastError(i18next.t('settings.soundAndVoice.voicePackInstallFailed',"Failed to install voice pack."));
                         } else {
-                            ons.notification.toast("Voice pack was successfully installed.", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                            fn.notificationToastOK(i18next.t('settings.soundAndVoice.voicePackInstallOK',"Voice pack was successfully installed."));
                         }
-                        voicePackUploadButton.innerText = uploadText;
+                        voicePackUploadButton.textContent = uploadText;
                         voicePackUploadButton.disabled = false;
                         loadingBarSettingsSoundVolume.value = 0;
                     }
@@ -154,7 +158,7 @@
                         getVoicePackInstallStatus();
                     }
                 },(err) => {
-                    voicePackUploadButton.innerText = uploadText;
+                    voicePackUploadButton.textContent = uploadText;
                     voicePackUploadButton.disabled = false;
                     loadingBarSettingsSoundVolume.value = 0;
                 });

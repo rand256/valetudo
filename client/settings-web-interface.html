@@ -1,50 +1,63 @@
 <ons-page id="settings-web-interface-page">
     <ons-toolbar>
         <div class="left">
-            <ons-back-button>Settings</ons-back-button>
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
         </div>
-        <div class="center">Web Interface</div>
+        <div class="center" data-i18n="settings.webInterfaceTitle">Web Interface</div>
         <div class="right"></div>
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-web-interface" value="0"></ons-progress-bar>
     <ons-list-item>
         <label class="right" style="width:100%">
             <ons-row>
-                <ons-col vertical-align='center'>These parameters affect some functionality of the web interface itself. They are local to your browser only and applied instantly.</ons-col>
+                <ons-col vertical-align='center' data-i18n="settings.webInterface.explanation">These parameters affect some functionality of the web interface itself. They are local to your browser only and applied instantly.</ons-col>
             </ons-row>
         </label>
     </ons-list-item>
-    <ons-list-title style="margin-top:5px;">
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.webInterface.general">
+        General
+    </ons-list-title>
+    <ons-list>
+        <ons-list-item>
+            <div class='left'><div><div data-i18n="settings.webInterface.localization">Web interface localization</div><div class="small" data-i18n="settings.webInterface.localizationExt">switches between available translations</div></div></div>
+            <div class='right'><ons-select class="settings-webif-select" id="settings-webif-localization">
+                <option value="default">Default</option>
+                <option value="en">English</option>
+                <option value="ru">Russian</option>
+            </ons-select></div>
+        </ons-list-item>
+    </ons-list>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.webInterface.homeTab">
         Home tab
     </ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class='left'><div><div>Run zoned cleaning immediately</div><div class="small">instead of proceeding to the map tab</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.zonedImmediate">Run zoned cleaning immediately</div><div class="small" data-i18n="settings.webInterface.zonedImmediateExt">instead of proceeding to the map tab</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-zoned-immediate"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div>Goto spot immediately</div><div class="small">instead of proceeding to the map tab</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.gotoImmediate">Goto spot immediately</div><div class="small" data-i18n="settings.webInterface.gotoImmediateExt">instead of proceeding to the map tab</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-goto-immediate"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div>Show multimap buttons</div><div class="small">allows saving and restoring maps (highly experimental!)</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.multimapButtons">Show multimap buttons</div><div class="small" data-i18n="settings.webInterface.multimapButtonsExt">allows saving and restoring maps (highly experimental!)</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-show-multimap"></ons-switch></div>
         </ons-list-item>
     </ons-list>
-    <ons-list-title style="margin-top:5px;">
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.webInterface.mapTab">
         Map tab
     </ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class='left'><div><div>Do not show status on map</div><div class="small">hide the block with status text</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.hideMapStatus">Do not show status on map</div><div class="small" data-i18n="settings.webInterface.hideMapStatusExt">hides the block with status text</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-status"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div>Disable map reload button</div><div class="small">hide force reload button on the map</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.disableMapReload">Disable map reload button</div><div class="small" data-i18n="settings.webInterface.disableMapReload">hides force reload button on the map</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-reload"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div>Disable dynamic buttons</div><div class="small">show on map basic buttons only</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.disableDynamicButtons">Disable dynamic buttons</div><div class="small" data-i18n="settings.webInterface.disableDynamicButtonsExt">shows on map basic buttons only</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-static-map-buttons"></ons-switch></div>
         </ons-list-item>
     </ons-list>
@@ -54,9 +67,28 @@
         document.querySelector("#settings-web-interface-page ons-back-button").onClick = () => fn.popPage();
 
         ons.getScriptPage().onInit = function() {
+            fn.localize('#settings-web-interface-page');
+            document.getElementById('settings-webif-localization').addEventListener('change', function (event) {
+                let newVal, oldVal = localStorage.getItem(getOptionName(this.id));
+                switch (event.target.value) {
+                    case "default": newVal = null;
+                    default: newVal = event.target.value;
+                }
+                if (newVal !== oldVal) {
+                    if (newVal === "default")
+                        localStorage.removeItem(getOptionName(this.id));
+                    else
+                        localStorage.setItem(getOptionName(this.id),event.target.value);
+                    ons.notification.confirm(i18next.t('settings.webInterface.applyLocalizationConfirm',"Would you like to apply localization changes now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
+                        if (res === 1) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
             document.getElementById('settings-webif-show-multimap').addEventListener('change', function (event) {
                 if (event.value === true)
-                ons.notification.confirm("This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?",{buttonLabels: ["Cancel", "Continue"], title: "Attention!"})
+                ons.notification.confirm(i18next.t('settings.webInterface.enableMultimapConfirm',"This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.continue',"Continue")], title: i18next.t('common.attention',"Attention!")})
                 .then(res => {
                     if (res === 0) {
                         event.switch.setAttribute('checked',true); // it won't allow to uncheck the switch without explicitly adding this attribute to its html
@@ -82,6 +114,10 @@
                     sw.checked = true;
                 }
             });
+            let locSelect = document.querySelector('#settings-webif-localization option[value="' + localStorage.getItem(getOptionName('settings-webif-localization')) + '"]');
+            if (locSelect) {
+                locSelect.selected = true;
+            }
         };
 
         function getOptionName(id) {
