@@ -20,7 +20,7 @@
         "m2": "m²",
         "hours": "Stunde",
         "hours_plural": "Stunden",
-        "months": ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Oct","Nov","Dez"],
+        "months": ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
         "days": ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]
     },
     "navi": {
