@@ -209,7 +209,7 @@
             "firmwareUpdateLink": "[send request]",
             "currentToken": "Aktueller Token",
             "token": "Token:",
-            "appLocale": "App-Gebietsschema",
+            "appLocale": "Roborock-Systemgebietsvariablen",
             "appLocaleName": "Name:",
             "appLocaleBom": "Bom:",
             "appLocaleLocation": "Ort:",
@@ -395,7 +395,7 @@
             "n19": "Ladestation ohne Strom",
             "n21": "Obere Abdeckung des Laser-Abstandssensors steckt fest",
             "n22": "Frontstoßsensor verschmutzt",
-            "n23": "Signalabgabebereich an Basis verschmutzt",
+            "n23": "Leitstrahlsendebereich der Basis verschmutzt",
             "n24": "Verbotszone erkannt, stellen Sie den Roboter auf eine erlaubte Fläche"
         }
     }
