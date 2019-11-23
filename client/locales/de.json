@@ -108,7 +108,7 @@
         "newZoneName": "Zonenname festlegen...",
         "newSpotName": "Zielname festlegen...",
         "enterZoneName": "Bitte einen Zonennamen eingeben",
-        "enterSpotName": "Bitte einen Zielnnamen eingeben",
+        "enterSpotName": "Bitte einen Zielnamen eingeben",
         "renameZone": "Neuer Name für Zone \"{{zone}}\":",
         "renameSpot": "Neuer Name für das Ziel \"{{spot}}\":",
         "confirmDeleteSpot": "Soll das Ziel \"{{spot}}\" wirklich gelöscht werden?",
