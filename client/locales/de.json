@@ -64,7 +64,7 @@
             "invalidMapName": "Nur Buchstaben von A-Z (keine Umlaute), Nummern, Leerzeichen und Bindestriche sind zulässig.",
             "slotAlreadyTaken": "Speicherplatz #{{slot}} ist bereits belegt",
             "nameAlreadyTaken": "Name \"{{name}}\" wurde schon verwendet",
-            "noMapsStored": "Keine gespeicherte Karten!",
+            "noMapsStored": "Keine gespeicherten Karten!",
             "slotNo": "Speicherplatz #",
             "confirmMapDelete": "Karte \"{{name}}\" wirklich löschen?",
             "wait": "Bitte warten",
@@ -107,8 +107,8 @@
         "deleteButton": "Löschen",
         "newZoneName": "Zonenname festlegen...",
         "newSpotName": "Zielname festlegen...",
-        "enterZoneName": "Bitte einen Zonenamen eingeben",
-        "enterSpotName": "Bitte einen Zielnamen eingeben",
+        "enterZoneName": "Bitte einen Zonennamen eingeben",
+        "enterSpotName": "Bitte einen Zielnnamen eingeben",
         "renameZone": "Neuer Name für Zone \"{{zone}}\":",
         "renameSpot": "Neuer Name für das Ziel \"{{spot}}\":",
         "confirmDeleteSpot": "Soll das Ziel \"{{spot}}\" wirklich gelöscht werden?",
@@ -146,7 +146,7 @@
         "wifiTitle": "WLAN",
         "wifiDesc": "WLAN-Details ansehen und anpassen",
         "soundAndVoiceTitle": "Ton & Sprache",
-        "soundAndVoiceDesc": "Ändern der Lautsärke und der Sprache des Roboters",
+        "soundAndVoiceDesc": "Ändern der Lautstärke und der Sprache des Roboters",
         "webInterfaceTitle": "Webinterface",
         "webInterfaceDesc": "Webinterface-Parameter anpassen",
         "accessControlTitle": "Zugangskontrolle",
@@ -341,15 +341,15 @@
              "ssid": "SSID",
              "signal": "Empfangsstärke",
              "txBitrate": "TX Bitrate",
-             "settings": "WLAN Einstellungen",
+             "settings": "WLAN-Einstellungen",
              "password": "Passwort",
-             "save": "Neue WLAN Konfiguration speichern",
+             "save": "Neue WLAN-Konfiguration speichern",
              "connected": "Verbunden",
              "notConnected": "Nicht verbunden",
-             "confirm": "sollen die neuen WLAN Einstellungen wirklich angewandt werden?",
+             "confirm": "sollen die neuen WLAN-Einstellungen wirklich angewandt werden?",
              "hint": "Hinweis",
              "hintText": "Es kann jederzeit zum integrierten WLAN-Hotspot zurückgekehrt werden, indem der Reset-Knopf unter dem Deckel betätigt wird.",
-             "appliedOK": "Neue WLAN Anmeldeinformationen wurden erfolgreich angewandt. Nach dem Drücken auf OK wird die Seite aktualisiert. Sie müssen voraussichtlich die Adresse  auf die neue IP des Roboters ändern, da der Roboter versucht, eine Verbindung zum neuen WLAN herzustellen. (ggf. anderer DHCP Bereich, Routereinstellungen prüfen)"
+             "appliedOK": "Neue WLAN-Anmeldeinformationen wurden erfolgreich angewandt. Nach dem Drücken auf OK wird die Seite aktualisiert. Sie müssen voraussichtlich die Adresse  auf die neue IP des Roboters ändern, da der Roboter versucht, eine Verbindung zum neuen WLAN herzustellen. (ggf. anderer DHCP Bereich, Routereinstellungen prüfen)"
         }
     },
     "robot": {
@@ -396,7 +396,7 @@
             "n21": "Obere Abdeckung des Laser-Abstandssensors steckt fest",
             "n22": "Frontstoßsensor verschmutzt",
             "n23": "Signalabgabebereich an Basis verschmutzt",
-            "n24": "Verbotszone erkannt, setellen Sie den Roboter auf eine erlaubte Fläche"
+            "n24": "Verbotszone erkannt, stellen Sie den Roboter auf eine erlaubte Fläche"
         }
     }
 }
