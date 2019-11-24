@@ -1,7 +1,7 @@
 <ons-page id="settings-cleaning-history-map-page">
     <div id="settings-cleaning-history-container">
         <div class="settings-cleaning-history-header">
-            <ons-back-button>Cleaning history</ons-back-button>
+            <ons-back-button data-i18n="settings.cleaningHistoryTitle" data-i18n-target=".back-button__label">Cleaning History</ons-back-button>
             <span id="settings-cleaning-history-map-page-h1"></span>
         </div>
         <ons-progress-bar id="loading-bar-none" value="0"></ons-progress-bar>
@@ -20,7 +20,12 @@
         map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
         window.fn.map = map;
 
-        document.getElementById("settings-cleaning-history-map-page-h1").innerText = `Cleaning map from ${cleaningDate}`;
+        document.getElementById("settings-cleaning-history-map-page-h1").textContent = i18next.t('settings.cleaningHistory.mapTitle',{defaultValue: "Cleaning map from {{cleaningDate}}", cleaningDate: cleaningDate});
+    </script>
+    <script>
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#settings-cleaning-history-map-page');
+        }
     </script>
     <style>
         #settings-cleaning-history-container {

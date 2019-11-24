@@ -1,7 +1,7 @@
 <ons-page id="zones-configuration-map-page">
     <div id="zones-configuration-container">
         <div class="zones-configuration-header">
-            <ons-back-button>Zones</ons-back-button>
+            <ons-back-button data-i18n="zones.zonesPageBack" data-i18n-target=".back-button__label">Zones</ons-back-button>
             <span id="zones-configuration-map-page-h1"></span>
         </div>
 
@@ -38,8 +38,8 @@
 
         document.querySelector("#zones-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        document.getElementById("zones-configuration-map-page-h1").innerText = `Editing zone: ${zonesConfig[zoneToModify].name}`;
-        for(let zone of zonesConfig[zoneToModify].coordinates) {
+        document.getElementById("zones-configuration-map-page-h1").textContent = i18next.t('zones.zoneEditTitle',{defaultValue: "Editing zone: {{zone}}", zone: zonesConfig[zoneToModify].name});
+        for (let zone of zonesConfig[zoneToModify].coordinates) {
             map.addZone(zone, true);
         }
 
@@ -47,7 +47,7 @@
             if (map.getLocations().zones.length < 5) {
                 map.addZone();
             } else {
-                ons.notification.alert('You can\'t add more than 5 subzones into a single zone.');
+                fn.notificationToastError(i18next.t('zones.tooManySubzones',"You can\'t add more than 5 subzones into a single zone."));
             }
         }
         document.getElementById("zones-configuration-iterations").onclick = () => {
@@ -70,15 +70,20 @@
             saveButton.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
             .then(() => {
-                ons.notification.toast("Successfully saved zones!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                fn.notificationToastOK(i18next.t('zones.zoneSaved',"Zone successfully saved!"));
                 fn.popPage();
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, (err) => fn.notificationToastError(err))
             .finally(() => {
                 loadingBarSaveZones.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
             });
         }
     </script>
+    <script>
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#zones-configuration-map-page');
+        }
+    </script>        
     <style>
         #zones-configuration-container {
             display: grid;

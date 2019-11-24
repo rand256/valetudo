@@ -7,20 +7,21 @@
 
 ### Preamble:
 
-This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), hackishly _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. So this is a quick list of changes first appeared here:
+This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. Next is a quick list of changes first appeared here:
 
 * Ability to select multiple saved zones at once;
-* Selected zones are then shown at the map tab to see and edit what's actually going to be cleaned;
+* Selected zones optionally shown at the map tab to see and edit what's actually going to be cleaned;
 * Renaming zones and spots, since why not?
 * Configurable virtual walls and forbidden zones, finally!
 * Scheduled zoned cleaning - when you do not need to clean the whole house;
 * Ability to specify in webGUI the number of iterations to clean the same zone multiple times;
 * Showing status of the device on the map; 
-* A set of dynamically appearing buttons on the map to better control device from there;
+* Set of dynamically appearing buttons on the map to better control device from there;
 * Experimental ability to save/restore maps;
 * Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
-Beware, I'm not a qualified coder - so the code is awful in places, also I'm not that familiar with github. All these things are done only for my personal use, so if someone find them handy one day then you're welcome.
+**Also webUI localization is supported since 0.4.0-RE7!**
+Currently available for en/ru. Add your own native language support by editing ./client/locales/en.json template and sending a PR.
 
 ----
 

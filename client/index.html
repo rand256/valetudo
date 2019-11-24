@@ -7,6 +7,9 @@
     <script src="js/onsenui.min.js"></script>
     <script src="js/geometry-polyfill.js"></script>
     <script src="js/pako_inflate.min.js"></script>
+    <script src="js/i18n.min.js" ></script>
+    <script src="js/i18n.html5.min.js"></script>
+    <script src="js/i18n.xhr.min.js"></script>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4285f4">
@@ -18,6 +21,26 @@
 <body>
     <script>
         window.fn = {};
+
+        var waitForLocalize = i18next.use(i18nextXHRBackend).init({
+            interpolation: {
+                format: function(value, format, lng) {
+                    if (format === 'lowercase') return value.toLowerCase();
+                    if (format === 'uppercase') return value.toUpperCase();
+                    return value;
+                }
+            },
+            lng: localStorage.getItem('settingsWebifLocalization') || 'en',
+            fallbackLng: '',
+            backend: {
+                loadPath: '/locales/{{lng}}.json'
+            },
+            debug: true
+        })
+        .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+        .catch(e => console.log('loading i18n has failed', e));
+
+        window.fn.localize = function(target) { waitForLocalize.then(res => res(target)) };
 
         window.fn.toggleMenu = function () {
             document.getElementById('appSplitter').left.toggle();
@@ -35,9 +58,9 @@
 
         window.fn.pushPage = function (page, anim) {
             if (anim) {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim }).catch((e) => ons.notification.alert("Error: " + e));
+                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim }).catch(_ => {});
             } else {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } }).catch((e) => ons.notification.alert("Error: " + e));
+                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } }).catch(_ => {});
             }
             let stateObj = {moveView: (history.state && history.state.moveView || 0)};
             if (history.state && history.state.moveSubPage) {
@@ -71,12 +94,12 @@
                     callback(null, JSON.parse(request.responseText));
                 } else {
                     console.error(request);
-                    callback("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                 }
             };
 
             request.onerror = function () {
-                callback("Connection error");
+                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
             };
 
             request.send();
@@ -93,12 +116,12 @@
                     callback(null, JSON.parse(request.responseText));
                 } else {
                     console.error(request);
-                    callback("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                 }
             };
 
             request.onerror = function () {
-                callback("Connection error");
+                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
             };
         };
 
@@ -109,7 +132,7 @@
             var request = new XMLHttpRequest();
             request.onerror = function(e) {
                 console.error(request);
-                callback("There was an error: " + request.status);
+                callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
             };
 
             request.onload = function(e) {
@@ -117,7 +140,7 @@
                     callback(null, JSON.parse(request.responseText));
                 } else {
                     console.error(request);
-                    callback("There was an error: " + request.status);
+                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                 }
             };
 
@@ -127,7 +150,7 @@
             };
 
             request.onerror = function () {
-                callback("Connection error");
+                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
             };
 
             request.open("POST", url);
@@ -138,7 +161,7 @@
             return new Promise(function(resolve, reject) {
                 var request = new XMLHttpRequest();
                 if (type) request.responseType = type;
-                request.open(method, url, true); /* 'http://172.16.10.134/' + */
+                request.open(method, url, true);
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
                         if (request.responseType === "") {
@@ -148,11 +171,11 @@
                         }
                     } else {
                         console.error(request);
-                        reject("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
                 request.onerror = function () {
-                    reject("Connection error");
+                    reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
                 };
                 request.send();
             });
@@ -171,12 +194,12 @@
                         resolve(JSON.parse(request.responseText));
                     } else {
                         console.error(request);
-                        reject("There was an error: " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
 
                 request.onerror = function () {
-                    reject("Connection error");
+                    reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
                 };
             });
         };
@@ -191,8 +214,22 @@
             return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
         };
 
-        window.fn.toastErrorTimeout = 5e3;
         window.fn.toastOKTimeout = 15e2;
+        window.fn.toastErrorTimeout = 5e3;
+
+        window.fn.notificationToastOK = function(text,timeout) {
+            text = text || i18next.t('common.commandOK',"Command successfully sent!");
+            timeout = timeout || window.fn.toastOKTimeout;
+            label = i18next.t('common.dismiss',"Dismiss");
+            ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
+        }
+
+        window.fn.notificationToastError = function(text,timeout) {
+            text = text || i18next.t('common.commandFailed',"That was an error") + '.';
+            timeout = timeout || window.fn.toastErrorTimeout;
+            label = i18next.t('common.dismiss',"Dismiss");
+            ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
+        }
 
         var pushView = function(idx,hash) {
             history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
@@ -228,7 +265,7 @@
                 }
                 if (history.state && Array.isArray(history.state.moveSubPage)) {
                     let i = j = 0, max = history.state.moveSubPage.length;
-                    history.state.moveSubPage.forEach(page => setTimeout(() => { j++; document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: (j === max ? "default" : "none") }); }, ++i*150))
+                    history.state.moveSubPage.forEach(page => setTimeout(() => { j++; document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: (j === max ? "default" : "none") }).catch(_ => {}); }, ++i*150))
                 }
             }, false);
         });
@@ -236,7 +273,6 @@
         if (ons.platform.isIPhoneX()) {
             document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
         }
-
     </script>
     <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
         <ons-page>
@@ -255,17 +291,20 @@
                         <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
                     </ons-toolbar-button>
                 </div>
-                <div class="center">Home</div>
+                <div class="center" data-i18n="navi.home">Home</div>
             </ons-toolbar>
             <ons-tabbar swipeable id="appTabbar" position="auto">
-                <ons-tab label="Home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
-                <ons-tab label="Map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
-                <ons-tab label="Zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
-                <ons-tab label="Control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'control.html');"></ons-tab>
-                <ons-tab label="Settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
+                <ons-tab label="Home" data-i18n="[label]navi.home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
+                <ons-tab label="Map" data-i18n="[label]navi.map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
+                <ons-tab label="Zones" data-i18n="[label]navi.zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
+                <ons-tab label="Control" data-i18n="[label]navi.control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'control.html');"></ons-tab>
+                <ons-tab label="Settings" data-i18n="[label]navi.settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
             </ons-tabbar>
 
             <script>
+                ons.getScriptPage().onInit = function() {
+                    fn.localize('#tabbar-page');
+                }
                 ons.getScriptPage().addEventListener('prechange', function (event) {
                     if (event.target.matches('#appTabbar')) {
                         event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
@@ -276,7 +315,7 @@
     </template>
 
     <template id="sidemenu.html">
-        <ons-page>
+        <ons-page id="sidemenu-page">
             <div class="profile-header">
                 <span>Valetudo</span>
             </div>
@@ -285,7 +324,7 @@
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="ion-home, material:md-home"></ons-icon>
                     </div>
-                    <div class="center">
+                    <div class="center" data-i18n="navi.home">
                         Home
                     </div>
                     <div class="right">
@@ -296,7 +335,7 @@
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-map-marker, material:fa-map-marker"></ons-icon>
                     </div>
-                    <div class="center">
+                    <div class="center" data-i18n="navi.map" >
                         Map
                     </div>
                     <div class="right">
@@ -307,7 +346,7 @@
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-share-square, material:fa-share-square"></ons-icon>
                     </div>
-                    <div class="center">
+                    <div class="center" data-i18n="navi.zones" >
                         Zones
                     </div>
                     <div class="right">
@@ -318,7 +357,7 @@
                         <div class="left">
                             <ons-icon fixed-width class="list-item__icon" icon="fa-gamepad, material:fa-gamepad"></ons-icon>
                         </div>
-                        <div class="center">
+                        <div class="center" data-i18n="navi.control" >
                             Manual Control
                         </div>
                         <div class="right">
@@ -329,7 +368,7 @@
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-cog, material: md-settings"></ons-icon>
                     </div>
-                    <div class="center">
+                    <div class="center" data-i18n="navi.settings" >
                         Settings
                     </div>
                     <div class="right">
@@ -338,9 +377,9 @@
                 </ons-list-item>
             </ons-list>
 
-            <ons-list-title style="margin-top: 10px">Links</ons-list-title>
+            <ons-list-title style="margin-top: 10px" data-i18n="navi.links">Links</ons-list-title>
             <ons-list>
-                <ons-list-item onclick="fn.loadLink('https://github.com/Hypfer/Valetudo')">
+                <ons-list-item onclick="fn.loadLink('https://github.com/rand256/valetudo')">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
                     </div>
@@ -351,22 +390,22 @@
                         <ons-icon icon="fa-external-link"></ons-icon>
                     </div>
                 </ons-list-item>
-                <ons-list-item onclick="fn.loadLink('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JQNCDGJ3FBCM6')">
+                <ons-list-item onclick="fn.loadLink('https://github.com/Hypfer/Valetudo')">
                     <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="fa-paypal"></ons-icon>
+                        <ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
                     </div>
                     <div class="center">
-                        Donate
+                        GitHub Origin
                     </div>
                     <div class="right">
                         <ons-icon icon="fa-external-link"></ons-icon>
                     </div>
                 </ons-list-item>
-                <ons-list-item onclick="fn.pushPage({'id': 'about.html', 'title': 'About'})">
+                <ons-list-item onclick="fn.pushPage({'id': 'about.html', 'title': 'About'});">
                     <div class="left">
                         <ons-icon fixed-width class="list-item__icon" icon="fa-info-circle"></ons-icon>
                     </div>
-                    <div class="center">
+                    <div class="center" data-i18n="navi.about">
                         About
                     </div>
                     <div class="right">
@@ -379,6 +418,7 @@
                 ons.getScriptPage().onInit = function () {
                     // Set ons-splitter-side animation
                     this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
+                    fn.localize('#sidemenu-page');
                 };
             </script>
 

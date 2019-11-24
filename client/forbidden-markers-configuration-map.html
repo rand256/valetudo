@@ -1,8 +1,8 @@
 <ons-page id="forbidden-markers-configuration-map-page">
     <div id="forbidden-markers-configuration-container">
         <div class="forbidden-markers-configuration-header">
-            <ons-back-button>Forbidden Markers</ons-back-button>
-            <span id="forbidden-markers-configuration-map-page-h1"></span>
+            <ons-back-button data-i18n="zones.forbiddenMarkersPageBack" data-i18n-target=".back-button__label">Forbidden Markers</ons-back-button>
+            <span id="forbidden-markers-configuration-map-page-h1" data-i18n="zones.forbiddenMarkersTitle">Editing markers</span>
         </div>
 
         <ons-progress-bar id="loading-bar-save-markers" value="0"></ons-progress-bar>
@@ -42,11 +42,9 @@
             map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
         }
 
-        document.getElementById("forbidden-markers-configuration-map-page-h1").innerText = 'Editing markers';
-
         document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
             if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 66) {
-                ons.notification.toast("You can't add more forbidden markers on the map!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
                 return;
             }
             map.addVirtualWall(null, false, true);
@@ -54,7 +52,7 @@
 
         document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
             if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 64) {
-                ons.notification.toast("You can't add more forbidden markers on the map!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
                 return;
             }
             map.addForbiddenZone(null, false, true);
@@ -66,13 +64,18 @@
             saveButton.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
             .then(() => {
-                ons.notification.toast("Successfully saved forbidden markers!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                fn.notificationToastOK(i18next.t('zones.forbiddenMarkersSaved',"Forbidden markers successfully saved!"));
                 fn.popPage();
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, (err) => fn.notificationToastError(err))
             .finally(() => {
                 loadingBarSaveMarkers.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
             });
+        }
+    </script>
+    <script>
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#forbidden-markers-configuration-map-page');
         }
     </script>
     <style>
