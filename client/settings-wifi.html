@@ -1,72 +1,72 @@
 <ons-page id="settings-wifi-page">
     <ons-toolbar>
         <div class="left">
-            <ons-back-button>Settings</ons-back-button>
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
         </div>
-        <div class="center">Wifi</div>
+        <div class="center" data-i18n="settings.wifiTitle">Wifi</div>
         <div class="right">
         </div>
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-wifi" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
-    <ons-list-title style="margin-top:5px;">Current connection</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.wifi.currentConnection">Current connection</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.status">
                 Status
             </div>
-            <div class="right" id="settings-wifi-current-connection-status-connected">
-                ???
+            <div class="right" id="settings-wifi-current-connection-status-connected" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.ssid">
                 SSID
             </div>
-            <div class="right" id="settings-wifi-current-connection-status-ssid">
-                ???
+            <div class="right" id="settings-wifi-current-connection-status-ssid" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.signal">
                 Signal
             </div>
             <div class="right" id="settings-wifi-current-connection-status-signal">
-                -?? dBm
+                0 dBm
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.txBitrate">
                 TX Bitrate
             </div>
             <div class="right" id="settings-wifi-current-connection-status-tx-bitrate">
-                ??? MBit/s
+                0 MBit/s
             </div>
         </ons-list-item>
 
     </ons-list>
 
-    <ons-list-title style="margin-top:20px;">Wifi Settings</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="settings.wifi.settings">Wifi Settings</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.ssid">
                 SSID:
             </div>
             <label class="right" style="width:75%">
-                <ons-input id="settings-wifi-input-ssid" float maxlength="32" placeholder="SSID" style="width:100%"></ons-input>
+                <ons-input id="settings-wifi-input-ssid" float maxlength="32" placeholder="SSID" style="width:100%" data-i18n="[placeholder]settings.wifi.ssid"></ons-input>
             </label>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.wifi.password">
                 Password:
             </div>
             <label class="right" style="width:75%">
-                <ons-input id="settings-wifi-input-password" type="password" float maxlength="63" placeholder="Password" style="width:100%;"></ons-input>
+                <ons-input id="settings-wifi-input-password" type="password" float maxlength="63" placeholder="Password" style="width:100%;" data-i18n="[placeholder]settings.wifi.password"></ons-input>
             </label>
         </ons-list-item>
         <ons-list-item>
             <div class="center">
-                <ons-button id="settings-wifi-input-save-button" modifier="large" class="button-margin" disabled onclick="handleWifiSettingsSaveButton();">Save new Wifi configuration</ons-button>
+                <ons-button id="settings-wifi-input-save-button" modifier="large" class="button-margin" disabled onclick="handleWifiSettingsSaveButton();" data-i18n="settings.wifi.save">Save new Wifi configuration</ons-button>
             </div>
         </ons-list-item>
     </ons-list>
@@ -87,6 +87,10 @@
 
         document.querySelector("#settings-wifi-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#settings-wifi-page');
+        }
+
         ons.getScriptPage().onShow = function() {
             updateSettingsWifiPage();
         };
@@ -95,7 +99,7 @@
             loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/wifi_status", "GET")
             .then((res) => {
-                wifiCurrentConnectionStatusConnected.innerHTML = res.connected === true ? "Connected" : "Not connected";
+                wifiCurrentConnectionStatusConnected.innerHTML = res.connected === true ? i18next.t('settings.wifi.connected',"Connected") : i18next.t('settings.wifi.notConnected',"Not connected");
                 if (res.connected) {
                     wifiCurrentConnectionStatusSSID.innerHTML = res.connection_info.ssid;
                     wifiCurrentConnectionStatusSignal.innerHTML = res.connection_info.signal;
@@ -103,7 +107,7 @@
 
                     wifiInputSSID.value = res.connection_info.ssid;
                 }
-            },(err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            },(err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
         };
 
@@ -117,10 +121,7 @@
         };
 
         function handleWifiSettingsSaveButton() {
-            ons.notification.confirm('Are you sure you want to apply the new wifi settings?<br><br>' +
-                '<span style="font-weight: bold">Hint:</span> You can always revert back to the ' +
-                'integrated Wifi Hotspot by pressing the reset button located underneath the lid.'
-            ).then(function (answer) {
+            ons.notification.confirm(i18next.t('settings.wifi.confirm',"Are you sure you want to apply the new Wifi settings?") + '<br><br><span style="font-weight: bold">' + i18next.t('settings.wifi.hint',"Hint") + ":</span> " + i18next.t('settings.wifi.hintText',"You can always revert back to the integrated Wifi Hotspot by pressing the reset button located underneath the lid."), {buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
                     fn.prequestWithPayload("api/wifi_configuration", JSON.stringify({
@@ -128,11 +129,10 @@
                         password: wifiInputPassword.value
                     }), "PUT")
                     .then(
-                        (res) => ons.notification.alert('Successfully applied new wifi credentials.<br>After pressing OK the page will refresh.<br>' +
-                                'However, you will most likely need to change the URL since the robot will connect to a new wifi.').then(function () {
+                        (res) => ons.notification.alert(i18next.t('settings.wifi.appliedOK',"Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi.")).then(function () {
                                     location.reload();
                                 }),
-                        (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                        (err) => fn.notificationToastError(err)
                     )
                     .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
                 }

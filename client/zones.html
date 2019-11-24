@@ -1,21 +1,21 @@
 <ons-page id="zones-page">
     <div class="progress-bar-container"><ons-progress-bar id="loading-bar-zones" value="0"></ons-progress-bar></div>
 
-    <ons-list-title style="margin-top:20px;">Configured zones</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerZones">Configured zones</ons-list-title>
     <ons-list id="zones-list">
-        <ons-list-item>No zones are configured yet.</ons-list-item>
+        <ons-list-item data-i18n="zones.noZonesConfigured" data-i18n-target=".list-item__center">No zones are configured yet.</ons-list-item>
     </ons-list>
 
-    <ons-list-title style="margin-top:20px;">Configured goto locations</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerGotoLocations">Configured goto locations</ons-list-title>
     <ons-list id="spot-list">
-        <ons-list-item>No spots are configured yet.</ons-list-item>
+        <ons-list-item data-i18n="zones.noSpotsConfigured" data-i18n-target=".list-item__center">No spots are configured yet.</ons-list-item>
     </ons-list>
 
-    <ons-list-title style="margin-top:20px;">Forbidden markers</ons-list-title>
+    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
     <ons-list id="spot-list">
          <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
              <label><ons-icon icon="edit"></ons-icon></label>
-             <label>Configure forbidden zones</label>
+             <label data-i18n="zones.editForbiddenZones">Configure forbidden zones</label>
          </ons-list-item>
     </ons-list>
 
@@ -32,14 +32,14 @@
             .then(mapData => {
                 fn.pushPage({
                     'id': 'zones-configuration-map.html',
-                    'title': 'Zone configuration map',
+                    'title': "Zone configuration map",
                     'data': {
                         'map': mapData,
                         'zonesConfig': zonesConfig,
                         'zoneToModify': index
                     }
                 });
-            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, err => fn.notificationToastError(err))
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
@@ -49,14 +49,14 @@
             .then(mapData => {
                 fn.pushPage({
                     'id': 'spot-configuration-map.html',
-                    'title': 'Spot configuration map',
+                    'title': "Spot configuration map",
                     'data': {
                         'map': mapData,
                         'spotConfig': spotConfig,
                         'spotToModify': index
                     }
                 });
-            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, err => fn.notificationToastError(err))
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
@@ -64,30 +64,34 @@
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/current_status", "GET")
             .then ((res) => {
-                if (res['lab_status'] !== 1) return Promise.reject("Persistent data is disabled or unavailable, unable to edit forbidden markers.");
+                if (res['lab_status'] !== 1) return Promise.reject(i18next.t('zones.noPersistentData',"Persistent data is disabled or unavailable, unable to edit forbidden markers."));
                 return true;
             })
             .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then(mapData => {
                 fn.pushPage({
                     'id': 'forbidden-markers-configuration-map.html',
-                    'title': 'Forbidden markers configuration map',
+                    'title': "Forbidden markers configuration map",
                     'data': {
                         'map': mapData
                     }
                 });
             })
-            .catch(err => ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }))
+            .catch(err => fn.notificationToastError(err))
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
 
         function deleteZone(index) {
-            zonesConfig.splice(index, 1);
-            saveZones();
+            ons.notification.confirm(i18next.t('zones.confirmDeleteZone', {defaultValue: "Are you sure you want to delete zone \"{{zone}}\"?", zone: zonesConfig[index].name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
+                if (answer === 1) {
+                    zonesConfig.splice(index, 1);
+                    saveZones();
+                }
+            });
         };
 
         function renameZone(index) {
-            ons.notification.prompt({message: 'Enter new name for zone \''+ zonesConfig[index].name + '\'?', defaultValue: zonesConfig[index].name, cancelable: true })
+            ons.notification.prompt({message: i18next.t('zones.renameZone', {defaultValue: "Enter new name for zone \"{{zone}}\":", zone: zonesConfig[index].name}), defaultValue: zonesConfig[index].name, cancelable: true })
             .then(name => {
                 if (name && name.length && zonesConfig[index].name !== name) {
                     zonesConfig[index].name = name;
@@ -97,12 +101,16 @@
         };
 
         function deleteSpot(index) {
-            spotConfig.splice(index, 1);
-            saveSpots();
+            ons.notification.confirm(i18next.t('zones.confirmDeleteSpot', {defaultValue: "Are you sure you want to delete spot \"{{spot}}\"?", spot: spotConfig[index].name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
+                if (answer === 1) {
+                    spotConfig.splice(index, 1);
+                    saveSpots();
+                }
+            });
         };
 
         function renameSpot(index) {
-            ons.notification.prompt({message: 'Enter new name for spot \''+ spotConfig[index].name + '\'?', defaultValue: spotConfig[index].name, cancelable: true })
+            ons.notification.prompt({message: i18next.t('zones.renameSpot', {defaultValue: "Enter new name for spot \"{{spot}}\":", spot: spotConfig[index].name}), defaultValue: spotConfig[index].name, cancelable: true })
             .then(name => {
                 if (name && name.length && spotConfig[index].name !== name) {
                     spotConfig[index].name = name;
@@ -117,7 +125,7 @@
             fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
             .then(
                 (res) => { generateZonesList() },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
@@ -128,7 +136,7 @@
             fn.prequestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT")
             .then(
                 (res) => { generateSpotList() },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
@@ -136,7 +144,7 @@
         function addNewZone() {
             const newZoneName = document.getElementById("add-zone-name").value;
             if(newZoneName.trim() === "") {
-                ons.notification.toast("Please enter a zone name", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                fn.notificationToastError(i18next.t('zones.enterZoneName',"Please enter a zone name"));
             } else {
                 zonesConfig.push({
                     name: newZoneName,
@@ -149,7 +157,7 @@
         function addNewSpot() {
             const newSpotName = document.getElementById("add-spot-name").value;
             if(newSpotName.trim() === "") {
-                ons.notification.toast("Please enter a spot name", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                fn.notificationToastError(i18next.t('zones.enterSpotName',"Please enter a spot name"));
             } else {
                 spotConfig.push({
                     name: newSpotName,
@@ -170,8 +178,8 @@
                         <label>
                             ${zone.name}
                         </label>
-                        <span><ons-button class="button-rename" onclick="event.stopPropagation(); renameZone(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> Rename</span></ons-button>
-                        <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> Delete</span></ons-button></span>
+                        <span><ons-button class="button-rename" onclick="event.stopPropagation(); renameZone(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> ${i18next.t('zones.renameButton',"Rename")}</span></ons-button>
+                        <ons-button class="button-delete" onclick="event.stopPropagation(); deleteZone(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> ${i18next.t('zones.deleteButton',"Delete")}</span></ons-button></span>
                     </ons-list-item>
                 `;
             });
@@ -181,10 +189,10 @@
                     <label>
                         <ons-icon icon="edit"></ons-icon>
                     </label>
-                    <ons-input id="add-zone-name" placeholder="Enter name for zone ...">
+                    <ons-input id="add-zone-name" placeholder="${i18next.t('zones.newZoneName',"Enter name for zone ...")}">
 
                     </ons-input>
-                    <ons-button class="delete-button-right" onclick="addNewZone()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> Add</span></ons-button>
+                    <ons-button class="delete-button-right" onclick="addNewZone()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> ${i18next.t('zones.addButton',"Add")}</span></ons-button>
                 </ons-list-item>
             `;
 
@@ -202,8 +210,8 @@
                         <label>
                             ${spot.name}
                         </label>
-                        <span><ons-button class="button-pencil" onclick="event.stopPropagation(); renameSpot(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> Rename</span></ons-button>
-                        <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> Delete</span></ons-button></span>
+                        <span><ons-button class="button-pencil" onclick="event.stopPropagation(); renameSpot(${index});"><ons-icon icon="fa-pencil"></ons-icon><span class="button_title"> ${i18next.t('zones.renameButton',"Rename")}</span></ons-button>
+                        <ons-button class="button-delete" onclick="event.stopPropagation(); deleteSpot(${index});"><ons-icon icon="fa-trash"></ons-icon><span class="button_title"> ${i18next.t('zones.deleteButton',"Delete")}</span></ons-button></span>
                     </ons-list-item>
                 `;
             });
@@ -213,34 +221,38 @@
                     <label>
                         <ons-icon icon="edit"></ons-icon>
                     </label>
-                    <ons-input id="add-spot-name" placeholder="Enter name for spot ...">
+                    <ons-input id="add-spot-name" placeholder="${i18next.t('zones.newSpotName',"Enter name for spot ...")}">
 
                     </ons-input>
-                    <ons-button class="delete-button-right" onclick="addNewSpot()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> Add</span></ons-button>
+                    <ons-button class="delete-button-right" onclick="addNewSpot()"><ons-icon icon="fa-plus"></ons-icon><span class="button_title"> ${i18next.t('zones.addButton',"Add")}</span></ons-button>
                 </ons-list-item>
             `;
 
             spotList.innerHTML = out;
         }
 
+        ons.getScriptPage().onInit = function() {
+            fn.localize('#zones-page');
+        }
+
         ons.getScriptPage().onShow = function () {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
             // request map update
-            fn.prequest("api/poll_map", "GET").then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
 
             // check for area and go to configuration
             const getZones = fn.prequest("api/zones", "GET")
             .then(res => {
                 zonesConfig = res;
                 generateZonesList();
-            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            }, err => fn.notificationToastError(err));
 
             const getSpots = fn.prequest("api/spots", "GET")
             .then(res => {
                 spotConfig = res;
                 generateSpotList();
-            }, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            }, err => fn.notificationToastError(err));
 
             Promise.all([getZones, getSpots]).finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };

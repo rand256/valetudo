@@ -1,18 +1,18 @@
 <ons-page id="settings-cleaning-history-page">
     <ons-toolbar>
         <div class="left">
-            <ons-back-button>Settings</ons-back-button>
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
         </div>
-        <div class="center">Cleaning History</div>
+        <div class="center" data-i18n="settings.cleaningHistoryTitle">Cleaning History</div>
         <div class="right">
         </div>
     </ons-toolbar>
     <div class="progress-bar-container"><ons-progress-bar id="loading-bar-settings-cleaning-history" value="0"></ons-progress-bar></div>
 
-    <ons-list-title style="margin-top:5px;">Last cleaning runs</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.cleaningHistory.header">Last cleaning runs</ons-list-title>
     <ons-list id="settings-cleaning-history">
     </ons-list>
-    <div class="center" id="settings-cleaning-history-load-more" style="display:none;padding:10px;text-align:center;"><ons-button modifier="small--quiet" onclick="loadMoreItems();">load more..</ons-button></div>
+    <div class="center" id="settings-cleaning-history-load-more" style="display:none;padding:10px;text-align:center;"><ons-button modifier="small--quiet" onclick="loadMoreItems();" data-i18n="settings.cleaningHistory.loadMore">Load more...</ons-button></div>
 
     <script>
         var loadingBarSettingsCleaningHistory = document.getElementById('loading-bar-settings-cleaning-history');
@@ -24,6 +24,7 @@
         document.querySelector("#settings-cleaning-history-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         ons.getScriptPage().onInit = function () {
+            fn.localize('#settings-cleaning-history-page');
             updateSettingsCleaningHistoryPage();
         };
 
@@ -46,9 +47,7 @@
                 timeZone = res;
             });
             Promise.all([getSummary, getTimezone])
-            .then(() => {
-                loadNextRemainingElements();
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            .then(() => loadNextRemainingElements(), (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         }
 
@@ -57,7 +56,7 @@
         }
 
         function formatDate(date) {
-            return date.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][date.getMonth()] + ' ' + date.getFullYear() + ', ' + formatTwoDigitNumber(date.getHours()) + ':' + formatTwoDigitNumber(date.getMinutes());
+            return date.getDate() + ' ' + i18next.t('common.months',{defaultValue: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], returnObjects: true})[date.getMonth()] + ' ' + date.getFullYear() + ', ' + formatTwoDigitNumber(date.getHours()) + ':' + formatTwoDigitNumber(date.getMinutes());
         }
 
         function loadNextRemainingElements() {
@@ -84,41 +83,40 @@
                     var errorDescription = res.errorDescription;
                     var completedFlag = res.finishedFlag;
                     settingsCleaningHistory.appendChild(ons.createElement(
-                        "<ons-list-item title='Show cleaning map' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
+                        "<ons-list-item title='" + i18next.t('settings.cleaningHistory.showMap',"Show cleaning map") + "' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
-                        "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>#" + currentEntryId + " started on " + fromTime + "</ons-col>" +
+                        "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>" + i18next.t('settings.cleaningHistory.historyRecord',{defaultValue: "#{{id}} started on {{startDate}}", id: currentEntryId, startDate: fromTime}) + "</ons-col>" +
                         "       <ons-col></ons-col>" +
                         "   </ons-row>" +
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
-                        "       <ons-col vertical-align='center' width='100px'>Duration</ons-col>" +
+                        "       <ons-col vertical-align='center' width='120px'>" + i18next.t('settings.cleaningHistory.duration',"Duration") + "</ons-col>" +
                         "       <ons-col vertical-align='center' width='150px'>" + durationHours + ":" + formatTwoDigitNumber(durationMinutes) + ":" + formatTwoDigitNumber(durationSeconds) + "</ons-col>" +
                         "       <ons-col></ons-col>" +
                         "   </ons-row>"+
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
-                        "       <ons-col vertical-align='center' width='100px'>Area</ons-col>" +
-                        "       <ons-col vertical-align='center' width='150px'>" + area + " m<sup>2</sup></ons-col>" +
+                        "       <ons-col vertical-align='center' width='120px'>" + i18next.t('settings.cleaningHistory.area',"Area") + "</ons-col>" +
+                        "       <ons-col vertical-align='center' width='150px'>" + area + " " + i18next.t('common.m2',"m²") + "</ons-col>" +
                         "       <ons-col></ons-col>" +
                         "   </ons-row>"+
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
-                        "       <ons-col vertical-align='center' width='100px'>Completed</ons-col>" +
-                        "       <ons-col vertical-align='center' width='150px'>" + (completedFlag?"<ons-icon icon='fa-check-circle' style='color:green;'>":"<ons-icon icon='fa-times-circle' style='color:red;'>") + "</ons-col>" +
+                        "       <ons-col vertical-align='center' width='120px'>" + i18next.t('settings.cleaningHistory.completed',"Completed") + "</ons-col>" +
+                        "       <ons-col vertical-align='center' width='150px'>" + (completedFlag ? "<ons-icon icon='fa-check-circle' style='color:green;'>" : "<ons-icon icon='fa-times-circle' style='color:red;'>") + "</ons-col>" +
                         "       <ons-col></ons-col>" +
                         "   </ons-row>"+
-                        (errorCode>0?
+                        (errorCode > 0 ?
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
-                        "       <ons-col vertical-align='center' width='400px' style='text-align:center;'><ons-icon icon='fa-warning' style='color:red;'></ons-icon>&nbsp;" + errorDescription + " (Code: " + errorCode + ")</ons-col>" +
+                        "       <ons-col vertical-align='center' width='400px' style='text-align:center;'><ons-icon icon='fa-warning' style='color:red;'></ons-icon>&nbsp;" + i18next.t('robot.errors.n' + errorCode, errorDescription) + " (" + i18next.t('settings.cleaningHistory.code',"Code") + ": " + errorCode + ")</ons-col>" +
                         "       <ons-col></ons-col>" +
                         "   </ons-row>"
                         : "" ) +
                         "</ons-list-item>"));
-                    //load next element
                     loadNextRemainingElements();
-                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+                }, (err) => fn.notificationToastError(err))
                 .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
             } else {
                 if (historyArray.length>0) {
@@ -151,11 +149,11 @@
                 } else if (res && res[0] === "map_upload_handler") {
                     return res;
                 } else {
-                    throw "clean_record_map returned unknown state: " + res;
+                    throw i18next.t('settings.cleaningHistory.unknownState',{defaultValue: "clean_record_map returned unknown state: {{state}}", state: res});
                 }
             }, (err) => { throw err; })
             .then(() => {
-                return new Promise((resolve, reject) => setTimeout(() => resolve(), 1000));
+                return new Promise((resolve, reject) => setTimeout(() => resolve(), 1500));
             })
             .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then((mapData) => {
@@ -169,7 +167,7 @@
                 });
             }, (err) => { throw err; })
             .catch((err) => {
-                if (err !== "ok") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                if (err !== "ok") fn.notificationToastError(err);
             })
             .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         };

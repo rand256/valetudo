@@ -1,13 +1,13 @@
 <ons-page id="home-page">
     <ons-progress-bar id="loading-bar-home" value="0" indeterminate="indeterminate"></ons-progress-bar>
     <section>
-        <p id="robot-state">
+        <p id="robot-state" data-i18n="home.labels.state">
             Loading state...
         </p>
         <div style="width:100%; text-align:center;">
             <p id="robot-state-details">
-                <span id="robot-state-details-m2">Area: ???.?? m²</span>
-                <span id="robot-state-details-time">Time: ??:??:??</span>
+                <span id="robot-state-details-m2"><span data-i18n="home.labels.area">Area</span>: <span id="robot-state-details-m2-value">0.0</span> <span data-i18n="common.m2">m²</span></span>
+                <span id="robot-state-details-time"><span data-i18n="home.labels.time">Time</span>: <span id="robot-state-details-time-value">00:00:00</span></span>
             </p>
         </div>
     </section>
@@ -15,24 +15,24 @@
 
     <section id="robot-control-buttons">
         <div>
-            <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> Start</ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> Pause</ons-button>
+            <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
         </div><div>
-            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> Stop</ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> Home</ons-button>
+            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
         </div><div>
-            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> Spot</ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> Find</ons-button>
+            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
         </div><div>
-            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> Go to </ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> Zones </ons-button>
+            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> <span data-i18n="home.buttons.goto">Go to</span></ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> <span data-i18n="home.buttons.find">Find</span></ons-button>
         </div><div id="multimap-buttons" style="display: none;">
-        <ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-save"></ons-icon> Store Map </ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> Load Map </ons-button>
+        <ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-export"></ons-icon> <span data-i18n="home.buttons.storeMap">Store Map</span></ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
         </div><div>
-           <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> Unknown power</ons-button>
+           <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
         </div>
     </section>
     <hr style="width:98%; opacity: 0.3">
 
     <section style="margin: 10px 16px">
         <p id="battery-status-text">
-            Battery: ??%
+            <span data-i18n="home.labels.battery">Battery</span>: <span id="battery-status-text-value">0</span>%
         </p>
         <p>
             <ons-progress-bar id="battery-status-bar" secondary-value="100"></ons-progress-bar>
@@ -55,11 +55,11 @@
         var fanspeedButton = document.getElementById("fanspeed-button");
         var findRobotButton = document.getElementById("find-robot-button");
         var homeButton = document.getElementById("home-button");
-        var batteryStatusText = document.getElementById('battery-status-text');
+        var batteryStatusText = document.getElementById('battery-status-text-value');
         var batteryStatusBar = document.getElementById('battery-status-bar');
         var robotState = document.getElementById('robot-state');
-        var robotStateDetailsM2 = document.getElementById("robot-state-details-m2");
-        var robotStateDetailsTime = document.getElementById("robot-state-details-time");
+        var robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value");
+        var robotStateDetailsTime = document.getElementById("robot-state-details-time-value");
         var loadingBarHome = document.getElementById('loading-bar-home');
 
         var config = {};
@@ -103,7 +103,7 @@
         function handleControlButton(button) {
             var btn = BUTTONS[button];
             if (btn === undefined) {
-                throw new Error("Invalid button");
+                throw new Error(i18next.t('home.buttons.invalid',"Invalid button"));
             } else {
                 btn.button.setAttribute("disabled", "disabled");
                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
@@ -114,30 +114,30 @@
                 }, (err) => {
                     btn.button.removeAttribute("disabled");
                     loadingBarHome.removeAttribute("indeterminate");
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                    fn.notificationToastError(err);
                 });
             }
         }
 
         var fanspeedPresets = {
-            1: "Whisper",
-            38: "Quiet",
-            60: "Balanced",
-            75: "Turbo",
-            100: "Max",
-            105: "Mop"
+            1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
+            38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
+            60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
+            75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
+            100: i18next.t('home.fanspeedPresets.max',"Max"),
+            105: i18next.t('home.fanspeedPresets.mop',"Mop")
         };
 
         function handleFanspeedButton() {
             window.clearTimeout(currentRefreshTimer);
 
             ons.openActionSheet({
-                title: 'Select power mode',
+                title: i18next.t('home.popups.selectFanspeed',"Select power mode:"),
                 cancelable: true,
                 buttons: [
                     ...Object.values(fanspeedPresets),
                     {
-                        label: 'Cancel',
+                        label: i18next.t('common.cancel',"Cancel"),
                         icon: 'md-close'
                     }
                 ]
@@ -155,7 +155,7 @@
                     }, (err) => {
                         fanspeedButton.removeAttribute("disabled");
                         loadingBarHome.removeAttribute("indeterminate");
-                        ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                        fn.notificationToastError(err);
                     });
                 } else {
                     currentRefreshTimer = window.setTimeout(function () {
@@ -174,12 +174,12 @@
             }
 
             options.push({
-                label: 'Cancel',
+                label: i18next.t('common.cancel',"Cancel"),
                 icon: 'md-close'
             });
 
             ons.openActionSheet({
-                title: 'Go to:',
+                title: i18next.t('home.popups.selectGotoTarget',"Select go to target:"),
                 cancelable: true,
                 buttons: options
             }).then(index => {
@@ -195,8 +195,8 @@
                     } else {
                         loadingBarHome.setAttribute("indeterminate", "indeterminate");
                         fn.prequestWithPayload("api/go_to", JSON.stringify({x: config.spots[index][1],y: config.spots[index][2]}), "PUT")
-                        .then(res => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
-                        .catch(e => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+                        .then(res => window.fn.notificationToastOK())
+                        .catch(e => window.fn.notificationToastError(e))
                         .finally(() => {
                             window.setTimeout(function () {
                                 updateHomePage();
@@ -220,17 +220,17 @@
             }
 
             options.push({
-                label: 'Submit',
+                label: i18next.t('common.submit',"Submit"),
                 icon: 'md-collection-item'
             },{
-                label: 'Cancel',
+                label: i18next.t('common.cancel',"Cancel"),
                 icon: 'md-close'
             });
 
             var payload, calcPayload, markSubmitButton, zoneNumber = 0;
 
             ons.openActionSheet({
-                title: 'Zones for cleaning:',
+                title: i18next.t('home.popups.selectZones',"Select zones for cleaning:"),
                 cancelable: true,
                 buttons: options
             })
@@ -240,7 +240,7 @@
                         payload = config.areas[index][1];
                     }
                     if (!payload.length) {
-                        ons.notification.alert('You\'ve chosen an empty zone to clean. Please set it up first.');
+                        ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."));
                         currentRefreshTimer = window.setTimeout(function () {
                             updateHomePage();
                         }, 3000);
@@ -260,8 +260,8 @@
                     } else {
                         loadingBarHome.setAttribute("indeterminate", "indeterminate");
                         fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
-                        .then(res => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
-                        .catch(e => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+                        .then(res => fn.notificationToastOK())
+                        .catch(e => fn.notificationToastError(e))
                         .finally(() => {
                             window.setTimeout(function () {
                                 updateHomePage();
@@ -315,7 +315,7 @@
                         // checked right now
                         var attemptedLength = calcPayload().length + config.areas[e.target.dataset.id][1].length;
                         if (attemptedLength > 5) {
-                            ons.notification.alert('You\'ve attempted to choose ' + attemptedLength + ' subzones, while it is possible to use 5 subzones at most.');
+                            ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}));
                             e.target.checked = false;
                             return;
                         }
@@ -373,14 +373,14 @@
         function handleStoreMapButton() {
             window.clearTimeout(currentRefreshTimer);
             let slotName;
-            ons.notification.prompt({message: "Choose a title to save the map files as:", title: "Prompt", placeholder: "name", cancelable: true, buttonLabels: ["Cancel", "OK"] })
+            ons.notification.prompt({message: i18next.t('home.popups.chooseMapName',"Choose a title to save the map files as:"), title: i18next.t('common.prompt',"Prompt"), placeholder: "name", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")] })
             .then(slot => {
                 if (slot === null) {
                     return Promise.reject("cancel");
                 }
                 slot = slot.trim();
                 if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
-                    return Promise.reject("Title may contain only latin letters or numbers, spaces and hyphen.");
+                    return Promise.reject(i18next.t('home.popups.invalidMapName',"Title may contain only latin letters or numbers, spaces and hyphen."));
                 }
                 slotName = slot;
                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
@@ -388,7 +388,7 @@
             })
             .then(res => {
                 if (res.includes(slotName)) {
-                    return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? "Slot #" + slotName + " is already occupied" : "Name \"" + slotName + "\" is already taken") + ". Overwrite?",{buttonLabels: ["Cancel", "Overwrite"]});
+                    return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? i18next.t('home.popups.slotAlreadyTaken',{defaultValue: "Slot #{{slot}} is already occupied", slot: slotName}) : i18next.t('home.popups.nameAlreadyTaken',{defaultValue: "Name \"{{name}}\" is already taken", name: slotName})) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
                 }
                 return 1;
             })
@@ -398,9 +398,9 @@
                 }
                 return fn.prequestWithPayload("api/store_map", JSON.stringify({name: slotName}), "PUT");
             })
-            .then(res => { ons.notification.toast("Map stored successfully!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .then(res => fn.notificationToastOK(i18next.t('home.popups.mapStoredOK',"Map stored successfully!")))
             .catch(err => {
-                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                if (err !== "cancel") fn.notificationToastError(err);
             })
             .finally(() => {
                 loadingBarHome.removeAttribute("indeterminate");
@@ -419,14 +419,14 @@
                 loadingBarHome.removeAttribute("indeterminate");
                 slots = data;
                 for (var i = 0; i < data.length; i++) {
-                    options.push((/^[0-9]+$/.test(data[i]) ? "slot #" : "") + data[i]);
+                    options.push((/^[0-9]+$/.test(data[i]) ? i18next.t('home.popups.slotNo',"slot #") : "") + data[i]);
                 }
                 options.push({
-                    label: options.length ? 'Cancel' : 'No saved maps!',
+                    label: options.length ? i18next.t('common.cancel',"Cancel") : i18next.t('home.popups.noMapsStored',"No saved maps!"),
                     icon: 'md-close'
                 });
                 let slotsList = ons.openActionSheet({
-                    title: 'Choose a slot to load the map from:',
+                    title: i18next.t('home.popups.selectMapToLoad',"Select a slot to load the map from:"),
                     cancelable: true,
                     buttons: options
                 });
@@ -443,12 +443,12 @@
                     if (e.target.className === 'remove-stored-map') {
                         e.stopPropagation();
                         let slotName = slots[e.target.dataset.id];
-                        ons.notification.confirm("Are you sure you want to delete \"" + options[e.target.dataset.id] + "\"?").then(answer => {
+                        ons.notification.confirm(i18next.t('home.popups.confirmMapDelete',{defaultValue: "Are you sure you want to delete \"{{name}}\"?",name: options[e.target.dataset.id]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(answer => {
                             if (answer === 1) {
                                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
                                 fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
-                                    (res) => { ons.notification.toast("Stored map successfully deleted!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
-                                    (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                                    (res) => fn.notificationToastOK(i18next.t('home.popups.mapDeletedOK',"Stored map successfully deleted!")),
+                                    (err) => fn.notificationToastError(err)
                                 )
                                 .finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
                             }
@@ -468,17 +468,17 @@
             })
             .then(res => {
                 if (res.message === 'wait') {
-                    let waiting = ons.notification.alert('Map replacement routines are running. Please wait for 30 seconds...',{class: 'load-map-waiting', title: 'Wait', cancelable: false});
+                    let waiting = ons.notification.alert(i18next.t('home.popups.waitMapTicks',{defaultValue: "Map replacement routines are running. Please wait for {{seconds}} seconds...", seconds: 30}),{class: 'load-map-waiting', title: i18next.t('home.popups.waitMap',"Wait"), cancelable: false});
                     let adb = document.querySelector('.load-map-waiting .alert-dialog-button'),
                         adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
                         adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
                         adi = setInterval(() => {
-                           let seconds = +(adc.textContent.match(/for (\d+) sec/) || [])[1] || 0;
+                           let seconds = +(adc.textContent.match(/(\d+)/) || [])[1] || 0;
                            if (seconds <= 1) {
                                clearInterval(adi);
                                adb.classList.remove('ok-disabled');
-                               adt.textContent = "Finished";
-                               adc.textContent = "Requested routines should be completed now.";
+                               adt.textContent = i18next.t('home.popups.waitMapFinished',"Finished");
+                               adc.textContent = i18next.t('home.popups.waitMapEncourage',"Requested routines should be completed now.");
                            } else {
                                adc.textContent = adc.textContent.replace(seconds,--seconds);
                            }
@@ -488,9 +488,9 @@
                 }
                 return true;
             })
-            .then(res => { ons.notification.toast("Map restored successfully!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .then(res => fn.notificationToastOK(i18next.t('home.popups.mapRestoredOK',"Map restored successfully!")))
             .catch(err => {
-                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                if (err !== "cancel") fn.notificationToastError(err);
             })
             .finally(() => {
                 loadingBarHome.removeAttribute("indeterminate");
@@ -509,14 +509,14 @@
             loadingBarHome.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/current_status", "GET")
             .then((res) => {
-                batteryStatusText.innerHTML = "Battery: " + res.battery + "%";
+                batteryStatusText.textContent = res.battery;
                 batteryStatusBar.value = res.battery;
 
-                robotState.innerHTML = res.human_state;
+                robotState.innerHTML = i18next.t('robot.states.n' + res.state, res.human_state);
                 if (res.error_code != 0) {
                     robotState.innerHTML +=
                         '<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
-                        res.human_error +
+                        i18next.t('robot.errors.n' + res.error_code, res.human_error) +
                         ' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
                 }
 
@@ -564,13 +564,13 @@
                     loadMapButton.setAttribute("disabled", "disabled");
                 }
 
-                robotStateDetailsM2.innerHTML = "Area: " + ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6) + " m²";
-                robotStateDetailsTime.innerHTML = "Time: " + window.fn.secondsToHms(res.clean_time);
+                robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
+                robotStateDetailsTime.textContent = window.fn.secondsToHms(res.clean_time);
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
             }, (err) => {
                 if (!toastInProgress) {
                     toastInProgress = true;
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }).then(() => { toastInProgress = false; });
+                    ons.notification.toast(err, { buttonLabel: i18next.t('common.dismiss',"Dismiss"), timeout: window.fn.toastErrorTimeout }).then(() => { toastInProgress = false; });
                 }
             })
             .finally(() => {
@@ -585,7 +585,13 @@
             });
         };
 
+        ons.getScriptPage().onInit = function() {
+            fn.localize('#home-page');
+        }
+
         ons.getScriptPage().onShow = function () {
+            /* reset inProgress */
+            refreshInProgress = false;
             /* multimap visibility */
             document.getElementById('multimap-buttons').style.display = localStorage.getItem('settingsWebifShowMultimap') ? '' : 'none';
             /* check for area and go to configuration */
@@ -597,12 +603,15 @@
                 if (config.areas && config.areas.length > 0)
                     areaButton.removeAttribute("disabled");
             })
+            .catch(err => fn.notificationToastError(err))
             .finally(() => {
                 updateHomePage();
             });
         };
 
         ons.getScriptPage().onHide = function () {
+            /* a hack to disable getting refreshes in background on other pages */
+            refreshInProgress = true;
             window.clearTimeout(currentRefreshTimer);
         }
 
@@ -637,6 +646,11 @@
         }
         .button-margin {
             margin: 0.2em;
+        }
+
+        .action-sheet {
+            max-height: 100%;
+            overflow-y: scroll;
         }
         .action-sheet-button.zone_selected {
             background-color: #c9c9c9;

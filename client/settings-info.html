@@ -1,129 +1,129 @@
 <ons-page id="settings-info-page">
     <ons-toolbar>
         <div class="left">
-            <ons-back-button>Settings</ons-back-button>
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
         </div>
-        <div class="center">Info</div>
+        <div class="center" data-i18n="settings.infoTitle">Info</div>
         <div class="right">
         </div>
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-info" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
-    <ons-list-title style="margin-top:5px;">System</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.info.system">System</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.firmwareVersion">
                 Firmware version:
             </div>
-            <div class="right" id="info_fw_version">
-                ???
+            <div class="right" id="info_fw_version" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.firmwareBuild">
                 Firmware build:
             </div>
-            <div class="right" id="info_fw_build">
-                ???
+            <div class="right" id="info_fw_build" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.firmwareUpdate">
                 Firmware update:
             </div>
             <div class="right" id="info_fw_build">
-                <a id="sendUpdateRequestButton" onclick="sendUpdateRequest();">[send request]</a>
+                <a id="sendUpdateRequestButton" onclick="sendUpdateRequest();" data-i18n="settings.info.firmwareUpdateLink">[send request]</a>
             </div>
         </ons-list-item>
     </ons-list>
-    <ons-list-title style="margin-top:5px;">Current Token</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.info.currentToken">Current Token</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
-                Token
+            <div class="left" data-i18n="settings.info.token">
+                Token:
             </div>
             <div class="right">
-                <span id="current-token-label" style="text-align:right;user-select:text;-moz-user-select:text;-ms-user-select:text;-webkit-user-select:text;">
+                <span id="current-token-label" style="text-align:right;user-select:text;-moz-user-select:text;-ms-user-select:text;-webkit-user-select:text;" data-i18n="settings.loading">
                     loading...
                 </span>
             </div>
         </ons-list-item>
     </ons-list>
-    <ons-list-title style="margin-top:5px;">App Locale</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.info.appLocale">App Locale</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleName">
                 Name:
             </div>
-            <div class="right" id="app_locale_name">
-                ???
+            <div class="right" id="app_locale_name" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleBom">
                 Bom:
             </div>
-            <div class="right" id="app_locale_bom">
-                ???
+            <div class="right" id="app_locale_bom" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleLocation">
                 Location:
             </div>
-            <div class="right" id="app_locale_location">
-                ???
+            <div class="right" id="app_locale_location" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleLanguage">
                 Language:
             </div>
-            <div class="right" id="app_locale_language">
-                ???
+            <div class="right" id="app_locale_language" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleTimezone">
                 Timezone:
             </div>
-            <div class="right" id="app_locale_timezone">
-                ???
+            <div class="right" id="app_locale_timezone" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.appLocaleLogserver">
                 Logserver:
             </div>
-            <div class="right" id="app_locale_logserver">
-                ???
+            <div class="right" id="app_locale_logserver" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
     </ons-list>
-    <ons-list-title style="margin-top:5px;">Valetudo</ons-list-title>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.info.valetudo">Valetudo</ons-list-title>
     <ons-list>
         <ons-list-item>
-            <div class="left">
+            <div class="left" data-i18n="settings.info.currentValetudoVersion">
                 Current Valetudo version:
             </div>
-            <div class="right" id="info_valetudo_version">
-                ???
+            <div class="right" id="info_valetudo_version" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left">
-                Newest Valetudo version:
+            <div class="left" data-i18n="settings.info.newValetudoVersion">
+                New Valetudo version:
             </div>
-            <div class="right" id="info_newest_valetudo_version">
-                <ons-button modifier="large" class="button-margin" onclick="checkNewValetudoVersion();">Check</ons-button>
+            <div class="right" id="info_new_valetudo_version">
+                <ons-button modifier="large" class="button-margin" onclick="checkNewValetudoVersion();" data-i18n="settings.info.checkVersion">Check</ons-button>
             </div>
         </ons-list-item>
         <ons-list-item id="info_valetudo_update_url_list" style="display: none;">
-            <div class="left">
-                Newest Version URL:
+            <div class="left" data-i18n="settings.info.newVersionURL">
+                New version URL:
             </div>
-            <div class="right" id="info_valetudo_update_url">
-                ???
+            <div class="right" id="info_valetudo_update_url" data-i18n="settings.loading">
+                loading...
             </div>
         </ons-list-item>
     </ons-list>
@@ -140,7 +140,7 @@
                 document.getElementById('info_fw_version').innerHTML = res.version;
                 document.getElementById('info_fw_build').innerHTML = res.build;
                 document.getElementById('info_valetudo_version').innerHTML = res.valetudoVersion;
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            }, (err) => fn.notificationToastError(err));
             const updateAppLocaleInfo = fn.prequest("api/get_app_locale", "GET")
             .then((res) => {
                 var appLocale = res[0];
@@ -150,22 +150,22 @@
                 document.getElementById('app_locale_language').innerHTML = appLocale.language;
                 document.getElementById('app_locale_timezone').innerHTML = appLocale.timezone;
                 document.getElementById('app_locale_logserver').innerHTML = appLocale.logserver;
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            }, (err) => fn.notificationToastError(err));
             const updateCurrentTokenInfo = fn.prequest("api/token", "GET")
             .then((res) => {
                 document.getElementById('current-token-label').innerHTML = res.token;
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            }, (err) => fn.notificationToastError(err));
             Promise.all([updateSystemInfo, updateAppLocaleInfo, updateCurrentTokenInfo]).finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         };
 
         function sendUpdateRequest() {
             let url, md5;
-            ons.notification.alert("This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value.",{title: "Warning"})
-            .then(() => ons.notification.prompt("Please enter URL to firmware pkg file:",{title: "Prompt", cancelable: true, buttonLabels: ["Cancel", "Continue"]}))
+            ons.notification.alert(i18next.t('settings.info.firmwareUpdateWarning',"This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value."),{title: i18next.t('common.warning',"Warning")})
+            .then(() => ons.notification.prompt(i18next.t('settings.info.firmwareUpdateEnterURL',"Please enter URL to firmware pkg file:"),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]}))
             .then((res) => {
                 if (!res) return Promise.reject("cancel");
                 url = res;
-                return ons.notification.prompt("Please enter MD5 hash of the file you just specified:",{title: "Prompt", cancelable: true, buttonLabels: ["Cancel", "Send!"]});
+                return ons.notification.prompt(i18next.t('settings.info.firmwareUpdateEnterMD5',"Please enter MD5 hash of the file you just specified:"),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('settings.info.firmwareUpdateSend',"Send!")]});
             })
             .then((res) => {
                 if (!res) return Promise.reject("cancel");
@@ -173,9 +173,9 @@
                 loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
                 return fn.prequestWithPayload("api/send_update_request", JSON.stringify({url: url, md5: md5}), "PUT");
             })
-            .then(res => { ons.notification.toast("Update request should be sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); })
+            .then(res => fn.notificationToastOK(i18next.t('settings.info.firmwareUpdateSentOK',"Update request should be sent! Wait for LED indication of update process.")))
             .catch(err => {
-                if (err !== "cancel") ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
+                if (err !== "cancel") fn.notificationToastError(err);
             })
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
@@ -185,19 +185,22 @@
             fn.prequest("https://api.github.com/repos/rand256/valetudo/releases", "GET")
             .then((res) => {
                 try {
-                    var info_valetudo_newest_release = res[0];
-                    document.getElementById('info_newest_valetudo_version').innerHTML = info_valetudo_newest_release.tag_name;
-                    document.getElementById('info_valetudo_update_url').innerHTML = '<a href="'+info_valetudo_newest_release.html_url+'">'+info_valetudo_newest_release.html_url+'</a>';
-                    if( document.getElementById('info_valetudo_version').innerHTML != info_valetudo_newest_release.tag_name)
+                    var info_valetudo_new_release = res[0];
+                    document.getElementById('info_new_valetudo_version').innerHTML = info_valetudo_new_release.tag_name;
+                    document.getElementById('info_valetudo_update_url').innerHTML = '<a href="'+info_valetudo_new_release.html_url+'">'+info_valetudo_new_release.html_url+'</a>';
+                    if( document.getElementById('info_valetudo_version').innerHTML != info_valetudo_new_release.tag_name)
                     {
                             document.getElementById('info_valetudo_update_url_list').style.display = ""; //make entry visible if newer version is availiable
                     }
                 } catch (e) {
                     ons.notification.toast(e, { buttonLabel: 'Dismiss', timeout: 1500 });
                 }
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
         }
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#settings-info-page');
+        };
     </script>
     <style>
         #sendUpdateRequestButton {

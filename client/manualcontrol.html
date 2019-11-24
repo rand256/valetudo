@@ -4,8 +4,8 @@
     <div class="aspect-ratio" style="text-align: center; position: relative; height: 99%;" id="notouchmovementsarea">
             <canvas id="manual-control-area"  class="fit-img fit-img-tight" style="background-color: #9ea7b833; height: 90%; width: 90%; position:relative;"></canvas>
             <div>
-                <ons-button id="start-manual-control-button" class="button-margin" onclick="startManualControl()">Start Manual Control</ons-button>
-                <ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" style="display:none;">Stop Manual Control</ons-button>
+                <ons-button id="start-manual-control-button" class="button-margin" onclick="startManualControl()" data-i18n="control.startButton">Start Manual Control</ons-button>
+                <ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" data-i18n="control.stopButton" style="display:none;">Stop Manual Control</ons-button>
             </div>
     </div>
 
@@ -42,7 +42,7 @@
                 duration: manualControlDurationMS*2,
                 sequenceId: manualControlSequenceId++
             }), "PUT")
-            .then(null, err => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            .then(null, err => fn.notificationToastError(err))
             .finally(() => {
                 manualControlLoadingBar.removeAttribute("indeterminate");
             });
@@ -87,7 +87,7 @@
                 .then(() => {
                     _startManualControl();
                     postponeRefreshManualControlMode();
-                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+                }, (err) => fn.notificationToastError(err))
                 .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
             }
         }
@@ -99,7 +99,7 @@
                 .then(() => {
                     _stopManualControl();
                     postponeRefreshManualControlMode();
-                }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+                }, (err) => fn.notificationToastError(err))
                 .finally(() => manualControlLoadingBar.removeAttribute("indeterminate"));
             }
         }
@@ -289,6 +289,10 @@
                 manualControlLoadingBar.removeAttribute("indeterminate");
             });
         };
+
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#manualcontrol-page');
+        }
 
         ons.getScriptPage().onShow = function () {
             manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");

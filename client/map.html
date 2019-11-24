@@ -6,8 +6,8 @@
     </div>
 
     <div class="map-page-stats map-page-top" style="display: none;">
-        <div>Status: <span class="map-page-status">Connecting...</span></div>
-        <div>Battery: <span class="map-page-battery">0%</span></div>
+        <div><span data-i18n="map.status">Status</span>: <span class="map-page-status" data-i18n="map.connecting">Connecting...</span></div>
+        <div><span data-i18n="map.battery">Battery</span>: <span class="map-page-battery">0%</span></div>
     </div>
 
     <div class="map-page-buttons map-page-top" style="display: none;">
@@ -69,7 +69,7 @@
                     map.initWebSocket();
                     resolve(map);
                 }, err => {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+                    fn.notificationToastError(err);
                     reject();
                 })
                 .finally(() => {
@@ -95,8 +95,8 @@
             button.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/go_to", JSON.stringify(point), "PUT")
             .then(
-                (res) => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (res) => fn.notificationToastOK(),
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
@@ -113,8 +113,8 @@
             button.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT")
             .then(
-                (res) => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (res) => fn.notificationToastOK(),
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
@@ -132,8 +132,8 @@
             button.setAttribute("disabled", "disabled");
             fn.prequest("api/" + command, "PUT")
             .then(
-                (res) => { ons.notification.toast("Command successfully sent!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout }); },
-                (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); }
+                (res) => fn.notificationToastOK(),
+                (err) => fn.notificationToastError(err)
             )
             .finally(() => {
                 loadingBar.removeAttribute("indeterminate");
@@ -210,7 +210,7 @@
             if (zones.length) {
                 zoned_cleanup(zones);
             } else {
-                ons.notification.confirm("Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?").then(function (answer) {
+                ons.notification.confirm(i18next.t('map.confirmFullCleaning',"Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                     if (answer === 1) {
                         put_command("start_cleaning_only");
                     }
@@ -228,7 +228,7 @@
                 put_command("start_cleaning","resume_cleaning");
                 return;
             }
-            ons.notification.toast("Nothing to resume!", { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
+            fn.notificationToastError(i18next.t('map.cannotResume',"Nothing to resume!"));
         }
         document.getElementById("stop_cleaning").onclick = () => { put_command("stop_cleaning"); };
         document.getElementById("pause_cleaning").onclick = () => { put_command("pause_cleaning"); };
@@ -238,7 +238,7 @@
             if (map.getLocations().zones.length < 5) {
                 map.addZone();
             } else {
-                ons.notification.alert('You can\'t add more than 5 zones onto the map.');
+                ons.notification.alert(i18next.t('map.tooManyZones',"You can't add more than 5 zones onto the map."));
             }
         }
         document.getElementById("set_iterations").onclick = () => {
@@ -250,7 +250,7 @@
         document.getElementById("map_reload_button").onclick = () => {
             loadingBar.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/poll_map", "GET")
-            .then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            .then(null, (err) => fn.notificationToastError(err))
             .finally (() => loadingBar.removeAttribute("indeterminate"));
         }
         document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
@@ -265,9 +265,9 @@
             }
             if (res.stateHR !== undefined) {
                 let mapPageStatus = document.querySelector('.map-page-status');
-                mapPageStatus.textContent = res.stateHR;
+                mapPageStatus.textContent = i18next.t('map.statusText',{defaultValue: '{{status}}', status: i18next.t('robot.states.n' + res.state, res.stateHR)});
                 if (res.state === 12 && res.error_code !== 0) {
-                    mapPageStatus.textContent += ' (' + res.errorHR + ')';
+                    mapPageStatus.textContent += ' (' + i18next.t('map.errorText',{defaultValue: '{{error}}', error: i18next.t('robot.errors.n' + res.error_code, res.errorHR)}) + ')';
                 }
                 mapPageStatus.dataset['state'] = res['state'];
                 mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
@@ -280,6 +280,9 @@
     </script>
     <script defer>
         // Somehow getScriptPage returns null inside the type=module script tag
+        ons.getScriptPage().onInit = function() {
+            fn.localize('#map-page');
+        }
         ons.getScriptPage().onShow = function () {
             document.querySelector('.map-page-stats').style.display = localStorage.getItem('settingsWebifHideMapStatus') ? 'none' : '';
             document.getElementById('map_reload_button').style.display = localStorage.getItem('settingsWebifHideMapReload') ? 'none' : '';
@@ -290,7 +293,7 @@
             }
             document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
             window.fn.updateMapPage().catch(() => {});
-            window.fn.prequest("api/poll_map", "GET").then(null, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); });
+            window.fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
         };
         ons.getScriptPage().onHide = function () {
             window.fn.cancelUpdateMap();

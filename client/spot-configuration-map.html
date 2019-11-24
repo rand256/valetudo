@@ -1,7 +1,7 @@
 <ons-page id="spot-configuration-map-page">
     <div id="spot-configuration-container">
         <div class="spot-configuration-header">
-            <ons-back-button>Spots</ons-back-button>
+            <ons-back-button data-i18n="zones.spotsPageBack" data-i18n-target=".back-button__label">Spots</ons-back-button>
             <span id="spot-configuration-map-page-h1"></span>
         </div>
 
@@ -29,7 +29,7 @@
 
         document.querySelector("#spot-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        document.getElementById("spot-configuration-map-page-h1").innerText = `Editing spot: ${spotConfig[spotToModify].name}`;
+        document.getElementById("spot-configuration-map-page-h1").textContent = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotConfig[spotToModify].name});
 
         map.addSpot([spotConfig[spotToModify].coordinates[0], spotConfig[spotToModify].coordinates[1]]);
 
@@ -41,14 +41,19 @@
             saveButton.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT")
             .then((res) => {
-                ons.notification.toast("Successfully saved spot!", { buttonLabel: 'Dismiss', timeout: window.fn.toastOKTimeout });
+                fn.notificationToastOK(i18next.t('zones.spotSaved',"Spot successfully saved!"));
                 fn.popPage();
-            }, (err) => { ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }); })
+            }, (err) => fn.notificationToastError(err))
             .finally(() => {
                 loadingBarSavespot.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
             });
         };
+    </script>
+    <script>
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#spot-configuration-map-page');
+        }
     </script>
     <style>
         #spot-configuration-container {
