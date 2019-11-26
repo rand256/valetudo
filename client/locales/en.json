@@ -129,6 +129,15 @@
         "startButton": "Start Manual Control",
         "stopButton": "Stop Manual Control"
     },
+    "telegram": {
+        "starttext" : "/start & /help This helptext\n/clean Start's the robot\n/stop Stop's the robot\n/home Send's robot back to dock\n/status Send's the current status of your robot\n/shutup Disable messages temporary for this day\n/talkagain Enable messages\n/consumablesstatus Send's the current status of consumables\n",
+        "passwordnotgiven": "Password not given",
+        "passwordwrong": "Password is wrong",
+        "clientauthorized": "Client authorized type /help for help",
+        "clientalreadyauthorized": "Client already authorized type /help for help",
+        "notauthenticated": "Sorry not authenticated use /setme **password**",
+        "consumables": "Main brush $1 hours left\nSide brush $2 hours left\nFilter $3 hours left\nSensor $4 hours left"
+    },
     "settings": {
         "title": "Settings",
         "infoTitle": "Info",
@@ -350,12 +359,24 @@
              "hint": "Hint",
              "hintText": "You can always revert back to the integrated Wifi Hotspot by pressing the reset button located underneath the lid.",
              "appliedOK": "Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."
+        },
+        "telegram": {
+            "helptext": "Create a new chat and search after \"Botfather\", create a new bot with /newbot, after creation copy the token and insert in the Page.",
+            "token": "HTTP API Token",
+            "clientpassword": "Telegram password (optional)",
+            "sendconsumables": "Send a info when one consumables is on 0 hours",
+            "sendconsumablesevery": "Send every cleaning a info when one consumables is on 0 hours",
+            "status": "Current telegram status",
+            "noclient": "There is no client authorized yet.",
+            "confirmDeleteClient": "Do you really want to delete this Client?",
+            "tokenempty": "Telegram token empty",
+            "conectedas": "Telegram connected as $1"
         }
     },
     "robot": {
         "states": {
             "n1": "Starting",
-            "n2": "Charger disconnected",
+            "n2": "Standby without Charging",
             "n3": "Idle",
             "n4": "Remote control active",
             "n5": "Cleaning",
