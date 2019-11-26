@@ -13,14 +13,14 @@
     <ons-list id="telegramsettings-list">
         <ons-list>
             <ons-list-item>
-                <div class="center">
+                <div data-i18n="settings.telegram.helptext" class="center">
                     Create a new chat and search after "Botfather", create a new bot with /newbot, after creation copy the token and insert in the Page.
                 </div>
             </ons-list-item>
         </ons-list>
         <ons-list>
             <ons-list-item>
-                <div class="left">
+                <div data-i18n="settings.telegram.token" class="left">
                     HTTP API Token
                 </div>
                 <div class="center">
@@ -30,7 +30,7 @@
         </ons-list>
         <ons-list>
             <ons-list-item>
-                <div class="left">
+                <div data-i18n="settings.telegram.clientpassword" class="left">
                     Telegram password (optional)
                 </div>
                 <div class="center">
@@ -39,7 +39,7 @@
             </ons-list-item>
         </ons-list>
         <ons-list-item>
-            <div class="left consumables-list-item-title">
+            <div data-i18n="settings.telegram.sendconsumables" class="left consumables-list-item-title">
                 Send a info when one consumables is on 0 hours
             </div>
             <div class="right">
@@ -47,7 +47,7 @@
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left consumables-list-item-title">
+            <div data-i18n="settings.telegram.sendconsumablesevery" class="left consumables-list-item-title">
                 Send every cleaning a info when one consumables is on 0 hours
             </div>
             <div class="right">
@@ -56,11 +56,11 @@
         </ons-list-item>
         <ons-list-item>
             <div class="center">
-                <ons-button modifier="large" class="button-margin" onclick="setSettingsTelegramPage();">Save</ons-button>
+                <ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setSettingsTelegramPage();">Save</ons-button>
             </div>
         </ons-list-item>
         <ons-list-item>
-            <div class="left consumables-list-item-title">
+            <div data-i18n="settings.telegram.status" class="left consumables-list-item-title">
                 Current telegram status
             </div>
             <div class="right">
@@ -82,83 +82,86 @@
         ons.getScriptPage().onShow = function () {
             getSettingsTelegramPage();
         };
+        ons.getScriptPage().onHide = function () {
+            clearTimeout(timer1);
+        };
         document.querySelector('ons-switch').addEventListener('change', setSettingsTelegramPage);
         document.querySelector('ons-input').addEventListener('change', setSettingsTelegramPage);
         function getSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.request("api/get_telegram_config", "GET", function (err, res) {
-                loadingBarSettingsTelegram.removeAttribute("indeterminate");
-                if (!err) {
-                    settingsTelegramToken.value = res.telegram_token;
-                    settingsTelegramPassword.value = res.telegram_password;
-                    settingsTelegramSendConsumables.checked = res.telegram_send_consumables;
-                    settingsTelegramSendConsumablesEvery.checked = res.telegram_send_consumablesevery;
-                    if (res == null ||  res.length == 0) {
-                        settingsTelegramclients.appendChild(ons.createElement(
-                            "<ons-list-item>\n" +
-                            "    <div class='center'>There is no timer configured yet.</div>" +
-                            "</ons-list-item>"
-                        ));
-                    }
-                    while (settingsTelegramclients.lastChild) {
-                        settingsTelegramclients.removeChild(settingsTelegramclients.lastChild);
-                    }
-                    res.telegram_clients.forEach(function (client) {
-                        //ADD EDIT (equals create new + delete!)
-                        var elem = ons.createElement(
-                            "<ons-list-item data-id='" + client.id + "'>\n" +
-                            "    <div class='left'>" + client.first_name + "</div>" +
-                            "    <div class='right'>" +
-                            "        <ons-button modifier='quiet' class='button-margin client-delete'>" +
-                            "            <ons-icon icon='fa-trash'></ons-icon>" +
-                            "        </ons-button>" +
-                            "    </div>" +
-                            "</ons-list-item>"
-                        );
+            fn.prequest("api/get_telegram_config", "GET")
+            .then((res) => {
+                settingsTelegramToken.value = res.telegram_token;
+                settingsTelegramPassword.value = res.telegram_password;
+                settingsTelegramSendConsumables.checked = res.telegram_send_consumables;
+                settingsTelegramSendConsumablesEvery.checked = res.telegram_send_consumablesevery;
+                if (res == null ||  res.length == 0) {
+                    settingsTelegramclients.appendChild(ons.createElement(
+                        "<ons-list-item>\n" +
+                        "    <div class='center'>" + i18next.t('settings.telegram.noclient',"There is no client authorized yet.") + "</div>" +
+                        "</ons-list-item>"
+                    ));
+                }
+                while (settingsTelegramclients.lastChild) {
+                    settingsTelegramclients.removeChild(settingsTelegramclients.lastChild);
+                }
+                res.telegram_clients.forEach(function (client) {
+                    //ADD EDIT (equals create new + delete!)
+                    var elem = ons.createElement(
+                        "<ons-list-item data-id='" + client.id + "'>\n" +
+                        "    <div class='left'>" + client.first_name + "</div>" +
+                        "    <div class='right'>" +
+                        "        <ons-button modifier='quiet' class='button-margin client-delete'>" +
+                        "            <ons-icon icon='fa-trash'></ons-icon>" +
+                        "        </ons-button>" +
+                        "    </div>" +
+                        "</ons-list-item>"
+                    );
 
-                        elem.querySelector('.client-delete').addEventListener('click', function (event) {
-                            deleteClient(client.id);
-                        });
-                        settingsTelegramclients.appendChild(elem);
+                    elem.querySelector('.client-delete').addEventListener('click', function (event) {
+                        deleteClient(client.id);
                     });
-                } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-            });
-            fn.request("api/get_telegram_status", "GET", function (err, res) {
-                loadingBarSettingsTelegram.removeAttribute("indeterminate");
-                if (!err) {
-                    settingsTelegramStatus.innerHTML = res.running;
-                } else {
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                }
-            });
+                    settingsTelegramclients.appendChild(elem);
+                });
+            },(err) => fn.notificationToastError(err))
+                .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            getTelegramStatus();
         }
 
         function deleteClient(id) {
-            ons.notification.confirm('Do you really want to delete this Client?').then(function (answer) {
+            ons.notification.confirm(i18next.t('settings.telegram.confirmDeleteClient','Do you really want to delete this Client?',{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}))
+            .then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
 
-                    fn.request("api/telegram_client/" + id, "DELETE", function (err, res) {
-                        if (err) {
-                            ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout });
-                        }
+                    fn.prequest("api/telegram_client/" + id, "DELETE")
+                    .then((res) => {
+                        fn.notificationToastOK();
                         getSettingsTelegramPage();
-                    });
+                    },(err) => fn.notificationToastError(err))
+                    .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
                 }
             });
         }
-        
+
+        function getTelegramStatus() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/get_telegram_status", "GET")
+            .then((res) => {
+                    settingsTelegramStatus.innerHTML = res.running;
+            },(err) => fn.notificationToastError(err))
+                .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            clearTimeout(timer1);
+            timer1 = setTimeout(getTelegramStatus,5000);
+        }
+        var timer1 = setTimeout(getTelegramStatus,5000);        
+
         function setSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.requestWithPayload("api/set_telegram_config", JSON.stringify({ "telegram_token":settingsTelegramToken.value, "telegram_password": settingsTelegramPassword.value, "telegram_send_consumables": settingsTelegramSendConsumables.checked, "telegram_send_consumables_every":settingsTelegramSendConsumablesEvery.checked }), "PUT", function (err, res) {
-                if (err) {
-                    loadingBarSettingsTelegram.removeAttribute("indeterminate");
-                    ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout })
-                } else {
-                    getSettingsTelegramPage();
-                }
+            fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({ "telegram_token":settingsTelegramToken.value, "telegram_password": settingsTelegramPassword.value, "telegram_send_consumables": settingsTelegramSendConsumables.checked, "telegram_send_consumables_every":settingsTelegramSendConsumablesEvery.checked }), "PUT")
+            .then(null,(err) => fn.notificationToastError(err))
+            .finally(() => {
+                getSettingsTelegramPage();
             });
         }
     </script>
