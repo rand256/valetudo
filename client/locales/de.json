@@ -272,7 +272,7 @@
             "voicePackUploading": "Sprachpaket hochladen...",
             "voicePackInstalling": "Sprachpaket installieren...",
             "voicePackInstallFailed": "Sprachpaket konnte nicht installiert werden.",
-            "soundAndVoice": "Sprachpaket wurde erfolgreich installiert."
+            "voicePackInstallOK": "Sprachpaket wurde erfolgreich installiert."
         },
         "timers": {
             "month": "Monat",

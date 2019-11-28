@@ -272,7 +272,7 @@
             "voicePackUploading": "Гласовият пакет се зарежда...",
             "voicePackInstalling": "Гласовият пакет се инсталира...",
             "voicePackInstallFailed": "Инсталирането на гласовия пакет се провали.",
-            "soundAndVoice": "Гласовият пакет е инсталиран успешно."
+            "voicePackInstallOK": "Гласовият пакет е инсталиран успешно."
         },
         "timers": {
             "month": "Месец",

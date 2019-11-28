@@ -272,7 +272,7 @@
             "voicePackUploading": "Uploading voice pack...",
             "voicePackInstalling": "Installing voice pack...",
             "voicePackInstallFailed": "Failed to install voice pack.",
-            "soundAndVoice": "Voice pack was successfully installed."
+            "voicePackInstallOK": "Voice pack was successfully installed."
         },
         "timers": {
             "month": "Month",

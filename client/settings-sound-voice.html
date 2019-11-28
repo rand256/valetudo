@@ -65,6 +65,7 @@
         var voiceUploadForm = document.getElementById('voice-upload-form');
         var voicePackUploadButton = document.getElementById('settings-sound-voice-upload-pack-button');
         var voicePackFileBrowser = document.getElementById('settings-sound-voice-upload-browser');
+        var uploadText = '';
 
         document.querySelector("#settings-sound-voice-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
@@ -121,7 +122,7 @@
             } else {
                 loadingBarSettingsSoundVolume.removeAttribute("indeterminate");
                 voicePackUploadButton.disabled = true
-                var uploadText = voicePackUploadButton.textContent;
+                uploadText = voicePackUploadButton.textContent;
                 voicePackUploadButton.textContent = i18next.t('settings.soundAndVoice.voicePackUploading',"Uploading voice pack...");
                 fn.postFile("api/install_voice_pack", file, function (p){
                     loadingBarSettingsSoundVolume.value = (p * 0.9);
