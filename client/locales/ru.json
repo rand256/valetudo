@@ -275,7 +275,7 @@
             "voicePackUploading": "Голосовой пакет загружается...",
             "voicePackInstalling": "Голосовой пакет устанавливается...",
             "voicePackInstallFailed": "Установка голосового пакета не удалась.",
-            "soundAndVoice": "Голосовой пакет был успешно установлен."
+            "voicePackInstallOK": "Голосовой пакет был успешно установлен."
         },
         "timers": {
             "month": "Месяц",

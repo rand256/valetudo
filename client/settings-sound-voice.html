@@ -65,6 +65,7 @@
         var voiceUploadForm = document.getElementById('voice-upload-form');
         var voicePackUploadButton = document.getElementById('settings-sound-voice-upload-pack-button');
         var voicePackFileBrowser = document.getElementById('settings-sound-voice-upload-browser');
+        var uploadText = '';
 
         document.querySelector("#settings-sound-voice-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
@@ -108,8 +109,30 @@
 
         function handleSoundVolumeSettingsTestButton() {
             loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/test_sound_volume", "PUT")
-            .then(null, (err) => fn.notificationToastError(err))
+            let currentVolume = 0;
+            fn.prequest("api/get_sound_volume", "GET")
+            .then(res => { currentVolume = res; })
+            .then(res => {
+                if (currentVolume !== +soundVolumeInputVolume.value) {
+                    return fn.prequestWithPayload("api/set_sound_volume", JSON.stringify({
+                        volume: soundVolumeInputVolume.value
+                    }), "PUT");
+                } else {
+                    return true;
+                }
+            })
+            .then(res => fn.prequest("api/test_sound_volume", "PUT"))
+            .then(res => { return new Promise((resolve,reject) => setTimeout(() => resolve(),1e3)); })
+            .then(res => {
+                if (currentVolume !== +soundVolumeInputVolume.value) {
+                    return fn.prequestWithPayload("api/set_sound_volume", JSON.stringify({
+                        volume: currentVolume
+                    }), "PUT");
+                } else {
+                    return true;
+                }
+            })
+            .catch((err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsSoundVolume.removeAttribute("indeterminate"));
         };
 
@@ -121,7 +144,7 @@
             } else {
                 loadingBarSettingsSoundVolume.removeAttribute("indeterminate");
                 voicePackUploadButton.disabled = true
-                var uploadText = voicePackUploadButton.textContent;
+                uploadText = voicePackUploadButton.textContent;
                 voicePackUploadButton.textContent = i18next.t('settings.soundAndVoice.voicePackUploading',"Uploading voice pack...");
                 fn.postFile("api/install_voice_pack", file, function (p){
                     loadingBarSettingsSoundVolume.value = (p * 0.9);
