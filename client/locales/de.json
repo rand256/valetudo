@@ -88,8 +88,8 @@
         "status": "Status",
         "battery": "Akkustand",
         "connecting": "Verbinde...",
-        "statusText": "{{status, lowercase}}",
-        "errorText": "{{error, lowercase}}",
+        "statusText": "{{status}}",
+        "errorText": "{{error}}",
         "confirmFullCleaning": "Zonenreinigung nicht möglich, keine Zonen spezifiziert. Soll stattdessen eine komplette Reinigung gestartet werden?",
         "cannotResume": "Keine Tätigkeiten zur Fortsetzung!",
         "tooManyZones": "Es können maximal 5 Bereiche zur Karte hinzugefügt werden."
