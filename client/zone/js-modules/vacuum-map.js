@@ -302,13 +302,16 @@ export function VacuumMap(canvasElement) {
             usingOwnTransform(ctx, (ctx, transform) => {
                 // we'll define locations drawing order (currently it's reversed) so the former location types is drawn over the latter ones
                 let zoneNumber = 0;
-                let activeLocation = null, locationTypes = {GotoPoint: 1, Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
+                let activeLocation = null, locationTypes = {Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
                 locations.sort((a,b) => {return locationTypes[b.constructor.name] - locationTypes[a.constructor.name]; });
                 locations.forEach(location => {
+                    if (location instanceof GotoPoint) {
+                        return;
+                    }
                     if (location instanceof Zone) {
                         zoneNumber++;
                     }
-                    // also we would like to draw currently active location whatever is it over the all other locations, so we'll do it via this ugly way
+                    // also we would like to draw currently active location wherever is it over the all other locations, so we'll do it via this ugly way
                     if (activeLocation || !location.active) {
                         location.draw(ctx, transform, Math.min(5,currentScale), zoneNumber);
                     } else {
@@ -317,6 +320,17 @@ export function VacuumMap(canvasElement) {
                 });
                 if (activeLocation) {
                     activeLocation[0].draw(ctx, transform, Math.min(5,currentScale), activeLocation[1]);
+                }
+            });
+            // place objects above all the zones
+            ctx.scale(1 / pathScale, 1 / pathScale);
+            ctx.drawImage(pathDrawer.canvasObjects, 0, 0);
+            ctx.scale(pathScale, pathScale);
+            // place goto point above everything
+            usingOwnTransform(ctx, (ctx, transform) => {
+                let location = locations.filter(location => location instanceof GotoPoint);
+                if (location[0]) {
+                    location[0].draw(ctx, transform, Math.min(5,currentScale));
                 }
             });
         }

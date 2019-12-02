@@ -26,6 +26,9 @@ export function PathDrawer() {
     const canvas = document.createElement('canvas');
     canvas.width = 1024;
     canvas.height = 1024;
+    const canvasObjects = document.createElement('canvas');
+    canvasObjects.width = 1024;
+    canvasObjects.height = 1024;
     // Used to draw smoother path when zoomed into the map
     let scaleFactor = 1;
     const maxScaleFactor = 8;
@@ -56,8 +59,12 @@ export function PathDrawer() {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        const ctxObjects = canvasObjects.getContext("2d");
+        ctxObjects.clearRect(0, 0, canvasObjects.width, canvasObjects.height);
+
         scaleFactor = newScaleFactor;
         canvas.width = canvas.height = scaleFactor * 1024;
+        canvasObjects.width = canvasObjects.height = scaleFactor * 1024;
         draw();
     }
 
@@ -70,7 +77,7 @@ export function PathDrawer() {
     }
 
     function drawCharger(position) {
-        const ctx = canvas.getContext("2d");
+        const ctx = canvasObjects.getContext("2d");
 
         const chargerPositionInPixels = mmToCanvasPx(position);
 
@@ -85,7 +92,7 @@ export function PathDrawer() {
     }
 
     function drawRobot(position, angle) {
-        const ctx = canvas.getContext("2d");
+        const ctx = canvasObjects.getContext("2d");
         function rotateRobot(img, angle) {
             var canvasimg = document.createElement("canvas");
             canvasimg.width = img.width;
@@ -153,6 +160,10 @@ export function PathDrawer() {
             ctx.setLineDash([]);
         }
 
+        const ctxObjects = canvasObjects.getContext("2d");
+        ctxObjects.imageSmoothingQuality = 'high';
+        ctxObjects.clearRect(0, 0, canvasObjects.width, canvasObjects.height);
+
         drawCharger(chargerPosition);
         drawRobot(robotPosition, path.current_angle);
     }
@@ -163,6 +174,7 @@ export function PathDrawer() {
         scale: scale,
         getScaleFactor: function () { return scaleFactor; },
         canvas: canvas,
+        canvasObjects: canvasObjects,
         draw: draw
     }
 }
