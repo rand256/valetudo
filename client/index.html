@@ -171,7 +171,7 @@
                         }
                     } else {
                         console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
                 request.onerror = function () {
@@ -194,7 +194,7 @@
                         resolve(JSON.parse(request.responseText));
                     } else {
                         console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
 

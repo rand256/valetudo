@@ -32,7 +32,7 @@ export function MapDrawer() {
         const imgData = mapCtx.createImageData(mapCanvas.width, mapCanvas.height);
 
         if(mapData && mapData.pixels) {
-            Object.keys(mapData.pixels).forEach(function(key){
+            Object.keys(mapData.pixels).filter(key => key !== 'segments').forEach(function(key){
                 var color;
                 switch(key) {
                     case "floor":
@@ -41,7 +41,7 @@ export function MapDrawer() {
                     case "obstacle_weak":
                         color = occupiedColor;
                         break;
-                    case "obstacle_strong":
+                    case "obstacle":
                         color = strongOccupiedColor;
                         break;
                 }
