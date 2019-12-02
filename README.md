@@ -21,7 +21,7 @@ This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Val
 * Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
 
 **Also webUI localization is supported since 0.4.0-RE7!**
-Currently available for en/ru. Add your own native language support by editing ./client/locales/en.json template and sending a PR.
+Currently available for en/de/ru/bg. Add your own native language support by editing ./client/locales/en.json template and sending a PR.
 
 ----
 
