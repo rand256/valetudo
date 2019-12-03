@@ -31,7 +31,7 @@
         <ons-list>
             <ons-list-item>
                 <div data-i18n="settings.telegram.clientpassword" class="left">
-                    Telegram password (optional)
+                    Telegram password (optional):
                 </div>
                 <div class="center">
                     <ons-input id="settings-telegram-password" type="text" float maxlength="63" placeholder="Password for telegram" style="width:100%;"></ons-input>
@@ -40,7 +40,7 @@
         </ons-list>
         <ons-list-item>
             <div data-i18n="settings.telegram.sendconsumables" class="left consumables-list-item-title">
-                Send a info when one consumables is on 0 hours
+                Send an info when one consumables is on 0 hours:
             </div>
             <div class="right">
                 <ons-switch class='timer-active-switch' disabled id="settings-telegram-send-consumables"></ons-switch>
@@ -48,7 +48,7 @@
         </ons-list-item>
         <ons-list-item>
             <div data-i18n="settings.telegram.sendconsumablesevery" class="left consumables-list-item-title">
-                Send every cleaning a info when one consumables is on 0 hours
+                Send every cleaning an info when one consumables is on 0 hours:
             </div>
             <div class="right">
                 <ons-switch class='timer-active-switch' id="settings-telegram-send-consumables-every"></ons-switch>
@@ -78,24 +78,25 @@
         var settingsTelegramSendConsumablesEvery = document.getElementById('settings-telegram-send-consumables-every');
         var settingsTelegramStatus = document.getElementById('settings-telegram-status');
         var settingsTelegramclients = document.getElementById('settings-telegram-clients');
+        var gTSTO = setTimeout(() => { getTelegramStatus(); },5000);
 
         ons.getScriptPage().onShow = function () {
             getSettingsTelegramPage();
         };
+
         ons.getScriptPage().onHide = function () {
-            clearTimeout(timer1);
+            clearTimeout(gTSTO);
         };
-        document.querySelector('ons-switch').addEventListener('change', setSettingsTelegramPage);
-        document.querySelector('ons-input').addEventListener('change', setSettingsTelegramPage);
+
         function getSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/get_telegram_config", "GET")
             .then((res) => {
-                settingsTelegramToken.value = res.telegram_token;
-                settingsTelegramPassword.value = res.telegram_password;
-                settingsTelegramSendConsumables.checked = res.telegram_send_consumables;
-                settingsTelegramSendConsumablesEvery.checked = res.telegram_send_consumablesevery;
-                if (res == null ||  res.length == 0) {
+                settingsTelegramToken.value = res.token;
+                settingsTelegramPassword.value = res.password;
+                settingsTelegramSendConsumables.checked = res.sendConsumables;
+                settingsTelegramSendConsumablesEvery.checked = res.sendConsumablesEvery;
+                if (!res.clients.length) {
                     settingsTelegramclients.appendChild(ons.createElement(
                         "<ons-list-item>\n" +
                         "    <div class='center'>" + i18next.t('settings.telegram.noclient',"There is no client authorized yet.") + "</div>" +
@@ -105,7 +106,7 @@
                 while (settingsTelegramclients.lastChild) {
                     settingsTelegramclients.removeChild(settingsTelegramclients.lastChild);
                 }
-                res.telegram_clients.forEach(function (client) {
+                res.clients.forEach(function (client) {
                     //ADD EDIT (equals create new + delete!)
                     var elem = ons.createElement(
                         "<ons-list-item data-id='" + client.id + "'>\n" +
@@ -124,7 +125,7 @@
                     settingsTelegramclients.appendChild(elem);
                 });
             },(err) => fn.notificationToastError(err))
-                .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
             getTelegramStatus();
         }
 
@@ -133,7 +134,6 @@
             .then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-
                     fn.prequest("api/telegram_client/" + id, "DELETE")
                     .then((res) => {
                         fn.notificationToastOK();
@@ -146,23 +146,24 @@
 
         function getTelegramStatus() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/get_telegram_status", "GET")
-            .then((res) => {
-                    settingsTelegramStatus.innerHTML = res.running;
-            },(err) => fn.notificationToastError(err))
-                .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
-            clearTimeout(timer1);
-            timer1 = setTimeout(getTelegramStatus,5000);
+            fn.prequest("api/get_telegram_status", "GET").then(
+                (res) => { settingsTelegramStatus.innerHTML = res.running; },
+                (err) => fn.notificationToastError(err)
+            ).finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            clearTimeout(gTSTO);
+            gTSTO = setTimeout(getTelegramStatus,5000);
         }
-        var timer1 = setTimeout(getTelegramStatus,5000);        
 
         function setSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({ "telegram_token":settingsTelegramToken.value, "telegram_password": settingsTelegramPassword.value, "telegram_send_consumables": settingsTelegramSendConsumables.checked, "telegram_send_consumables_every":settingsTelegramSendConsumablesEvery.checked }), "PUT")
+            fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({
+                "token": settingsTelegramToken.value,
+                "password": settingsTelegramPassword.value,
+                "telegramSendConsumables": settingsTelegramSendConsumables.checked,
+                "telegramSendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked
+            }), "PUT")
             .then(null,(err) => fn.notificationToastError(err))
-            .finally(() => {
-                getSettingsTelegramPage();
-            });
+            .finally(() => getSettingsTelegramPage());
         }
     </script>
 </ons-page>

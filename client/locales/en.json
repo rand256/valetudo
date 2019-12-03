@@ -130,12 +130,12 @@
         "stopButton": "Stop Manual Control"
     },
     "telegram": {
-        "starttext" : "/start & /help This helptext\n/clean Start's the robot\n/stop Stop's the robot\n/home Send's robot back to dock\n/status Send's the current status of your robot\n/shutup Disable messages temporary for this day\n/talkagain Enable messages\n/consumablesstatus Send's the current status of consumables\n",
+        "starttext" : "/start & /help This helptext\n/clean Starts full cleaning\n/stop Stops cleaning\n/home Sends robot back to charging station\n/status Sends the current status of your robot\n/shutup Disable bot messages for you\n/talkagain Enable bot messages for you\n/consumables Sends the current status of consumables\n",
         "passwordnotgiven": "Password not given",
         "passwordwrong": "Password is wrong",
-        "clientauthorized": "Client authorized type /help for help",
-        "clientalreadyauthorized": "Client already authorized type /help for help",
-        "notauthenticated": "Sorry not authenticated use /setme **password**",
+        "clientauthorized": "Client authorized, type /help for help",
+        "clientalreadyauthorized": "Client already authorized, type /help for help",
+        "notauthenticated": "You are not authenticated, use /setme **password**",
         "consumables": "Main brush $1 hours left\nSide brush $2 hours left\nFilter $3 hours left\nSensor $4 hours left"
     },
     "settings": {
