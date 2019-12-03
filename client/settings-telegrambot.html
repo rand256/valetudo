@@ -38,12 +38,25 @@
                 </div>
             </ons-list-item>
         </ons-list>
+        <ons-list>
+            <ons-list-item>
+                <div data-i18n="settings.telegram.proxy" class="left">
+                    SOCKS5 Proxy Address (optional):
+                </div>
+                <div class="center">
+                    <ons-input id="settings-telegram-proxy" type="text" float maxlength="63" placeholder="user:password@host:port" style="width:80%;"></ons-input>
+                </div>
+                <div class="right">
+                    <ons-button modifier='large' class='button-margin' onclick='getRandomProxy();'>get random</ons-button>
+                </div>
+            </ons-list-item>
+        </ons-list>
         <ons-list-item>
             <div data-i18n="settings.telegram.sendconsumables" class="left consumables-list-item-title">
                 Send an info when one consumables is on 0 hours:
             </div>
             <div class="right">
-                <ons-switch class='timer-active-switch' disabled id="settings-telegram-send-consumables"></ons-switch>
+                <ons-switch class='timer-active-switch' id="settings-telegram-send-consumables"></ons-switch>
             </div>
         </ons-list-item>
         <ons-list-item>
@@ -74,6 +87,7 @@
         var loadingBarSettingsTelegram = document.getElementById('loading-bar-settings-telegram');
         var settingsTelegramToken = document.getElementById('settings-telegram-token');
         var settingsTelegramPassword = document.getElementById('settings-telegram-password');
+        var settingsTelegramProxy = document.getElementById('settings-telegram-proxy');
         var settingsTelegramSendConsumables = document.getElementById('settings-telegram-send-consumables');
         var settingsTelegramSendConsumablesEvery = document.getElementById('settings-telegram-send-consumables-every');
         var settingsTelegramStatus = document.getElementById('settings-telegram-status');
@@ -94,6 +108,7 @@
             .then((res) => {
                 settingsTelegramToken.value = res.token;
                 settingsTelegramPassword.value = res.password;
+                settingsTelegramProxy.value = res.proxy;
                 settingsTelegramSendConsumables.checked = res.sendConsumables;
                 settingsTelegramSendConsumablesEvery.checked = res.sendConsumablesEvery;
                 if (!res.clients.length) {
@@ -154,11 +169,52 @@
             gTSTO = setTimeout(getTelegramStatus,5000);
         }
 
+        function getRandomProxy() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("https://mtpro.xyz/api/?type=socks", "GET").then(
+                (res) => {
+                    if (Array.isArray(res) && res.length > 0) {
+                        let proxy, options = [], list = [], countries = {};
+                        res.forEach(proxy => {
+                            if (typeof countries[proxy.country] === "undefined") {
+                                countries[proxy.country] = 1;
+                            } else {
+                                countries[proxy.country]++;
+                            }
+                        });
+                        list = Object.keys(countries).sort((a,b) => countries[b] - countries[a]);
+                        for(var i = 0; i < list.length; i++) {
+                            options.push(list[i] + '(' + countries[list[i]] + ')');
+                        }
+                        options.push({
+                            label: i18next.t('common.cancel',"Cancel"),
+                            icon: 'md-close'
+                        });
+                        ons.openActionSheet({
+                            title: i18next.t('settings.telegram.selectCountry',"Select a country:"),
+                            cancelable: true,
+                            buttons: options
+                        }).then(index => {
+                            if (index > -1 && index < list.length) {
+                                list = res.filter(proxy => proxy.country === list[index]);
+                                proxy = list[Math.floor(Math.random() * list.length)];
+                                if (proxy.ip && proxy.port) {
+                                    settingsTelegramProxy.value = proxy.ip + ':' + proxy.port;
+                                }
+                            }
+                        });
+                    }
+                },
+                (err) => fn.notificationToastError(err)
+            ).finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+        }
+
         function setSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({
                 "token": settingsTelegramToken.value,
                 "password": settingsTelegramPassword.value,
+                "proxy": settingsTelegramProxy.value,
                 "telegramSendConsumables": settingsTelegramSendConsumables.checked,
                 "telegramSendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked
             }), "PUT")
