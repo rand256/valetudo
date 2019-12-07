@@ -88,8 +88,8 @@
         "status": "Status",
         "battery": "Battery",
         "connecting": "Connecting...",
-        "statusText": "{{status, lowercase}}",
-        "errorText": "{{error, lowercase}}",
+        "statusText": "{{status}}",
+        "errorText": "{{error}}",
         "confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
         "cannotResume": "Nothing to resume!",
         "tooManyZones": "You can't add more than 5 zones onto the map."

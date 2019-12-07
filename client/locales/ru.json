@@ -425,7 +425,7 @@
             "clientsList": "Клиенты Telegram",
             "noClients": "Пока нет авторизованных клиентов.",
             "confirmDeleteClient": "Вы уверены, что хотите удалить этого клиента?",
-            "connectedAs": "Бот в сети как {{botname}}",
+            "connectedAs": "Бот в сети: {{botname}}",
             "connectionFailed": "Сбой подключения",
             "notConnected": "Бот не подключен"
         }
