@@ -468,7 +468,7 @@
             })
             .then(res => {
                 if (res.message === 'wait') {
-                    let waiting = ons.notification.alert(i18next.t('home.popups.waitMapTicks',{defaultValue: "Map replacement routines are running. Please wait for {{seconds}} seconds...", seconds: 30}),{class: 'load-map-waiting', title: i18next.t('home.popups.waitMap',"Wait"), cancelable: false});
+                    let waiting = ons.notification.alert(i18next.t('home.popups.waitMapTicks',{defaultValue: "Map replacement routines are running. Please wait for {{seconds}} seconds...", seconds: 30}),{class: 'load-map-waiting', title: i18next.t('home.popups.wait',"Wait"), cancelable: false});
                     let adb = document.querySelector('.load-map-waiting .alert-dialog-button'),
                         adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
                         adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
