@@ -128,6 +128,23 @@
     "control": {
         "startButton": "Avvia Controllo Manuale",
         "stopButton": "Interrompi Controllo Manuale"
+    "telegram": {
+        "help": {
+            "off": "/spegni - Il bot non invierà più al tuo account notifiche sui cambi di status del robot fino a che non lo riaccendi.",
+            "on": "/on - Il bot inizierà ad inviare di nuovo al tuo account notifiche sui cambi di status del robot.",
+            "clean": "/clean - Se specifiche zone separate dal segno più il robot inizierà la pulizia a zonee, altrimenti inizierà una pulizia completa.\n\nPuoi anche specificare un numero di passaggi per ogni zona usando `xNumero` alla fine. Per esempio, `/clean Stanza1 x2 + Stanza2 x1 + Stanza3` inizierà la pulizia a zone con due passaggi per la `Stanza`, un passaggio per la `Stanza2`e `Stanza3`.\n\nRicorda che non puoi pulire più di 5 zone alla volta.",
+            "stop": "/stop - Interromperà la pulizia in esecuzione.",
+            "pause": "/pause - Metterà in pausa la pulizia o il movimento in esecuzione.\nAlcune operazione verranno interrotte anzichè essere messe in pausa quando questo comando viene utilizzato.",
+            "resume": "/resume - Tenterà il ripristino l'azione precedentemente messa in pausa.",
+            "spot": "/spot - Inizierà la pulizia spot del luogo in cui si trova il robot.",
+            "home": "/home - Invierà il robot alla sua stazione di ricarica.",
+            "goto": "/goto - Invierà il robot verso la destinazione target specifica col suo nome.",
+            "status": "/status - Mostrerà lo status corrente del robot.",
+            "consumables": "/consumables - Mostrerà lo status delle parti consumabili.",
+            "power": "/power - Specifica la potenza dell'aspirazione in un range da 1 a 100. Usare il valore 105 per la modalità mocio, se la funzione è supportata dal robot.\n\n38 - Silenziosa\n60 - Bilanciata\n75 - Turbo\n100 - Massima (non raccomandata!)",
+            "zones": "/zones - Elencherà le zone configurate che possono essere usate nella pulizia a zone.",
+            "spots": "/spots - Elencherà i punti spot configurati che possono essere configurati come destinazioni spot."
+        },        
     },
     "settings": {
         "title": "Impostazioni",
