@@ -172,7 +172,7 @@
                 document.getElementById("resume_cleaning").style.display = 'none';
             }
             // stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
-            if ([3,6,8,9,10,11,14,15,16].includes(res.state)) { 
+            if ([0,3,6,8,9,10,11,14,15,16].includes(res.state)) { 
                 document.getElementById("stop_cleaning").style.display = 'none';
             } else {
                 document.getElementById("stop_cleaning").style.display = '';
@@ -260,9 +260,7 @@
         });
         document.getElementById("map-canvas").addEventListener('updateStatus', (e) => {
             let res = e.detail;
-            if (res.battery !== undefined) {
-                document.querySelector('.map-page-battery').textContent = res.battery + '%';
-            }
+            document.querySelector('.map-page-battery').textContent = (res.battery || 0) + '%';
             if (res.stateHR !== undefined) {
                 let mapPageStatus = document.querySelector('.map-page-status');
                 mapPageStatus.textContent = i18next.t('map.statusText',{defaultValue: '{{status}}', status: i18next.t('robot.states.n' + res.state, res.stateHR)});
@@ -277,8 +275,13 @@
                 }
             }
         });
+        document.dispatchEvent(new CustomEvent("mapModuleLoaded", {detail: true}));
     </script>
-    <script defer>
+    <script>
+        // this is a workaround for an issue with module script fails to load fast enough even when this script is marked defer. any better idea?
+        var mapModuleLoaded = new Promise((res,rej) => {
+            document.addEventListener("mapModuleLoaded", function(e) { res(); });
+        }).catch(e => console.log('map functions failed loading', e));
         // Somehow getScriptPage returns null inside the type=module script tag
         ons.getScriptPage().onInit = function() {
             fn.localize('#map-page');
@@ -286,18 +289,19 @@
         ons.getScriptPage().onShow = function () {
             document.querySelector('.map-page-stats').style.display = localStorage.getItem('settingsWebifHideMapStatus') ? 'none' : '';
             document.getElementById('map_reload_button').style.display = localStorage.getItem('settingsWebifHideMapReload') ? 'none' : '';
-            if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
-                window.fn.reload_map_buttons();
-            } else {
-                window.fn.reset_map_buttons();
-            }
             document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
-            window.fn.updateMapPage().catch(() => {});
-            window.fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
+            mapModuleLoaded.then(res => {
+                window.fn.updateMapPage().catch(() => {});
+                window.fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
+                if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
+                    window.fn.reload_map_buttons();
+                } else {
+                    window.fn.reset_map_buttons();
+                }
+            });
         };
         ons.getScriptPage().onHide = function () {
             window.fn.cancelUpdateMap();
-
         };
     </script>
     <style>
