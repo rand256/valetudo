@@ -418,6 +418,7 @@
             "authPasswordPlaceholder": "для авторизации клиентов",
             "proxy": "SOCKS5 Proxy (необязательно):",
             "proxyPlaceholder": "user:password@host:port",
+            "host": "Адрес API (необязательно):",
             "getRandomProxy": "Найти",
             "selectCountry": "Выберите страну:",
             "sendConsumables": "Отправлять сообщение, если таймер одного из расходников закончился:",

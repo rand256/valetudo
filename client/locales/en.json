@@ -412,6 +412,7 @@
             "tokenPlaceholder": "HTTP API Token from Botfather",
             "authPassword": "Bot password (optional):",
             "authPasswordPlaceholder": "to authorize on bot",
+            "host": "API Host (optional):",
             "proxy": "SOCKS5 Proxy (optional):",
             "proxyPlaceholder": "user:password@host:port",
             "getRandomProxy": "Get",

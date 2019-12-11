@@ -42,6 +42,14 @@
             </div>
         </ons-list-item>
         <ons-list-item>
+            <div data-i18n="settings.telegram.host" class="left">
+                API Host (optional):
+            </div>
+            <div class="center" style="width:90%;">
+                <ons-input id="settings-telegram-host" class="switchable-input" type="text" float maxlength="63" placeholder="https://api.telegram.org" style="width:90%;"></ons-input>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
             <div data-i18n="settings.telegram.proxy" class="left">
                 SOCKS5 Proxy (optional):
             </div>
@@ -103,6 +111,7 @@
         var settingsTelegramEnabled = document.getElementById('settings-telegram-enabled');
         var settingsTelegramToken = document.getElementById('settings-telegram-token');
         var settingsTelegramPassword = document.getElementById('settings-telegram-password');
+        var settingsTelegramHost = document.getElementById('settings-telegram-host');
         var settingsTelegramProxy = document.getElementById('settings-telegram-proxy');
         var settingsTelegramSendConsumables = document.getElementById('settings-telegram-send-consumables');
         var settingsTelegramSendConsumablesEvery = document.getElementById('settings-telegram-send-consumables-every');
@@ -128,9 +137,10 @@
             fn.prequest("api/get_telegram_config", "GET")
             .then((res) => {
                 settingsTelegramEnabled.checked = res.enabled;
-                settingsTelegramToken.value = res.token;
-                settingsTelegramPassword.value = res.password;
-                settingsTelegramProxy.value = res.proxy;
+                settingsTelegramToken.value = res.token || '';
+                settingsTelegramPassword.value = res.password || '';
+                settingsTelegramHost.value = res.host || '';
+                settingsTelegramProxy.value = res.proxy || '';
                 settingsTelegramSendConsumables.checked = res.sendConsumables;
                 settingsTelegramSendConsumablesEvery.checked = res.sendConsumablesEvery;
                 settingsTelegramLocalization.value = res.localization || '';
@@ -249,9 +259,10 @@
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({
                 "enabled": settingsTelegramEnabled.checked,
-                "token": settingsTelegramToken.value,
-                "password": settingsTelegramPassword.value,
-                "proxy": settingsTelegramProxy.value,
+                "token": settingsTelegramToken.value.trim() || '',
+                "password": settingsTelegramPassword.value.trim() || '',
+                "host": settingsTelegramHost.value.trim() || '',
+                "proxy": settingsTelegramProxy.value.trim() || '',
                 "sendConsumables": settingsTelegramSendConsumables.checked,
                 "sendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked,
                 "localization": settingsTelegramLocalization.value.length > 2 ? '' : settingsTelegramLocalization.value
