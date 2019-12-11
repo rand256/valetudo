@@ -431,6 +431,7 @@
     },
     "robot": {
         "states": {
+            "n0": "Connecting...",
             "n1": "Starting",
             "n2": "Standby without Charging",
             "n3": "Idle",

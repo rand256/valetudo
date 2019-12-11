@@ -35,7 +35,7 @@
             backend: {
                 loadPath: '/locales/{{lng}}.json'
             },
-            debug: true
+            debug: false
         })
         .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
         .catch(e => console.log('loading i18n has failed', e));

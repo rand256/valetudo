@@ -429,6 +429,7 @@
     },
     "robot": {
         "states": {
+            "n0": "Verbinde...",
             "n1": "Starte",
             "n2": "Ladegerät nicht angeschlossen",
             "n3": "Leerlauf",
