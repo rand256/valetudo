@@ -35,7 +35,7 @@
             backend: {
                 loadPath: '/locales/{{lng}}.json'
             },
-            debug: true
+            debug: false
         })
         .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
         .catch(e => console.log('loading i18n has failed', e));
@@ -171,7 +171,7 @@
                         }
                     } else {
                         console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
                 request.onerror = function () {
@@ -194,7 +194,7 @@
                         resolve(JSON.parse(request.responseText));
                     } else {
                         console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
                     }
                 };
 

@@ -45,11 +45,11 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
     if (buf.length <= offset) {
         return result;
     }
-    let type_based_offset = 0x0;
-
-    var type = buf.readUInt16LE(0x00 + offset);
-    var length = buf.readUInt32LE(0x04 + offset);
-
+    let g3offset = 0;
+    var type = buf.readUInt16LE(0x00 + offset),
+        hlength = buf.readUInt16LE(0x02 + offset),
+        length = buf.readUInt32LE(0x04 + offset);
+    //console.log('v3type=',type,'v3hdrlen=',hlength,'v3len=',length)
     //TODO: Check if more values are in fact signed
     switch (type) {
         case RRMapParser.TYPES.ROBOT_POSITION:
@@ -58,18 +58,23 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
                 position: [
                     buf.readUInt16LE(0x08 + offset),
                     buf.readUInt16LE(0x0c + offset)
-                ]
+                ],
+                angle: length >= 12 ? buf.readInt32LE(0x10 + offset) : 0 // gen3+
             };
             break;
         case RRMapParser.TYPES.IMAGE:
+            if (hlength > 24) { // gen3+
+                g3offset = 4;
+            }
             const parameters = {
+                segments: g3offset ? buf.readInt32LE(0x08 + offset) : 0,
                 position: {
-                    top: buf.readInt32LE(0x08 + offset),
-                    left: buf.readInt32LE(0x0c + offset)
+                    top: buf.readInt32LE(0x08 + g3offset + offset),
+                    left: buf.readInt32LE(0x0c + g3offset + offset)
                 },
                 dimensions: {
-                    height: buf.readInt32LE(0x10 + offset),
-                    width: buf.readInt32LE(0x14 + offset)
+                    height: buf.readInt32LE(0x10 + g3offset + offset),
+                    width: buf.readInt32LE(0x14 + g3offset + offset)
                 },
                 pixels: []
             };
@@ -81,28 +86,27 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
             if(parameters.dimensions.height > 0 && parameters.dimensions.width > 0) {
                 parameters.pixels = {
                     floor: [],
-                    obstacle_weak: [],
-                    obstacle_strong: []
+                    obstacle: [],
+                    segments: [],
                 };
-
-                for (let i = 0; i < length; i++) {
-                    switch(buf.readUInt8(0x18 + offset + i)) {
+                for (let s, i = 0; i < length; i++) {
+                    switch (buf.readUInt8(0x18 + g3offset + offset + i) & 0x07) {
+                        case 0:
+                            break;
                         case 1:
-                            parameters.pixels.obstacle_strong.push(i);
+                            parameters.pixels.obstacle.push(i);
                             break;
-                        case 8:
-                            parameters.pixels.obstacle_weak.push(i);
-                            break;
-                        case 255:
+                        default:
                             parameters.pixels.floor.push(i);
+                            s = (buf.readUInt8(0x18 + g3offset + offset + i) & 248) >> 3;
+                            if (s !== 0) {
+                                parameters.pixels.segments.push(i | (s << 21));
+                            }
                             break;
                     }
                 }
             }
-
             result[type] = parameters;
-
-            type_based_offset = 0x10;
             break;
         case RRMapParser.TYPES.PATH:
         case RRMapParser.TYPES.GOTO_PATH:
@@ -122,8 +126,6 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
                 current_angle: buf.readUInt32LE(0x10 + offset), //This is always 0. Roborock didn't bother
                 points: points
             };
-
-            type_based_offset = 0x0c;
             break;
         case RRMapParser.TYPES.GOTO_TARGET:
             result[type] = {
@@ -149,8 +151,6 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
                 result[type] = zones;
             }
-
-            type_based_offset = 0x04;
             break;
         case RRMapParser.TYPES.FORBIDDEN_ZONES:
             const forbiddenZoneCount = buf.readUInt32LE(0x08 + offset);
@@ -172,8 +172,6 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
                 result[type] = forbiddenZones;
             }
-
-            type_based_offset = 0x04;
             break;
         case RRMapParser.TYPES.VIRTUAL_WALLS:
             const wallCount = buf.readUInt32LE(0x08 + offset);
@@ -191,16 +189,14 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
                 result[type] = walls
             }
-
-            type_based_offset = 0x04;
             break;
         case RRMapParser.TYPES.DIGEST:
             break;
         default: //TODO: Only enable for development since it will spam the log
-            //console.error("Unknown Data Block of type " + type + " at offset " + offset + " with length " + length);
+            console.error("Unknown Data Block of type " + type + " at offset " + offset + " with length " + length);
     }
 
-    return parseBlock(buf, 0x08 + length + offset + type_based_offset, result);
+    return parseBlock(buf, offset + length + hlength, result);
 };
 
 /**

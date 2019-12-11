@@ -1,0 +1,274 @@
+<ons-page id="settings-telegram-page">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
+        </div>
+        <div class="center" data-i18n="settings.telegramTitle">Telegram</div>
+        <div class="right">
+        </div>
+    </ons-toolbar>
+    <ons-progress-bar id="loading-bar-settings-telegram" value="0" indeterminate="indeterminate"></ons-progress-bar>
+    <ons-list-item>
+        <label class="right" style="width:100%">
+            <ons-row>
+                <ons-col vertical-align='center' data-i18n="settings.telegram.explanation">Create a new chat in Telegram and search for "Botfather" account, create a new bot with /newbot, then copy the token and insert on this page.</ons-col>
+            </ons-row>
+        </label>
+    </ons-list-item>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.telegram.general">Telegram settings</ons-list-title>
+    <ons-list>
+        <ons-list-item>
+            <div data-i18n="common.enabled" class="left">
+                Enabled:
+            </div>
+            <div class="right">
+                <ons-switch class='timer-active-switch' id="settings-telegram-enabled" onchange="switchControls();"></ons-switch>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.token" class="left">
+                HTTP API Token:
+            </div>
+            <div class="center" style="width:90%;">
+                <ons-input id="settings-telegram-token" class="switchable-input" type="text" float maxlength="63" placeholder="token" style="width:100%;" data-i18n="[placeholder]settings.telegram.tokenPlaceholder"></ons-input>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.authPassword" class="left">
+                Bot password (optional):
+            </div>
+            <div class="center" style="width:90%;">
+                <ons-input id="settings-telegram-password" class="switchable-input" type="text" float maxlength="20" placeholder="to authorize on bot" style="width:100%;" data-i18n="[placeholder]settings.telegram.authPasswordPlaceholder"></ons-input>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.host" class="left">
+                API Host (optional):
+            </div>
+            <div class="center" style="width:90%;">
+                <ons-input id="settings-telegram-host" class="switchable-input" type="text" float maxlength="63" placeholder="https://api.telegram.org" style="width:90%;"></ons-input>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.proxy" class="left">
+                SOCKS5 Proxy (optional):
+            </div>
+            <div class="center" style="width:90%;">
+                <ons-input id="settings-telegram-proxy" class="switchable-input" type="text" float maxlength="63" placeholder="user:password@host:port" style="width:90%;" data-i18n="[placeholder]settings.telegram.proxyPlaceholder"></ons-input>
+            </div>
+            <div class="right">
+                <ons-button modifier="large" class="button-margin switchable-input" onclick="getRandomProxy();" data-i18n="settings.telegram.getRandomProxy">Get</ons-button>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.sendConsumables" class="left">
+                Send a message when one of consumables is expired:
+            </div>
+            <div class="right">
+                <ons-switch class="timer-active-switch switchable-input" id="settings-telegram-send-consumables"></ons-switch>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.sendConsumablesEvery" class="left">
+                Every cleaning send a message when one of consumables is expired:
+            </div>
+            <div class="right">
+                <ons-switch class="timer-active-switch switchable-input" id="settings-telegram-send-consumables-every"></ons-switch>
+            </div>
+        </ons-list-item>
+        <ons-list>
+            <ons-list-item>
+                <div class='left' data-i18n="settings.telegram.localization">
+                    Bot language
+                </div>
+                <div class='right'><ons-select id="settings-telegram-localization">
+                    <option value="">Default</option>
+                    <option value="en">English</option>
+                    <option value="de">German</option>
+                    <option value="ru">Russian</option>
+                </ons-select></div>
+            </ons-list-item>
+        </ons-list>
+        <ons-list-item>
+            <div class="center">
+                <ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setSettingsTelegramPage();">Save</ons-button>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <div data-i18n="settings.telegram.status" class="left">
+                Current telegram status:
+            </div>
+            <div class="right">
+                    <ons-button modifier='quiet' class='button-margin' style='font-size: 2em;' onclick='getSettingsTelegramPage();'><ons-icon icon='fa-refresh'></ons-icon></ons-button>
+                    <ons-label class='timer-active-switch' id="settings-telegram-status"></ons-label>
+            </div>
+        </ons-list-item>
+    </ons-list>
+    <ons-list-title style="margin-top:5px;" data-i18n="settings.telegram.clientsList">Telegram clients</ons-list-title>
+    <ons-list id="settings-telegram-clients"></ons-list>
+    <script>
+        var loadingBarSettingsTelegram = document.getElementById('loading-bar-settings-telegram');
+        var settingsTelegramEnabled = document.getElementById('settings-telegram-enabled');
+        var settingsTelegramToken = document.getElementById('settings-telegram-token');
+        var settingsTelegramPassword = document.getElementById('settings-telegram-password');
+        var settingsTelegramHost = document.getElementById('settings-telegram-host');
+        var settingsTelegramProxy = document.getElementById('settings-telegram-proxy');
+        var settingsTelegramSendConsumables = document.getElementById('settings-telegram-send-consumables');
+        var settingsTelegramSendConsumablesEvery = document.getElementById('settings-telegram-send-consumables-every');
+        var settingsTelegramLocalization = document.getElementById('settings-telegram-localization');
+        var settingsTelegramStatus = document.getElementById('settings-telegram-status');
+        var settingsTelegramclients = document.getElementById('settings-telegram-clients');
+        var gTSTO = setTimeout(() => { getTelegramStatus(); },5000);
+
+        ons.getScriptPage().onInit = function() {
+            fn.localize('#settings-telegram-page');
+        };
+
+        ons.getScriptPage().onShow = function () {
+            getSettingsTelegramPage();
+        };
+
+        ons.getScriptPage().onHide = function () {
+            clearTimeout(gTSTO);
+        };
+
+        function getSettingsTelegramPage() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/get_telegram_config", "GET")
+            .then((res) => {
+                settingsTelegramEnabled.checked = res.enabled;
+                settingsTelegramToken.value = res.token || '';
+                settingsTelegramPassword.value = res.password || '';
+                settingsTelegramHost.value = res.host || '';
+                settingsTelegramProxy.value = res.proxy || '';
+                settingsTelegramSendConsumables.checked = res.sendConsumables;
+                settingsTelegramSendConsumablesEvery.checked = res.sendConsumablesEvery;
+                settingsTelegramLocalization.value = res.localization || '';
+                while (settingsTelegramclients.lastChild) {
+                    settingsTelegramclients.removeChild(settingsTelegramclients.lastChild);
+                }
+                if (!res.clients.length) {
+                    settingsTelegramclients.appendChild(ons.createElement(
+                        "<ons-list-item>\n" +
+                        "    <div class='center'>" + i18next.t('settings.telegram.noClients',"There are no authorized clients yet.") + "</div>" +
+                        "</ons-list-item>"
+                    ));
+                }
+                else
+                res.clients.forEach(function (client) {
+                    //ADD EDIT (equals create new + delete!)
+                    var elem = ons.createElement(
+                        "<ons-list-item data-id='" + client.id + "'>\n" +
+                        "    <div class='left'>" + client.first_name + "</div>" +
+                        "    <div class='right'>" +
+                        "        <ons-button modifier='quiet' class='button-margin client-delete'>" +
+                        "            <ons-icon icon='fa-trash'></ons-icon>" +
+                        "        </ons-button>" +
+                        "    </div>" +
+                        "</ons-list-item>"
+                    );
+                    elem.querySelector('.client-delete').addEventListener('click', function (event) {
+                        deleteClient(client.id);
+                    });
+                    settingsTelegramclients.appendChild(elem);
+                });
+                switchControls();
+            },(err) => fn.notificationToastError(err))
+            .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            getTelegramStatus();
+        }
+
+        function switchControls() {
+            document.querySelectorAll('.switchable-input').forEach(element => settingsTelegramEnabled.checked ? element.removeAttribute('disabled') : element.setAttribute('disabled','disabled'));
+        }
+
+        function deleteClient(id) {
+            ons.notification.confirm(i18next.t('settings.telegram.confirmDeleteClient','Do you really want to delete this client?',{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}))
+            .then(function (answer) {
+                if (answer === 1) {
+                    loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+                    fn.prequest("api/telegram_client/" + id, "DELETE")
+                    .then((res) => {
+                        fn.notificationToastOK();
+                        getSettingsTelegramPage();
+                    },(err) => fn.notificationToastError(err))
+                    .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+                }
+            });
+        }
+
+        function getTelegramStatus() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/get_telegram_status", "GET").then(
+                (res) => {
+                    if (/[^0-9]/.test(res.running)) {
+                        settingsTelegramStatus.textContent = i18next.t('settings.telegram.connectedAs',{defaultValue: "Telegrambot connected as {{botname}}", botname: res.running});
+                    } else if (+res.running === 2) {
+                        settingsTelegramStatus.textContent = i18next.t('settings.telegram.connectionFailed',"Telegrambot connection failed");
+                    } else {
+                        settingsTelegramStatus.textContent = i18next.t('settings.telegram.notConnected',"Telegrambot not connected");
+                    }
+                },
+                (err) => fn.notificationToastError(err)
+            ).finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+            clearTimeout(gTSTO);
+            gTSTO = setTimeout(getTelegramStatus,5000);
+        }
+
+        function getRandomProxy() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("https://mtpro.xyz/api/?type=socks", "GET").then(
+                (res) => {
+                    if (Array.isArray(res) && res.length > 0) {
+                        let proxy, options = [], list = [], countries = {};
+                        res.forEach(proxy => {
+                            if (typeof countries[proxy.country] === "undefined") {
+                                countries[proxy.country] = 1;
+                            } else {
+                                countries[proxy.country]++;
+                            }
+                        });
+                        list = Object.keys(countries).sort((a,b) => countries[b] - countries[a]);
+                        for(var i = 0; i < list.length; i++) {
+                            options.push(list[i] + '(' + countries[list[i]] + ')');
+                        }
+                        options.push({
+                            label: i18next.t('common.cancel',"Cancel"),
+                            icon: 'md-close'
+                        });
+                        ons.openActionSheet({
+                            title: i18next.t('settings.telegram.selectCountry',"Select a country:"),
+                            cancelable: true,
+                            buttons: options
+                        }).then(index => {
+                            if (index > -1 && index < list.length) {
+                                list = res.filter(proxy => proxy.country === list[index]);
+                                proxy = list[Math.floor(Math.random() * list.length)];
+                                if (proxy.ip && proxy.port) {
+                                    settingsTelegramProxy.value = proxy.ip + ':' + proxy.port;
+                                }
+                            }
+                        });
+                    }
+                },
+                (err) => fn.notificationToastError(err)
+            ).finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
+        }
+
+        function setSettingsTelegramPage() {
+            loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
+            fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({
+                "enabled": settingsTelegramEnabled.checked,
+                "token": settingsTelegramToken.value.trim() || '',
+                "password": settingsTelegramPassword.value.trim() || '',
+                "host": settingsTelegramHost.value.trim() || '',
+                "proxy": settingsTelegramProxy.value.trim() || '',
+                "sendConsumables": settingsTelegramSendConsumables.checked,
+                "sendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked,
+                "localization": settingsTelegramLocalization.value.length > 2 ? '' : settingsTelegramLocalization.value
+            }), "PUT")
+            .then((res) => fn.notificationToastOK(),(err) => fn.notificationToastError(err))
+            .finally(() => getSettingsTelegramPage());
+        }
+    </script>
+</ons-page>
