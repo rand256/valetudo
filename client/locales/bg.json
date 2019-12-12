@@ -203,6 +203,8 @@
         "webInterfaceDesc": "Промяна на настройките на уеб интерфейса",
         "accessControlTitle": "Права за достъп",
         "accessControlDesc": "SSH ключове и HTTP автентикация",
+        "telegramTitle": "Telegram бот",
+        "telegramDesc": "Активиране и настройки за Telegram бот",		
         "loading": "зареждане...",
         "accessControl": {
             "pageTitle": "Управление на правата за достъп",
