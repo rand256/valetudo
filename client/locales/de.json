@@ -203,6 +203,8 @@
         "webInterfaceDesc": "Webinterface-Parameter anpassen",
         "accessControlTitle": "Zugangskontrolle",
         "accessControlDesc": "Einstellen von SSH-Schlüsseln und HTTP-Authentifizierung",
+        "telegramTitle": "Telegram-Bot",
+        "telegramDesc": "Einschalten und konfigurieren der Telegram-Bot-Einstellungen",
         "loading": "Laden...",
         "accessControl": {
             "pageTitle": "Zugangskontrolleinstellungen",
