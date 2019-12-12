@@ -83,11 +83,11 @@
                     var errorDescription = res.errorDescription;
                     var completedFlag = res.finishedFlag;
                     settingsCleaningHistory.appendChild(ons.createElement(
-                        "<ons-list-item title='" + i18next.t('settings.cleaningHistory.showMap',"Show cleaning map") + "' style='cursor: pointer' onclick='switchToMapView(" + historyTimestamp + ");'>\n" +
+                        "<ons-list-item>\n" +
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
                         "       <ons-col width='400px' vertical-align='center' style='text-align:center;'>" + i18next.t('settings.cleaningHistory.historyRecord',{defaultValue: "#{{id}} started on {{startDate}}", id: currentEntryId, startDate: fromTime}) + "</ons-col>" +
-                        "       <ons-col></ons-col>" +
+                        "       <ons-col>" +
                         "   </ons-row>" +
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
@@ -99,7 +99,7 @@
                         "       <ons-col></ons-col>" +
                         "       <ons-col vertical-align='center' width='120px'>" + i18next.t('settings.cleaningHistory.area',"Area") + "</ons-col>" +
                         "       <ons-col vertical-align='center' width='150px'>" + area + " " + i18next.t('common.m2',"m²") + "</ons-col>" +
-                        "       <ons-col></ons-col>" +
+                        "       <ons-col><div class=\"cl-map-div\"><ons-button class=\"cl-map-button\" modifier=\"small--quiet\" onclick=\"switchToMapView(" + historyTimestamp + ");\" title=\"" + i18next.t('settings.cleaningHistory.showMap',"Show cleaning map") + "\"><ons-icon icon=\"fa-map\"></ons-icon></ons-button></div></ons-col>" +
                         "   </ons-row>"+
                         "   <ons-row>" +
                         "       <ons-col></ons-col>" +
@@ -172,4 +172,8 @@
             .finally(() => loadingBarSettingsCleaningHistory.removeAttribute("indeterminate"));
         };
     </script>
+    <style>
+        .cl-map-button { position: absolute; top: -10px; }
+        .cl-map-div { position: relative; }
+    </style>
 </ons-page>
