@@ -414,7 +414,7 @@
             "general": "Настройки Telegram",
             "token": "HTTP API токен:",
             "tokenPlaceholder": "токен",
-            "authPassword": "Пароль бота (необязательно):",
+            "authPassword": "Пароль бота:",
             "authPasswordPlaceholder": "для авторизации клиентов",
             "proxy": "SOCKS5 Proxy (необязательно):",
             "proxyPlaceholder": "user:password@host:port",

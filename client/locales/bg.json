@@ -204,7 +204,7 @@
         "accessControlTitle": "Права за достъп",
         "accessControlDesc": "SSH ключове и HTTP автентикация",
         "telegramTitle": "Telegram бот",
-        "telegramDesc": "Активиране и настройки за Telegram бот",		
+        "telegramDesc": "Активиране и настройки за Telegram бот",
         "loading": "зареждане...",
         "accessControl": {
             "pageTitle": "Управление на правата за достъп",
@@ -410,7 +410,7 @@
             "general": "Настройки за Telegram",
             "token": "HTTP API Token:",
             "tokenPlaceholder": "токен от Botfather",
-            "authPassword": "Парола за бота (незадължителна):",
+            "authPassword": "Парола за бота:",
             "authPasswordPlaceholder": "за оторизация на клиента",
             "host": "Адрес на API (незадължителен):",
             "proxy": "SOCKS5 Proxy (незадължително):",

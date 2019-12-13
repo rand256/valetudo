@@ -410,7 +410,7 @@
             "general": "Telegram settings",
             "token": "HTTP API Token:",
             "tokenPlaceholder": "HTTP API Token from Botfather",
-            "authPassword": "Bot password (optional):",
+            "authPassword": "Bot password:",
             "authPasswordPlaceholder": "to authorize on bot",
             "host": "API Host (optional):",
             "proxy": "SOCKS5 Proxy (optional):",

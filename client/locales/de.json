@@ -410,7 +410,7 @@
             "general": "Telegram-Einstellungen",
             "token": "HTTP-API-Token:",
             "tokenPlaceholder": "HTTP-API-Token von Botfather",
-            "authPassword": "Bot-Passwort (optional):",
+            "authPassword": "Bot-Passwort:",
             "authPasswordPlaceholder": "um den Bot zu autorisieren",
             "host": "HTTP-API-Host (optional):",
             "proxy": "SOCKS5-Proxy (optional):",
