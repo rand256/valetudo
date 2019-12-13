@@ -212,7 +212,7 @@
             } else {
                 ons.notification.confirm(i18next.t('map.confirmFullCleaning',"Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                     if (answer === 1) {
-                        put_command("start_cleaning_only");
+                        put_command("start_cleaning_only","start_cleaning");
                     }
                 });
             }
