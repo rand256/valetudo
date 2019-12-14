@@ -76,25 +76,13 @@
                 <ons-switch class="timer-active-switch switchable-input" id="settings-telegram-send-consumables-every"></ons-switch>
             </div>
         </ons-list-item>
-        <ons-list>
-            <ons-list-item>
-                <div class='left' data-i18n="settings.telegram.localization">
-                    Bot language
-                </div>
-                <div class='right'><ons-select id="settings-telegram-localization">
-                    <option value="">Default</option>
-                    <option value="en">English</option>
-                    <option value="de">German</option>
-                    <option value="ru">Russian</option>
-                    <option value="bg">Bulgarian</option>
-                </ons-select></div>
-            </ons-list-item>
-        </ons-list>
-        <ons-list-item>
-            <div class="center">
-                <ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setSettingsTelegramPage();">Save</ons-button>
-            </div>
-        </ons-list-item>
+    </ons-list>
+    <ons-list-item>
+        <div class="center">
+            <ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setSettingsTelegramPage();">Save</ons-button>
+        </div>
+    </ons-list-item>
+    <ons-list>
         <ons-list-item>
             <div data-i18n="settings.telegram.status" class="left">
                 Current telegram status:
@@ -116,7 +104,6 @@
         var settingsTelegramProxy = document.getElementById('settings-telegram-proxy');
         var settingsTelegramSendConsumables = document.getElementById('settings-telegram-send-consumables');
         var settingsTelegramSendConsumablesEvery = document.getElementById('settings-telegram-send-consumables-every');
-        var settingsTelegramLocalization = document.getElementById('settings-telegram-localization');
         var settingsTelegramStatus = document.getElementById('settings-telegram-status');
         var settingsTelegramclients = document.getElementById('settings-telegram-clients');
         var gTSTO = setTimeout(() => { getTelegramStatus(); },5000);
@@ -135,7 +122,7 @@
 
         function getSettingsTelegramPage() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/get_telegram_config", "GET")
+            fn.prequest("api/get_telegram_config")
             .then((res) => {
                 settingsTelegramEnabled.checked = res.enabled;
                 settingsTelegramToken.value = res.token || '';
@@ -144,7 +131,6 @@
                 settingsTelegramProxy.value = res.proxy || '';
                 settingsTelegramSendConsumables.checked = res.sendConsumables;
                 settingsTelegramSendConsumablesEvery.checked = res.sendConsumablesEvery;
-                settingsTelegramLocalization.value = res.localization || '';
                 while (settingsTelegramclients.lastChild) {
                     settingsTelegramclients.removeChild(settingsTelegramclients.lastChild);
                 }
@@ -190,7 +176,7 @@
                     loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
                     fn.prequest("api/telegram_client/" + id, "DELETE")
                     .then((res) => {
-                        fn.notificationToastOK();
+                        fn.notificationToastOK(i18next.t('common.ok',"OK"));
                         getSettingsTelegramPage();
                     },(err) => fn.notificationToastError(err))
                     .finally(loadingBarSettingsTelegram.removeAttribute("indeterminate"));
@@ -200,7 +186,7 @@
 
         function getTelegramStatus() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/get_telegram_status", "GET").then(
+            fn.prequest("api/get_telegram_status").then(
                 (res) => {
                     if (/[^0-9]/.test(res.running)) {
                         settingsTelegramStatus.textContent = i18next.t('settings.telegram.connectedAs',{defaultValue: "Telegrambot connected as {{botname}}", botname: res.running});
@@ -218,7 +204,7 @@
 
         function getRandomProxy() {
             loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("https://mtpro.xyz/api/?type=socks", "GET").then(
+            fn.prequest("https://mtpro.xyz/api/?type=socks").then(
                 (res) => {
                     if (Array.isArray(res) && res.length > 0) {
                         let proxy, options = [], list = [], countries = {};
@@ -265,10 +251,9 @@
                 "host": settingsTelegramHost.value.trim() || '',
                 "proxy": settingsTelegramProxy.value.trim() || '',
                 "sendConsumables": settingsTelegramSendConsumables.checked,
-                "sendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked,
-                "localization": settingsTelegramLocalization.value.length > 2 ? '' : settingsTelegramLocalization.value
+                "sendConsumablesEvery": settingsTelegramSendConsumablesEvery.checked
             }), "PUT")
-            .then((res) => fn.notificationToastOK(),(err) => fn.notificationToastError(err))
+            .then((res) => fn.notificationToastOK(i18next.t('common.ok',"OK")),(err) => fn.notificationToastError(err))
             .finally(() => getSettingsTelegramPage());
         }
     </script>

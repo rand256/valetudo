@@ -22,26 +22,6 @@
     <script>
         window.fn = {};
 
-        var waitForLocalize = i18next.use(i18nextXHRBackend).init({
-            interpolation: {
-                format: function(value, format, lng) {
-                    if (format === 'lowercase') return value.toLowerCase();
-                    if (format === 'uppercase') return value.toUpperCase();
-                    return value;
-                }
-            },
-            lng: localStorage.getItem('settingsWebifLocalization') || 'en',
-            fallbackLng: '',
-            backend: {
-                loadPath: '/locales/{{lng}}.json'
-            },
-            debug: false
-        })
-        .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-        .catch(e => console.log('loading i18n has failed', e));
-
-        window.fn.localize = function(target) { waitForLocalize.then(res => res(target)) };
-
         window.fn.toggleMenu = function () {
             document.getElementById('appSplitter').left.toggle();
         };
@@ -159,6 +139,7 @@
 
         window.fn.prequest = function (url, method, type) {
             return new Promise(function(resolve, reject) {
+                method = method || "GET";
                 var request = new XMLHttpRequest();
                 if (type) request.responseType = type;
                 request.open(method, url, true);
@@ -230,6 +211,30 @@
             label = i18next.t('common.dismiss',"Dismiss");
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
         }
+
+        var waitForLocalize = fn.prequest("api/get_interface_config")
+        .then(res => {
+            fn.webifSettings = res;
+            return i18next.use(i18nextXHRBackend).init({
+                interpolation: {
+                    format: function(value, format, lng) {
+                        if (format === 'lowercase') return value.toLowerCase();
+                        if (format === 'uppercase') return value.toUpperCase();
+                        return value;
+                    }
+                },
+                lng: res.localization || '',
+                fallbackLng: '',
+                backend: {
+                    loadPath: '/locales/{{lng}}.json'
+                },
+                debug: false
+            })
+        })
+        .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+        .catch(e => console.log('loading interface configuration has failed', e));
+
+        window.fn.localize = function(target) { waitForLocalize.then(res => res(target)) };
 
         var pushView = function(idx,hash) {
             history.pushState({moveView: idx}, '', hash ? '#' + hash : '');

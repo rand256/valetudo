@@ -270,7 +270,7 @@
             "appLocaleLanguage": "Language:",
             "appLocaleTimezone": "Timezone:",
             "appLocaleLogserver": "Logserver:",
-            "valetudo": "Valetudo",
+            "valetudo": "Valetudo RE",
             "currentValetudoVersion": "Инсталирана версия:",
             "newValetudoVersion": "Нова версия:",
             "newVersionURL": "URL на новата версия:",
@@ -368,7 +368,6 @@
             "missingZones": "Трябва да се посочи поне една непразна зона."
         },
         "webInterface": {
-            "explanation": "Тези настройки засягат само функционалността на уеб интерфейса. Те са обвързани с конкретен браузър и се прилагат моментално.",
             "general": "Общи",
             "localization": "Локализация на уеб интерфейса",
             "localizationExt": "превключване между наличните преводи",
@@ -378,7 +377,7 @@
             "gotoImmediate": "Незабавно движение към цел",
             "gotoImmediateExt": "вместо да отидете на раздела Карта",
             "multimapButtons": "Режим множество карти",
-            "multimapButtonsExt": "позволява запазване и зареждане на карти (експериментално!)",
+            "multimapButtonsExt": "позволява запазване и зареждане на карти (експериментално)",
             "mapTab": "Раздел Карта",
             "hideMapStatus": "Не показвай състоянието на картата",
             "hideMapStatusExt": "скрива блока на състоянието и зареждането на батерията на робота",
@@ -419,7 +418,6 @@
             "selectCountry": "Изберете страна:",
             "sendConsumables": "Изпращане на съобщение, ако таймерът на някой от консумативите изтече:",
             "sendConsumablesEvery": "При всяко почистване изпращай състоянието на таймерите за консумативите:",
-            "localization": "Локализация на бота",
             "status": "Състояние на връзката",
             "clientsList": "Клиенти на Telegram",
             "noClients": "Все още няма оторизирани клиенти.",

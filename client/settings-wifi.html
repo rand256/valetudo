@@ -97,7 +97,7 @@
 
         function updateSettingsWifiPage() {
             loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/wifi_status", "GET")
+            fn.prequest("api/wifi_status")
             .then((res) => {
                 wifiCurrentConnectionStatusConnected.innerHTML = res.connected === true ? i18next.t('settings.wifi.connected',"Connected") : i18next.t('settings.wifi.notConnected',"Not connected");
                 if (res.connected) {

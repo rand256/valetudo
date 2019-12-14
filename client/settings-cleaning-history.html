@@ -38,11 +38,11 @@
             while (settingsCleaningHistory.lastChild) {
                 settingsCleaningHistory.removeChild(settingsCleaningHistory.lastChild);
             }
-            const getSummary = fn.prequest("api/clean_summary", "GET")
+            const getSummary = fn.prequest("api/clean_summary")
             .then((res) => {
                 historyArray = res[3];
             });
-            const getTimezone = fn.prequest("api/get_timezone", "GET")
+            const getTimezone = fn.prequest("api/get_timezone")
             .then((res) => {
                 timeZone = res;
             });

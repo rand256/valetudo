@@ -7,13 +7,6 @@
         <div class="right"></div>
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-web-interface" value="0"></ons-progress-bar>
-    <ons-list-item>
-        <label class="right" style="width:100%">
-            <ons-row>
-                <ons-col vertical-align='center' data-i18n="settings.webInterface.explanation">These parameters affect some functionality of the web interface itself. They are local to your browser only and applied instantly.</ons-col>
-            </ons-row>
-        </label>
-    </ons-list-item>
     <ons-list-title style="margin-top:5px;" data-i18n="settings.webInterface.general">
         General
     </ons-list-title>
@@ -21,7 +14,7 @@
         <ons-list-item>
             <div class='left'><div><div data-i18n="settings.webInterface.localization">Web interface localization</div><div class="small" data-i18n="settings.webInterface.localizationExt">switches between available translations</div></div></div>
             <div class='right'><ons-select class="settings-webif-select" id="settings-webif-localization">
-                <option value="default">Default</option>
+                <option value="">Default</option>
                 <option value="en">English</option>
                 <option value="de">German</option>
                 <option value="ru">Russian</option>
@@ -42,7 +35,7 @@
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-goto-immediate"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div data-i18n="settings.webInterface.multimapButtons">Show multimap buttons</div><div class="small" data-i18n="settings.webInterface.multimapButtonsExt">allows saving and restoring maps (highly experimental!)</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.multimapButtons">Show multimap buttons</div><div class="small" data-i18n="settings.webInterface.multimapButtonsExt">allows saving and restoring maps (experimental)</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-show-multimap"></ons-switch></div>
         </ons-list-item>
     </ons-list>
@@ -63,30 +56,23 @@
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-static-map-buttons"></ons-switch></div>
         </ons-list-item>
     </ons-list>
+    <ons-list-item>
+        <div class="center">
+            <ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setWebifSettings();">Save</ons-button>
+        </div>
+    </ons-list-item>
 
     <script>
-        var switches = document.querySelectorAll('.settings-webif-switch');
+        var switches = document.querySelectorAll('.settings-webif-switch'),
+            loadingBarWebif = document.getElementById('loading-bar-settings-web-interface'),
+            oldLocalization;
+
         document.querySelector("#settings-web-interface-page ons-back-button").onClick = () => fn.popPage();
 
         ons.getScriptPage().onInit = function() {
             fn.localize('#settings-web-interface-page');
             document.getElementById('settings-webif-localization').addEventListener('change', function (event) {
-                let newVal, oldVal = localStorage.getItem(getOptionName(this.id));
-                switch (event.target.value) {
-                    case "default": newVal = null;
-                    default: newVal = event.target.value;
-                }
-                if (newVal !== oldVal) {
-                    if (newVal === "default")
-                        localStorage.removeItem(getOptionName(this.id));
-                    else
-                        localStorage.setItem(getOptionName(this.id),event.target.value);
-                    ons.notification.confirm(i18next.t('settings.webInterface.applyLocalizationConfirm',"Would you like to apply localization changes now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
-                        if (res === 1) {
-                            window.location.reload();
-                        }
-                    });
-                }
+                window.fn.webifSettings[getOptionName(this.id)] = event.target.value;
             });
             document.getElementById('settings-webif-show-multimap').addEventListener('change', function (event) {
                 if (event.value === true)
@@ -95,34 +81,51 @@
                     if (res === 0) {
                         event.switch.setAttribute('checked',true); // it won't allow to uncheck the switch without explicitly adding this attribute to its html
                         event.switch.removeAttribute('checked');
-                        localStorage.removeItem(getOptionName(event.switch.id));
+                        window.fn.webifSettings[getOptionName(event.switch.id)] = false;
                     }
                 });
             });
             switches.forEach(sw => {
                 sw.addEventListener('change', function (event) {
                     if (event.value) {
-                        localStorage.setItem(getOptionName(sw.id),true);
+                        window.fn.webifSettings[getOptionName(sw.id)] = true;
                     } else {
-                        localStorage.removeItem(getOptionName(sw.id));
+                        window.fn.webifSettings[getOptionName(sw.id)] = false;
                     }
                 });
             });
         };
 
         ons.getScriptPage().onShow = function () {
+            oldLocalization = window.fn.webifSettings.localization;
             switches.forEach(sw => {
-                if (localStorage.getItem(getOptionName(sw.id))) {
+                if (window.fn.webifSettings[getOptionName(sw.id)]) {
                     sw.checked = true;
                 }
             });
-            let locSelect = document.querySelector('#settings-webif-localization option[value="' + localStorage.getItem(getOptionName('settings-webif-localization')) + '"]');
+            let locSelect = document.querySelector('#settings-webif-localization option[value="' + oldLocalization + '"]');
             if (locSelect) {
                 locSelect.selected = true;
             }
         };
 
+        function setWebifSettings() {
+            loadingBarWebif.setAttribute("indeterminate", "indeterminate");
+            fn.prequestWithPayload("api/set_interface_config", JSON.stringify(window.fn.webifSettings), "PUT")
+            .then((res) => {
+                if (oldLocalization !== window.fn.webifSettings.localization)
+                ons.notification.confirm(i18next.t('settings.webInterface.applyLocalizationConfirm',"Would you like to apply localization changes now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
+                    if (res === 1) {
+                        window.location.reload();
+                    }
+                });
+                fn.notificationToastOK(i18next.t('common.ok',"OK"));
+            },(err) => fn.notificationToastError(err))
+            .finally(() => loadingBarWebif.removeAttribute("indeterminate"));
+        };
+
         function getOptionName(id) {
+            id = id.replace('settings-webif-','');
             let parts = id.split('-');
             for (let k = 1; k < parts.length; k++) {
                 parts[k] = parts[k][0].toUpperCase() + parts[k].slice(1);

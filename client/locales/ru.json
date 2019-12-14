@@ -271,7 +271,7 @@
             "appLocaleLanguage": "Language:",
             "appLocaleTimezone": "Timezone:",
             "appLocaleLogserver": "Logserver:",
-            "valetudo": "Valetudo",
+            "valetudo": "Valetudo RE",
             "currentValetudoVersion": "Установленная версия:",
             "newValetudoVersion": "Новая версия:",
             "newVersionURL": "URL новой версии:",
@@ -372,7 +372,6 @@
             "missingZones": "Должна быть указана хотя бы одна непустая зона."
         },
         "webInterface": {
-            "explanation": "Эти параметры влияют исключительно на функциональность веб-интерфейса. Они привязаны к конкретному браузеру и применяются мгновенно.",
             "general": "Общее",
             "localization": "Локализация веб-интерфейса",
             "localizationExt": "переключение между доступными переводами",
@@ -382,7 +381,7 @@
             "gotoImmediate": "Мгновенный запуск движения к цели",
             "gotoImmediateExt": "вместо перехода на вкладку карты",
             "multimapButtons": "Режим мультикарты",
-            "multimapButtonsExt": "позволяет сохранять и загружать карты (экспериментально!)",
+            "multimapButtonsExt": "позволяет сохранять и загружать карты (экспериментально)",
             "mapTab": "Вкладка карты",
             "hideMapStatus": "Не показывать состояние на карте",
             "hideMapStatusExt": "скрывает блок состояния и заряда батареи робота",
@@ -423,7 +422,6 @@
             "selectCountry": "Выберите страну:",
             "sendConsumables": "Отправлять сообщение, если таймер одного из расходников закончился:",
             "sendConsumablesEvery": "На каждой уборке показывать состояние таймеров расходников:",
-            "localization": "Локализация бота",
             "status": "Состояние подключения",
             "clientsList": "Клиенты Telegram",
             "noClients": "Пока нет авторизованных клиентов.",

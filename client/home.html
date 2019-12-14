@@ -184,7 +184,7 @@
                 buttons: options
             }).then(index => {
                 if(index > -1 && index < config.spots.length) {
-                    if (!localStorage.getItem('settingsWebifGotoImmediate')) {
+                    if (!window.fn.webifSettings.gotoImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
                             fn.updateMapPage(true)
                             .then(function(map) {
@@ -246,7 +246,7 @@
                         }, 3000);
                         return;
                     }
-                    if (!localStorage.getItem('settingsWebifZonedImmediate')) {
+                    if (!window.fn.webifSettings.zonedImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
                             fn.updateMapPage(true)
                             .then(function(map) {
@@ -384,7 +384,7 @@
                 }
                 slotName = slot;
                 loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                return fn.prequest("api/list_maps", "GET");
+                return fn.prequest("api/list_maps");
             })
             .then(res => {
                 if (res.includes(slotName)) {
@@ -414,7 +414,7 @@
             window.clearTimeout(currentRefreshTimer);
             loadingBarHome.setAttribute("indeterminate", "indeterminate");
             let slots = [], options = [];
-            fn.prequest("api/list_maps", "GET")
+            fn.prequest("api/list_maps")
             .then(data => {
                 loadingBarHome.removeAttribute("indeterminate");
                 slots = data;
@@ -507,7 +507,7 @@
             refreshInProgress = true;
             window.clearTimeout(currentRefreshTimer);
             loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/current_status", "GET")
+            fn.prequest("api/current_status")
             .then((res) => {
                 batteryStatusText.textContent = res.battery;
                 batteryStatusBar.value = res.battery;
@@ -593,9 +593,9 @@
             /* reset inProgress */
             refreshInProgress = false;
             /* multimap visibility */
-            document.getElementById('multimap-buttons').style.display = localStorage.getItem('settingsWebifShowMultimap') ? '' : 'none';
+            document.getElementById('multimap-buttons').style.display = window.fn.webifSettings.showMultimap ? '' : 'none';
             /* check for area and go to configuration */
-            fn.prequest("api/get_config", "GET")
+            fn.prequest("api/get_config")
             .then((res) => {
                 config = res;
                 if (config.spots && config.spots.length > 0)

@@ -79,7 +79,7 @@
 
         function updateSettingsSoundVolumePage() {
             loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/get_sound_volume", "GET")
+            fn.prequest("api/get_sound_volume")
             .then(
                 (res) => { soundVolumeInputVolume.value = res; },
                 (err) => fn.notificationToastError(err)
@@ -110,7 +110,7 @@
         function handleSoundVolumeSettingsTestButton() {
             loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
             let currentVolume = 0;
-            fn.prequest("api/get_sound_volume", "GET")
+            fn.prequest("api/get_sound_volume")
             .then(res => { currentVolume = res; })
             .then(res => {
                 if (currentVolume !== +soundVolumeInputVolume.value) {
@@ -164,7 +164,7 @@
 
         function getVoicePackInstallStatus(){
             setTimeout(function(){
-                fn.prequest("api/install_voice_pack_status", "GET")
+                fn.prequest("api/install_voice_pack_status")
                 .then((res) => {
                     loadingBarSettingsSoundVolume.value = 90 + (res.progress * 0.1);
                     if (res.progress == 100 || res.error != 0) {

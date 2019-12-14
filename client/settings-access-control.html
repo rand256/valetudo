@@ -119,14 +119,14 @@
         function updateSettingsAccessControlPage() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
 
-            const getAuthCfg = fn.prequest("api/http_auth_config", "GET")
+            const getAuthCfg = fn.prequest("api/http_auth_config")
             .then((res) => {
                 httpAuthInputEnabled.checked = res.enabled;
                 httpAuthInputUsername.value = res.username;
                 httpAuthInputPassword.value = "";
             },(err) => fn.notificationToastError(err));
 
-            const getSshCfg = fn.prequest("api/get_ssh_keys", "GET")
+            const getSshCfg = fn.prequest("api/get_ssh_keys")
             .then((res) => {
                 sshKeysTextArea.value = res;
                 sshKeysTitle.style.display = "block";

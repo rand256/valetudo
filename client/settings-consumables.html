@@ -121,7 +121,7 @@
 
         function updateSettingsConsumablesPage() {
             loadingBarSettingsConsumables.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/consumable_status", "GET")
+            fn.prequest("api/consumable_status")
             .then((res) => {
                 consumableMainBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 300 - (res.consumables.main_brush_work_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.main_brush_work_time / 60 / 60)))});
                 consumableSideBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 200 - (res.consumables.side_brush_work_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.side_brush_work_time / 60 / 60)))});

@@ -62,7 +62,7 @@
 
         function switchToForbiddenMarkersEdit(index) {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/current_status", "GET")
+            fn.prequest("api/current_status")
             .then ((res) => {
                 if (res['lab_status'] !== 1) return Promise.reject(i18next.t('zones.noPersistentData',"Persistent data is disabled or unavailable, unable to edit forbidden markers."));
                 return true;
@@ -239,16 +239,16 @@
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
 
             // request map update
-            fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
+            fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
 
             // check for area and go to configuration
-            const getZones = fn.prequest("api/zones", "GET")
+            const getZones = fn.prequest("api/zones")
             .then(res => {
                 zonesConfig = res;
                 generateZonesList();
             }, err => fn.notificationToastError(err));
 
-            const getSpots = fn.prequest("api/spots", "GET")
+            const getSpots = fn.prequest("api/spots")
             .then(res => {
                 spotConfig = res;
                 generateSpotList();

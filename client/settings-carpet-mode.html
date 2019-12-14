@@ -83,7 +83,7 @@
 
         function updateSettingsCarpetModePage() {
             loadingBarSettingsCarpetMode.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/get_carpet_mode", "GET")
+            fn.prequest("api/get_carpet_mode")
             .then((res) => {
                 var carpetForm = document.getElementById('carpet-mode-form');
                 var result = res[0];

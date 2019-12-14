@@ -249,7 +249,7 @@
         }
         document.getElementById("map_reload_button").onclick = () => {
             loadingBar.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/poll_map", "GET")
+            fn.prequest("api/poll_map")
             .then(null, (err) => fn.notificationToastError(err))
             .finally (() => loadingBar.removeAttribute("indeterminate"));
         }
@@ -270,7 +270,7 @@
                 mapPageStatus.dataset['state'] = res['state'];
                 mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
                 mapPageStatus.dataset['in_returning'] = res['in_returning'];
-                if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
+                if (!window.fn.webifSettings.staticMapButtons) {
                     window.fn.reload_map_buttons(res);
                 }
             }
@@ -287,13 +287,13 @@
             fn.localize('#map-page');
         }
         ons.getScriptPage().onShow = function () {
-            document.querySelector('.map-page-stats').style.display = localStorage.getItem('settingsWebifHideMapStatus') ? 'none' : '';
-            document.getElementById('map_reload_button').style.display = localStorage.getItem('settingsWebifHideMapReload') ? 'none' : '';
+            document.querySelector('.map-page-stats').style.display = window.fn.webifSettings.hideMapStatus ? 'none' : '';
+            document.getElementById('map_reload_button').style.display = window.fn.webifSettings.hideMapReload ? 'none' : '';
             document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
             mapModuleLoaded.then(res => {
                 window.fn.updateMapPage().catch(() => {});
-                window.fn.prequest("api/poll_map", "GET").then(null, (err) => fn.notificationToastError(err));
-                if (!localStorage.getItem('settingsWebifStaticMapButtons')) {
+                window.fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
+                if (!window.fn.webifSettings.staticMapButtons) {
                     window.fn.reload_map_buttons();
                 } else {
                     window.fn.reset_map_buttons();

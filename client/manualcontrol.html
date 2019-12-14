@@ -271,7 +271,7 @@
                 return;
             }
             manualControlRefreshInProgress = true;
-            fn.prequest("api/current_status", "GET")
+            fn.prequest("api/current_status")
             .then((res) => {
                 if (res.state === 7) { //7: manual
                     _startManualControl();
