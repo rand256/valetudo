@@ -15,7 +15,7 @@ It is currently distrubuted in three different ways:
 
    This is a package containing both valetudo binary and its configuration files. 
    You need to put it on the device to i.e. /mnt/data directory and then it can be
-   installed by issuing `deb -i valetudo_/version/_armhf.deb` on the console. 
+   installed by issuing `dpkg -i filename.deb` on the console. 
    It will unpack itself and put all the files to the required places, so you won't
    need to create them yourself. After installation you will only have to restart
    the device using `reboot` command.
