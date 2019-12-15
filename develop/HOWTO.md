@@ -18,7 +18,7 @@ Install git and npm:
 
 ```
 cd ~
-git clone https://github.com/Hypfer/Valetudo.git
+git clone https://github.com/rand256/valetudo.git
 ```
 
 ### 3. Install dependencies

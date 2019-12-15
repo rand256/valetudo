@@ -1,6 +1,6 @@
 {
-  "name": "valetudo",
-  "version": "0.4.0-RE7",
+  "name": "valetudo-re",
+  "version": "0.8.0",
   "description": "Self-contained control webinterface for xiaomi vacuum robots",
   "main": "index.js",
   "bin": "index.js",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pkg --targets node10-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron ."
+    "build": "pkg --targets node10-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo"
   },
   "author": "",
   "dependencies": {

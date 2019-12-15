@@ -11,16 +11,16 @@ This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Val
 
 * Ability to select multiple saved zones at once;
 * Selected zones optionally shown at the map tab to see and edit what's actually going to be cleaned;
-* Renaming zones and spots, since why not?
 * Configurable virtual walls and forbidden zones, finally!
 * Scheduled zoned cleaning - when you do not need to clean the whole house;
-* Ability to specify in webGUI the number of iterations to clean the same zone multiple times;
+* Ability to specify the number of iterations to clean the same zone multiple times;
 * Showing status of the device on the map; 
 * Set of dynamically appearing buttons on the map to better control device from there;
 * Experimental ability to save/restore maps;
-* Random visual changes: using different colors and icons here and there, some behavioral changes when working with maps and so on.
+* A telegram bot software for remote control from the outside world;
+* A number of visual changes and under-the-hood optimizations.
 
-**Also webUI localization is supported since 0.4.0-RE7!**
+**Also localization is supported since 0.4.0-RE7!**
 Currently available for en/de/ru/bg. Add your own native language support by editing ./client/locales/en.json template and sending a PR.
 
 ----
@@ -51,5 +51,6 @@ Check [deployment section](/deployment) or [this wiki page](https://github.com/r
 ### Join the Discussion
 * [Valetudo Telegram group](https://t.me/joinchat/AR1z8xOGJQwkApTulyBx1w)
 
-### Resources
-* [valetudo-mapper](https://github.com/rand256/valetudo-mapper) - A companion service for PNG Maps
+### Getting map picture for integrations
+* [valetudo-mapper](https://github.com/rand256/valetudo-mapper) - a companion service for generating PNG Maps
+* You can also try to request a simple map from Valetudo RE itself via http at `/api/simple_map`, but it shouldn't be called too often since resources of the vacuum are limited.

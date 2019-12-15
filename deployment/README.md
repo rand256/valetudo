@@ -1,6 +1,36 @@
 ### Downloading pre-built Valetudo
 
-You can simply download pre-built binaries of Valetudo from the [releases](https://github.com/rand256/valetudo/releases) section of the repo. If downloaded binary is compressed to .tar.gz format, you need to unpack it first.
+You can simply download pre-built binaries of Valetudo from the
+[releases](https://github.com/rand256/valetudo/releases) section of the repo.
+It is currently distrubuted in three different ways:
+
+* **valetudo.tar.gz**
+
+   This is a single binary file packed with tar+gzip compression. To use it,
+   start with unpacking it typing `tar zxf valetudo.tar.gz` or via your favourite
+   GUI (de)compressing tool. Continue reading from *Installing and configuring*
+   section on what to do next.
+
+* **valetudo_**_**version**_**_armhf.deb**
+
+   This is a package containing both valetudo binary and its configuration files. 
+   You need to put it on the device to i.e. /mnt/data directory and then it can be
+   installed by issuing `deb -i valetudo_/version/_armhf.deb` on the console. 
+   It will unpack itself and put all the files to the required places, so you won't
+   need to create them yourself. After installation you will only have to restart
+   the device using `reboot` command.
+
+* **v11_**_**version**_**.pkg**
+
+   The last way to get prebuilt valetudo onto your device is to flash one of these firmware
+   images with valetudo preinstalled inside. It can be easily done using
+   [XVacuum](https://forum.xda-developers.com/android/apps-games/app-xvacuum-firmware-xiaomi-vacuum-t3896526)
+   app for your smartphone. Vacuum Gen.1 has firmware version numbers like **003xxx** and vacuum Gen.2
+   (roborock S5) has firmware version numbers like **001xxx**. After flashing the firmware you will
+   immediately have working device with valetudo preinstalled. Next you should connect
+   to its access point and visit http://192.168.8.1 site to setup Wi-Fi settings.
+
+You can use any of these also for upgrading an older valetudo version to current one.
 
 ### Acquiring sources and building Valetudo
 
