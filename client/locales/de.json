@@ -17,6 +17,7 @@
         "commandOK": "Befehl gesendet.",
         "commandFailed": "Fehler beim Senden:",
         "connectionError": "Verbindungsfehler",
+        "nameAlreadyUsed": "Name \"{{name}}\" wurde schon verwendet",
         "m2": "m²",
         "hours": "Stunde",
         "hours_plural": "Stunden",
@@ -365,7 +366,8 @@
             "notEnoughDataDND": "\"Bitte nicht stören\"-Zeit konnte nicht gespeichert werden, da nicht alle erforderlichen Attribute angegeben wurden!",
             "missingHoursMinutes": "Es müssen sowohl Minuten als auch Stunden angegeben werden.",
             "missingName": "Es sollte ein Name angeben werden.",
-            "missingZones": "Eine oder mehrere nicht leere Zonen müssen angegeben werden."
+            "missingZones": "Eine oder mehrere nicht leere Zonen müssen angegeben werden.",
+            "missingTimer": "Kein solcher Timer."
         },
         "webInterface": {
             "general": "Allgemein",

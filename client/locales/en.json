@@ -17,6 +17,7 @@
         "commandOK": "Command successfully sent!",
         "commandFailed": "There was an error:",
         "connectionError": "Connection error",
+        "nameAlreadyUsed": "Name \"{{name}}\" is already used",
         "m2": "m²",
         "hours": "hour",
         "hours_plural": "hours",
@@ -365,7 +366,8 @@
             "notEnoughDataDND": "Could not save DND Timer since not all required attributes are provided!",
             "missingHoursMinutes": "Both minutes and hours must be specified.",
             "missingName": "You should specify a name.",
-            "missingZones": "One or more non-empty zones must be specified."
+            "missingZones": "One or more non-empty zones must be specified.",
+            "missingTimer": "No such timer."
         },
         "webInterface": {
             "general": "General",
