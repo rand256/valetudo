@@ -18,34 +18,37 @@
     <script type="module">
         import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
         const map = new VacuumMap(document.getElementById('spot-configuration-map'));
-        const loadingBarSavespot = document.getElementById('loading-bar-save-spot');
+        const loadingBarSaveSpot = document.getElementById('loading-bar-save-spot');
         const saveButton = document.getElementById('spot-configuration-save');
 
         const topPage = fn.getTopPage();
-        const spotConfig = topPage.data.spotConfig;
         const spotToModify = topPage.data.spotToModify;
-
         map.initCanvas(topPage.data.map, {metaData: "forbidden"});
 
         document.querySelector("#spot-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        document.getElementById("spot-configuration-map-page-h1").textContent = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotConfig[spotToModify].name});
+        document.getElementById("spot-configuration-map-page-h1").innerHTML = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotToModify.name});
 
-        map.addSpot([spotConfig[spotToModify].coordinates[0], spotConfig[spotToModify].coordinates[1]]);
+        map.addSpot([spotToModify.coordinates[0], spotToModify.coordinates[1]]);
 
         saveButton.onclick = () => {
             const spotOnMap = map.getLocations().gotoPoints[0];
-            spotConfig[spotToModify].coordinates = [spotOnMap.x, spotOnMap.y];
-
-            loadingBarSavespot.setAttribute("indeterminate", "indeterminate");
+            loadingBarSaveSpot.setAttribute("indeterminate", "indeterminate");
             saveButton.setAttribute("disabled", "disabled");
-            fn.prequestWithPayload("api/spots", JSON.stringify(spotConfig), "PUT")
-            .then((res) => {
-                fn.notificationToastOK(i18next.t('zones.spotSaved',"Spot successfully saved!"));
+            fn.prequest("api/spots")
+            .then(res => {
+                if (!res.some(spot => spot.name === spotToModify.name)) {
+                    throw(i18next.t('zones.missingSpot',"No such spot."));
+                }
+                return fn.prequestWithPayload("api/spots", JSON.stringify({name: spotToModify.name, coordinates: [spotOnMap.x, spotOnMap.y], edit: spotToModify.name}), "PUT");
+            })
+            .then(() => {
+                fn.notificationToastOK(i18next.t('zones.spotsSavedOK',"Spot successfully saved!"));
                 fn.popPage();
-            }, (err) => fn.notificationToastError(err))
+            })
+            .catch(err => fn.notificationToastError(err))
             .finally(() => {
-                loadingBarSavespot.removeAttribute("indeterminate");
+                loadingBarSaveSpot.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
             });
         };

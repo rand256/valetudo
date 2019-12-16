@@ -124,7 +124,9 @@
         "spotsSavedOK": "Целта е записана успешно!",
         "forbiddenMarkersPageBack": "Забранени маркери",
         "forbiddenMarkersTitle": "Редактиране на маркери",
-        "forbiddenMarkersSavedOK": "Забранените маркери са записани успешно!"
+        "forbiddenMarkersSavedOK": "Забранените маркери са записани успешно!",
+        "missingZone": "Няма такава зоната.",
+        "missingSpot": "Няма такава цел."
     },
     "control": {
         "startButton": "Пускане на ръчно управление",

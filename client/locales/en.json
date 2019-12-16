@@ -124,7 +124,9 @@
         "spotsSavedOK": "Successfully saved spot!",
         "forbiddenMarkersPageBack": "Forbidden Markers",
         "forbiddenMarkersTitle": "Editing markers",
-        "forbiddenMarkersSavedOK": "Successfully saved forbidden markers!"
+        "forbiddenMarkersSavedOK": "Successfully saved forbidden markers!",
+        "missingZone": "No such zone.",
+        "missingSpot": "No such spot."
     },
     "control": {
         "startButton": "Start Manual Control",

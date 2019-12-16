@@ -31,15 +31,14 @@
         const saveButton = document.getElementById('zones-configuration-save');
 
         const topPage = fn.getTopPage();
-        const zonesConfig = topPage.data.zonesConfig;
         const zoneToModify = topPage.data.zoneToModify;
 
         map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
 
         document.querySelector("#zones-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        document.getElementById("zones-configuration-map-page-h1").textContent = i18next.t('zones.zoneEditTitle',{defaultValue: "Editing zone: {{zone}}", zone: zonesConfig[zoneToModify].name});
-        for (let zone of zonesConfig[zoneToModify].coordinates) {
+        document.getElementById("zones-configuration-map-page-h1").innerHTML = i18next.t('zones.zoneEditTitle',{defaultValue: "Editing zone: {{zone}}", zone: zoneToModify.name});
+        for (let zone of zoneToModify.coordinates) {
             map.addZone(zone, true);
         }
 
@@ -64,15 +63,20 @@
 
         saveButton.onclick = () => {
             const zonesOnMap = map.getLocations().zones;
-            zonesConfig[zoneToModify].coordinates = zonesOnMap;
-
             loadingBarSaveZones.setAttribute("indeterminate", "indeterminate");
             saveButton.setAttribute("disabled", "disabled");
-            fn.prequestWithPayload("api/zones", JSON.stringify(zonesConfig), "PUT")
+            fn.prequest("api/zones")
+            .then(res => {
+                if (!res.some(zone => zone.name === zoneToModify.name)) {
+                    throw(i18next.t('zones.missingZone',"No such zone."));
+                }
+                return fn.prequestWithPayload("api/zones", JSON.stringify({name: zoneToModify.name, coordinates: zonesOnMap, edit: zoneToModify.name}), "PUT");
+            })
             .then(() => {
-                fn.notificationToastOK(i18next.t('zones.zoneSaved',"Zone successfully saved!"));
+                fn.notificationToastOK(i18next.t('zones.zonesSavedOK',"Zone successfully saved!"));
                 fn.popPage();
-            }, (err) => fn.notificationToastError(err))
+            })
+            .catch(err => fn.notificationToastError(err))
             .finally(() => {
                 loadingBarSaveZones.removeAttribute("indeterminate");
                 saveButton.removeAttribute("disabled");
