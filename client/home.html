@@ -41,8 +41,7 @@
 
 
     <script>
-        var currentRefreshTimer, refreshInProgress = false;
-        var toastInProgress = false;
+        var currentRefreshTimer, refreshInProgress = false, refreshDisabled = true;
 
         var startButton = document.getElementById("start-button");
         var pauseButton = document.getElementById("pause-button");
@@ -501,7 +500,7 @@
         }
 
         function updateHomePage() {
-            if (refreshInProgress) {
+            if (refreshInProgress || refreshDisabled) {
                 return;
             }
             refreshInProgress = true;
@@ -567,12 +566,7 @@
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
                 robotStateDetailsTime.textContent = window.fn.secondsToHms(res.clean_time);
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
-            }, (err) => {
-                if (!toastInProgress) {
-                    toastInProgress = true;
-                    ons.notification.toast(err, { buttonLabel: i18next.t('common.dismiss',"Dismiss"), timeout: window.fn.toastErrorTimeout }).then(() => { toastInProgress = false; });
-                }
-            })
+            }, (err) => fn.notificationToastError(err))
             .finally(() => {
                 refreshInProgress = false;
                 loadingBarHome.removeAttribute("indeterminate");
@@ -590,8 +584,7 @@
         }
 
         ons.getScriptPage().onShow = function () {
-            /* reset inProgress */
-            refreshInProgress = false;
+            refreshDisabled = false;
             /* multimap visibility */
             document.getElementById('multimap-buttons').style.display = window.fn.webifSettings.showMultimap ? '' : 'none';
             /* check for area and go to configuration */
@@ -610,8 +603,7 @@
         };
 
         ons.getScriptPage().onHide = function () {
-            /* a hack to disable getting refreshes in background on other pages */
-            refreshInProgress = true;
+            refreshDisabled = true;
             window.clearTimeout(currentRefreshTimer);
         }
 
