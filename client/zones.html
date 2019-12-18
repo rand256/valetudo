@@ -120,7 +120,7 @@
 
         function renameZone(oldName) {
             let name;
-            ons.notification.prompt({message: i18next.t('zones.renameZone', {defaultValue: "Enter new name for zone \"{{zone}}\":", zone: oldName}), defaultValue: oldName, cancelable: true })
+            ons.notification.prompt({message: i18next.t('zones.renameZone', {defaultValue: "Enter new name for zone \"{{zone}}\":", zone: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
             .then(newName => {
                 name = newName;
                 if (newName && newName.length && newName !== oldName) {
@@ -170,7 +170,7 @@
 
         function renameSpot(oldName) {
             let name;
-            ons.notification.prompt({message: i18next.t('zones.renameSpot', {defaultValue: "Enter new name for spot \"{{spot}}\":", spot: oldName}), defaultValue: oldName, cancelable: true })
+            ons.notification.prompt({message: i18next.t('zones.renameSpot', {defaultValue: "Enter new name for spot \"{{spot}}\":", spot: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
             .then(newName => {
                 name = newName;
                 if (newName && newName.length && newName !== oldName) {

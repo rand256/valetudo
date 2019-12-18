@@ -429,7 +429,7 @@
         function deleteTimer(id, zoned) {
             zoned = zoned ? true : false;
             disableTimerInputElements(zoned);
-            ons.notification.confirm(i18next.t('settings.timers.confirmDeleteTimer',"Do you really want to delete this timer?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})).then(function (answer) {
+            ons.notification.confirm(i18next.t('settings.timers.confirmDeleteTimer',"Do you really want to delete this timer?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                     fn.prequest((zoned ? "api/ztimers/" : "api/timers/") + id, "DELETE")

@@ -239,7 +239,7 @@
                         payload = config.areas[index][1];
                     }
                     if (!payload.length) {
-                        ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."));
+                        ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."),{title: i18next.t('common.attention',"Attention!")});
                         currentRefreshTimer = window.setTimeout(function () {
                             updateHomePage();
                         }, 3000);
@@ -314,7 +314,7 @@
                         // checked right now
                         var attemptedLength = calcPayload().length + config.areas[e.target.dataset.id][1].length;
                         if (attemptedLength > 5) {
-                            ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}));
+                            ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
                             e.target.checked = false;
                             return;
                         }

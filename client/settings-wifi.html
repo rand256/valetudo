@@ -129,7 +129,7 @@
                         password: wifiInputPassword.value
                     }), "PUT")
                     .then(
-                        (res) => ons.notification.alert(i18next.t('settings.wifi.appliedOK',"Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi.")).then(function () {
+                        (res) => ons.notification.alert(i18next.t('settings.wifi.appliedOK',"Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."),{title: i18next.t('common.warning',"Warning")}).then(function () {
                                     location.reload();
                                 }),
                         (err) => fn.notificationToastError(err)
