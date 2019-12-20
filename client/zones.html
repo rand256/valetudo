@@ -30,7 +30,7 @@
             fn.prequest("api/zones")
             .then(res => {
                 if ((zoneToModify = res.find(zone => zone.name === name)) === undefined) {
-                    throw(i18next.t('zones.missingZone',"No such zone."));
+                    Promise.reject(i18next.t('zones.missingZone',"No such zone."));
                 }
                 return fn.prequest("api/map/latest", "GET", "arraybuffer");
             })
@@ -55,7 +55,7 @@
             fn.prequest("api/spots")
             .then(res => {
                 if ((spotToModify = res.find(spot => spot.name === name)) === undefined) {
-                    throw(i18next.t('zones.missingSpot',"No such spot."));
+                    Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
                 }
                 return fn.prequest("api/map/latest", "GET", "arraybuffer");
             })
@@ -101,12 +101,12 @@
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
                     return fn.prequest("api/zones");
                 }
-                throw("cancel");
+                Promise.reject("cancel");
             })
             .then(res => {
                 let zoneToModify = res.find(zone => zone.name === name);
                 if (zoneToModify === undefined) {
-                    throw(i18next.t('zones.missingZone',"No such zone."));
+                    Promise.reject(i18next.t('zones.missingZone',"No such zone."));
                 }
                 return fn.prequest("api/zones/" + zoneToModify.name, "DELETE");
             })
@@ -127,12 +127,12 @@
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
                     return fn.prequest("api/zones");
                 }
-                throw("cancel");
+                Promise.reject("cancel");
             })
             .then(res => {
                 let zoneToModify = res.find(zone => zone.name === oldName);
                 if (zoneToModify === undefined) {
-                    throw(i18next.t('zones.missingZone',"No such zone."));
+                    Promise.reject(i18next.t('zones.missingZone',"No such zone."));
                 }
                 return fn.prequestWithPayload("api/zones", JSON.stringify({name: name, coordinates: zoneToModify.coordinates, edit: zoneToModify.name}), "PUT");
             })
@@ -151,12 +151,12 @@
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
                     return fn.prequest("api/spots");
                 }
-                throw("cancel");
+                Promise.reject("cancel");
             })
             .then(res => {
                 let spotToModify = res.find(spot => spot.name === name);
                 if (spotToModify === undefined) {
-                    throw(i18next.t('zones.missingSpot',"No such spot."));
+                    Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
                 }
                 return fn.prequest("api/spots/" + spotToModify.name, "DELETE");
             })
@@ -177,12 +177,12 @@
                     loadingBarZones.setAttribute("indeterminate", "indeterminate");
                     return fn.prequest("api/spots");
                 }
-                throw("cancel");
+                Promise.reject("cancel");
             })
             .then(res => {
                 let spotToModify = res.find(spot => spot.name === oldName);
                 if (spotToModify === undefined) {
-                    throw(i18next.t('zones.missingSpot',"No such spot."));
+                    Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
                 }
                 return fn.prequestWithPayload("api/spots", JSON.stringify({name: name, coordinates: spotToModify.coordinates, edit: spotToModify.name}), "PUT");
             })
@@ -204,7 +204,7 @@
                 .then(res => {
                     if (res.some(zone => zone.name === newZoneName)) {
                         fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newZoneName}) + ".");
-                        throw("cancel");
+                        Promise.reject("cancel");
                     }
                     return fn.prequestWithPayload("api/zones", JSON.stringify({name: newZoneName, coordinates: [], edit: null}), "PUT");
                 })
@@ -227,7 +227,7 @@
                 .then(res => {
                     if (res.some(spot => spot.name === newSpotName)) {
                         fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newSpotName}) + ".");
-                        throw("cancel");
+                        Promise.reject("cancel");
                     }
                     return fn.prequestWithPayload("api/spots", JSON.stringify({name: newSpotName, coordinates: [], edit: null}), "PUT");
                 })

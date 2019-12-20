@@ -141,17 +141,17 @@
                                 if (res && res[0] === "map_upload_handler") {
                                     resolve(res);
                                 } else {
-                                    throw res;
+                                    reject(res);
                                 }
-                            },(err) => { throw err });
+                            },(err) => { reject(err); });
                         },1000);
                     });
                 } else if (res && res[0] === "map_upload_handler") {
                     return res;
                 } else {
-                    throw i18next.t('settings.cleaningHistory.unknownState',{defaultValue: "clean_record_map returned unknown state: {{state}}", state: res});
+                    Promise.reject(i18next.t('settings.cleaningHistory.unknownState',{defaultValue: "clean_record_map returned unknown state: {{state}}", state: res}));
                 }
-            }, (err) => { throw err; })
+            }, (err) => { Promise.reject(err); })
             .then(() => {
                 return new Promise((resolve, reject) => setTimeout(() => resolve(), 1500));
             })
@@ -165,7 +165,7 @@
                         'cleaningDate': formatDate(new Date(new Date(timestamp*1000).toLocaleString("en-US", { timeZone: timeZone })))
                     }
                 });
-            }, (err) => { throw err; })
+            }, (err) => { Promise.reject(err); })
             .catch((err) => {
                 if (err !== "ok") fn.notificationToastError(err);
             })

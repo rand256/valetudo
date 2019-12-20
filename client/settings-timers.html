@@ -592,7 +592,7 @@
                         })
                         .then(res => {
                             if (res === 0) {
-                                throw("cancel");
+                                Promise.reject("cancel");
                             }
                             resolve();
                         })
@@ -635,7 +635,7 @@
                 .then(res => {
                     let idx;
                     if ((idx = res.findIndex(timer => timer.id === timerId)) < 0) {
-                        throw(i18next.t('settings.timers.missingTimer',"No such timer."));
+                        Promise.reject(i18next.t('settings.timers.missingTimer',"No such timer."));
                     }
                     loadTimerDialog(timerId,zoned,res[idx]);
                     editTimerDialog.show();
