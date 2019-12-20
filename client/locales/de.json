@@ -172,7 +172,7 @@
         "spots": "Liste der verfügbaren Ziele:",
         "spotsElement": "\n* {{spotName}} (coords: [{{spotCoords}}])",
         "noSpotsConfigured": "Keine Ziele bisher festgelegt.",
-        "gotoExplanation": "Es muss mindestens ein Zielname angeben werden:\n/goto Zielpunkt",
+        "gotoExplanation": "Ein Zielname muss angegeben werden:\n/goto Zielpunkt",
         "spotNotFound": "Zielname \"{{spotName}}\" konnte nicht gefunden werden.",
         "performingZoned": "Zonenreinigung für:\n{{zoneNames}}",
         "performingGoto": "Gehe zu Ziel: \"{{spotName}}\"",
@@ -182,6 +182,13 @@
         "binFull": "Staubauffangbehälter ist voll und muss entleert werden!",
         "commandUnavailable": "Dieser Befehl ist im aktuellen Gerätezustand nicht verfügbar.",
         "noMapAvailable": "Leider ist die Karte derzeit nicht verfügbar.",
+        "loadmapExplanation": "Sie müssen einen Namen für die zu ladende Karte angeben werden:\n/loadmap Erdgeschoss",
+        "noMapsStored": "Keine Karten bisher festgelegt.",
+        "mapNotFound": "Kartenname \"{{mapName}}\" konnte nicht gefunden werden.",
+        "mapLoadOK": "Bearbeitung sollte nun abgeschlossen sein.",
+        "mapLoadWait": "Bearbeitung wird in 30 Sekunden abgeschlossen.",
+        "maps": "Liste der verfügbaren Karten:",
+        "mapsElement": "\n* {{mapName}}",
         "errorReply": "Es ist ein Fehler aufgetreten: {{error}}"
     },
     "settings": {

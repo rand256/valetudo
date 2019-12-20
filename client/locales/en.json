@@ -182,6 +182,13 @@
         "binFull": "Dust bin congestion is detected, cleaning up is required!",
         "commandUnavailable": "This command is unavailable in current device state.",
         "noMapAvailable": "Sorry, the map is currently unavailable.",
+        "loadmapExplanation": "You need to specify a name for the map to load:\n/loadmap First Floor",
+        "noMapsStored": "No maps stored yet.",
+        "mapNotFound": "Can't find map by name \"{{mapName}}\".",
+        "mapLoadOK": "Map should be reloaded now.",
+        "mapLoadWait": "Map should be reloaded in 30 seconds.",
+        "maps": "List of stored maps:",
+        "mapsElement": "\n* {{mapName}}",
         "errorReply": "There was an error: {{error}}"
     },
     "settings": {
