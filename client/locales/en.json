@@ -148,9 +148,13 @@
             "map": "/map - will send you a simple picture of your house map.",
             "power": "/power - specifies current fan power in range 1 to 100, or special value 105 for mop mode for robots supporting it.\n\n38 - Quiet\n60 - Balanced\n75 - Turbo\n100 - Max (not recommended!)",
             "zones": "/zones - will list the configured zones that could be used in zoned cleaning.",
-            "spots": "/spots - will list the configured spots that could be used as /goto targets."
+            "spots": "/spots - will list the configured spots that could be used as /goto targets.",
+            "loadmap": "/loadmap - will try to load speficied map, available only in idle or charging state.",
+            "maps": "/maps - will list saved maps available for loading."
         },
-        "startText" : "*Valetudo RE Bot* - commands\n\n/start & /help - this help text\n/clean - starts full or zoned cleaning\n/stop - stops cleaning\n/pause - pauses current operation if appropriate\n/resume - unpauses current operation if appropriate\n/spot - starts local cleaning\n/home - sends robot back to charging station\n/goto - instructs the robot to move to specified spot\n/power - sets current fan power value\n/status - sends the current status of your robot\n/consumables - sends the current status of consumables\n/map - sends simplified map\n/zones - list configured zones ready for zoned cleaning\n/spots - list goto target locations\n/off - disables bot messages for you\n/on - enables bot messages for you\n\nType `/help command` to get detailed information.",
+        "startText" : "*Valetudo RE Bot* - commands\n\n/start & /help - this help text\n/clean - starts full or zoned cleaning\n/stop - stops cleaning\n/pause - pauses current operation if appropriate\n/resume - unpauses current operation if appropriate\n/spot - starts local cleaning\n/home - sends robot back to charging station\n/goto - instructs the robot to move to specified spot\n/power - sets current fan power value\n/status - sends the current status of your robot\n/consumables - sends the current status of consumables\n/map - sends simplified map\n/zones - lists configured zones ready for zoned cleaning\n/spots - lists goto target locations\n/off - disables bot messages for you\n/on - enables bot messages for you",
+        "startTextMultimap": "\n/loadmap - loads selected map\n/maps - lists available maps",
+        "startTextPost": "\n\nType `/help command` to get detailed information.",
         "missingPassword": "Password not given",
         "wrongPassword": "Password is wrong",
         "clientAuthorized": "Client authorized, type /help for help",
