@@ -147,9 +147,9 @@
             "consumables": "/consumables - Zeigt den momentanen Status der Verbrauchsmaterialien.",
             "map": "/map - Sendet Ihnen die vom Roboter erstellte vereinfachte Karte.",
             "power": "/power - Setzt die aktuelle Saugleistung im Bereich von 1 bis 100 fest. Für Roboter die den Mop-Modus unterstützen kann hier der Spezialwert 105 angeben werden.\n\n38 - Leise\n60 - Ausgeglichen\n75 - Turbo\n100 - Max (nicht empfohlen!)",
-            "zones": "/zones - Listet die konfigurierten Zonen auf, die für die Zonenreinigung verwendet werden könnten.",
-            "spots": "/spots - Listet die konfigurierten Ziele auf, die als /goto Ziele verwendet werden könnten.",
-            "loadmap": "/loadmap - Versucht, eine Karte wiederherzustellen. Nur im Leerlauf oder aufgeladen möglich.",
+            "zones": "/zones - Listet die konfigurierten Zonen auf, die für die Zonenreinigung verwendet werden können.",
+            "spots": "/spots - Listet die konfigurierten Ziele auf, die als Ziele für '/goto Ziel' verwendet werden können.",
+            "loadmap": "/loadmap - Stellt eine gespeicherte Karte wieder her. Nur im Leerlauf oder während des Ladens möglich.",
             "maps": "/maps - Listet gespeicherte Karten auf, die zur Wiederherstellung verfügbar sind."
         },
         "startText" : "*Valetudo RE Bot* - Befehle\n\n/start & /help - Diesen Hilfetext\n/clean - Startet eine vollständige Reinigung\n/stop - Stopt die Reinigung\n/pause - Unterbricht die momentane Aktion.\n/resume - Setzt den zuvor unterbrochenen Betrieb fort\n/spot - Startet die Spotreinigung\n/home - Schickt den Roboter zur Ladestation\n/goto - Sendet den Roboter an einen spezifischen Zielort\n/power - Setzt die aktuelle Saugleistung fest\n/status - Zeigt den momentanen Status des Roboters\n/consumables - Zeigt den momentanen Status der Verbrauchsmaterialien\n/map - Lädt eine vereinfachte Karte hoch.\n/zones - Listet die konfigurierten Zonen auf\n/spots - Listet die konfigurierten Ziele auf\n/off - Schaltet die Bot Benachrichtigungen aus\n/on - Schaltet die Bot Benachrichtigungen ein",
