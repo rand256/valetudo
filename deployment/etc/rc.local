@@ -12,4 +12,20 @@ iptables  -t nat -A OUTPUT -p tcp --dport 80   -d 203.0.113.1 -j DNAT --to-desti
 iptables  -t nat -A OUTPUT -p udp --dport 8053 -d 203.0.113.1 -j DNAT --to-destination 127.0.0.1:8053
 iptables         -A OUTPUT                     -d 203.0.113.1/32  -j REJECT
 ip6tables        -A OUTPUT                     -d 2001:db8::1/128 -j REJECT
+
+
+# allow local network
+iptables -A OUTPUT -d 192.168.0.0/16 -j ACCEPT
+iptables -A OUTPUT -d 127.0.0.0/8 -j ACCEPT
+
+# but allow telegram
+iptables -A INPUT -s 91.108.4.0/22 -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -s 149.154.160.0/20 -p tcp --dport 443 -j ACCEPT
+iptables -A OUTPUT -d 91.108.4.0/22 -p tcp --dport 443 -j ACCEPT
+iptables -A OUTPUT -d 149.154.160.0/20 -p tcp --dport 443 -j ACCEPT
+
+
+# block rest
+iptables -A OUTPUT -j DROP
+
 ### VALETUDO RC.LOCAL EXIT ###
