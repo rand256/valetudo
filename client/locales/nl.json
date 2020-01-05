@@ -235,7 +235,7 @@
     "soundAndVoiceTitle": "Geluid & Stem",
     "soundAndVoiceDesc": "Instellen van het geluidsvolume en de stem",
     "webInterfaceTitle": "Web Interface",
-    "webInterfaceDesc": "Confiurern van de webinterface-opties",
+    "webInterfaceDesc": "Configureren van de webinterface-opties",
     "accessControlTitle": "Toegang",
     "accessControlDesc": "Configureren van de SSH sleutels en HTTP authenticatie",
     "telegramTitle": "Telegram Bot",
@@ -314,7 +314,7 @@
       "firmwareUpdateEnterURL": "Geef de URL op die verwijst naar het firmware pkg bestand:",
       "firmwareUpdateEnterMD5": "Geef de MD5 hash waarde op van het pkg bestand:",
       "firmwareUpdateSend": "Versturen!",
-      "firmwareUpdateSentOK": "Aanvraag voor updaten verstuurt! De aan/uit LED op de robot zal de voortgang van de update tonen door te knipperen."
+      "firmwareUpdateSentOK": "Aanvraag voor updaten verstuurd! De aan/uit LED op de robot zal de voortgang van de update tonen door te knipperen."
     },
     "persistentData": {
       "pageTitle": "Persistente Data instellingen",
