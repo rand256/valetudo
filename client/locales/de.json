@@ -125,8 +125,8 @@
         "forbiddenMarkersPageBack": "Verbotsmarkierungen",
         "forbiddenMarkersTitle": "Verbotsmarkierungen bearbeiten",
         "forbiddenMarkersSavedOK": "Verbotsmarkierungen erfolgreich gespeichert!",
-        "missingZone": "Kein solcher Zone.",
-        "missingSpot": "Kein solcher Ziel."
+        "missingZone": "Keine solche Zone.",
+        "missingSpot": "Kein solches Ziel."
     },
     "control": {
         "startButton": "Manuelle Steuerung starten",
