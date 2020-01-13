@@ -174,7 +174,7 @@
             .then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-                    fn.prequest("api/telegram_client/" + id, "DELETE")
+                    fn.prequest("api/telegram_client/" + encodeURIComponent(id), "DELETE")
                     .then((res) => {
                         fn.notificationToastOK(i18next.t('common.ok',"OK"));
                         getSettingsTelegramPage();

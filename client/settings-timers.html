@@ -432,7 +432,7 @@
             ons.notification.confirm(i18next.t('settings.timers.confirmDeleteTimer',"Do you really want to delete this timer?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-                    fn.prequest((zoned ? "api/ztimers/" : "api/timers/") + id, "DELETE")
+                    fn.prequest((zoned ? "api/ztimers/" : "api/timers/") + encodeURIComponent(id), "DELETE")
                     .then(null,(err) => fn.notificationToastError(err))
                     .finally(() => updateSettingsTimersPage(zoned));
                 } else {
@@ -605,7 +605,7 @@
                     return fn.prequestWithPayload("api/timers", JSON.stringify({ cron: cronTimer }), "POST")
                     .then(() => {
                         if (edit !== null) {
-                            return fn.prequest("api/timers/" + edit, "DELETE");
+                            return fn.prequest("api/timers/" + encodeURIComponent(edit), "DELETE");
                         }
                         return 1;
                     });
