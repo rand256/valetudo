@@ -362,6 +362,7 @@
                 if (res == null || res.length == 0) {
                     timersList.firstElementChild.style.display = "";
                 } else {
+                    res.sort((a, b) => a.id.localeCompare(b.id));
                     let index = 0;
                     res.forEach(function (timer) {
                         var elem = ons.createElement(

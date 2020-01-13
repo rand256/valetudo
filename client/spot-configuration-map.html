@@ -29,7 +29,9 @@
 
         document.getElementById("spot-configuration-map-page-h1").innerHTML = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotToModify.name});
 
-        map.addSpot([spotToModify.coordinates[0], spotToModify.coordinates[1]]);
+        if (spotToModify.coordinates[0] !== null && spotToModify.coordinates[1] !== null) {
+            map.addSpot([spotToModify.coordinates[0], spotToModify.coordinates[1]]);
+        }
 
         saveButton.onclick = () => {
             const spotOnMap = map.getLocations().gotoPoints[0];

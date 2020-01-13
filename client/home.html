@@ -61,7 +61,7 @@
         var robotStateDetailsTime = document.getElementById("robot-state-details-time-value");
         var loadingBarHome = document.getElementById('loading-bar-home');
 
-        var fanspeedPresets = {}
+        var fanspeedPresets = {};
         var config = {};
 
         var BUTTONS = {
@@ -158,86 +158,192 @@
 
         function handleGoToButton() {
             window.clearTimeout(currentRefreshTimer);
-            var options = [];
-
-            for(var i = 0; i < config.spots.length; i++) {
-                options.push(config.spots[i][0]);
-            }
-
-            options.push({
-                label: i18next.t('common.cancel',"Cancel"),
-                icon: 'md-close'
-            });
-
-            ons.openActionSheet({
-                title: i18next.t('home.popups.selectGotoTarget',"Select go to target:"),
-                cancelable: true,
-                buttons: options
+            loadingBarHome.setAttribute("indeterminate", "indeterminate");
+            var spots;
+            fn.prequest("api/spots")
+            .then(res => {
+                loadingBarHome.removeAttribute("indeterminate");
+                spots = res;
+                spots.sort((a, b) => a.name.localeCompare(b.name));
+                var options = [];
+                for (var i = 0; i < spots.length; i++) {
+                    options.push(spots[i].name);
+                }
+                options.push({
+                    label: i18next.t('common.cancel',"Cancel"),
+                    icon: 'md-close'
+                });
+                let openActionSheet = ons.openActionSheet({
+                    title: i18next.t('home.popups.selectGotoTarget',"Select go to target:"),
+                    cancelable: true,
+                    buttons: options
+                });
+                var spotButtons = document.querySelectorAll('ons-action-sheet-button');
+                for (var i = 0; i < spotButtons.length; i++) {
+                    if (!i) spotButtons[i].parentNode.parentNode.title = '';
+                    spotButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+                }
+                return openActionSheet;
             }).then(index => {
-                if(index > -1 && index < config.spots.length) {
-                    if (!window.fn.webifSettings.gotoImmediate) {
+                if(index > -1 && index < spots.length) {
+                    if (spots[index].coordinates[0] === null) spots[index].coordinates = [25500,25500]; // todo: show message about spot is undefined or something
+                    if (!fn.webifSettings.gotoImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
                             fn.updateMapPage(true)
                             .then(function(map) {
-                                map.addSpot([config.spots[index][1],config.spots[index][2]]);
+                                map.addSpot(spots[index].coordinates);
                             })
                             .catch(() => {});
                         }});
+                        return Promise.reject("cancel");
                     } else {
-                        loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                        fn.prequestWithPayload("api/go_to", JSON.stringify({x: config.spots[index][1],y: config.spots[index][2]}), "PUT")
-                        .then(res => window.fn.notificationToastOK())
-                        .catch(e => window.fn.notificationToastError(e))
-                        .finally(() => {
-                            window.setTimeout(function () {
-                                updateHomePage();
-                            }, 200);
-                        });
+                        return fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT");
                     }
-                } else {
-                    currentRefreshTimer = window.setTimeout(function () {
-                        updateHomePage();
-                    }, 3000);
                 }
+                return Promise.reject("cancel");
+            })
+            .then(res => fn.notificationToastOK())
+            .catch(e => {
+                if (e !== "cancel") fn.notificationToastError(e);
+            })
+            .finally(() => {
+                window.setTimeout(function () {
+                    updateHomePage();
+                }, 200);
             });
         }
 
         function handleAreaButton() {
             window.clearTimeout(currentRefreshTimer);
-            var options = [];
-
-            for(var i = 0; i < config.areas.length; i++) {
-                options.push(config.areas[i][0]);
-            }
-
-            options.push({
-                label: i18next.t('common.submit',"Submit"),
-                icon: 'md-collection-item'
-            },{
-                label: i18next.t('common.cancel',"Cancel"),
-                icon: 'md-close'
-            });
-
-            var payload, calcPayload, markSubmitButton, zoneNumber = 0;
-
-            ons.openActionSheet({
-                title: i18next.t('home.popups.selectZones',"Select zones for cleaning:"),
-                cancelable: true,
-                buttons: options
+            loadingBarHome.setAttribute("indeterminate", "indeterminate");
+            var zones, payload, calcPayload, markSubmitButton, zoneNumber = 0;
+            fn.prequest("api/zones")
+            .then(res => {
+                loadingBarHome.removeAttribute("indeterminate");
+                zones = res;
+                zones.sort((a, b) => a.name.localeCompare(b.name));
+                var options = [];
+                for(var i = 0; i < zones.length; i++) {
+                    options.push(zones[i].name);
+                }
+                options.push({
+                    label: i18next.t('common.submit',"Submit"),
+                    icon: 'md-collection-item'
+                },{
+                    label: i18next.t('common.cancel',"Cancel"),
+                    icon: 'md-close'
+                });
+                let openActionSheet = ons.openActionSheet({
+                    title: i18next.t('home.popups.selectZones',"Select zones for cleaning:"),
+                    cancelable: true,
+                    buttons: options
+                });
+                document.querySelector('ons-action-sheet').classList.add('ons-action-sheet-zoned');
+                var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
+                for (var i = 0; i < zoneButtons.length; i++) {
+                    if (!i) zoneButtons[i].parentNode.parentNode.title = '';
+                    zoneButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+                    if (zoneButtons[i].getAttribute('icon') === null) {
+                        zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
+                    } else if (zoneButtons[i].getAttribute('icon') === 'md-close') {
+                        zoneButtons[i].classList.add('action-sheet-button-zcancel','action-sheet-button-half');
+                    } else {
+                        zoneButtons[i].classList.add('action-sheet-button-zsubmit','action-sheet-button-half', 'zdisabled');
+                    }
+                }
+                calcPayload = function() {
+                    var payload = [];
+                    var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                    for (var i = 0; i < zoneCheckboxes.length; i++) {
+                        if (!zoneCheckboxes[i].dataset.num) {
+                            continue;
+                        }
+                        payload[zoneCheckboxes[i].dataset.num - 1] = zones[zoneCheckboxes[i].dataset.id].coordinates;
+                    }
+                    return payload.reduce((acc, val) => acc.concat(val), []);
+                }
+                markSubmitButton = function() {
+                    var submitButton = document.querySelector('.action-sheet-button[icon="md-collection-item"]');
+                    if (!submitButton) return;
+                    submitButton.classList.toggle('zdisabled',!calcPayload().length);
+                }
+                document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
+                    if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+                    if (e.target.className === 'zone-cblabel') {
+                        e.stopPropagation();
+                        return;
+                    }
+                    if (e.target.className === 'zone-checkbox') {
+                        e.stopPropagation();
+                        if (e.target.checked) {
+                            // checked right now
+                            var attemptedLength = calcPayload().length + zones[e.target.dataset.id].coordinates.length;
+                            if (attemptedLength > 5) {
+                                ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
+                                e.target.checked = false;
+                                return;
+                            }
+                            e.target.dataset.num = ++zoneNumber;
+                            e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + zones[e.target.dataset.id].coordinates.length + ']';
+                            e.target.parentNode.parentNode.classList.add('zone_selected');
+                        } else {
+                            // unchecked
+                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                            for (var i = 0; i < zoneCheckboxes.length; i++) {
+                                if (zoneCheckboxes[i].checked && zoneCheckboxes[i].dataset.num > e.target.dataset.num) {
+                                    zoneCheckboxes[i].dataset.num--;
+                                    zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '[' + zoneCheckboxes[i].dataset.num + '/' + zones[zoneCheckboxes[i].dataset.id].coordinates.length + ']';
+                                }
+                            }
+                            zoneNumber--;
+                            delete e.target.dataset.num;
+                            e.target.parentNode.nextElementSibling.textContent = '';
+                            e.target.parentNode.parentNode.classList.remove('zone_selected');
+                        }
+                        markSubmitButton();
+                    } else if (e.target.getAttribute('icon') === 'md-collection-item') {
+                        e.stopPropagation();
+                        if (calcPayload().length) {
+                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                            for (var i = 0; i < zoneCheckboxes.length; i++) {
+                                if (zoneCheckboxes[i].checked) {
+                                    zoneCheckboxes[i].parentNode.parentNode.click();
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (zoneNumber > 0) {
+                        let findCheckbox = e.target.querySelector('.zone-checkbox');
+                        if (!findCheckbox || !findCheckbox.checked) {
+                            e.stopPropagation();
+                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+                            for (var i = 0; i < zoneCheckboxes.length; i++) {
+                                if (zoneCheckboxes[i].checked) {
+                                    delete zoneCheckboxes[i].dataset.num;
+                                    zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '';
+                                    zoneCheckboxes[i].parentNode.parentNode.classList.remove('zone_selected');
+                                    zoneCheckboxes[i].checked = false;
+                                }
+                            }
+                            zoneNumber = 0;
+                        } else {
+                            payload = calcPayload();
+                        }
+                        markSubmitButton();
+                    }
+                },true);
+                return openActionSheet;
             })
             .then(index => {
-                if(index > -1 && index < config.areas.length){
+                if(index > -1 && index < zones.length){
                     if (zoneNumber < 2) {
-                        payload = config.areas[index][1];
+                        payload = zones[index].coordinates;
                     }
                     if (!payload.length) {
                         ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."),{title: i18next.t('common.attention',"Attention!")});
-                        currentRefreshTimer = window.setTimeout(function () {
-                            updateHomePage();
-                        }, 3000);
-                        return;
+                        return Promise.reject("cancel");
                     }
-                    if (!window.fn.webifSettings.zonedImmediate) {
+                    if (!fn.webifSettings.zonedImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
                             fn.updateMapPage(true)
                             .then(function(map) {
@@ -248,117 +354,24 @@
                             })
                             .catch(() => {});
                         }});
+                        return Promise.reject("cancel");
                     } else {
                         loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                        fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
-                        .then(res => fn.notificationToastOK())
-                        .catch(e => fn.notificationToastError(e))
-                        .finally(() => {
-                            window.setTimeout(function () {
-                                updateHomePage();
-                            }, 200);
-                        });
+                        return fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
                     }
                 } else {
-                    currentRefreshTimer = window.setTimeout(function () {
-                        updateHomePage();
-                    }, 3000);
+                    return Promise.reject("cancel");
                 }
+            })
+            .then(res => fn.notificationToastOK())
+            .catch(e => {
+                if (e !== "cancel") fn.notificationToastError(e);
+            })
+            .finally(() => {
+                window.setTimeout(function () {
+                    updateHomePage();
+                }, 200);
             });
-            document.querySelector('ons-action-sheet').classList.add('ons-action-sheet-zoned');
-            var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
-            for (var i = 0; i < zoneButtons.length; i++) {
-                if (!i) zoneButtons[i].parentNode.parentNode.title = '';
-                zoneButtons[i].title = ''; // get rid of stupid title repeating on all buttons
-                if (zoneButtons[i].getAttribute('icon') === null) {
-                    zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
-                } else if (zoneButtons[i].getAttribute('icon') === 'md-close') {
-                    zoneButtons[i].classList.add('action-sheet-button-zcancel','action-sheet-button-half');
-                } else {
-                    zoneButtons[i].classList.add('action-sheet-button-zsubmit','action-sheet-button-half', 'zdisabled');
-                }
-            }
-            calcPayload = function() {
-                var payload = [];
-                var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                for (var i = 0; i < zoneCheckboxes.length; i++) {
-                    if (!zoneCheckboxes[i].dataset.num) {
-                        continue;
-                    }
-                    payload[zoneCheckboxes[i].dataset.num - 1] = config.areas[zoneCheckboxes[i].dataset.id][1];
-                }
-                return payload.reduce((acc, val) => acc.concat(val), []);
-            }
-            markSubmitButton = function() {
-                var submitButton = document.querySelector('.action-sheet-button[icon="md-collection-item"]');
-                if (!submitButton) return;
-                submitButton.classList.toggle('zdisabled',!calcPayload().length);
-            }
-            document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
-                if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
-                if (e.target.className === 'zone-cblabel') {
-                    e.stopPropagation();
-                    return;
-                }
-                if (e.target.className === 'zone-checkbox') {
-                    e.stopPropagation();
-                    if (e.target.checked) {
-                        // checked right now
-                        var attemptedLength = calcPayload().length + config.areas[e.target.dataset.id][1].length;
-                        if (attemptedLength > 5) {
-                            ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
-                            e.target.checked = false;
-                            return;
-                        }
-                        e.target.dataset.num = ++zoneNumber;
-                        e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + config.areas[e.target.dataset.id][1].length + ']';
-                        e.target.parentNode.parentNode.classList.add('zone_selected');
-                    } else {
-                        // unchecked
-                        var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                        for (var i = 0; i < zoneCheckboxes.length; i++) {
-                            if (zoneCheckboxes[i].checked && zoneCheckboxes[i].dataset.num > e.target.dataset.num) {
-                                zoneCheckboxes[i].dataset.num--;
-                                zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '[' + zoneCheckboxes[i].dataset.num + '/' + config.areas[zoneCheckboxes[i].dataset.id][1].length + ']';
-                            }
-                        }
-                        zoneNumber--;
-                        delete e.target.dataset.num;
-                        e.target.parentNode.nextElementSibling.textContent = '';
-                        e.target.parentNode.parentNode.classList.remove('zone_selected');
-                    }
-                    markSubmitButton();
-                } else if (e.target.getAttribute('icon') === 'md-collection-item') {
-                    e.stopPropagation();
-                    if (calcPayload().length) {
-                        var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                        for (var i = 0; i < zoneCheckboxes.length; i++) {
-                            if (zoneCheckboxes[i].checked) {
-                                zoneCheckboxes[i].parentNode.parentNode.click();
-                                break;
-                            }
-                        }
-                    }
-                } else if (zoneNumber > 0) {
-                    let findCheckbox = e.target.querySelector('.zone-checkbox');
-                    if (!findCheckbox || !findCheckbox.checked) {
-                        e.stopPropagation();
-                        var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                        for (var i = 0; i < zoneCheckboxes.length; i++) {
-                            if (zoneCheckboxes[i].checked) {
-                                delete zoneCheckboxes[i].dataset.num;
-                                zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '';
-                                zoneCheckboxes[i].parentNode.parentNode.classList.remove('zone_selected');
-                                zoneCheckboxes[i].checked = false;
-                            }
-                        }
-                        zoneNumber = 0;
-                    } else {
-                        payload = calcPayload();
-                    }
-                    markSubmitButton();
-                }
-            },true);
         }
 
         function handleStoreMapButton() {
@@ -407,6 +420,7 @@
             let slots = [], options = [];
             fn.prequest("api/list_maps")
             .then(data => {
+                data.sort((a, b) => a.localeCompare(b));
                 loadingBarHome.removeAttribute("indeterminate");
                 slots = data;
                 for (var i = 0; i < data.length; i++) {
@@ -556,7 +570,7 @@
                 }
 
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
-                robotStateDetailsTime.textContent = window.fn.secondsToHms(res.clean_time);
+                robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
                 fanspeedPresets = res.msg_ver !== 3 ? {
                     1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
@@ -593,15 +607,17 @@
         ons.getScriptPage().onShow = function () {
             refreshDisabled = false;
             /* multimap visibility */
-            document.getElementById('multimap-buttons').style.display = window.fn.webifSettings.showMultimap ? '' : 'none';
+            document.getElementById('multimap-buttons').style.display = fn.webifSettings.showMultimap ? '' : 'none';
             /* check for area and go to configuration */
             fn.prequest("api/get_config")
             .then((res) => {
                 config = res;
-                if (config.spots && config.spots.length > 0)
+                if (config.spots && config.spots.length > 0) {
                     goToButton.removeAttribute("disabled");
-                if (config.areas && config.areas.length > 0)
+                }
+                if (config.areas && config.areas.length > 0) {
                     areaButton.removeAttribute("disabled");
+                }
             })
             .catch(err => fn.notificationToastError(err))
             .finally(() => {
