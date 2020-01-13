@@ -61,6 +61,7 @@
         var robotStateDetailsTime = document.getElementById("robot-state-details-time-value");
         var loadingBarHome = document.getElementById('loading-bar-home');
 
+        var fanspeedPresets = {}
         var config = {};
 
         var BUTTONS = {
@@ -117,15 +118,6 @@
                 });
             }
         }
-
-        var fanspeedPresets = {
-            1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
-            38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
-            60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
-            75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
-            100: i18next.t('home.fanspeedPresets.max',"Max"),
-            105: i18next.t('home.fanspeedPresets.mop',"Mop")
-        };
 
         function handleFanspeedButton() {
             window.clearTimeout(currentRefreshTimer);
@@ -565,6 +557,21 @@
 
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
                 robotStateDetailsTime.textContent = window.fn.secondsToHms(res.clean_time);
+
+                fanspeedPresets = res.msg_ver !== 3 ? {
+                    1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
+                    38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
+                    60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
+                    75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
+                    100: i18next.t('home.fanspeedPresets.max',"Max"),
+                    105: i18next.t('home.fanspeedPresets.mop',"Mop")
+                } : {
+                    101: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
+                    102: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
+                    103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
+                    104: i18next.t('home.fanspeedPresets.max',"Max"),
+                    105: i18next.t('home.fanspeedPresets.mop',"Mop")
+                };
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
             }, (err) => fn.notificationToastError(err))
             .finally(() => {
