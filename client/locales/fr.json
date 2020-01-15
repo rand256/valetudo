@@ -6,14 +6,14 @@
         "overwrite": "Écraser",
         "continue": "Continuer",
         "dismiss": "Refuser",
-        "prompt": "Prompt",
+        "prompt": "Rapide",
         "warning": "Avertissement",
         "attention": "Attention!",
         "confirm": "Confirmer",
         "close": "Fermer",
         "save": "Enregistrer",
         "cancelled": "Annulé",
-        "enabled": "activé",
+        "enabled": "Activé",
         "commandOK": "Commande envoyée avec succès!",
         "commandFailed": "Il y a eu une erreur:",
         "connectionError": "Erreur de connexion",
@@ -35,7 +35,7 @@
     },
     "home": {
         "labels": {
-            "area": "Zone",
+            "area": "Surface",
             "time": "Temps",
             "battery": "Batterie",
             "state": "État de chargement..."
