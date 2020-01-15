@@ -65,46 +65,6 @@
             return document.getElementById('appNavigator').topPage;
         }
 
-        window.fn.request = function (url, method, callback) {
-            var request = new XMLHttpRequest();
-            request.open(method, url, true);
-
-            request.onload = function () {
-                if (request.status >= 200 && request.status < 400) {
-                    callback(null, JSON.parse(request.responseText));
-                } else {
-                    console.error(request);
-                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
-                }
-            };
-
-            request.onerror = function () {
-                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
-            };
-
-            request.send();
-        };
-
-        window.fn.requestWithPayload = function (url, payload, method, callback) {
-            var request = new XMLHttpRequest();
-            request.open(method, url, true);
-            request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-            request.send(payload);
-
-            request.onload = function () {
-                if (request.status >= 200 && request.status < 400) {
-                    callback(null, JSON.parse(request.responseText));
-                } else {
-                    console.error(request);
-                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
-                }
-            };
-
-            request.onerror = function () {
-                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
-            };
-        };
-
         window.fn.postFile = function (url, path, progressCallback, callback){
             var formData = new FormData();
             formData.append("file", path);
@@ -133,7 +93,7 @@
                 callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
             };
 
-            request.open("POST", url);
+            request.open("POST", (localStorage['urlOverride'] || '') + url);
             request.send(formData);
         }
 
@@ -142,7 +102,7 @@
                 method = method || "GET";
                 var request = new XMLHttpRequest();
                 if (type) request.responseType = type;
-                request.open(method, url, true);
+                request.open(method, (localStorage['urlOverride'] || '') + url, true);
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
                         if (request.responseType === "") {
@@ -165,7 +125,7 @@
         window.fn.prequestWithPayload = function (url, payload, method, type) {
             return new Promise(function(resolve, reject) {
                 var request = new XMLHttpRequest();
-                request.open(method, url, true);
+                request.open(method, (localStorage['urlOverride'] || '') + url, true);
                 if (type) request.responseType = type;
                 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 request.send(payload);
