@@ -172,6 +172,19 @@
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
         }
 
+        var pushView = function(idx,hash) {
+            history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
+            document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
+        }
+
+        var preSwitchTab = function(targetID) {
+            if (!document.querySelectorAll('.ons-swiper-target > .page')[targetID]) {
+                setTimeout(() => preSwitchTab(targetID),100);
+                return;
+            }
+            fn.loadView(targetID);
+        }
+
         var waitForLocalize = fn.prequest("api/get_interface_config")
         .then(res => {
             fn.webifSettings = res;
@@ -191,25 +204,12 @@
                 debug: false
             })
         })
-        .then(res => { return locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+        .then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
         .catch(e => console.log('loading interface configuration has failed', e));
 
-        window.fn.localize = function(target) { waitForLocalize.then(res => res(target)) };
-
-        var pushView = function(idx,hash) {
-            history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
-            document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
-        }
-
-        var preSwitchTab = function(targetID) {
-            if (!document.querySelectorAll('.ons-swiper-target > .page')[targetID]) {
-                setTimeout(() => preSwitchTab(targetID),100);
-                return;
-            }
-            fn.loadView(targetID);
-        }
-
         ons.ready(function () {
+            waitForLocalize.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
+
             // todo: make it work without timeout hacks
             switch (window.location.hash) {
                 case '#home': break;
@@ -239,14 +239,16 @@
             document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
         }
     </script>
-    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
-        <ons-page>
+    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px"></ons-navigator>
+
+    <template id="app-splitter.html">
+        <ons-page id="app-splitter-page">
             <ons-splitter id="appSplitter">
                 <ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
                 <ons-splitter-content page="tabbar.html"></ons-splitter-content>
             </ons-splitter>
         </ons-page>
-    </ons-navigator>
+    </template>
 
     <template id="tabbar.html">
         <ons-page id="tabbar-page">
