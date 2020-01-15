@@ -376,6 +376,8 @@
       "namePlaceholder": "naam van de timer",
       "addZones": "Zones:",
       "addCoords": "Toevoegen...",
+      "fanPower": "Zuigkracht:",
+      "timerDesc": "Selecteer timerparameters.",
       "timerZoneDesc": "Selecteer timernaam en zone-coordinaten.",
       "timerTimeDesc": "Selecteer tijd en datum waarop de timer actief dient te zijn.",
       "timerEmptyTimeNote": "Leeg betekent alles.",

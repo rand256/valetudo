@@ -355,6 +355,8 @@
             "namePlaceholder": "Name eines Timers",
             "addZones": "Zonen:",
             "addCoords": "Hinzufügen...",
+            "fanPower": "Leistungsstufe:",
+            "timerDesc": "Wählen Sie die Timer-Einstellungen.",
             "timerZoneDesc": "Wählen Sie den Timernamen und die Zonen, die gereinigt werden sollen.",
             "timerTimeDesc": "Wählen Sie Datum und Uhrzeit für die Reinigung aus.",
             "timerEmptyTimeNote": "Leer bedeutet \"jede(n)\".",

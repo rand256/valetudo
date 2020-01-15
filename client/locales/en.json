@@ -355,6 +355,8 @@
             "namePlaceholder": "name of a timer",
             "addZones": "Zones:",
             "addCoords": "Add...",
+            "fanPower": "Fan power:",
+            "timerDesc": "Choose timer settings.",
             "timerZoneDesc": "Choose timer name and zone coordinates.",
             "timerTimeDesc": "Select time and date the timer should be triggered on.",
             "timerEmptyTimeNote": "Empty means any.",

@@ -4,10 +4,22 @@
             <form id="add-timer-form">
                 <input type="hidden" name="zoned" value="0"/>
                 <input type="hidden" name="edit" value="0"/>
+                <p class="ntimer-item" data-i18n="settings.timers.timerDesc">Choose timer settings.</p>
                 <p class="ztimer-item" data-i18n="settings.timers.timerZoneDesc">Choose timer name and zone coordinates.</p>
-                <ons-row class="ztimer-item">
+                <ons-row>
                     <ons-col width="100px" align="center" data-i18n="settings.timers.name">Name:</ons-col>
                     <ons-col align="left"><ons-input type="text" placeholder="name of a timer" min="1" max="30" name="timer_name" data-i18n="[placeholder]settings.timers.namePlaceholder"></ons-col>
+                </ons-row>
+                <ons-row class="ntimer-item">
+                    <ons-col width="100px" align="center" data-i18n="settings.timers.fanPower">Fan power:</ons-col>
+                    <ons-col align="left"><ons-select select-id="fan_power_select">
+                        <option value="0" data-i18n="home.fanspeedPresets.whisper">Whisper</option>
+                        <option value="1" data-i18n="home.fanspeedPresets.quiet">Quiet</option>
+                        <option value="2" data-i18n="home.fanspeedPresets.balanced">Balanced</option>
+                        <option value="3" data-i18n="home.fanspeedPresets.turbo">Turbo</option>
+                        <option value="4" data-i18n="home.fanspeedPresets.max">Max</option>
+                        <option value="5" data-i18n="home.fanspeedPresets.mop">Mop</option>
+                    </ons-select></ons-col>
                 </ons-row>
                 <ons-row class="ztimer-item">
                     <ons-col width="100px" align="center" data-i18n="settings.timers.zones">Zones:</ons-col>
@@ -125,13 +137,13 @@
     </ons-toolbar>
     <ons-progress-bar id="loading-bar-settings-timers" value="0" indeterminate="indeterminate"></ons-progress-bar>
     <ons-list-title style="margin-top:5px;">
-        <span data-i18n="settings.timers.zonedCleaningHeader">Zoned Cleaning Schedule (beta)</span> <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showTimerDialog(-1,true);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
+        <span data-i18n="settings.timers.zonedCleaningHeader">Zoned Cleaning Schedule (beta)</span> <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showTimerDialog(null,true);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
     </ons-list-title>
     <ons-list id="settings-zoned-timers-timer-list">
         <ons-list-item data-i18n="settings.timers.noZonedCleaningSchedule" data-i18n-target=".list-item__center">No zoned cleaning schedule is configured yet.</ons-list-item>
     </ons-list>
     <ons-list-title style="margin-top:5px;">
-        <span data-i18n="settings.timers.cleaningHeader">Cleaning Schedule</span> <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showTimerDialog(-1);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
+        <span data-i18n="settings.timers.cleaningHeader">Cleaning Schedule</span> <ons-toolbar-button id="settings-timers-create-new-timer" onclick="showTimerDialog(null);"><ons-icon icon="fa-plus"></ons-icon></ons-toolbar-button></div>
     </ons-list-title>
     <ons-list id="settings-timers-timer-list">
         <ons-list-item data-i18n="settings.timers.noCleaningSchedule" data-i18n-target=".list-item__center">No cleaning schedule is configured yet.</ons-list-item>
@@ -151,10 +163,17 @@
         var editTimezoneDialog = document.getElementById('edit-timezone-dialog');
         var editTimerDialog = document.getElementById('edit-timer-dialog');
 
+        var timers_ver = 0;
+
         document.querySelector("#settings-timers-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         ons.getScriptPage().onInit = function() {
             fn.localize('#settings-timers-page');
+            fn.prequest("api/current_status")
+            .then(res => {
+                timers_ver = res.msg_ver || 0; // todo: make it global on index.html?
+            })
+            .catch(e => {});
         };
 
         ons.getScriptPage().onShow = function () {
@@ -185,7 +204,8 @@
             fn.prequest("api/zones")
             .then((res) => {
                 let zones = res;
-                let options = []
+                let options = [];
+                zones.sort((a, b) => a.name.localeCompare(b.name));
                 for (var i = 0; i < zones.length; i++){
                     options.push(zones[i].name);
                 }
@@ -367,7 +387,7 @@
                     res.forEach(function (timer) {
                         var elem = ons.createElement(
                             "<ons-list-item>" +
-                            "    <div class='left'><span class='timer-name'></span>" + timer.human_desc + " (" + timer.cron + ")</div>" +
+                            "    <div class='left'><span class='timer-name'></span>" + " - " + timer.human_desc + " (" + timer.cron + ")</div>" +
                             "    <div class='right'>" +
                             "        <ons-switch class='timer-active-switch'" + (timer.enabled ? " checked='checked' " : "") + "></ons-switch> " +
                             "        <ons-button modifier='quiet' class='timer-edit'>" +
@@ -379,7 +399,7 @@
                             "    </div>" +
                             "</ons-list-item>"
                         );
-                        elem.querySelector('.timer-name').textContent = zoned ? timer.id + " - " : "";
+                        elem.querySelector('.timer-name').textContent = timer.id;
                         elem.querySelector('.timer-active-switch').addEventListener('change', function (event) {
                             toggleTimer(timer.id, event.value, zoned);
                         });
@@ -445,6 +465,8 @@
         function clearTimerDialog(zoned) {
             let form = document.getElementById('add-timer-form');
             form.zoned.value = zoned ? 1 : 0;
+            form.fan_power_select.value = "";
+            form.timer_name.value = "";
             form.edit.value = "";
             form.month.value = "";
             form.day.value = "";
@@ -453,7 +475,6 @@
             for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
                 form.days[daysRunner].checked = false;
             }
-            form.timer_name.value = "";
             let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
             if (inputs.length) {
                 inputs.forEach(a => {
@@ -468,6 +489,22 @@
         function loadTimerDialog(timerId,zoned,timer) {
             let form = document.getElementById('add-timer-form');
             let cron = timer.cron.split(' ');
+            form.timer_name.value = timerId;
+            let fanPower;
+            switch (timer.fanpower) {
+                case 1: fanPower = 0; break;
+                case 38: fanPower = 1; break;
+                case 60: fanPower = 2; break;
+                case 75: fanPower = 3; break;
+                case 100: fanPower = 4; break;
+                case 101: fanPower = 1; break;
+                case 102: fanPower = 2; break;
+                case 103: fanPower = 3; break;
+                case 104: fanPower = 4; break;
+                case 105: fanPower = 5; break;
+                default: fanPower = "";
+            }
+            form.fan_power_select.value = fanPower;
             form.zoned.value = zoned ? 1 : 0;
             form.edit.value = timerId;
             form.month.value = cron[3] || "";
@@ -480,7 +517,6 @@
                     form.days[daysRunner].checked = true;
                 }
             }
-            form.timer_name.value = timerId || "";
             if (timer.coordinates) {
                 addZoneCoordinates('-',timer.coordinates);
             }
@@ -490,6 +526,12 @@
             let form = document.getElementById('add-timer-form'),
                 edit = form.edit.value.length ? form.edit.value : null,
                 zoned = form.zoned.value === "1" ? true : false;
+            // choose a name
+            let timerName = form.timer_name.value.trim();
+            if (timerName.length < 3) {
+                fn.notificationToastError(i18next.t('settings.timers.missingName',"You should specify a name."));
+                return;
+            }
             //get and validate selected month
             let monthValue = form.month.value;
             if (monthValue === "") {
@@ -561,11 +603,21 @@
             }
             // build cron timer
             var cronTimer = "" + minutesValue + " " + hoursValue + " " + dayValue + " " + monthValue + " " + daySelection;
+            // fanpower
+            var fanPower;
+            switch (form.fan_power_select.value) {
+                case "0": fanPower = timers_ver === 3 ? 101 : 1 ; break;
+                case "1": fanPower = timers_ver === 3 ? 101 : 38; break;
+                case "2": fanPower = timers_ver === 3 ? 102 : 60; break;
+                case "3": fanPower = timers_ver === 3 ? 103 : 75; break;
+                case "4": fanPower = timers_ver === 3 ? 104 : 100; break;
+                case "5": fanPower = 105; break;
+            }
             // next promises
-            let promise;
+            let promise, coords = "";
             // special case for zoned timers
             if (zoned) {
-                let coords, coordInputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
+                let coordInputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
                 if (coordInputs.length) {
                     coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
                 }
@@ -573,47 +625,28 @@
                     fn.notificationToastError(i18next.t('settings.timers.missingZones',"One or more non-empty zones must be specified."));
                     return;
                 }
-                let timerName = form.timer_name.value.trim();
-                if (timerName.length < 3) {
-                    fn.notificationToastError(i18next.t('settings.timers.missingName',"You should specify a name."));
-                    return;
-                }
-                promise = () => {
-                    return new Promise((resolve,reject) => {
-                        if (edit !== null) {
-                            resolve();
-                            return;
-                        }
-                        fn.prequest("api/ztimers")
-                        .then(res => {
-                            if (res.some(timer => timer.id === timerName)) {
-                                return ons.notification.confirm(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: timerName}) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
-                            }
-                            resolve();
-                        })
-                        .then(res => {
-                            if (res === 0) {
-                                return Promise.reject("cancel");
-                            }
-                            resolve();
-                        })
-                        .catch(e => reject(e))
-                    })
-                    .then(() => fn.prequestWithPayload("api/ztimers", JSON.stringify({ enabled: true, id: timerName, cron: cronTimer, coordinates: coords, edit: edit }), "PUT"));
-                };
-            } else {
-                promise = () => {
-                    return fn.prequestWithPayload("api/timers", JSON.stringify({ cron: cronTimer }), "POST")
-                    .then(() => {
-                        if (edit !== null) {
-                            return fn.prequest("api/timers/" + encodeURIComponent(edit), "DELETE");
-                        }
-                        return 1;
-                    });
-                };
             }
-            loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-            promise().then(() => {
+            new Promise((resolve,reject) => {
+                if (edit === timerName) {
+                    return resolve();
+                }
+                fn.prequest(zoned ? "api/ztimers" : "api/timers")
+                .then(res => {
+                    if (res.some(timer => timer.id === timerName)) {
+                        return ons.notification.confirm(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: timerName}) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
+                    }
+                    resolve();
+                })
+                .then(res => {
+                    if (res === 0) {
+                        return Promise.reject("cancel");
+                    }
+                    resolve();
+                })
+                .catch(e => reject(e))
+            })
+            .then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ enabled: true, id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, edit: edit }), "PUT"))
+            .then(() => {
                 updateSettingsTimersPage(zoned);
                 editTimerDialog.hide();
             })
@@ -625,13 +658,20 @@
             });
         }
 
-        //if timerId is set to -1 then open new timer, else edit existing
-        var showTimerDialog = function(timerId,zoned) {
+        //if timerId is set to null then open new timer, else edit existing
+        function showTimerDialog(timerId,zoned) {
             zoned = zoned ? true : false;
+            // show different headers for different modes and fw
             editTimerDialog.querySelectorAll('.ztimer-item').forEach(item => item.style.display = (zoned ? '' : 'none'));
+            editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && timers_ver === 3 ? '' : 'none'));
+            if (timers_ver === 3) {
+                editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none';
+            }
+            //
             clearTimerDialog(zoned);
             editTimerDialog.querySelector('.dialog-container').style.cssText = "height: " + Math.min(zoned ? 470 : 400,window.innerHeight * 0.75) + "px; overflow: auto;";
-            if (timerId !== -1) {
+            if (timerId !== null) {
+                loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                 fn.prequest(zoned ? "api/ztimers" : "api/timers")
                 .then(res => {
                     let idx;

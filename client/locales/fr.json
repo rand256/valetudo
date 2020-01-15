@@ -355,6 +355,8 @@
             "namePlaceholder": "nom d'une minuterie",
             "addZones": "Zones:",
             "addCoords": "Ajouter...",
+            "fanPower": "Force d'aspiration:",
+            "timerDesc": "Choisissez les paramètres de la minuterie.",
             "timerZoneDesc": "Choisissez le nom de la minuterie et les coordonnées de la zone.",
             "timerTimeDesc": "Sélectionnez l'heure et la date auxquelles la minuterie doit être déclenchée.",
             "timerEmptyTimeNote": "Vide signifie tout.",
