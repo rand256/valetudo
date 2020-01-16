@@ -465,7 +465,8 @@
             "n14": "Updating",
             "n15": "Docking",
             "n16": "Going to target",
-            "n17": "Zoned cleaning"
+            "n17": "Zoned cleaning",
+            "n18": "Room cleaning"
         },
         "errors": {
             "n0": "No error",
