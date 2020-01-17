@@ -302,7 +302,7 @@ export function VacuumMap(canvasElement) {
             usingOwnTransform(ctx, (ctx, transform) => {
                 // we'll define locations drawing order (currently it's reversed) so the former location types is drawn over the latter ones
                 let zoneNumber = 0;
-                let activeLocation = null, locationTypes = {Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
+                let activeLocation = null, locationTypes = {GotoPoint: 0, Zone: 2, VirtualWall: 3, ForbiddenZone: 4, CurrentCleaningZone: 5};
                 locations.sort((a,b) => {return locationTypes[b.constructor.name] - locationTypes[a.constructor.name]; });
                 locations.forEach(location => {
                     if (location instanceof GotoPoint) {
