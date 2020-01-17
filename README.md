@@ -7,7 +7,7 @@
 
 ### Preamble:
 
-This is a modified version of [Valetudo by Hypher](https://github.com/Hypfer/Valetudo), _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. Next is a quick list of changes first appeared here:
+This is a modified version of [Valetudo by Hypfer](https://github.com/Hypfer/Valetudo), _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. Next is a quick list of changes first appeared here:
 
 * Ability to select multiple saved zones at once;
 * Selected zones optionally shown at the map tab to see and edit what's actually going to be cleaned;
