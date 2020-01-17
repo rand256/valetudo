@@ -91,7 +91,7 @@ export function PathDrawer() {
         );
     }
 
-    function drawRobot(position, angle) {
+    function drawRobot(position, path) {
         const ctx = canvasObjects.getContext("2d");
         function rotateRobot(img, angle) {
             var canvasimg = document.createElement("canvas");
@@ -111,7 +111,7 @@ export function PathDrawer() {
 
         let multiplier = Math.max(20/img_rocky.width,84/img_rocky.width * scaleFactor/maxScaleFactor);
         ctx.drawImage(
-            rotateRobot(img_rocky, angle),
+            path ? rotateRobot(img_rocky, path.current_angle) : img_rocky,
             robotPositionInPixels[0] - img_rocky.width * multiplier / 2, // x
             robotPositionInPixels[1] - img_rocky.height * multiplier / 2, // y
             img_rocky.width * multiplier, // width
@@ -144,13 +144,15 @@ export function PathDrawer() {
         ctx.imageSmoothingQuality = 'high';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.beginPath();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = pathColor;
-        drawLines(path.points, ctx);
-        ctx.stroke();
+        if (path) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = pathColor;
+            drawLines(path.points, ctx);
+            ctx.stroke();
+        }
 
-        if(predictedPath) {
+        if (predictedPath) {
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = pathColor;
@@ -165,7 +167,7 @@ export function PathDrawer() {
         ctxObjects.clearRect(0, 0, canvasObjects.width, canvasObjects.height);
 
         drawCharger(chargerPosition);
-        drawRobot(robotPosition, path.current_angle);
+        drawRobot(robotPosition, path);
     }
 
     // noinspection JSDuplicatedDeclaration
