@@ -50,8 +50,7 @@
         </ons-fab>
     </div>
 
-    <script type="module" crossorigin>
-        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+    <script>
         const loadingBar = document.getElementById('loading-bar-map');
         let map = null;
 
@@ -59,17 +58,14 @@
             return new Promise((resolve, reject) => {
                 if (checkMapExistance && map !== null) {
                     resolve(map);
+                    return;
                 }
-                let status, gzippedMapData, promises = [];
+                let gzippedMapData;
                 loadingBar.setAttribute("indeterminate", "indeterminate");
-                promises.push(fn.prequest("api/current_status").then(res => { status = res }));
-                promises.push(fn.prequest("api/map/latest", "GET", "arraybuffer").then(res => { gzippedMapData = res; }));
-                Promise.all(promises)
-                .then(_ => {
-                    if (status.msg_ver === 3) {
-                        return fn.prequest("api/segment_names");
-                    }
-                    return null;
+                fn.prequest("api/map/latest", "GET", "arraybuffer")
+                .then(res => {
+                    gzippedMapData = res;
+                    return fn.device.ver === 3 ? fn.prequest("api/segment_names") : null;
                 })
                 .then(res => {
                     var segmentNames = {};
@@ -77,8 +73,12 @@
                         res.forEach(pair => segmentNames[pair[0]] = pair[1]);
                     }
                     if(map === null) {
-                        map = new VacuumMap(document.getElementById('map-canvas'));
+                        map = fn.createVacuumMap(document.getElementById('map-canvas'));
                         map.initCanvas(gzippedMapData,{showSegments: true, segmentNames: segmentNames});
+                        if (checkMapExistance) {
+                            resolve(map);
+                            return;
+                        }
                     } else {
                         map.updateSegmentNames(segmentNames);
                         map.updateMap(map.parseMap(gzippedMapData));
@@ -93,16 +93,8 @@
             });
         };
 
-        // Register update function to be accessible outside of es6 module (see <script> below)
-        window.fn.updateMapPage = updateMapPage;
-        window.fn.cancelUpdateMap = () => {
-            if (map !== null) {
-                map.closeWebSocket();
-            }
-        };
-
         window.fn.testMap = function(url) { 
-            fn.updateMapPage(true).then(map => {
+            updateMapPage(true).then(map => {
                 setTimeout(_ => {
                     fn.prequest(url, "GET", "arraybuffer")
                     .then(gzippedMapData => {
@@ -331,39 +323,35 @@
                 mapPageStatus.dataset['state'] = res['state'];
                 mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
                 mapPageStatus.dataset['in_returning'] = res['in_returning'];
-                if (!window.fn.webifSettings.staticMapButtons) {
-                    window.fn.reload_map_buttons(res);
+                if (!fn.webifSettings.staticMapButtons) {
+                    fn.reload_map_buttons(res);
                 }
             }
         });
-        document.dispatchEvent(new CustomEvent("mapModuleLoaded", {detail: true}));
-    </script>
-    <script>
-        // this is a workaround for an issue with module script fails to load fast enough even when this script is marked defer. any better idea?
-        var mapModuleLoaded = new Promise((res,rej) => {
-            document.addEventListener("mapModuleLoaded", function(e) { res(); });
-        }).catch(e => console.log('map functions failed loading', e));
-        // Somehow getScriptPage returns null inside the type=module script tag
+
         ons.getScriptPage().onInit = function() {
             fn.localize('#map-page');
         }
         ons.getScriptPage().onShow = function () {
-            document.querySelector('.map-page-stats').style.display = window.fn.webifSettings.hideMapStatus ? 'none' : '';
-            document.getElementById('map_reload_button').style.display = window.fn.webifSettings.hideMapReload ? 'none' : '';
+            document.querySelector('.map-page-stats').style.display = fn.webifSettings.hideMapStatus ? 'none' : '';
+            document.getElementById('map_reload_button').style.display = fn.webifSettings.hideMapReload ? 'none' : '';
             document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
-            mapModuleLoaded.then(res => {
-                window.fn.updateMapPage();
-                window.fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
-                if (!window.fn.webifSettings.staticMapButtons) {
-                    window.fn.reload_map_buttons();
-                } else {
-                    window.fn.reset_map_buttons();
-                }
-            });
+
+            updateMapPage();
+
+            fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
+            if (!fn.webifSettings.staticMapButtons) {
+                fn.reload_map_buttons();
+            } else {
+                fn.reset_map_buttons();
+            }
         };
         ons.getScriptPage().onHide = function () {
-            window.fn.cancelUpdateMap();
+            if (map !== null) {
+                map.closeWebSocket();
+            }
         };
+
     </script>
     <style>
         :root {
