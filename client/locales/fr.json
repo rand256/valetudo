@@ -99,10 +99,13 @@
         "headerZones": "Zones configurées",
         "headerGotoLocations": "Emplacements aller à configurés",
         "headerForbiddenMarkers": "Marqueurs interdits",
+        "headerSegments": "Configuration des pièces",
         "noZonesConfigured": "Aucune zone n'est encore configurée.",
         "noSpotsConfigured": "Aucun spot n'est encore configuré.",
         "editForbiddenZones": "Configurer les zones interdites",
+        "editSegments": "Modifier les pièces",
         "noPersistentData": "Les données persistantes sont désactivées ou indisponibles, impossible de modifier les marqueurs interdits.",
+        "noSegmentsSupport": "Le micrologiciel de votre appareil ne prend pas en charge la division de la carte en pièces.",
         "addButton": "Ajouter",
         "renameButton": "Renommer",
         "deleteButton": "Supprimer",
@@ -127,6 +130,18 @@
         "forbiddenMarkersSavedOK": "Marqueurs interdits enregistrés avec succès!",
         "missingZone": "Aucune zone de ce type.",
         "missingSpot": "Aucun spot de ce type."
+        "segmentsPageBack": "Segments",
+        "segmentsTitle": "Modification des pièces",
+        "enterSegmentName": "Veuillez saisir un nom pour la pièce sélectionnée:",
+        "segmentRenamedOK": "Pièce renommée avec succès!",
+        "segmentRenameFailed": "Une erreur s'est produite lors du changement de nom d'une pièce.",
+        "segmentsCantBeMerged": "Vous ne pouvez fusionner que les pièces adjacentes.",
+        "confirmSegmentsMerge": "Voulez-vous vraiment essayer de fusionner des pièces \"{{segment1}}\" et \"{{segment2}}\"?",
+        "segmentsMergedOK": "Les pièces ont fusionné avec succès!",
+        "segmentSplitNoLine": "Vous devez d'abord placer la ligne de découpe pour diviser la pièce.",
+        "confirmSegmentSplit": "Voulez-vous vraiment essayer de diviser la pièce \"{{segment}}\"? Note: il peut être nécessaire de placer la ligne de coupe différemment plusieurs fois jusqu'à ce que vous trouviez la bonne position.",
+        "segmentSplitOK": "Pièce divisée avec succès!",
+        "segmentSplitSingleLine": "Il ne peut y avoir qu'une seule ligne de division!"
     },
     "control": {
         "startButton": "Démarrer le contrôle manuel",
@@ -165,7 +180,7 @@
         "statusChanged": "Statut modifié: ",
         "power": "Power: ",
         "battery": "Batterie: ",
-        "mop": "Mode vadrouille",
+        "mop": "Mode lavette",
         "zones": "Liste des zones disponibles:",
         "zonesElement": "\n* {{zoneName}} (subzones: {{subZonesCount}})",
         "noZonesConfigured": "Aucune zone configurée pour le moment.",
@@ -196,6 +211,7 @@
         "maps": "Liste des cartes enregistrées:",
         "mapsElement": "\n* {{mapName}}",
         "errorReply": "Il y a eu une erreur: {{error}}"
+        "unknownCommand": "Commande inconnue."
     },
     "settings": {
         "title": "Paramètres",
