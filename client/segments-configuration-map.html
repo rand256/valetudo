@@ -121,7 +121,8 @@ window.fn.map = map;
                 }
                 return Promise.reject("cancel");
             })
-            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2500)))
+            .then(res => fn.prequest("api/poll_map"))
+            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
             .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then(res => {
                 map.updateMap(map.parseMap(res));
@@ -153,7 +154,8 @@ window.fn.map = map;
                 }
                 return Promise.reject("cancel");
             })
-            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2500)))
+            .then(res => fn.prequest("api/poll_map"))
+            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
             .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then(res => {
                 map.updateMap(map.parseMap(res));
