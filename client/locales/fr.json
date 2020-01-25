@@ -129,7 +129,7 @@
         "forbiddenMarkersTitle": "Modification des marqueurs",
         "forbiddenMarkersSavedOK": "Marqueurs interdits enregistrés avec succès!",
         "missingZone": "Aucune zone de ce type.",
-        "missingSpot": "Aucun spot de ce type."
+        "missingSpot": "Aucun spot de ce type.",
         "segmentsPageBack": "Segments",
         "segmentsTitle": "Modification des pièces",
         "enterSegmentName": "Veuillez saisir un nom pour la pièce sélectionnée:",
@@ -210,7 +210,7 @@
         "mapLoadWait": "La carte doit être rechargée en 30 secondes.",
         "maps": "Liste des cartes enregistrées:",
         "mapsElement": "\n* {{mapName}}",
-        "errorReply": "Il y a eu une erreur: {{error}}"
+        "errorReply": "Il y a eu une erreur: {{error}}",
         "unknownCommand": "Commande inconnue."
     },
     "settings": {
