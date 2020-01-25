@@ -195,7 +195,8 @@
         "mapLoadWait": "Map should be reloaded in 30 seconds.",
         "maps": "List of stored maps:",
         "mapsElement": "\n* {{mapName}}",
-        "errorReply": "There was an error: {{error}}"
+        "errorReply": "There was an error: {{error}}",
+        "unknownCommand": "Unknown command."
     },
     "settings": {
         "title": "Settings",
