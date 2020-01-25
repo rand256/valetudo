@@ -1,0 +1,220 @@
+<ons-page id="segments-configuration-map-page">
+    <div id="segments-configuration-container">
+        <div class="segments-configuration-header">
+            <ons-back-button data-i18n="zones.segmentsPageBack" data-i18n-target=".back-button__label">Rooms</ons-back-button>
+            <span id="segments-configuration-map-page-h1" data-i18n="zones.segmentsTitle">Editing rooms</span>
+        </div>
+
+        <ons-progress-bar id="loading-bar-segments-configuration" value="0"></ons-progress-bar>
+        <canvas id="segments-configuration-map"></canvas>
+    </div>
+
+    <div class="map-page-buttons map-page-bottom">
+        <ons-fab ripple id="segments-configuration-rename" disabled>
+            <ons-icon icon="fa-i-cursor"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="segments-configuration-merge" disabled>
+            <ons-icon icon="fa-object-group"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="segments-configuration-split" disabled>
+            <ons-icon icon="fa-cut"></ons-icon>
+        </ons-fab>
+        <ons-fab ripple id="segments-configuration-cutting-line" disabled>
+            <ons-icon icon="fa-ellipsis-v"></ons-icon>
+        </ons-fab>
+    </div>
+
+    <script type="module">
+        var renameButton = document.getElementById("segments-configuration-rename"),
+            mergeButton = document.getElementById("segments-configuration-merge"),
+            splitButton = document.getElementById("segments-configuration-split"),
+            splittingLineButton = document.getElementById("segments-configuration-cutting-line");
+
+        const loadingBarSegmentsConfiguration = document.getElementById('loading-bar-segments-configuration');
+
+        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+        const map = new VacuumMap(document.getElementById('segments-configuration-map'));
+window.fn.map = map;
+        const topPage = fn.getTopPage();
+        var segmentNames = topPage.data.names;
+
+        map.initCanvas(topPage.data.map, {metaData: false, noPath: true, noGotoPoints: true, showSegments: true, segmentNames: segmentNames});
+
+        document.getElementById("segments-configuration-map").addEventListener('segmentSelection', (e) => {
+            let segments = map.getLocations().segments;
+            if (segments.length === 1) {
+                renameButton.removeAttribute('disabled');
+                splitButton.removeAttribute('disabled');
+                splittingLineButton.removeAttribute('disabled');
+            } else {
+                renameButton.setAttribute('disabled','disabled');
+                splitButton.setAttribute('disabled','disabled');
+                splittingLineButton.setAttribute('disabled','disabled');
+            }
+            if (segments.length === 2) {
+                mergeButton.removeAttribute('disabled');
+            } else {
+                mergeButton.setAttribute('disabled','disabled');
+            }
+        });
+
+        document.querySelector("#segments-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
+        renameButton.onclick = () => {
+            let segmentIdx = map.getLocations().segments[0],
+                oldName = segmentNames[segmentIdx];
+            if (!segmentIdx) {
+                return;
+            }
+            ons.notification.prompt(i18next.t('zones.enterSegmentName',"Please enter a name for selected room:"),{title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName || "", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]})
+            .then(res => {
+                if (res === null) {
+                    return Promise.reject("cancel");
+                } else if (res === "") {
+                    delete segmentNames[segmentIdx];
+                } else {
+                    segmentNames[segmentIdx] = res;
+                }
+                let newNames = [];
+                for (let idx in segmentNames) {
+                    if (map.getParsedMap().image.segments.center[idx]) {
+                        newNames.push([+idx, segmentNames[idx]]);
+                    }
+                }
+                loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
+                return fn.prequestWithPayload("api/segment_names", JSON.stringify(newNames), "PUT")
+            })
+            .then(res => fn.prequest("api/segment_names"))
+            .then(res => {
+                segmentNames = {};
+                res.forEach(pair => segmentNames[pair[0]] = pair[1]);
+                if (oldName !== segmentNames[segmentIdx]) {
+                    map.updateSegmentNames(segmentNames);
+                    map.updateMap(map.getParsedMap());
+                    fn.notificationToastOK(i18next.t('zones.segmentRenamedOK',"Room successfully renamed!"));
+                } else {
+                    fn.notificationToastOK(i18next.t('zones.segmentRenameFailed',"There was an error while renaming a room."));
+                }
+            })
+            .catch(err => {
+                if (err !== "cancel") fn.notificationToastError(err)
+            })
+            .finally(() => {
+                loadingBarSegmentsConfiguration.removeAttribute("indeterminate");
+            });
+        }
+
+        mergeButton.onclick = () => {
+            let segments = map.getLocations().segments;
+            if (segments.length !== 2) {
+                return;
+            }
+            if (!map.getParsedMap().image.segments.neighbours[segments[0]*32+segments[1]]) {
+                ons.notification.alert(i18next.t('zones.segmentsCantBeMerged', "You can merge only adjacent rooms."),{title: i18next.t('common.attention',"Attention!")});
+                return;
+            }
+            ons.notification.confirm(i18next.t('zones.confirmSegmentsMerge', {defaultValue: "Are you sure you want to try merging rooms \"{{segment1}}\" and \"{{segment2}}\"?", segment1: segmentNames[segments[0]] || "#" + segments[0], segment2: segmentNames[segments[1]] || "#" + segments[1]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+            .then(answer => {
+                if (answer === 1) {
+                    loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
+                    return fn.prequestWithPayload("api/merge_segment", JSON.stringify(segments), "PUT");
+                }
+                return Promise.reject("cancel");
+            })
+            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2500)))
+            .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+            .then(res => {
+                map.updateMap(map.parseMap(res));
+                fn.notificationToastOK(i18next.t('zones.segmentsMergedOK',"Rooms successfully merged!"));
+            })
+            .catch(err => {
+                if (err !== "cancel") fn.notificationToastError(err)
+            })
+            .finally(() => {
+                loadingBarSegmentsConfiguration.removeAttribute("indeterminate");
+            });
+        }
+
+        splitButton.onclick = () => {
+            let segmentIdx = map.getLocations().segments[0],
+                segmentName = segmentNames[segmentIdx];
+            if (!segmentIdx) {
+                return;
+            }
+            if (!map.getLocations().virtualWalls.length) {
+                fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line first to split the room."));
+                return;
+            }
+            ons.notification.confirm(i18next.t('zones.confirmSegmentSplit', {defaultValue: "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place cutting line differently multiple times until you find proper position.", segment: segmentNames[segmentIdx] || "#" + segmentIdx}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+            .then(answer => {
+                if (answer === 1) {
+                    loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
+                    return fn.prequestWithPayload("api/split_segment", JSON.stringify([map.getLocations().segments[0], ...map.getLocations().virtualWalls[0]]), "PUT");
+                }
+                return Promise.reject("cancel");
+            })
+            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2500)))
+            .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+            .then(res => {
+                map.updateMap(map.parseMap(res));
+                fn.notificationToastOK(i18next.t('zones.segmentSplitOK',"Segment successfully split!"));
+            })
+            .catch(err => {
+                if (err !== "cancel") fn.notificationToastError(err)
+            })
+            .finally(() => {
+                loadingBarSegmentsConfiguration.removeAttribute("indeterminate");
+            });
+        }
+
+        splittingLineButton.onclick = () => {
+            if (map.getLocations().virtualWalls.length) {
+                fn.notificationToastError(i18next.t('zones.segmentSplitSingleLine',"There can be only one splitting line!"));
+                return;
+            }
+            map.addVirtualWall(null, false, true);
+        }
+
+    </script>
+    <script>
+        ons.getScriptPage().onInit = function() {
+           fn.localize('#segments-configuration-map-page');
+        }
+    </script>
+    <style>
+        #segments-configuration-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto 1fr;
+
+            height: 100%;
+            width: 100%;
+        }
+
+        #segments-configuration-map {
+            touch-action: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        #segments-configuration-map-page-h1 {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .segments-configuration-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .segments-configuration-buttons {
+            position: absolute;
+            right: 1.5em;
+            bottom: 1.5em;
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-rows: auto;
+            grid-gap: 0.5em;
+        }
+    </style>
+</ons-page>

@@ -1,5 +1,6 @@
 const Tools = {
     DIMENSION_PIXELS: 1024,
+    MAX_BLOCKS: 32,
     DIMENSION_MM: 50 * 1024
 };
 
@@ -37,6 +38,7 @@ RRMapParser.TYPES = {
     "ROBOT_POSITION": 8,
     "FORBIDDEN_ZONES": 9,
     "VIRTUAL_WALLS": 10,
+    "CURRENTLY_CLEANED_BLOCKS": 11,
     "DIGEST": 1024
 };
 
@@ -67,7 +69,12 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
                 g3offset = 4;
             }
             const parameters = {
-                segments: g3offset ? buf.readInt32LE(0x08 + offset) : 0,
+                segments: {
+                    count: g3offset ? buf.readInt32LE(0x08 + offset) : 0,
+                    center: {},
+                    borders: [],
+                    neighbours: {}
+                },
                 position: {
                     top: buf.readInt32LE(0x08 + g3offset + offset),
                     left: buf.readInt32LE(0x0c + g3offset + offset)
@@ -84,26 +91,50 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
             //There can only be pixels if there is an image
             if(parameters.dimensions.height > 0 && parameters.dimensions.width > 0) {
-                parameters.pixels = {
-                    floor: [],
-                    obstacle: [],
-                    segments: [],
-                };
-                for (let s, i = 0; i < length; i++) {
+                parameters.pixels = {};
+                for (let x, y, v, s, k, m, n, i = 0; i < length; i++) {
+                    x = (i % parameters.dimensions.width) + parameters.position.left;
+                    y = (parameters.dimensions.height - 1 - Math.floor(i / parameters.dimensions.width)) + parameters.position.top;
+                    k = y*Tools.DIMENSION_PIXELS + x;
                     switch (buf.readUInt8(0x18 + g3offset + offset + i) & 0x07) {
                         case 0:
+                            v = -1; // empty
                             break;
                         case 1:
-                            parameters.pixels.obstacle.push(i);
+                            v = 0; // obstacle
                             break;
                         default:
-                            parameters.pixels.floor.push(i);
+                            v = 1; // floor
                             s = (buf.readUInt8(0x18 + g3offset + offset + i) & 248) >> 3;
                             if (s !== 0) {
-                                parameters.pixels.segments.push(i | (s << 21));
+                                v = (s << 1); // segment
+                                // centers
+                                if (parameters.segments.center[s] === undefined) {
+                                    parameters.segments.center[s] = {x: 0, y: 0, count: 0};
+                                }
+                                parameters.segments.center[s].x += x;
+                                parameters.segments.center[s].y += y;
+                                parameters.segments.center[s].count++;
+                                // borders
+                                n = m = false;
+                                if (parameters.pixels[k-1] > 1 && parameters.pixels[k-1] !== v) {
+                                    n = true;
+                                    parameters.segments.neighbours[s*Tools.MAX_BLOCKS + parameters.pixels[k-1]/2] = true;
+                                    parameters.segments.neighbours[parameters.pixels[k-1]/2*Tools.MAX_BLOCKS + s] = true;
+                                }
+                                if (parameters.pixels[k+Tools.DIMENSION_PIXELS] > 1 && parameters.pixels[k+Tools.DIMENSION_PIXELS] !== v) {
+                                    m = true;
+                                    parameters.segments.neighbours[s*Tools.MAX_BLOCKS + (parameters.pixels[k+Tools.DIMENSION_PIXELS]/2)] = true;
+                                    parameters.segments.neighbours[(parameters.pixels[k+Tools.DIMENSION_PIXELS]/2)*Tools.MAX_BLOCKS + s] = true;
+                                }
+                                if (n || m) {
+                                    parameters.segments.borders.push(k);
+                                }
                             }
                             break;
                     }
+                    if (v < 0) continue;
+                    parameters.pixels[k] = v;
                 }
             }
             result[type] = parameters;
@@ -187,7 +218,19 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
                     ]);
                 }
 
-                result[type] = walls
+                result[type] = walls;
+            }
+            break;
+        case RRMapParser.TYPES.CURRENTLY_CLEANED_BLOCKS:
+            const blockCount = buf.readUInt32LE(0x08 + offset);
+            const blocks = [];
+
+            if(blockCount > 0) {
+                for (let i = 0; i < length; i++) {
+                    blocks.push(buf.readUInt16LE(0x0c + offset + i));
+                }
+
+                result[type] = blocks;
             }
             break;
         case RRMapParser.TYPES.DIGEST:
@@ -257,6 +300,7 @@ RRMapParser.PARSE = function parse(inputMapBuf) {
                 parsedMapData.robot = blocks[RRMapParser.TYPES.ROBOT_POSITION].position;
                 parsedMapData.robot[1] = Tools.DIMENSION_MM - parsedMapData.robot[1];
             }
+            parsedMapData.robot_angle = parsedMapData.robot && parsedMapData.robot.angle || parsedMapData.path && parsedMapData.path.current_angle || 0;
             if(blocks[RRMapParser.TYPES.GOTO_TARGET]) {
                 parsedMapData.goto_target = blocks[RRMapParser.TYPES.GOTO_TARGET].position;
                 parsedMapData.goto_target[1] = Tools.DIMENSION_MM - parsedMapData.goto_target[1];
@@ -289,6 +333,9 @@ RRMapParser.PARSE = function parse(inputMapBuf) {
 
                     return wall;
                 });
+            }
+            if(blocks[RRMapParser.TYPES.CURRENTLY_CLEANED_BLOCKS]) {
+                parsedMapData.currently_cleaned_blocks = blocks[RRMapParser.TYPES.CURRENTLY_CLEANED_BLOCKS];
             }
             return parsedMapData;
         } else {

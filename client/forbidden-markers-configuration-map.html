@@ -32,13 +32,15 @@
 
         document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        if (map.getParsedForbiddenMarkers().forbidden_zones)
-        for (let zone of map.getParsedForbiddenMarkers().forbidden_zones) {
+        const parsedMap = map.getParsedMap();
+
+        if (parsedMap.forbidden_zones)
+        for (let zone of parsedMap.forbidden_zones) {
             map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
         }
 
-        if (map.getParsedForbiddenMarkers().virtual_walls)
-        for (let wall of map.getParsedForbiddenMarkers().virtual_walls) {
+        if (parsedMap.virtual_walls)
+        for (let wall of parsedMap.virtual_walls) {
             map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
         }
 
@@ -64,7 +66,7 @@
             saveButton.setAttribute("disabled", "disabled");
             fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
             .then(() => {
-                fn.notificationToastOK(i18next.t('zones.forbiddenMarkersSaved',"Forbidden markers successfully saved!"));
+                fn.notificationToastOK(i18next.t('zones.forbiddenMarkersSavedOK',"Forbidden markers successfully saved!"));
                 fn.popPage();
             }, (err) => fn.notificationToastError(err))
             .finally(() => {

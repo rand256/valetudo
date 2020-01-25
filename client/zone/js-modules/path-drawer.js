@@ -23,6 +23,7 @@ export function PathDrawer() {
     let predictedPath = undefined;
     let robotPosition = [25600, 25600];
     let chargerPosition = [25600, 25600];
+    let robotAngle = 0;
     const canvas = document.createElement('canvas');
     canvas.width = 1024;
     canvas.height = 1024;
@@ -39,10 +40,11 @@ export function PathDrawer() {
      * @param newRobotPosition
      * @param newChargerPosition
      */
-    function setPath(newPath, newRobotPosition, newChargerPosition, newPredictedPath) {
+    function setPath(newPath, newRobotPosition, newRobotAngle, newChargerPosition, newPredictedPath) {
         path = newPath;
         predictedPath = newPredictedPath;
         robotPosition = newRobotPosition || robotPosition;
+        robotAngle = robotAngle || newRobotAngle;
         chargerPosition = newChargerPosition || chargerPosition;
     }
 
@@ -52,7 +54,9 @@ export function PathDrawer() {
      *
      * @param {number} factor - scaling factor for drawing the path in finer resolution
      */
-    function scale(factor) {
+    function scale(factor, opts) {
+        opts = opts || {};
+
         const newScaleFactor = Math.min(factor, maxScaleFactor);
         if (newScaleFactor === scaleFactor) return;
 
@@ -65,7 +69,8 @@ export function PathDrawer() {
         scaleFactor = newScaleFactor;
         canvas.width = canvas.height = scaleFactor * 1024;
         canvasObjects.width = canvasObjects.height = scaleFactor * 1024;
-        draw();
+
+        if (!opts.noDraw) draw();
     }
 
     function mmToCanvasPx(coords) {
@@ -111,7 +116,7 @@ export function PathDrawer() {
 
         let multiplier = Math.max(20/img_rocky.width,84/img_rocky.width * scaleFactor/maxScaleFactor);
         ctx.drawImage(
-            path ? rotateRobot(img_rocky, path.current_angle) : img_rocky,
+            robotAngle ? rotateRobot(img_rocky, robotAngle) : img_rocky,
             robotPositionInPixels[0] - img_rocky.width * multiplier / 2, // x
             robotPositionInPixels[1] - img_rocky.height * multiplier / 2, // y
             img_rocky.width * multiplier, // width

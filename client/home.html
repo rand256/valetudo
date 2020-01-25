@@ -43,23 +43,23 @@
     <script>
         var currentRefreshTimer, refreshInProgress = false, refreshDisabled = true;
 
-        var startButton = document.getElementById("start-button");
-        var pauseButton = document.getElementById("pause-button");
-        var stopButton = document.getElementById("stop-button");
-        var spotButton = document.getElementById("spot-button");
-        var goToButton = document.getElementById("go-to-button");
-        var areaButton = document.getElementById("area-button");
-        var storeMapButton = document.getElementById("store-map-button");
-        var loadMapButton = document.getElementById("load-map-button");
-        var fanspeedButton = document.getElementById("fanspeed-button");
-        var findRobotButton = document.getElementById("find-robot-button");
-        var homeButton = document.getElementById("home-button");
-        var batteryStatusText = document.getElementById('battery-status-text-value');
-        var batteryStatusBar = document.getElementById('battery-status-bar');
-        var robotState = document.getElementById('robot-state');
-        var robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value");
-        var robotStateDetailsTime = document.getElementById("robot-state-details-time-value");
-        var loadingBarHome = document.getElementById('loading-bar-home');
+        var startButton = document.getElementById("start-button"),
+            pauseButton = document.getElementById("pause-button"),
+            stopButton = document.getElementById("stop-button"),
+            spotButton = document.getElementById("spot-button"),
+            goToButton = document.getElementById("go-to-button"),
+            areaButton = document.getElementById("area-button"),
+            storeMapButton = document.getElementById("store-map-button"),
+            loadMapButton = document.getElementById("load-map-button"),
+            fanspeedButton = document.getElementById("fanspeed-button"),
+            findRobotButton = document.getElementById("find-robot-button"),
+            homeButton = document.getElementById("home-button"),
+            batteryStatusText = document.getElementById('battery-status-text-value'),
+            batteryStatusBar = document.getElementById('battery-status-bar'),
+            robotState = document.getElementById('robot-state'),
+            robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value"),
+            robotStateDetailsTime = document.getElementById("robot-state-details-time-value"),
+            loadingBarHome = document.getElementById('loading-bar-home');
 
         var fanspeedPresets = {};
         var config = {};
@@ -525,7 +525,7 @@
                         ' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
                 }
 
-                if (res.in_cleaning === 1 || res.in_cleaning === 2 || res.state === 11 || res.state === 16) {
+                if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
                     if ([2,3,10].includes(res.state)) {
                         pauseButton.setAttribute("disabled", "disabled");
                         startButton.removeAttribute("disabled");
@@ -549,7 +549,7 @@
                     stopButton.removeAttribute("disabled");
                 }
 
-                if ([5,6,8,9,11,16,17].includes(res.state)) {
+                if ([5,6,8,9,11,16,17,18].includes(res.state)) {
                     homeButton.setAttribute("disabled", "disabled");
                 } else {
                     homeButton.removeAttribute("disabled");
@@ -572,25 +572,21 @@
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
                 robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
-                const isS50 = res.model === "roborock.vacuum.s5"; //TODO: Magic string
                 fanspeedPresets = res.msg_ver !== 3 ? {
                     1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
                     38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
                     60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
                     75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
-                    100: i18next.t('home.fanspeedPresets.max',"Max"),
-                    if(isS50) {
-                    105: i18next.t('home.fanspeedPresets.mop',"Mop")
-                    } 
+                    100: i18next.t('home.fanspeedPresets.max',"Max")
                 } : {
                     101: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
                     102: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
                     103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
-                    104: i18next.t('home.fanspeedPresets.max',"Max"),
-                    if(isS50) {
-                    105: i18next.t('home.fanspeedPresets.mop',"Mop")
-                    }
+                    104: i18next.t('home.fanspeedPresets.max',"Max")
                 };
+                if (res.model === "roborock.vacuum.s5") {
+                    fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
+                }
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
             }, (err) => fn.notificationToastError(err))
             .finally(() => {

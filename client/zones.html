@@ -19,6 +19,14 @@
          </ons-list-item>
     </ons-list>
 
+    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerSegments">Rooms configuration</ons-list-title>
+    <ons-list id="spot-list">
+         <ons-list-item tappable class="locations-list-item" onclick="switchToSegmentsEdit()">
+             <label><ons-icon icon="edit"></ons-icon></label>
+             <label data-i18n="zones.editSegments">Edit rooms</label>
+         </ons-list-item>
+    </ons-list>
+
     <script>
         let loadingBarZones = document.getElementById('loading-bar-zones');
         let zonesList = document.getElementById('zones-list');
@@ -87,6 +95,34 @@
                     'title': "Forbidden markers configuration map",
                     'data': {
                         'map': mapData
+                    }
+                });
+            })
+            .catch(err => fn.notificationToastError(err))
+            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
+        };
+
+        function switchToSegmentsEdit(index) {
+            loadingBarZones.setAttribute("indeterminate", "indeterminate");
+            let mapData, segmentNames = {};
+            fn.prequest("api/current_status")
+            .then ((res) => {
+                if (res['lab_status'] !== 1 || res['msg_ver'] !== 3) return Promise.reject(i18next.t('zones.noSegmentsSupport',"Your device's firmware doesn't support splitting the map into rooms."));
+                return true;
+            })
+            .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+            .then(res => {
+                mapData = res;
+                return fn.prequest("api/segment_names");
+            })
+            .then(res => {
+                res.forEach(pair => segmentNames[pair[0]] = pair[1]);
+                fn.pushPage({
+                    id: 'segments-configuration-map.html',
+                    title: "Segments configuration map",
+                    data: {
+                        map: mapData,
+                        names: segmentNames
                     }
                 });
             })
@@ -315,9 +351,9 @@
             // request map update
             fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
             // check for area and go to configuration
-            const getZones = fn.prequest("api/zones").then(res => generateZonesList(res), err => fn.notificationToastError(err));
-            const getSpots = fn.prequest("api/spots").then(res => generateSpotsList(res), err => fn.notificationToastError(err));
-            Promise.all([getZones, getSpots]).finally(() => loadingBarZones.removeAttribute("indeterminate"));
+            const getZones = fn.prequest("api/zones").then(res => generateZonesList(res));
+            const getSpots = fn.prequest("api/spots").then(res => generateSpotsList(res));
+            Promise.all([getZones, getSpots]).catch(err => fn.notificationToastError(err)).finally(() => loadingBarZones.removeAttribute("indeterminate"));
         };
     </script>
     <style>

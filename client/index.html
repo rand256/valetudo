@@ -159,14 +159,14 @@
         window.fn.toastErrorTimeout = 5e3;
 
         window.fn.notificationToastOK = function(text,timeout) {
-            text = text || i18next.t('common.commandOK',"Command successfully sent!");
+            text = text && String(text) || i18next.t('common.commandOK',"Command successfully sent!");
             timeout = timeout || window.fn.toastOKTimeout;
             label = i18next.t('common.dismiss',"Dismiss");
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
         }
 
         window.fn.notificationToastError = function(text,timeout) {
-            text = text || i18next.t('common.commandFailed',"That was an error") + '.';
+            text = text && String(text) || i18next.t('common.commandFailed',"That was an error") + '.';
             timeout = timeout || window.fn.toastErrorTimeout;
             label = i18next.t('common.dismiss',"Dismiss");
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
