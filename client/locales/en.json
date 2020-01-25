@@ -185,7 +185,7 @@
         "consumablesHeader": "Remaining time until consumables timers expire:\n\n",
         "consumablesAlert": "One of consumables timers has expired:\n\n",
         "consumablesContent": "Main brush {{mainBrush}} hours left\nSide brush {{sideBrush}} hours left\nFilter {{filter}} hours left\nSensors {{sensors}} hours left",
-        "binFull": "Dust bin congestion is detected, cleaning up is required!",
+        "binFull": "Dust bin congestion detected, cleaning up required!",
         "commandUnavailable": "This command is unavailable in current device state.",
         "noMapAvailable": "Sorry, the map is currently unavailable.",
         "loadmapExplanation": "You need to specify a name for the map to load:\n/loadmap First Floor",
@@ -467,7 +467,7 @@
             "n15": "Docking",
             "n16": "Going to target",
             "n17": "Zoned cleaning",
-            "n18": "Room cleaning"
+            "n18": "Rooms cleaning"
         },
         "errors": {
             "n0": "No error",
