@@ -371,9 +371,12 @@
             "minutes": "minutes",
             "name": "Name:",
             "namePlaceholder": "name of a timer",
-            "addZones": "Zones:",
-            "addCoords": "Add...",
+            "iterations": "Iterations:",
             "fanPower": "Fan power:",
+            "zones": "Zones:",
+            "addZones": "Add...",
+            "segments": "Rooms:",
+            "addSegments": "Add...",
             "timerDesc": "Choose timer settings.",
             "timerZoneDesc": "Choose timer name and zone coordinates.",
             "timerTimeDesc": "Select time and date the timer should be triggered on.",
@@ -389,6 +392,8 @@
             "chooseZone": "Choose a zone:",
             "zoneCount": "{{count}} zone",
             "zoneCount_plural": "{{count}} zones",
+            "chooseSegment": "Choose a room:",
+            "duplicatedSegment": "You can't add the same room multiple times!",
             "confirmDeleteTimer": "Do you really want to delete this timer?",
             "confirmTimezone": "Do you really want to set your timezone to \"{{newTimezone}}\"?",
             "noDNDEnabled": "There is no DND timer enabled yet.",
@@ -400,7 +405,8 @@
             "missingHoursMinutes": "Both minutes and hours must be specified.",
             "missingName": "You should specify a name.",
             "missingZones": "One or more non-empty zones must be specified.",
-            "missingTimer": "No such timer."
+            "missingTimer": "No such timer.",
+            "missingSegment": "Room not found on current map!"
         },
         "webInterface": {
             "general": "General",
