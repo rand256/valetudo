@@ -146,6 +146,10 @@ window.fn.map = map;
                 fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line first to split the room."));
                 return;
             }
+            if (Object.keys(map.getParsedMap().image.segments.center).length > 31) {
+                fn.notificationToastError(i18next.t('zones.segmentSplitTooMany',"You can't have more rooms, please merge something.")); // interesting that native app uses 16 as a limit, but it's 32 in constants. why?
+                return;
+            }
             ons.notification.confirm(i18next.t('zones.confirmSegmentSplit', {defaultValue: "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place cutting line differently multiple times until you find proper position.", segment: segmentNames[segmentIdx] || "#" + segmentIdx}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
             .then(answer => {
                 if (answer === 1) {

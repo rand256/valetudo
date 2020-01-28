@@ -138,8 +138,9 @@
         "segmentsCantBeMerged": "You can merge only adjacent rooms.",
         "confirmSegmentsMerge": "Are you sure you want to try merging rooms \"{{segment1}}\" and \"{{segment2}}\"?",
         "segmentsMergedOK": "Rooms successfully merged!",
-        "segmentSplitNoLine": "You need to place the cutting line first to split the room.",
-        "confirmSegmentSplit": "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place cutting line differently multiple times until you find proper position.",
+        "segmentSplitNoLine": "You need to place the cutting line into the room to split it.",
+        "segmentSplitTooMany": "You can't have more rooms, please merge something.",
+        "confirmSegmentSplit": "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place the cutting line several times until you find proper position.",
         "segmentSplitOK": "Room successfully split!",
         "segmentSplitSingleLine": "There can be only one splitting line!"
     },
