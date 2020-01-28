@@ -99,10 +99,13 @@
         "headerZones": "Eingestellte Zonen",
         "headerGotoLocations": "Eingestellte Zielpositionen",
         "headerForbiddenMarkers": "Verbotsmarkierungen",
+        "headerSegments": "Raumkonfiguration",
         "noZonesConfigured": "Bisher wurden keine Zonen eingestellt.",
         "noSpotsConfigured": "Bisher wurden keine Zielpunkte eingestellt.",
         "editForbiddenZones": "Verbotsmarkierungen festlegen",
+        "editSegments": "Räume bearbeiten",
         "noPersistentData": "Dauerhafte Daten sind abgeschaltet oder nicht verfügbar. Es können keine Verbotsmarkierungen bearbeitet werden.",
+        "noSegmentsSupport": "Dieses Gerät unterstützt die Einteilung der Karte in Räume nicht.",
         "addButton": "Hinzufügen",
         "renameButton": "Umbenennen",
         "deleteButton": "Löschen",
@@ -126,7 +129,19 @@
         "forbiddenMarkersTitle": "Verbotsmarkierungen bearbeiten",
         "forbiddenMarkersSavedOK": "Verbotsmarkierungen erfolgreich gespeichert!",
         "missingZone": "Keine solche Zone.",
-        "missingSpot": "Kein solches Ziel."
+        "missingSpot": "Kein solches Ziel.",
+        "segmentsPageBack": "Segmente",
+        "segmentsTitle": "Räume bearbeiten",
+        "enterSegmentName": "Benennung des markierten Raums:",
+        "segmentRenamedOK": "Raum erfolgreich umbenannt!",
+        "segmentRenameFailed": "Bei der Umbennenung trat ein Fehler auf.",
+        "segmentsCantBeMerged": "Es können nur angrenzende Räume zusammengeführt werden.",
+        "confirmSegmentsMerge": "Sind Sie sicher dass die Räume \"{{segment1}}\" und \"{{segment2}}\" zusammengeführt werden sollen?",
+        "segmentsMergedOK": "Räume wurden erfolgreich zusammengeführt.",
+        "segmentSplitNoLine": "Vor der Trennung muss eine Trennlinie gesetzt werden.",
+        "confirmSegmentSplit": "Sind Sie sicher dass der Raum \"{{segment}}\" getrennt werden soll? Hinweis: Die Trennlinie muss eventuell mehrfach an verschiedenen Positionen gesetzt werden bis die korrekte Position gefunden wird.",
+        "segmentSplitOK": "Raum erfolgreich getrennt.",
+        "segmentSplitSingleLine": "Es kann nur eine Trennlinie gesetzt werden."
     },
     "control": {
         "startButton": "Manuelle Steuerung starten",
@@ -195,7 +210,8 @@
         "mapLoadWait": "Bearbeitung wird in 30 Sekunden abgeschlossen.",
         "maps": "Liste der verfügbaren Karten:",
         "mapsElement": "\n* {{mapName}}",
-        "errorReply": "Es ist ein Fehler aufgetreten: {{error}}"
+        "errorReply": "Es ist ein Fehler aufgetreten: {{error}}",
+        "unknownCommand": "Unbekannter Befehl."
     },
     "settings": {
         "title": "Einstellungen",
