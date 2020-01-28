@@ -129,7 +129,7 @@
         "forbiddenMarkersTitle": "Verbotsmarkierungen bearbeiten",
         "forbiddenMarkersSavedOK": "Verbotsmarkierungen erfolgreich gespeichert!",
         "missingZone": "Keine solche Zone.",
-        "missingSpot": "Kein solches Ziel."
+        "missingSpot": "Kein solches Ziel.",
         "segmentsPageBack": "Segmente",
         "segmentsTitle": "Räume bearbeiten",
         "enterSegmentName": "Benennung des markierten Raums:",
@@ -210,7 +210,7 @@
         "mapLoadWait": "Bearbeitung wird in 30 Sekunden abgeschlossen.",
         "maps": "Liste der verfügbaren Karten:",
         "mapsElement": "\n* {{mapName}}",
-        "errorReply": "Es ist ein Fehler aufgetreten: {{error}}"
+        "errorReply": "Es ist ein Fehler aufgetreten: {{error}}",
         "unknownCommand": "Unbekannter Befehl."
     },
     "settings": {
