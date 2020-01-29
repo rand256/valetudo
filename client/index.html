@@ -132,7 +132,9 @@
 
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
-                        resolve(JSON.parse(request.responseText));
+                        try {
+                            resolve(JSON.parse(request.responseText));
+                        } catch (e) { console.error(e); }
                     } else {
                         console.error(request);
                         reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));

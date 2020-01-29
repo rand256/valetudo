@@ -134,7 +134,7 @@ export function VacuumMap(canvasElement) {
             if (options.segmentNames) {
                 segment.name = options.segmentNames[idx] || "#" + idx;
             }
-            if ((deviceStatus.in_cleaning > 0) && parsedMap.currently_cleaned_blocks && parsedMap.currently_cleaned_blocks.includes(idx)) {
+            if ((deviceStatus.in_cleaning === 3) && parsedMap.currently_cleaned_blocks && parsedMap.currently_cleaned_blocks.includes(idx)) {
                 segment.current = true;
                 segment.changed = true;
             }
@@ -193,7 +193,7 @@ export function VacuumMap(canvasElement) {
         updateGotoTarget(parsedMap.goto_target);
         updateForbiddenZones(parsedMap.forbidden_zones || []);
         updateVirtualWalls(parsedMap.virtual_walls|| []);
-        updateCurrentZones((deviceStatus.in_cleaning > 0) && parsedMap.currently_cleaned_zones || []);
+        updateCurrentZones((deviceStatus.in_cleaning === 2) && parsedMap.currently_cleaned_zones || []);
     }
 
     /**

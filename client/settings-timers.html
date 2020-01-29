@@ -94,6 +94,9 @@
                     </ons-col>
                     <ons-col></ons-col>
                 </ons-row>
+                <ons-row class="ntimer-item">
+                    <ons-col style="text-align: center; margin-bottom: 10px;"><ons-checkbox name="once" value="1" onclick="switchTimerOnce(this)"></ons-checkbox> <span data-i18n="settings.timers.runOnce">Run once and remove</span></ons-col>
+                </ons-row>
                 <div style="text-align: center" class="content-padded" ng-controller="ButtonsController">
                         <ons-button onclick="editTimerDialog.hide()" data-i18n="common.cancel">Cancel</ons-button>
                         <ons-button onclick="saveTimer()" data-i18n="common.save">Save</ons-button>
@@ -295,6 +298,16 @@
             .finally(() => {
                 loadingBarSettingsTimers.removeAttribute("indeterminate");
                 addSegmentButton.disabled = false;
+            });
+        };
+
+        function switchTimerOnce(elem) {
+            document.querySelectorAll('ons-checkbox[name="days"]').forEach(cb => {
+                if (elem.checked) {
+                    cb.setAttribute("disabled","disabled");
+                } else {
+                    cb.removeAttribute("disabled");
+                }
             });
         };
 
@@ -544,6 +557,8 @@
             for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
                 form.days[daysRunner].checked = false;
             }
+            form.once.checked = false;
+            switchTimerOnce(form.once);
             let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]'], input[name='segment_timer_id[]'");
             if (inputs.length) {
                 inputs.forEach(a => {
@@ -581,17 +596,21 @@
             form.day.value = cron[2] || "";
             form.hour.value = cron[1] || "";
             form.minute.value = cron[0] || "";
-            let days = cron[4].split(",");
-            for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
-                if (days.includes(form.days[daysRunner].value)) {
-                    form.days[daysRunner].checked = true;
+            if (cron[4] === "*" && fn.device.ver === 3) {
+                form.once.checked = true;
+                switchTimerOnce(form.once);
+            } else if (cron[4] !== "0,1,2,3,4,5,6") {
+                let days = cron[4].split(",");
+                for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
+                    if (days.includes(form.days[daysRunner].value)) {
+                        form.days[daysRunner].checked = true;
+                    }
                 }
             }
             if (timer.coordinates) {
                 addZoneCoordinates('-',timer.coordinates);
             }
             if (timer.segments) {
-                console.log(timer.segments)
                 loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                 getActualSegments()
                 .then(res => {
@@ -677,9 +696,12 @@
                 }
             }
             if (daySelection.length) {
-                daySelection = daySelection.join(",");
+                daySelection = daySelection.sort().join(",");
             } else {
-                daySelection = "*";
+                daySelection = fn.device.ver === 3 ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete"
+            }
+            if (form.once.checked && fn.device.ver === 3) {
+                daySelection = "*"; // that's it, clean and forget
             }
             // do not allow meaningless timers
             if (minutesValue === "*" || hoursValue === "*") {

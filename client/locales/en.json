@@ -388,6 +388,7 @@
             "timerEmptyTimeNote": "Empty means any.",
             "timerDaysDesc": "Select the days the timer should be triggered on.",
             "timerEmptyDayNote": "Empty means any day.",
+            "runOnce": "Run once and remove",
             "currentTimezone": "Your current timezone is set to:",
             "zonedCleaningHeader": "Zoned Cleaning Schedule (beta)",
             "noZonedCleaningSchedule": "No zoned cleaning schedule is configured yet.",
