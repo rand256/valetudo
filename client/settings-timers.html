@@ -308,7 +308,7 @@
             promises.push(fn.prequest("api/get_timezone").then(res => (currentTimeZone = res)));
             let timeZoneSelection = document.getElementById('timezone-selection');
             if (!timeZoneSelection.childElementCount) {
-                promises.push(fn.prequest("timezones.json").then(res => {
+                promises.push(fn.prequest("api/get_timezone_list").then(res => {
                     res.forEach(function (timezone) {
                         let option = document.createElement("option");
                         option.innerText = timezone;
