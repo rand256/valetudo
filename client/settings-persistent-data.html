@@ -159,8 +159,7 @@
             loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
             fn.prequest("api/current_status")
             .then((res) => {
-                const isS50 = res.model === "roborock.vacuum.s5"; //TODO: Magic string
-                if(isS50) {
+                if(fn.device.model === "roborock.vacuum.s5") {
                     document.getElementById('persistent_data_form').classList.remove("hidden");
                     initForm(res);
                 } else {

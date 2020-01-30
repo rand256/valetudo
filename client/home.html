@@ -189,8 +189,7 @@
                     if (spots[index].coordinates[0] === null) spots[index].coordinates = [25500,25500]; // todo: show message about spot is undefined or something
                     if (!fn.webifSettings.gotoImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                            fn.updateMapPage(true)
-                            .then(function(map) {
+                            updateMapPage(true).then(function(map) {
                                 map.addSpot(spots[index].coordinates);
                             })
                             .catch(() => {});
@@ -345,8 +344,7 @@
                     }
                     if (!fn.webifSettings.zonedImmediate) {
                         document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                            fn.updateMapPage(true)
-                            .then(function(map) {
+                            updateMapPage(true).then(function(map) {
                                 map.clearZones();
                                 payload.forEach(function(zone) {
                                     map.addZone(zone, true);
@@ -572,7 +570,7 @@
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
                 robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
-                fanspeedPresets = res.msg_ver !== 3 ? {
+                fanspeedPresets = fn.device.ver !== 3 ? {
                     1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
                     38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
                     60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
@@ -584,7 +582,7 @@
                     103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
                     104: i18next.t('home.fanspeedPresets.max',"Max")
                 };
-                if (res.model === "roborock.vacuum.s5") {
+                if (fn.device.model === "roborock.vacuum.s5") {
                     fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
                 }
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);

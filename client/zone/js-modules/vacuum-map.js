@@ -64,7 +64,6 @@ export function VacuumMap(canvasElement) {
             if (event.data.constructor === ArrayBuffer) {
                 let data = parseMap(event.data);
                 updateMap(data);
-                parsedMap = data;
             } else if (event.data.slice(0,10) === '{"status":') {
                 try {
                     let data = JSON.parse(event.data);
@@ -107,16 +106,16 @@ export function VacuumMap(canvasElement) {
         return pixels;
     }
 
-    function updateSegments(mapData) {
+    function updateSegments() {
         let segment, newSegments = [];
         let zonesPresent = locations.some(l => l instanceof Zone);
-        if (mapData.image && mapData.image.segments)
-        for (let idx in mapData.image.segments.center) {
+        if (parsedMap.image && parsedMap.image.segments)
+        for (let idx in parsedMap.image.segments.center) {
             idx = +idx;
             let existing, highlighted, sequence;
             let center = {
-                x: mapData.image.segments.center[idx].x/mapData.image.segments.center[idx].count,
-                y: mapData.image.segments.center[idx].y/mapData.image.segments.center[idx].count
+                x: parsedMap.image.segments.center[idx].x/parsedMap.image.segments.center[idx].count,
+                y: parsedMap.image.segments.center[idx].y/parsedMap.image.segments.center[idx].count
             };
             highlighted = false;
             sequence = 0;
@@ -135,11 +134,10 @@ export function VacuumMap(canvasElement) {
             if (options.segmentNames) {
                 segment.name = options.segmentNames[idx] || "#" + idx;
             }
-            if ((deviceStatus.in_cleaning > 0) && mapData.currently_cleaned_blocks && mapData.currently_cleaned_blocks.includes(idx)) {
+            if ((deviceStatus.in_cleaning === 3) && parsedMap.currently_cleaned_blocks && parsedMap.currently_cleaned_blocks.includes(idx)) {
                 segment.current = true;
                 segment.changed = true;
             }
-
             newSegments.push(segment);
         }
         locations = locations.filter(l => !(l instanceof Segment)).concat(newSegments);
@@ -191,32 +189,40 @@ export function VacuumMap(canvasElement) {
             }));
     }
 
-    function updateMapMetadata(mapData) {
-        updateGotoTarget(mapData.goto_target);
-        updateForbiddenZones(mapData.forbidden_zones || []);
-        updateVirtualWalls(mapData.virtual_walls|| []);
-        updateCurrentZones((deviceStatus.in_cleaning > 0) && mapData.currently_cleaned_zones || []);
+    function updateMapMetadata() {
+        updateGotoTarget(parsedMap.goto_target);
+        updateForbiddenZones(parsedMap.forbidden_zones || []);
+        updateVirtualWalls(parsedMap.virtual_walls|| []);
+        updateCurrentZones((deviceStatus.in_cleaning === 2) && parsedMap.currently_cleaned_zones || []);
     }
 
     /**
-     * Public function to update the displayed mapdata periodically.
+     * Public function to update mapdata and call internal update to redraw it.
      * Data is distributed into the subcomponents for rendering the map / path.
      * @param {object} mapData - parsed by RRMapParser data from "/api/map/latest" route
      */
     function updateMap(mapData) {
-        mapDrawer.draw(mapData.image);
-        pathDrawer.setPath(options.noPath ? {} : mapData.path, mapData.robot, mapData.robot_angle, mapData.charger, options.noPath ? {} : mapData.goto_predicted_path);
+        parsedMap = mapData;
+        updateMapInt();
+    }
+
+    /**
+     * Private function to update the displayed mapdata periodically.
+     */
+function updateMapInt(mapData) {
+        mapDrawer.draw(parsedMap.image);
+        pathDrawer.setPath(options.noPath ? {} : parsedMap.path, parsedMap.robot, parsedMap.robot_angle, parsedMap.charger, options.noPath ? {} : parsedMap.goto_predicted_path);
         pathDrawer.draw();
 
         if (options.showSegments) {
-            updateSegments(mapData);
+            updateSegments();
         }
 
         switch (options.metaData) {
             case false:
             case "none": break;
-            case "forbidden": updateForbiddenZones(mapData.forbidden_zones || []); updateVirtualWalls(mapData.virtual_walls|| []); break;
-            default: updateMapMetadata(mapData);
+            case "forbidden": updateForbiddenZones(parsedMap.forbidden_zones || []); updateVirtualWalls(parsedMap.virtual_walls|| []); break;
+            default: updateMapMetadata();
         }
 
         if (redrawCanvas) redrawCanvas();
@@ -275,10 +281,10 @@ export function VacuumMap(canvasElement) {
         });
 
         const boundingBox = {
-            minX: mapData.image.position.left,
-            minY: mapData.image.position.top,
-            maxX: mapData.image.position.left + mapData.image.dimensions.width,
-            maxY: mapData.image.position.top + mapData.image.dimensions.height
+            minX: parsedMap.image.position.left,
+            minY: parsedMap.image.position.top,
+            maxX: parsedMap.image.position.left + parsedMap.image.dimensions.width,
+            maxY: parsedMap.image.position.top + parsedMap.image.dimensions.height
         }
         const initialScalingFactor = Math.min(
             canvas.width / (boundingBox.maxX - boundingBox.minX),
@@ -375,7 +381,7 @@ export function VacuumMap(canvasElement) {
         redrawCanvas = redraw;
 
         pathDrawer.scale(initialScalingFactor, {noDraw: true});
-        updateMap(mapData);
+        updateMapInt();
 
         let lastX = canvas.width / 2, lastY = canvas.height / 2,
             dragStart;

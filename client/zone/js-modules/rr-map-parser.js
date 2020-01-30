@@ -227,7 +227,7 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
             if(blockCount > 0) {
                 for (let i = 0; i < length; i++) {
-                    blocks.push(buf.readUInt16LE(0x0c + offset + i));
+                    blocks.push(buf.readUInt8(0x0c + offset + i));
                 }
 
                 result[type] = blocks;

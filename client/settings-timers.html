@@ -8,25 +8,38 @@
                 <p class="ztimer-item" data-i18n="settings.timers.timerZoneDesc">Choose timer name and zone coordinates.</p>
                 <ons-row>
                     <ons-col width="100px" align="center" data-i18n="settings.timers.name">Name:</ons-col>
-                    <ons-col align="left"><ons-input type="text" placeholder="name of a timer" min="1" max="30" name="timer_name" data-i18n="[placeholder]settings.timers.namePlaceholder"></ons-col>
+                    <ons-col align="left"><ons-input type="text" placeholder="name of a timer" min="1" max="30" name="timer_name" data-i18n="[placeholder]settings.timers.namePlaceholder" /></ons-col>
                 </ons-row>
                 <ons-row class="ntimer-item">
                     <ons-col width="100px" align="center" data-i18n="settings.timers.fanPower">Fan power:</ons-col>
                     <ons-col align="left"><ons-select select-id="fan_power_select">
                         <option value="0" data-i18n="home.fanspeedPresets.whisper">Whisper</option>
                         <option value="1" data-i18n="home.fanspeedPresets.quiet">Quiet</option>
-                        <option value="2" data-i18n="home.fanspeedPresets.balanced">Balanced</option>
+                        <option value="2" data-i18n="home.fanspeedPresets.balanced" selected>Balanced</option>
                         <option value="3" data-i18n="home.fanspeedPresets.turbo">Turbo</option>
                         <option value="4" data-i18n="home.fanspeedPresets.max">Max</option>
                         <option value="5" data-i18n="home.fanspeedPresets.mop">Mop</option>
                     </ons-select></ons-col>
                 </ons-row>
+                <ons-row class="ntimer-item">
+                    <ons-col width="100px" align="center" data-i18n="settings.timers.iterations">Iterations:</ons-col>
+                    <ons-col align="left"><ons-select select-id="iterations_select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </ons-select></ons-col>
+                </ons-row>
+                <ons-row class="ntimer-item">
+                    <ons-col width="100px" align="center" data-i18n="settings.timers.segments">Segments:</ons-col>
+                    <ons-col align="left"><ons-button modifier="quiet" id="add_segment" class="button-margin" onclick="addSegmentClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addSegments">Add...</span></ons-button></ons-col>
+                </ons-row>
+                <ons-row class="ntimer-item" id="segment-ids"></ons-row>
                 <ons-row class="ztimer-item">
                     <ons-col width="100px" align="center" data-i18n="settings.timers.zones">Zones:</ons-col>
-                    <ons-col align="left"><ons-button id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button></ons-col>
+                    <ons-col align="left"><ons-button modifier="quiet" id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button></ons-col>
                 </ons-row>
                 <ons-row class="ztimer-item" id="zone-coordinates"></ons-row>
-                <hr class="ztimer-item">
+                <hr>
                 <!--Date and time-->
                 <p><span data-i18n="settings.timers.timerTimeDesc">Select time and date the timer should be triggered on.</span><br/><i><span data-i18n="settings.timers.timerEmptyTimeNote">Empty means any.</span></i></p>
                 <ons-row>
@@ -80,6 +93,9 @@
                         <label for="timer_thu" class="center" data-i18n="common.days.3">Thursday</label>
                     </ons-col>
                     <ons-col></ons-col>
+                </ons-row>
+                <ons-row class="ntimer-item">
+                    <ons-col style="text-align: center; margin-bottom: 10px;"><ons-checkbox name="once" value="1" onclick="switchTimerOnce(this)"></ons-checkbox> <span data-i18n="settings.timers.runOnce">Run once and remove</span></ons-col>
                 </ons-row>
                 <div style="text-align: center" class="content-padded" ng-controller="ButtonsController">
                         <ons-button onclick="editTimerDialog.hide()" data-i18n="common.cancel">Cancel</ons-button>
@@ -160,20 +176,13 @@
         var timersSettingsZonedTimersList = document.getElementById('settings-zoned-timers-timer-list');
         var dndTimerList = document.getElementById('settings-dnd-timer-list');
         var addZoneCoordinatesButton = document.getElementById('add_coordinates');
+        var addSegmentButton = document.getElementById('add_segment');
         var editTimezoneDialog = document.getElementById('edit-timezone-dialog');
         var editTimerDialog = document.getElementById('edit-timer-dialog');
-
-        var timers_ver = 0;
-
-        document.querySelector("#settings-timers-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         ons.getScriptPage().onInit = function() {
             fn.localize('#settings-timers-page');
             fn.prequest("api/current_status")
-            .then(res => {
-                timers_ver = res.msg_ver || 0; // todo: make it global on index.html?
-            })
-            .catch(e => {});
         };
 
         ons.getScriptPage().onShow = function () {
@@ -181,6 +190,8 @@
             updateSettingsTimersPage();
             updateDndTimerPage();
         };
+
+        document.querySelector("#settings-timers-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
         function addZoneCoordinates(name,coordinates) {
             let coords = [], coordInputs = document.querySelectorAll("#add-timer-form input[name='zoned_timer_coords[]']");
@@ -194,7 +205,7 @@
             }
             let anchor = document.querySelector('#add-timer-form > hr');
             anchor.parentNode.insertBefore(ons.createElement(
-                '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey;" onclick="removeTimerZone(this);">[x] (' + (i18next.t('settings.timers.zoneCount',{defaultValue: "{{count}} zone" + (coordinates.length !== 1 ? "s" : ""), count: coordinates.length})) + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(coordinates) + '" disabled>' + name + '</ons-col></ons-row>'
+                '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey; text-align: center;" onclick="removeTimerLocation(this);">[x] (' + (i18next.t('settings.timers.zoneCount',{defaultValue: "{{count}} zone" + (coordinates.length !== 1 ? "s" : ""), count: coordinates.length})) + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(coordinates) + '" disabled>' + name + '</ons-col></ons-row>'
             ),anchor);
         };
 
@@ -229,7 +240,78 @@
             });
         };
 
-        function removeTimerZone(elem) {
+        function getActualSegments() {
+            var segmentNames = {};
+            return fn.prequest("api/segment_names")
+            .then(res => {
+                res.forEach(pair => segmentNames[pair[0]] = pair[1]);
+                return fn.prequest("api/map/latest", "GET", "arraybuffer")
+            })
+            .then(res => {
+                let segments = [], mapData = window.fn.parseBinaryMap(res);
+                if (mapData.image && mapData.image.segments && mapData.image.segments.center) {
+                    segments = Object.keys(mapData.image.segments.center).map(id => { return {id: +id, name: segmentNames[id] && segmentNames[id] + ' (#' + id + ')' || '#' + id}; });
+                }
+                segments.sort((a, b) => a.name.localeCompare(b.name));
+                return segments;
+            })
+        }
+
+        function addSegment(name,id) {
+            let ids = [], idInputs = document.querySelectorAll("#add-timer-form input[name='segment_timer_id[]']");
+            if (idInputs.length) {                
+                idInputs.forEach(input => ids.push(+input.value));
+            }
+            if (ids.includes(id)) { fn.notificationToastError(i18next.t('settings.timers.duplicatedSegment',"You can't add the same room multiple times!")); return; }
+            ids.push(id);
+            let anchor = document.querySelector('#add-timer-form > hr');
+            anchor.parentNode.insertBefore(ons.createElement(
+                '<ons-row><ons-col width="40px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey; text-align: center;" onclick="removeTimerLocation(this);">[x]</ons-col><ons-col><ons-input type="hidden" name="segment_timer_id[]" value="' + id + '" disabled>' + name + '</ons-col></ons-row>'
+            ),anchor);
+        };
+
+        function addSegmentClick() {
+            addSegmentButton.disabled = true;
+            loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+            getActualSegments()
+            .then(res => {
+                let segments = res,
+                    options = [];
+                for (var i = 0; i < segments.length; i++){
+                    options.push(segments[i].name);
+                }
+                options.push({
+                    label: i18next.t('common.cancel',"Cancel"),
+                    icon: 'md-close'
+                });
+                ons.openActionSheet({
+                    title: i18next.t('settings.timers.chooseSegment',"Choose a room:"),
+                    cancelable: true,
+                    buttons: options
+                }).then(function (index) {
+                    if(index > -1 && index < segments.length) {
+                        addSegment(segments[index].name, segments[index].id);
+                    }
+                });
+            })
+            .catch(err => fn.notificationToastError(err))
+            .finally(() => {
+                loadingBarSettingsTimers.removeAttribute("indeterminate");
+                addSegmentButton.disabled = false;
+            });
+        };
+
+        function switchTimerOnce(elem) {
+            document.querySelectorAll('ons-checkbox[name="days"]').forEach(cb => {
+                if (elem.checked) {
+                    cb.setAttribute("disabled","disabled");
+                } else {
+                    cb.removeAttribute("disabled");
+                }
+            });
+        };
+
+        function removeTimerLocation(elem) {
             elem.parentNode.parentNode.removeChild(elem.parentNode);
         };
 
@@ -239,7 +321,7 @@
             promises.push(fn.prequest("api/get_timezone").then(res => (currentTimeZone = res)));
             let timeZoneSelection = document.getElementById('timezone-selection');
             if (!timeZoneSelection.childElementCount) {
-                promises.push(fn.prequest("timezones.json").then(res => {
+                promises.push(fn.prequest("api/get_timezone_list").then(res => {
                     res.forEach(function (timezone) {
                         let option = document.createElement("option");
                         option.innerText = timezone;
@@ -299,11 +381,11 @@
 
         function updateDndTimerPage() {
             loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-            while (dndTimerList.lastElementChild !== dndTimerList.firstElementChild) {
-                dndTimerList.removeChild(dndTimerList.lastElementChild);
-            }
             fn.prequest("api/get_dnd")
             .then((res) => {
+                while (dndTimerList.lastElementChild !== dndTimerList.firstElementChild) {
+                    dndTimerList.removeChild(dndTimerList.lastElementChild);
+                }
                 if (res && (res.length == 0 || res[0].enabled == 0)) {
                     dndTimerList.appendChild(ons.createElement(
                         "<ons-list-item>\n" +
@@ -373,12 +455,11 @@
             zoned = zoned ? true : false;
             let timersList = zoned ? timersSettingsZonedTimersList : timersSettingsTimersList;
             loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-            while (timersList.lastElementChild !== timersList.firstElementChild) {
-                timersList.removeChild(timersList.lastElementChild);
-            }
-
             fn.prequest(zoned ? "api/ztimers" : "api/timers")
             .then((res) => {
+                while (timersList.lastElementChild !== timersList.firstElementChild) {
+                    timersList.removeChild(timersList.lastElementChild);
+                }
                 if (res == null || res.length == 0) {
                     timersList.firstElementChild.style.display = "";
                 } else {
@@ -465,7 +546,8 @@
         function clearTimerDialog(zoned) {
             let form = document.getElementById('add-timer-form');
             form.zoned.value = zoned ? 1 : 0;
-            form.fan_power_select.value = "";
+            form.fan_power_select.value = 2;
+            form.iterations_select.value = 1;
             form.timer_name.value = "";
             form.edit.value = "";
             form.month.value = "";
@@ -475,7 +557,9 @@
             for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
                 form.days[daysRunner].checked = false;
             }
-            let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
+            form.once.checked = false;
+            switchTimerOnce(form.once);
+            let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]'], input[name='segment_timer_id[]'");
             if (inputs.length) {
                 inputs.forEach(a => {
                     while (a.parentNode && a.nodeName !== "ONS-ROW") { a = a.parentNode; };
@@ -502,23 +586,43 @@
                 case 103: fanPower = 3; break;
                 case 104: fanPower = 4; break;
                 case 105: fanPower = 5; break;
-                default: fanPower = "";
+                default: fanPower = 2;
             }
             form.fan_power_select.value = fanPower;
+            form.iterations_select.value = timer.iterations || 1;
             form.zoned.value = zoned ? 1 : 0;
             form.edit.value = timerId;
             form.month.value = cron[3] || "";
             form.day.value = cron[2] || "";
             form.hour.value = cron[1] || "";
             form.minute.value = cron[0] || "";
-            let days = cron[4].split(",");
-            for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
-                if (days.includes(form.days[daysRunner].value)) {
-                    form.days[daysRunner].checked = true;
+            if (cron[4] === "*" && fn.device.ver === 3) {
+                form.once.checked = true;
+                switchTimerOnce(form.once);
+            } else if (cron[4] !== "0,1,2,3,4,5,6") {
+                let days = cron[4].split(",");
+                for(let daysRunner = 0; daysRunner < form.days.length; daysRunner++) {
+                    if (days.includes(form.days[daysRunner].value)) {
+                        form.days[daysRunner].checked = true;
+                    }
                 }
             }
             if (timer.coordinates) {
                 addZoneCoordinates('-',timer.coordinates);
+            }
+            if (timer.segments) {
+                loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+                getActualSegments()
+                .then(res => {
+                    timer.segments.split(',').forEach(id => {
+                        addSegment((res.find(r => r.id === +id) || '').name || i18next.t('settings.timers.missingSegment',"Segment not found on current map!"),id);
+                    })
+                })
+                .catch(err => fn.notificationToastError(err))
+                .finally(() => {
+                    loadingBarSettingsTimers.removeAttribute("indeterminate");
+                    addSegmentButton.disabled = false;
+                });
             }
         }
 
@@ -592,9 +696,12 @@
                 }
             }
             if (daySelection.length) {
-                daySelection = daySelection.join(",");
+                daySelection = daySelection.sort().join(",");
             } else {
-                daySelection = "*";
+                daySelection = fn.device.ver === 3 ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete"
+            }
+            if (form.once.checked && fn.device.ver === 3) {
+                daySelection = "*"; // that's it, clean and forget
             }
             // do not allow meaningless timers
             if (minutesValue === "*" || hoursValue === "*") {
@@ -606,13 +713,14 @@
             // fanpower
             var fanPower;
             switch (form.fan_power_select.value) {
-                case "0": fanPower = timers_ver === 3 ? 101 : 1 ; break;
-                case "1": fanPower = timers_ver === 3 ? 101 : 38; break;
-                case "2": fanPower = timers_ver === 3 ? 102 : 60; break;
-                case "3": fanPower = timers_ver === 3 ? 103 : 75; break;
-                case "4": fanPower = timers_ver === 3 ? 104 : 100; break;
+                case "0": fanPower = fn.device.ver === 3 ? 101 : 1 ; break;
+                case "1": fanPower = fn.device.ver === 3 ? 101 : 38; break;
+                case "3": fanPower = fn.device.ver === 3 ? 103 : 75; break;
+                case "4": fanPower = fn.device.ver === 3 ? 104 : 100; break;
                 case "5": fanPower = 105; break;
+                default: fanPower = fn.device.ver === 3 ? 102 : 60; break;
             }
+            var iterations = +form.iterations_select.value;
             // next promises
             let promise, coords = "";
             // special case for zoned timers
@@ -625,6 +733,13 @@
                     fn.notificationToastError(i18next.t('settings.timers.missingZones',"One or more non-empty zones must be specified."));
                     return;
                 }
+            }
+            // special case for segment timers
+            let segments = "", segmentInputs = form.querySelectorAll("input[name='segment_timer_id[]']");
+            if (segmentInputs.length) {
+                segments = [];
+                segmentInputs.forEach(input => segments.push(+input.value));
+                segments = segments.join(",");
             }
             new Promise((resolve,reject) => {
                 if (edit === timerName) {
@@ -645,7 +760,7 @@
                 })
                 .catch(e => reject(e))
             })
-            .then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ enabled: true, id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, edit: edit }), "PUT"))
+            .then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ enabled: true, id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, segments: segments, iterations: iterations, edit: edit }), "PUT"))
             .then(() => {
                 updateSettingsTimersPage(zoned);
                 editTimerDialog.hide();
@@ -663,8 +778,8 @@
             zoned = zoned ? true : false;
             // show different headers for different modes and fw
             editTimerDialog.querySelectorAll('.ztimer-item').forEach(item => item.style.display = (zoned ? '' : 'none'));
-            editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && timers_ver === 3 ? '' : 'none'));
-            if (timers_ver === 3) {
+            editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && fn.device.ver === 3 ? '' : 'none'));
+            if (fn.device.ver === 3) {
                 editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none';
             }
             //

@@ -132,7 +132,9 @@
 
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
-                        resolve(JSON.parse(request.responseText));
+                        try {
+                            resolve(JSON.parse(request.responseText));
+                        } catch (e) { console.error(e); }
                     } else {
                         console.error(request);
                         reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
@@ -185,7 +187,14 @@
             fn.loadView(targetID);
         }
 
-        var waitForLocalize = fn.prequest("api/get_interface_config")
+        var waitForGlobals = fn.prequest("api/current_status")
+        .then(res => {
+            fn.device = {
+                model: res.model,
+                ver: res.msg_ver
+            };
+            return fn.prequest("api/get_interface_config");
+        })
         .then(res => {
             fn.webifSettings = res;
             return i18next.use(i18nextXHRBackend).init({
@@ -205,10 +214,21 @@
             })
         })
         .then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-        .catch(e => console.log('loading interface configuration has failed', e));
+        .catch(e => console.error('loading interface configuration has failed', e));
+
+        if (ons.platform.isIPhoneX()) {
+            document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+        }
+    </script>
+
+    <script type="module" crossorigin>
+        import { RRMapParser } from "./zone/js-modules/rr-map-parser.js";
+        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+        window.fn.parseBinaryMap = function(gzippedMap) { return RRMapParser.PARSE(pako.inflate(gzippedMap)) || {}; };
+        window.fn.createVacuumMap = function(canvasElement) { return new VacuumMap(canvasElement); }
 
         ons.ready(function () {
-            waitForLocalize.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
+            waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
 
             // todo: make it work without timeout hacks
             switch (window.location.hash) {
@@ -234,11 +254,8 @@
                 }
             }, false);
         });
+        </script>
 
-        if (ons.platform.isIPhoneX()) {
-            document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
-        }
-    </script>
     <ons-navigator id="appNavigator" swipeable swipe-target-width="80px"></ons-navigator>
 
     <template id="app-splitter.html">

@@ -377,6 +377,8 @@
             "name": "Nom:",
             "namePlaceholder": "nom d'une minuterie",
             "iterations": "Iterations:",
+            "zones": "Zones:",
+            "addZones": "Ajouter...",
             "fanPower": "Force d'aspiration:",
             "zones": "Zones:",
             "addZones": "Zones:",
