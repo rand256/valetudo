@@ -90,7 +90,7 @@ export function VacuumMap(canvasElement) {
 
     function parseMap(gzippedMap) {
         try {
-            return gzippedMap && gzippedMap.byteLength && RRMapParser.PARSE(pako.inflate(gzippedMap)) || FallbackMap.parsedData;
+            return gzippedMap && gzippedMap.byteLength && RRMapParser.PARSE(pako.inflate(gzippedMap)) || FallbackMap.parsedData();
         } catch (e) { console.log(e); };
         return null;
     }
