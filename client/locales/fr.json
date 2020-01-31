@@ -164,7 +164,7 @@
             "map": "/map - vous enverra une simple image de la carte de votre maison.",
             "power": "/power - spécifie la puissance actuelle du ventilateur dans une plage de 1 à 100, ou une valeur spéciale 105 pour le mode vadrouille pour les robots qui le prennent en charge.\n\n38 - Silencieux\n60 - Équilibré\n75 - Turbo\n100 - Max (non recommandé!)",
             "powerV3": "/power - spécifie la puissance actuelle du ventilateur:\n\n101 - Calme\n102 - Equilibré\n103 - Turbo\n104 - Max\n105 - Lavette",
-            "segments": "/pièce - énumérera les noms de pièces disponibles qui pourraient être utilisés pour le nettoyage des pièces.",
+            "segments": "/pièces",
             "zones": "/zones - listera les zones configurées qui pourraient être utilisées dans le nettoyage zoné.",
             "spots": "/spots - listera les spots configurés qui pourraient être utilisés comme cibles /goto.",
             "loadmap": "/loadmap - essaiera de charger la carte spécifiée, disponible uniquement à l'état inactif ou en charge.",
