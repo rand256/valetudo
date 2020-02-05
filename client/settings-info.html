@@ -160,7 +160,7 @@
 
         function sendUpdateRequest() {
             let url, md5;
-            ons.notification.alert(i18next.t('settings.info.firmwareUpdateWarning',"This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value."),{title: i18next.t('common.warning',"Warning")})
+            ons.notification.alert(i18next.t('settings.info.firmwareUpdateWarning',"This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to external IP address and have no redirects."),{title: i18next.t('common.warning',"Warning")})
             .then(() => ons.notification.prompt(i18next.t('settings.info.firmwareUpdateEnterURL',"Please enter URL to firmware pkg file:"),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]}))
             .then((res) => {
                 if (!res) return Promise.reject("cancel");

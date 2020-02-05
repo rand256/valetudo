@@ -243,7 +243,7 @@ export class GotoTarget  {
 
     draw(ctx, transformFromMapSpace) {
         const p1 = new DOMPoint(this.x, this.y).matrixTransform(transformFromMapSpace);
-
+        ctx.save();
         ctx.beginPath();
         ctx.lineWidth = 2;
         ctx.arc(p1.x, p1.y, 5, 0, 2 * Math.PI, false);
@@ -251,6 +251,7 @@ export class GotoTarget  {
         ctx.fill();
         ctx.strokeStyle = 'rgb(53, 145, 26)';
         ctx.stroke();
+        ctx.restore();
     }
 }
 
@@ -272,12 +273,13 @@ export class CurrentCleaningZone  {
         const p1Screen = this.p1.matrixTransform(transformFromMapSpace);
         const p2Screen = this.p2.matrixTransform(transformFromMapSpace);
 
+        ctx.save();
         ctx.strokeStyle = "rgb(53, 145, 26)";
         ctx.fillStyle = "rgba(107, 244, 66, 0.3)";
-
         ctx.lineWidth = 2;
         ctx.fillRect(p1Screen.x, p1Screen.y, p2Screen.x - p1Screen.x, p2Screen.y - p1Screen.y);
         ctx.strokeRect(p1Screen.x, p1Screen.y, p2Screen.x - p1Screen.x, p2Screen.y - p1Screen.y);
+        ctx.restore();
     }
 }
 

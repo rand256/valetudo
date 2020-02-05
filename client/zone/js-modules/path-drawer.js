@@ -44,7 +44,7 @@ export function PathDrawer() {
         path = newPath;
         predictedPath = newPredictedPath;
         robotPosition = newRobotPosition || robotPosition;
-        robotAngle = robotAngle || newRobotAngle;
+        robotAngle = newRobotAngle || robotAngle;
         chargerPosition = newChargerPosition || chargerPosition;
     }
 

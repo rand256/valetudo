@@ -132,7 +132,9 @@
 
                 request.onload = function () {
                     if (request.status >= 200 && request.status < 400) {
-                        resolve(JSON.parse(request.responseText));
+                        try {
+                            resolve(JSON.parse(request.responseText));
+                        } catch (e) { console.error(e); }
                     } else {
                         console.error(request);
                         reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
@@ -191,8 +193,13 @@
                 model: res.model,
                 ver: res.msg_ver
             };
-            return fn.prequest("api/get_interface_config");
+        }, err => {
+            fn.device = {
+                model: "unknown",
+                ver: 1
+            };
         })
+        .then(res => fn.prequest("api/get_interface_config"))
         .then(res => {
             fn.webifSettings = res;
             return i18next.use(i18nextXHRBackend).init({
@@ -212,7 +219,10 @@
             })
         })
         .then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-        .catch(e => console.error('loading interface configuration has failed', e));
+        .catch(e => {
+            fn.localize = function() {};
+            console.error('loading interface configuration has failed', e);
+        });
 
         if (ons.platform.isIPhoneX()) {
             document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
