@@ -1,0 +1,46 @@
+.toolbar {
+    background:bottom no-repeat #223344;
+}
+
+.toolbar__bg, .card, .card--material, .tabbar, .list {
+    background:#223344
+}
+
+:checked + .tabbar__button, .alert-dialog-button{
+    color: #0DB9F0;
+}
+
+.progress-bar__primary, .progress-bar__secondary, .progress-bar--indeterminate {
+    background-color: #0DB9F0;
+}
+
+.page, .page__background, .page__content {
+    background-color: #000000;
+}
+
+.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .card__content, .back-button, .list-item, .text-input, .select-input, .alert-dialog-title, .alert-dialog-content{
+    color: #DDEEFF !important;
+}
+
+.button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card, .alert-dialog{
+    color: #DDEEFF !important;
+    background-color: #223344;
+}
+
+.button, .map-page-buttons > ons-fab {
+    background-color: #44586B;
+}
+
+.back-button__icon{
+    fill: #DDEEFF;
+}
+
+:root {
+    --map-background-1: #000000 !important;
+    --map-background-2:#000000 !important;
+    --map-free:#54687B !important;
+    --map-occupied:#54687B !important;
+    --map-segment:#223344 !important;
+    --map-segment-border:#ffffff !important;
+    --path:#ffffff !important;
+}

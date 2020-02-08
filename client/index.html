@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="css/onsenui.min.css">
     <link rel="stylesheet" href="css/onsen-css-components.min.css">
+    
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
     <script src="js/onsenui.min.js"></script>
     <script src="js/geometry-polyfill.js"></script>
@@ -202,6 +203,15 @@
         .then(res => fn.prequest("api/get_interface_config"))
         .then(res => {
             fn.webifSettings = res;
+
+            if(fn.webifSettings.style !== "" &&fn.webifSettings.style !== undefined){
+                var fileref=document.createElement("link");
+                fileref.setAttribute("rel", "stylesheet");
+                fileref.setAttribute("type", "text/css");
+                fileref.setAttribute("href", "css/"+fn.webifSettings.style+".css");
+                document.getElementsByTagName("head")[0].appendChild(fileref)
+            }
+
             return i18next.use(i18nextXHRBackend).init({
                 interpolation: {
                     format: function(value, format, lng) {
