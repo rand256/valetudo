@@ -18,11 +18,11 @@
     background-color: #000000;
 }
 
-.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .card__content, .back-button, .list-item, .text-input, .select-input{
+.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .card__content, .back-button, .list-item, .text-input, .select-input, .alert-dialog-title, .alert-dialog-content{
     color: #DDEEFF !important;
 }
 
-.button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card{
+.button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card, .alert-dialog{
     color: #DDEEFF !important;
     background-color: #223344;
 }
@@ -31,7 +31,7 @@
     background-color: #44586B;
 }
 
-.back-button__icon {
+.back-button__icon{
     fill: #DDEEFF;
 }
 
