@@ -38,7 +38,7 @@
 :root {
     --map-background-1: #000000 !important;
     --map-background-2:#000000 !important;
-    --map-free:#1f97ff !important;
+    --map-free:#54687B !important;
     --map-occupied:#54687B !important;
     --map-segment:#223344 !important;
     --map-segment-border:#ffffff !important;
