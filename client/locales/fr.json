@@ -150,6 +150,7 @@
     },
     "telegram": {
         "fanpower": {
+            "whisper": "Chuchoter",
             "quiet": "Silencieux",
             "balanced": "Équilibré",
             "turbo": "Turbo",
