@@ -161,6 +161,8 @@ export class TouchHandler {
         this.trackedElement.addEventListener("touchcancel", e => this.pointerUp(e, this.touchChangesFromTouchEvent(e)));
         this.trackedElement.addEventListener("touchend", e => this.pointerUp(e, this.touchChangesFromTouchEvent(e)));
 
+        this.pointerMoveThrottler = false;
+
         this.ongoingGesture = new NoGesture();
     }
 
@@ -210,8 +212,16 @@ export class TouchHandler {
     }
 
     pointerMove(evt, changedTouches) {
+        if (this.pointerMoveThrottler) {
+            return;
+        }
+        this.pointerMoveThrottler = true;
+        setTimeout(() => { this.pointerMoveThrottler = false; },20);
+
         evt.stopPropagation();
-        evt.preventDefault();
+        if (evt.cancelable) {
+            evt.preventDefault();
+        }
 
         this.ongoingGesture.updatePointerPosition(changedTouches);
 
