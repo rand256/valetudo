@@ -10,11 +10,15 @@
     color: #0DB9F0;
 }
 
+.progress-bar__primary, .progress-bar__secondary {
+    background-color: #0DB9F0;
+}
+
 .page, .page__background, .page__content {
     background-color: #000000;
 }
 
-.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .map-page-buttons > ons-fab, .card__content, .back-button, .list-item, .text-input, .select-input{
+.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .card__content, .back-button, .list-item, .text-input, .select-input{
     color: #DDEEFF !important;
 }
 
@@ -23,7 +27,7 @@
     background-color: #223344;
 }
 
-.button {
+.button, .map-page-buttons > ons-fab {
     background-color: #44586B;
 }
 
