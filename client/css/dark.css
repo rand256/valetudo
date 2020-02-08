@@ -1,0 +1,38 @@
+.toolbar {
+    background:bottom no-repeat #223344;
+}
+
+.toolbar__bg, .card, .card--material, .tabbar {
+    background:#223344
+}
+
+:checked + .tabbar__button{
+    color: #0DB9F0;
+}
+
+.page, .page__background, .page__content {
+    background-color: #000000;
+}
+
+.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .map-page-buttons > ons-fab, .card__content, .back-button{
+    color: #DDEEFF !important;
+}
+
+.button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card{
+    color: #DDEEFF !important;
+    background-color: #223344;
+}
+
+.back-button__icon {
+    fill: #DDEEFF;
+}
+
+:root {
+    --map-background-1: #000000 !important;
+    --map-background-2:#000000 !important;
+    --map-free:#1f97ff !important;
+    --map-occupied:#54687B !important;
+    --map-segment:#223344 !important;
+    --map-segment-border:#ffffff !important;
+    --path:#ffffff !important;
+}
