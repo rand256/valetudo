@@ -6,7 +6,7 @@
     background:#223344
 }
 
-:checked + .tabbar__button{
+:checked + .tabbar__button, .alert-dialog-button{
     color: #0DB9F0;
 }
 
