@@ -50,6 +50,9 @@ button.fab:active, ons-fab.fab:active, ons-speed-dial-item.fab:active {
 ons-select option {
     background-color: #9a9a9a;
 }
+.ons-action-sheet-zoned .action-sheet-button-half {
+    background: #223344;
+}
 
 #sendUpdateRequestButton {
     color: darkgray !important;
