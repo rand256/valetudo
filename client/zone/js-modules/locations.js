@@ -843,7 +843,7 @@ export class Segment {
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
 
-        ctx.fillStyle = this.highlighted ? '#369de0' : '#046cd4';
+        ctx.fillStyle = this.highlighted ? (getComputedStyle(document.documentElement).getPropertyValue('--map-segment-pin-selected') || '#369de0') : (getComputedStyle(document.documentElement).getPropertyValue('--map-segment-pin') || '#046cd4');
 
         measure = ctx.measureText('\uf041');
         this.icon = {x: center.x, y: center.y, width: measure.width, height: 12 * scaleFactor};
