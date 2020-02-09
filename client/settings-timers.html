@@ -205,7 +205,7 @@
             }
             let anchor = document.querySelector('#add-timer-form > hr');
             anchor.parentNode.insertBefore(ons.createElement(
-                '<ons-row><ons-col width="100px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey; text-align: center;" onclick="removeTimerLocation(this);">[x] (' + (i18next.t('settings.timers.zoneCount',{defaultValue: "{{count}} zone" + (coordinates.length !== 1 ? "s" : ""), count: coordinates.length})) + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(coordinates) + '" disabled>' + name + '</ons-col></ons-row>'
+                '<ons-row><ons-col width="100px" class="delete-field-link" onclick="removeTimerLocation(this);">[x] (' + (i18next.t('settings.timers.zoneCount',{defaultValue: "{{count}} zone" + (coordinates.length !== 1 ? "s" : ""), count: coordinates.length})) + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(coordinates) + '" disabled>' + name + '</ons-col></ons-row>'
             ),anchor);
         };
 
@@ -266,7 +266,7 @@
             ids.push(id);
             let anchor = document.querySelector('#add-timer-form > hr');
             anchor.parentNode.insertBefore(ons.createElement(
-                '<ons-row><ons-col width="40px" align="center" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: darkgrey; text-align: center;" onclick="removeTimerLocation(this);">[x]</ons-col><ons-col><ons-input type="hidden" name="segment_timer_id[]" value="' + id + '" disabled>' + name + '</ons-col></ons-row>'
+                '<ons-row><ons-col width="40px" class="delete-field-link" onclick="removeTimerLocation(this);">[x]</ons-col><ons-col><ons-input type="hidden" name="segment_timer_id[]" value="' + id + '" disabled>' + name + '</ons-col></ons-row>'
             ),anchor);
         };
 
@@ -806,6 +806,14 @@
         };
     </script>
     <style>
+        .delete-field-link {
+             overflow-x: hidden;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+             cursor: pointer;
+             color: darkgrey;
+             text-align: center
+        }
         .action-sheet {
             max-height: 100%;
             overflow-y: scroll;

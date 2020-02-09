@@ -1,8 +1,8 @@
-.toolbar {
+.toolbar, .tabbar, .page-with-map-header {
     background:#141f29;
 }
 
-.toolbar__bg, .card, .card--material, .tabbar, .list {
+.toolbar__bg, .card, .card--material, .list {
     background:#223344
 }
 
@@ -18,7 +18,8 @@
     color: #DDEEFF !important;
 }
 
-.button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card, .alert-dialog{
+.button, .card, .alert-dialog, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type,
+ons-action-sheet-button.action-sheet-button.action-sheet-button-half{
     color: #DDEEFF !important;
     background-color: #223344;
 }
@@ -49,6 +50,14 @@ button.fab:active, ons-fab.fab:active, ons-speed-dial-item.fab:active {
 
 ons-select option {
     background-color: #9a9a9a;
+}
+
+.toast {
+    border: 1px solid #c0c0c0;
+}
+
+ons-col.delete-field-link {
+    color: #606060;
 }
 
 #sendUpdateRequestButton {
