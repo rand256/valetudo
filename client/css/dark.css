@@ -55,6 +55,10 @@ ons-select option {
     color: darkgray !important;
 }
 
+.ons-action-sheet-zoned .action-sheet-button-half {
+    background: #223344;
+}
+
 :root {
     --map-background-1: #000000 !important;
     --map-background-2:#000000 !important;
