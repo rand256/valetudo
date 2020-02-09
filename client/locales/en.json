@@ -150,6 +150,7 @@
     },
     "telegram": {
         "fanpower": {
+            "whisper": "Whisper",
             "quiet": "Quiet",
             "balanced": "Balanced",
             "turbo": "Turbo",
@@ -421,6 +422,8 @@
             "general": "General",
             "localization": "Web interface localization",
             "localizationExt": "switches between available translations",
+            "style": "Theme",
+            "styleExt": "changes the color theme of the web interface",
             "homeTab": "Home tab",
             "zonedImmediate": "Run zoned cleaning immediately",
             "zonedImmediateExt": "instead of proceeding to the map tab",
@@ -436,6 +439,7 @@
             "disableDynamicButtons": "Disable dynamic buttons",
             "disableDynamicButtonsExt": "shows on map basic buttons only",
             "applyLocalizationConfirm": "Would you like to apply localization changes now?",
+            "applyStyleConfirm": "Would you like to apply color theme changes now?",
             "enableMultimapConfirm": "This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?"
         },
         "wifi": {

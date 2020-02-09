@@ -203,15 +203,9 @@
         .then(res => fn.prequest("api/get_interface_config"))
         .then(res => {
             fn.webifSettings = res;
-
-            if(fn.webifSettings.style !== "" &&fn.webifSettings.style !== undefined){
-                var fileref=document.createElement("link");
-                fileref.setAttribute("rel", "stylesheet");
-                fileref.setAttribute("type", "text/css");
-                fileref.setAttribute("href", "css/"+fn.webifSettings.style+".css");
-                document.getElementsByTagName("head")[0].appendChild(fileref)
+            if(fn.webifSettings.style !== "" && fn.webifSettings.style !== undefined) {
+                document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" type="text/css" href="css/' + fn.webifSettings.style + '.css">');
             }
-
             return i18next.use(i18nextXHRBackend).init({
                 interpolation: {
                     format: function(value, format, lng) {
@@ -238,7 +232,7 @@
             document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
         }
     </script>
-
+    <div>Loading...</div>
     <script type="module" crossorigin>
         import { RRMapParser } from "./zone/js-modules/rr-map-parser.js";
         import { VacuumMap } from "./zone/js-modules/vacuum-map.js"

@@ -1,13 +1,9 @@
 .toolbar {
-    background:bottom no-repeat #223344;
+    background:#141f29;
 }
 
 .toolbar__bg, .card, .card--material, .tabbar, .list {
     background:#223344
-}
-
-:checked + .tabbar__button, .alert-dialog-button{
-    color: #0DB9F0;
 }
 
 .progress-bar__primary, .progress-bar__secondary, .progress-bar--indeterminate {
@@ -18,13 +14,21 @@
     background-color: #000000;
 }
 
-.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .tabbar__label, .card__content, .back-button, .list-item, .text-input, .select-input, .alert-dialog-title, .alert-dialog-content{
+.page, .list-title, .toolbar-button, .progress-bar, .toolbar__title, .toolbar, .tabbar__button, .card__content, .back-button, .list-item, .text-input, .select-input, .alert-dialog-title, .alert-dialog-content{
     color: #DDEEFF !important;
 }
 
 .button, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type, .card, .alert-dialog{
     color: #DDEEFF !important;
     background-color: #223344;
+}
+
+button.fab:active, ons-fab.fab:active, ons-speed-dial-item.fab:active {
+    background-color: rgba(92, 105, 117, 0.7);
+}
+
+:checked + .tabbar__button, .alert-dialog-button{
+    color: #0DB9F0 !important;
 }
 
 .button, .map-page-buttons > ons-fab {
@@ -35,6 +39,22 @@
     fill: #DDEEFF;
 }
 
+.switch__handle {
+    box-shadow: 0 0 1px 0 rgba(0,0,0,.725), 0 3px 2px rgba(0,0,0,.725)
+}
+
+.dialog-container {
+    background-color: #9a9a9a;
+}
+
+ons-select option {
+    background-color: #9a9a9a;
+}
+
+#sendUpdateRequestButton {
+    color: darkgray !important;
+}
+
 :root {
     --map-background-1: #000000 !important;
     --map-background-2:#000000 !important;
@@ -42,5 +62,7 @@
     --map-occupied:#54687B !important;
     --map-segment:#223344 !important;
     --map-segment-border:#ffffff !important;
+    --map-segment-pin: #6c8cad !important;
+    --map-segment-pin-selected: #8ec0e0 !important;
     --path:#ffffff !important;
 }

@@ -34,7 +34,7 @@ export function MapDrawer() {
 
         if(image && image.pixels) {
             let color;
-            if (!image.segments) {
+            if (image.segments.count < 2) {
                 segmentColor = freeColor;
             }
             for (let i in image.pixels) {
