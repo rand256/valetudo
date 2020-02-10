@@ -422,6 +422,8 @@
             "general": "Général",
             "localization": "Localisation de l'interface Web",
             "localizationExt": "bascule entre les traductions disponibles",
+            "style": "Theme",
+            "styleExt": "change le thème de couleur de l'interface web",
             "homeTab": "Onglet Accueil",
             "zonedImmediate": "Exécuter immédiatement le nettoyage zoné",
             "zonedImmediateExt": "au lieu de passer à l'onglet carte",
@@ -437,6 +439,7 @@
             "disableDynamicButtons": "Désactiver les boutons dynamiques",
             "disableDynamicButtonsExt": "affiche uniquement les boutons de base de la carte",
             "applyLocalizationConfirm": "Souhaitez-vous appliquer les modifications de localisation maintenant?",
+            "applyStyleConfirm": "Souhaitez-vous appliquer les changements de thème de couleur maintenant?",
             "enableMultimapConfirm": "Cette fonction ne fait pas partie de la fonctionnalité de roborock mais un certain nombre de hacks autour d' elle Bien qu'il puisse fonctionner correctement , il pourrait également provoquer une réinitialisation d'usine si quelque chose va de façon inattendue mauvaise Voulez - vous toujours continuer..?"
         },
         "wifi": {
