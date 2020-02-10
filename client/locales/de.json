@@ -204,7 +204,7 @@
         "selectedZones": "Aktuell ausgewählte Zonen:\n{{zonesList}} ({{subzonesCount}}/5 Zonen)",
         "selectZoneIterations": "Mehrfachauswahl der gleichen Zone erhöht die Anzahl der Reinigungsvorgänge.",
         "tooManyZones": "Es wurden zu viele Zonen ausgewählt! Erlaubt - 5, Ausgewählt - {{zonesCount}}.",
-        "noSegmentsSupported": "Gerätefirmware unterstütz die Raumreinigung nicht.",
+        "noSegmentsSupported": "Gerätefirmware unterstützt die Raumreinigung nicht.",
         "selectedSegments": "Aktuell ausgewählte Räume: {{segmentsList}}",
         "noMapAvailable": "Leider ist die Karte derzeit nicht verfügbar.",
         "powerChanged": "Leistungsstufe geändert zu {{fanPower}}.",
