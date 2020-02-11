@@ -93,6 +93,7 @@
         "errorText": "{{error}}",
         "confirmFullCleaning": "Impossible de démarrer le nettoyage zoné: aucune zone spécifiée. Voulez-vous exécuter un nettoyage complet à la place?",
         "cannotResume": "Aucun résumé!",
+        "noGotoTarget": "Vous devez choisir un emplacement pour Goto.",
         "tooManyZones": "Vous ne pouvez pas ajouter plus de 5 zones sur la carte."
     },
     "zones": {

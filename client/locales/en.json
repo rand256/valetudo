@@ -93,6 +93,7 @@
         "errorText": "{{error}}",
         "confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
         "cannotResume": "Nothing to resume!",
+        "noGotoTarget": "You need to choose a spot for Goto.",
         "tooManyZones": "You can't add more than 5 zones onto the map."
     },
     "zones": {

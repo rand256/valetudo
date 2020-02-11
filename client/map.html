@@ -203,8 +203,8 @@
                     document.getElementById("start_cleaning").style.display = 'none';
                 }
             }
-            // resume available in paused and charger disconnected while in zoned/segment cleaning states
-            if (res.state === 10 || (res.state === 2 && res.in_cleaning > 1)) {
+            // resume available in paused and charger disconnected while in cleaning states
+            if (res.state === 10 || (res.state === 2 && res.in_cleaning > 0)) {
                 document.getElementById("resume_cleaning").style.display = '';
             } else {
                 document.getElementById("resume_cleaning").style.display = 'none';
@@ -240,7 +240,8 @@
 
         document.getElementById("goto").onclick = () => {
             const gotoPoint = map.getLocations().gotoPoints[0];
-            if(gotoPoint) goto_point(gotoPoint);
+            if (!gotoPoint) fn.notificationToastError(i18next.t('map.noGotoTarget',"You need to choose a spot for Goto."));
+            else goto_point(gotoPoint);
         }
         document.getElementById("start_cleaning").onclick = () => {
             const segments = map.getLocations().segments;
@@ -258,15 +259,15 @@
             }
         }
         document.getElementById("resume_cleaning").onclick = () => {
-            const zones = map.getLocations().zones;
             const res = document.querySelector('.map-page-status').dataset;
-            if (+res.state === 10 || (+res.state === 2 && +res.in_cleaning > 1)) {
-                if (+res.in_returning === 1) {
+            if (+res.state === 10 || +res.state === 2) {
+                if (+res.in_returning === 1 || res.model === "rockrobo.vacuum.v1" && +res.in_cleaning === 0 && +res.state === 10) { // Gen1 is missing in_returning state
                     put_command("drive_home","resume_cleaning");
                     return;
+                } else if (+res.in_cleaning > 0) {
+                    put_command("start_cleaning","resume_cleaning");
+                    return;
                 }
-                put_command("start_cleaning","resume_cleaning");
-                return;
             }
             fn.notificationToastError(i18next.t('map.cannotResume',"Nothing to resume!"));
         }
@@ -323,6 +324,7 @@
                 mapPageStatus.dataset['state'] = res['state'];
                 mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
                 mapPageStatus.dataset['in_returning'] = res['in_returning'];
+                mapPageStatus.dataset['model'] = res['model'];
                 if (!fn.webifSettings.staticMapButtons) {
                     fn.reload_map_buttons(res);
                 }
