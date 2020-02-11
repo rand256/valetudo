@@ -162,14 +162,20 @@
 
         window.fn.notificationToastOK = function(text,timeout) {
             text = text && String(text) || i18next.t('common.commandOK',"Command successfully sent!");
-            timeout = timeout || window.fn.toastOKTimeout;
-            label = i18next.t('common.dismiss',"Dismiss");
-            ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
+            timeout = timeout || fn.toastOKTimeout;
+            fn.notificationToastSend(text,timeout);
         }
 
         window.fn.notificationToastError = function(text,timeout) {
-            text = text && String(text) || i18next.t('common.commandFailed',"That was an error") + '.';
-            timeout = timeout || window.fn.toastErrorTimeout;
+            text = text && String(text) || i18next.t('common.commandFailed',"There was an error").slice(0,-1) + '.';
+            timeout = timeout || fn.toastErrorTimeout;
+            fn.notificationToastSend(text,timeout);
+        }
+
+        window.fn.notificationToastSend = function(text, timeout) {
+            for (let toast of document.querySelectorAll('.toast .toast__message')) {
+                if (toast.textContent.trim() === text.trim()) return;
+            }
             label = i18next.t('common.dismiss',"Dismiss");
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
         }
