@@ -118,7 +118,6 @@
         };
         function updateSettingsAccessControlPage() {
             loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
-
             const getAuthCfg = fn.prequest("api/http_auth_config")
             .then((res) => {
                 httpAuthInputEnabled.checked = res.enabled;
@@ -140,7 +139,7 @@
             fn.prequestWithPayload("api/set_ssh_keys", JSON.stringify({
                  keys: sshKeysTextArea.value
             }), "PUT")
-            .then(null, (err) => fn.notificationToastError(err))
+            .then((res) => fn.notificationToastOK(i18next.t('common.ok',"OK")), (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
         };
         function handleSSHKeysSettingsPermanentlyDisableButton() {
@@ -151,6 +150,7 @@
             .then((res) => {
                 sshKeysTitle.style.display = "none";
                 sshKeysList.style.display = "none";
+                fn.notificationToastOK(i18next.t('common.ok',"OK"));
             }, (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
         };
@@ -164,7 +164,7 @@
                 username: httpAuthInputUsername.value,
                 password: httpAuthInputPassword.value,
             }), "PUT")
-            .then(null, (err) => fn.notificationToastError(err))
+            .then((res) => fn.notificationToastOK(i18next.t('common.ok',"OK")), (err) => fn.notificationToastError(err))
             .finally(() => loadingBarSettingsAccessControl.removeAttribute("indeterminate"));
         };
     </script>
