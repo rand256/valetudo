@@ -31,7 +31,7 @@
             <div class="left" data-i18n="settings.info.firmwareUpdate">
                 Firmware update:
             </div>
-            <div class="right" id="info_fw_build">
+            <div class="right" id="info_fw_update">
                 <a id="sendUpdateRequestButton" onclick="sendUpdateRequest();" data-i18n="settings.info.firmwareUpdateLink">[send request]</a>
             </div>
         </ons-list-item>
@@ -174,10 +174,34 @@
                 return fn.prequestWithPayload("api/send_update_request", JSON.stringify({url: url, md5: md5}), "PUT");
             })
             .then(res => fn.notificationToastOK(i18next.t('settings.info.firmwareUpdateSentOK',"Update request should be sent! Wait for LED indication of update process.")))
+            .then(res => {
+                document.getElementById('info_fw_update').innerText = 'status: waiting...';
+                setTimeout(getUpdateRequestStatus,3e3);
+            })
             .catch(err => {
                 if (err !== "cancel") fn.notificationToastError(err);
             })
             .finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
+        }
+
+        function getUpdateRequestStatus() {
+            let stop = false;
+            loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
+            fn.prequest("api/get_ota_state")
+            .then(res => {
+                let stateField = document.getElementById('info_fw_update');
+                if (stateField) {
+                    stateField.innerText = 'status: ' + res;
+                }
+                if (["idle","failed"].includes(res) || !stateField) {
+                    stop = true;
+                }
+            })
+            .catch(err => fn.notificationToastError(err))
+            .finally(() => {
+                loadingBarSettingsInfo.removeAttribute("indeterminate");
+                if (!stop) { setTimeout(getUpdateRequestStatus,3e3); }
+            });
         }
 
         function checkNewValetudoVersion() {
