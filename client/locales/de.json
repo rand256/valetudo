@@ -425,7 +425,7 @@
             "localizationExt": "wechselt zwischen den verfügbaren Sprachen",
             "style": "Aussehen der Weboberfläche",
             "styleExt": "ändert die Farbe der Weboberfläche",
-            "homeTab": "Home Tab",
+            "homeTab": "Startseite",
             "zonedImmediate": "Zonenreinigung wird sofort ausgeführt",
             "zonedImmediateExt": "ohne vorher zur Karte zu wechseln",
             "gotoImmediate": "Sofort zum Ziel gehen",
@@ -439,6 +439,9 @@
             "disableMapReloadExt": "Entfernt die Schaltfläche zum Erzwingen des Nachladens auf der Karte",
             "disableDynamicButtons": "Deaktiviert die dynamischen Schaltflächen",
             "disableDynamicButtonsExt": "Zeigt nur die grundlegenden Schaltflächen auf der Karte",
+            "zonesTab": "Zonen",
+            "hideForbiddenMarkersAndRooms": "Verbotsmarkierungen und Raumkonfiguration nicht anzeigen",
+            "hideForbiddenMarkersAndRoomsExt": "Blendet die Einstellungen für Verbotsmarkierungen und Räume aus",
             "applyLocalizationConfirm": "Soll die Änderung der Sprache jetzt angewandt werden?",
             "applyStyleConfirm": "Soll die Änderung der Farbe jetzt angewandt werden?",
             "enableMultimapConfirm": "Diese Funktion ist kein Teil der Roborock-Funktionalität, sondern eine Reihe von Hacks. Es kann gut funktionieren, aber auch in unerwarteten Fällen zu einem Zurücksetzen auf die Werkseinstellungen führen. Soll dennoch fortgefahren werden?"

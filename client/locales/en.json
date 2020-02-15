@@ -439,6 +439,9 @@
             "disableMapReloadExt": "hides force reload button on the map",
             "disableDynamicButtons": "Disable dynamic buttons",
             "disableDynamicButtonsExt": "shows on map basic buttons only",
+            "zonesTab": "Zones tab",
+            "hideForbiddenMarkersAndRooms": "Hide forbidden markers and rooms section",
+            "hideForbiddenMarkersAndRoomsExt": "hides forbidden markers and rooms configuration",
             "applyLocalizationConfirm": "Would you like to apply localization changes now?",
             "applyStyleConfirm": "Would you like to apply color theme changes now?",
             "enableMultimapConfirm": "This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?"

@@ -11,6 +11,7 @@
         <ons-list-item data-i18n="zones.noSpotsConfigured" data-i18n-target=".list-item__center">No spots are configured yet.</ons-list-item>
     </ons-list>
 
+    <div id="forbidden-markers-rooms" style="display: none;">
     <ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
     <ons-list id="spot-list">
          <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
@@ -26,6 +27,7 @@
              <label data-i18n="zones.editSegments">Edit rooms</label>
          </ons-list-item>
     </ons-list>
+    </div>
 
     <script>
         let loadingBarZones = document.getElementById('loading-bar-zones');
@@ -350,6 +352,8 @@
 
         ons.getScriptPage().onShow = function () {
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
+            //hide section with forbidden markers and rooms
+            document.getElementById('forbidden-markers-rooms').style.display = fn.webifSettings.hideForbbidenmarkersRooms ? 'none' : '';
             // request map update
             fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
             // check for area and go to configuration
