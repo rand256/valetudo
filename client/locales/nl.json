@@ -421,11 +421,13 @@
       "mapTab": "Map tab",
       "hideMapStatus": "Laat geen status zien op de map",
       "hideMapStatusExt": "verbergd de statustekst op de map",
+      "hideSegmentMarkers": "Laat geen kamermarkeringen tonen",
+      "hideSegmentMarkersExt": "verbergd kamerselectiemarkeringen op de map",
       "disableMapReload": "Verberg knop om map te herladen",
       "disableMapReloadExt": "verbergd de knop om de map geforceerd te herladen",
       "disableDynamicButtons": "Verberg dynamische buttons",
       "disableDynamicButtonsExt": "laat alleen basisknoppen op de map zien",
-      "applyLocalizationConfirm": "Wil je van taal wisselen?",
+      "applyChangesConfirm": "Wilt u nu wijzigingen aanbrengen?",
       "enableMultimapConfirm": "Deze functionaliteit maakt standaard geen onderdeel uit van de robotfuncties. Hoewel het goed zou kunnen werken, zou het ook ervoor kunnen zorgen dat de robot terug naar fabrieksinstellingen wordt gezet. Wil je verder gaan?"
     },
     "wifi": {

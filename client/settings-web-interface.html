@@ -60,7 +60,11 @@
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-status"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
-            <div class='left'><div><div data-i18n="settings.webInterface.disableMapReload">Disable map reload button</div><div class="small" data-i18n="settings.webInterface.disableMapReload">hides force reload button on the map</div></div></div>
+            <div class='left'><div><div data-i18n="settings.webInterface.hideSegmentMarkers">Do not show room markers</div><div class="small" data-i18n="settings.webInterface.hideSegmentMarkersExt">hides room selection markers on the map</div></div></div>
+            <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-segment-markers"></ons-switch></div>
+        </ons-list-item>
+        <ons-list-item>
+            <div class='left'><div><div data-i18n="settings.webInterface.disableMapReload">Disable map reload button</div><div class="small" data-i18n="settings.webInterface.disableMapReloadExt">hides force reload button on the map</div></div></div>
             <div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-map-reload"></ons-switch></div>
         </ons-list-item>
         <ons-list-item>
@@ -78,7 +82,7 @@
         var switches = document.querySelectorAll('.settings-webif-switch'),
             selects = document.querySelectorAll('.settings-webif-select'),
             loadingBarWebif = document.getElementById('loading-bar-settings-web-interface'),
-            oldLocalization, oldStyle;
+            oldLocalization, oldStyle, oldHideSegmentMarkers;
 
         document.querySelector("#settings-web-interface-page ons-back-button").onClick = () => fn.popPage();
 
@@ -118,6 +122,7 @@
         ons.getScriptPage().onShow = function () {
             oldLocalization = window.fn.webifSettings.localization;
             oldStyle = window.fn.webifSettings.style;
+            oldHideSegmentMarkers = window.fn.webifSettings.hideSegmentMarkers;
             switches.forEach(sw => {
                 if (window.fn.webifSettings[getOptionName(sw.id)]) {
                     sw.checked = true;
@@ -132,14 +137,8 @@
             loadingBarWebif.setAttribute("indeterminate", "indeterminate");
             fn.prequestWithPayload("api/set_interface_config", JSON.stringify(window.fn.webifSettings), "PUT")
             .then((res) => {
-                if (oldLocalization !== window.fn.webifSettings.localization)
-                ons.notification.confirm(i18next.t('settings.webInterface.applyLocalizationConfirm',"Would you like to apply localization changes now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
-                    if (res === 1) {
-                        window.location.reload();
-                    }
-                });
-                if (oldStyle !== window.fn.webifSettings.style)
-                ons.notification.confirm(i18next.t('settings.webInterface.applyStyleConfirm',"Would you like to apply color theme changes now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
+                if (oldLocalization !== window.fn.webifSettings.localization || oldStyle !== window.fn.webifSettings.style || oldHideSegmentMarkers !== window.fn.webifSettings.hideSegmentMarkers)
+                ons.notification.confirm(i18next.t('settings.webInterface.applyChangesConfirm',"Would you like to apply changes right now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {
                     if (res === 1) {
                         window.location.reload();
                     }

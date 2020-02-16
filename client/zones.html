@@ -11,21 +11,25 @@
         <ons-list-item data-i18n="zones.noSpotsConfigured" data-i18n-target=".list-item__center">No spots are configured yet.</ons-list-item>
     </ons-list>
 
-    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
-    <ons-list id="spot-list">
-         <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
-             <label><ons-icon icon="edit"></ons-icon></label>
-             <label data-i18n="zones.editForbiddenZones">Configure forbidden zones</label>
-         </ons-list-item>
-    </ons-list>
+    <div id="forbidden-markers-configuration-section">
+        <ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
+        <ons-list id="spot-list">
+             <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
+                 <label><ons-icon icon="edit"></ons-icon></label>
+                 <label data-i18n="zones.editForbiddenZones">Configure forbidden zones</label>
+             </ons-list-item>
+        </ons-list>
+    </div>
 
-    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerSegments">Rooms configuration</ons-list-title>
-    <ons-list id="spot-list">
-         <ons-list-item tappable class="locations-list-item" onclick="switchToSegmentsEdit()">
-             <label><ons-icon icon="edit"></ons-icon></label>
-             <label data-i18n="zones.editSegments">Edit rooms</label>
-         </ons-list-item>
-    </ons-list>
+    <div id="rooms-configuration-section">
+        <ons-list-title style="margin-top:20px;" data-i18n="zones.headerSegments">Rooms configuration</ons-list-title>
+        <ons-list id="spot-list">
+             <ons-list-item tappable class="locations-list-item" onclick="switchToSegmentsEdit()">
+                 <label><ons-icon icon="edit"></ons-icon></label>
+                 <label data-i18n="zones.editSegments">Edit rooms</label>
+             </ons-list-item>
+        </ons-list>
+    </div>
 
     <script>
         let loadingBarZones = document.getElementById('loading-bar-zones');
@@ -349,6 +353,12 @@
         }
 
         ons.getScriptPage().onShow = function () {
+            if (fn.device.model === "rockrobo.vacuum.v1") {
+                document.getElementById("forbidden-markers-configuration-section").style.display = "none";
+            }
+            if (fn.device.ver !== 3) {
+                document.getElementById("rooms-configuration-section").style.display = "none";
+            }
             loadingBarZones.setAttribute("indeterminate", "indeterminate");
             // request map update
             fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));

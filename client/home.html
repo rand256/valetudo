@@ -582,7 +582,7 @@
                     103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
                     104: i18next.t('home.fanspeedPresets.max',"Max")
                 };
-                if (fn.device.model === "roborock.vacuum.s5") {
+                if (fn.device.model !== "rockrobo.vacuum.v1") {
                     fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
                 }
                 fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);

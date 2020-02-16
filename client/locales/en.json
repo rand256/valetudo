@@ -435,12 +435,13 @@
             "mapTab": "Map tab",
             "hideMapStatus": "Do not show status on map",
             "hideMapStatusExt": "hides the block with status text",
+            "hideSegmentMarkers": "Do not show room markers",
+            "hideSegmentMarkersExt": "hides room selection markers on the map",
             "disableMapReload": "Disable map reload button",
             "disableMapReloadExt": "hides force reload button on the map",
             "disableDynamicButtons": "Disable dynamic buttons",
             "disableDynamicButtonsExt": "shows on map basic buttons only",
-            "applyLocalizationConfirm": "Would you like to apply localization changes now?",
-            "applyStyleConfirm": "Would you like to apply color theme changes now?",
+            "applyChangesConfirm": "Would you like to apply changes right now?",
             "enableMultimapConfirm": "This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?"
         },
         "wifi": {

@@ -74,7 +74,7 @@
                     }
                     if(map === null) {
                         map = fn.createVacuumMap(document.getElementById('map-canvas'));
-                        map.initCanvas(gzippedMapData,{showSegments: true, segmentNames: segmentNames});
+                        map.initCanvas(gzippedMapData,fn.webifSettings.hideSegmentMarkers ? {} : {showSegments: true, segmentNames: segmentNames});
                         if (checkMapExistance) {
                             resolve(map);
                             return;

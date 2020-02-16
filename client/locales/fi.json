@@ -400,11 +400,13 @@
             "mapTab": "Kartta välilehti",
             "hideMapStatus": "Älä näytä tilaa kartassa",
             "hideMapStatusExt": "Piilottaa tilateksti palkin",
+            "hideSegmentMarkers": "Älä näytä huonemerkkejä",
+            "hideSegmentMarkersExt": "Piilottaa huonevalintamerkit kartalla",
             "disableMapReload": "Disabloi kartan uudelleenlatauksen painike",
             "disableMapReloadExt": "Piilottaa pakotetun uudelleenlatauksenm painikkeen kartassa",
             "disableDynamicButtons": "Disabloi dynaamiset painikkeet",
             "disableDynamicButtonsExt": "Näytä ainoastaan kartan peruspainikkeet",
-            "applyLocalizationConfirm": "Haluatko ottaa lokalisaation muutokset käyttöön nyt??",
+            "applyChangesConfirm": "Haluatko ottaa muutokset käyttöön nyt?",
             "enableMultimapConfirm": "Tämä ominisuus ei ole osa Roborockin toiminnallisuutta vaan useita erillisiä muutoksian sen ympärillä. Se voi toimia hyvin, mutta se voi myös aiheuttaa asetusten tehdaspalautuksen jonkin mennessä pieleen. Oletko varma, että haluat yhä jatkaa??"
         },
         "wifi": {

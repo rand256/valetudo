@@ -435,12 +435,13 @@
             "mapTab": "Onglet Carte",
             "hideMapStatus": "Ne pas afficher l'état sur la carte",
             "hideMapStatusExt": "cache le bloc avec le texte d'état",
+            "hideSegmentMarkers": "Ne pas afficher les marqueurs de pièce",
+            "hideSegmentMarkersExt": "cache les marqueurs de sélection de pièce sur la carte",
             "disableMapReload": "Désactiver le bouton de rechargement de carte",
             "disableMapReloadExt": "masque le bouton de rechargement forcé sur la carte",
             "disableDynamicButtons": "Désactiver les boutons dynamiques",
             "disableDynamicButtonsExt": "affiche uniquement les boutons de base de la carte",
-            "applyLocalizationConfirm": "Souhaitez-vous appliquer les modifications de localisation maintenant?",
-            "applyStyleConfirm": "Souhaitez-vous appliquer les changements de thème de couleur maintenant?",
+            "applyChangesConfirm": "Souhaitez-vous appliquer les modifications maintenant?",
             "enableMultimapConfirm": "Cette fonction ne fait pas partie de la fonctionnalité de roborock mais un certain nombre de hacks autour d' elle Bien qu'il puisse fonctionner correctement , il pourrait également provoquer une réinitialisation d'usine si quelque chose va de façon inattendue mauvaise Voulez - vous toujours continuer..?"
         },
         "wifi": {
