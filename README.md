@@ -1,27 +1,26 @@
 <div align="center">
     <img src="https://github.com/rand256/valetudo/blob/testing/assets/logo/valetudo_logo_with_name.svg" width="800" alt="valetudo">
-    <p align="center"><h2>Free your vacuum from the cloud</h2></p>
+    <p align="center"><h2>Free your vacuum from the cloud</h2><h5>Supported devices: Roborock S5, Xiaomi Mi Robot Vacuum Cleaner (v1)</p>
 </div>
 
 ----
 
 ### Preamble:
 
-This is a modified version of [Valetudo by Hypfer](https://github.com/Hypfer/Valetudo), _enhanced_ by me since I found too many features missing in the original package when I've tried to use it for the first time. Next is a quick list of changes first appeared here:
+This is a heavily modified version of [Valetudo by Hypfer](https://github.com/Hypfer/Valetudo), enhanced by me since I found too many features missing in the original package when I've tried to use it for the first time. Next is a quick list of changes first appeared here:
 
 * Ability to select multiple saved zones at once;
 * Selected zones optionally shown at the map tab to see and edit what's actually going to be cleaned;
 * Configurable virtual walls and forbidden zones, finally!
 * Scheduled zoned cleaning - when you do not need to clean the whole house;
 * Ability to specify the number of iterations to clean the same zone multiple times;
-* Showing status of the device on the map; 
-* Set of dynamically appearing buttons on the map to better control device from there;
+* Showing device status on the map, and also dynamically switching buttons;
 * Experimental ability to save/restore maps;
-* A telegram bot software for remote control from the outside world;
-* A number of visual changes and under-the-hood optimizations.
+* Multilanguage support, currently available in en/de/fr/ru/bg/nl/fi;
+* A telegram bot software for controlling the vacuum from the outside world;
+* Full support of room cleaning (requires Gen2 with firmware 2008+).
 
-**Also localization is supported since 0.4.0-RE7!**
-Currently available for en/de/ru/bg. Add your own native language support by editing ./client/locales/en.json template and sending a PR.
+You can add or improve your own native language support by using ./client/locales/en.json template as an example and sending a PR.
 
 ----
 
