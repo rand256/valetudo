@@ -93,7 +93,7 @@
         "errorText": "{{error}}",
         "confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
         "cannotResume": "Nothing to resume!",
-        "noGotoTarget": "You need to choose a spot for Goto.",
+        "noGotoTarget": "You need to choose a spot for Goto on map.",
         "tooManyZones": "You can't add more than 5 zones onto the map."
     },
     "zones": {
@@ -178,9 +178,9 @@
         },
         "missingPassword": "Password not given",
         "wrongPassword": "Password is wrong",
-        "clientAuthorized": "Client authorized, type /help for help",
-        "clientAlreadyAuthorized": "Client already authorized, type /help for help",
-        "notAuthenticated": "You are not authenticated, use /setme *password*",
+        "clientAuthorized": "Client authorized, type /start to begin",
+        "clientAlreadyAuthorized": "Client already authorized, type /start to begin",
+        "notAuthenticated": "You are not authenticated, use\n/setme *password*",
         "cbqReceivedOK": "Command accepted!",
         "cbqFailed": "Error while running a command!",
         "cbqWrongState": "Command unavailable in current device state!",
