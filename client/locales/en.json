@@ -176,10 +176,10 @@
             "runZoned": "-- Run zoned cleaning --",
             "runSegments": "-- Run room cleaning --"
         },
-        "missingPassword": "Password not given",
-        "wrongPassword": "Password is wrong",
-        "clientAuthorized": "Client authorized, type /start to begin",
-        "clientAlreadyAuthorized": "Client already authorized, type /start to begin",
+        "missingPassword": "Password not given.",
+        "wrongPassword": "Password is wrong.",
+        "clientAuthorized": "Client authorized, type /start to begin.",
+        "clientAlreadyAuthorized": "Client already authorized, type /start to begin.",
         "notAuthenticated": "You are not authenticated, use\n/setme *password*",
         "cbqReceivedOK": "Command accepted!",
         "cbqFailed": "Error while running a command!",
@@ -317,7 +317,7 @@
             "newValetudoVersion": "New Valetudo RE version:",
             "newVersionURL": "New version URL",
             "checkVersion": "Check",
-            "firmwareUpdateWarning": "This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to external IP address and have no redirects.",
+            "firmwareUpdateWarning": "This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to public IP address and have no redirects.",
             "firmwareUpdateEnterURL": "Please enter URL to firmware pkg file:",
             "firmwareUpdateEnterMD5": "Please enter MD5 hash of the file you just specified:",
             "firmwareUpdateSend": "Send!",
@@ -457,7 +457,7 @@
              "notConnected": "Not connected",
              "confirm": "Are you sure you want to apply the new Wifi settings?",
              "hint": "Hint",
-             "hintText": "You can always revert back to the integrated Wifi Hotspot by pressing the reset button located underneath the lid.",
+             "hintText": "You can always revert back to the integrated Wifi Hotspot, consult your user manual on how to reset Wifi settings.",
              "appliedOK": "Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."
         },
         "telegram": {
