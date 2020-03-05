@@ -106,6 +106,7 @@
         "editForbiddenZones": "Configurer les zones interdites",
         "editSegments": "Modifier les pièces",
         "noPersistentData": "Les données persistantes sont désactivées ou indisponibles, impossible de modifier les marqueurs interdits.",
+        "noPersistentDataSegments": "Les données persistantes sont désactivées, impossible de modifier les salles.",
         "noSegmentsSupport": "Le micrologiciel de votre appareil ne prend pas en charge la division de la carte en pièces.",
         "addButton": "Ajouter",
         "renameButton": "Renommer",
@@ -143,7 +144,10 @@
         "segmentSplitTooMany": "Vous ne pouvez pas avoir plus de pièces, veuillez fusionner quelque chose.",
         "confirmSegmentSplit": "Voulez-vous vraiment essayer de diviser la pièce \"{{segment}}\"? Note: il peut être nécessaire de placer la ligne de coupe différemment plusieurs fois jusqu'à ce que vous trouviez la bonne position.",
         "segmentSplitOK": "Pièce divisée avec succès!",
-        "segmentSplitSingleLine": "Il ne peut y avoir qu'une seule ligne de division!"
+        "segmentSplitSingleLine": "Il ne peut y avoir qu'une seule ligne de division!",
+        "confirmSegmentsAutosplit": "La carte sera automatiquement divisée en pièces après avoir effectué un nettoyage complet, mais vous pouvez essayer de la diviser dès maintenant. Continuer?",
+        "autosplitSegmentsNow": "Séparer maintenant",
+        "segmentsSplitOK": "Carte divisée en chambres avec succès!"
     },
     "control": {
         "startButton": "Démarrer le contrôle manuel",

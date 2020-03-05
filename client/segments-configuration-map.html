@@ -10,6 +10,9 @@
     </div>
 
     <div class="map-page-buttons map-page-bottom">
+        <ons-fab ripple id="segments-configuration-autosplit" display="none">
+            <ons-icon icon="fa-ruler-combined"></ons-icon>
+        </ons-fab>
         <ons-fab ripple id="segments-configuration-rename" disabled>
             <ons-icon icon="fa-i-cursor"></ons-icon>
         </ons-fab>
@@ -25,7 +28,8 @@
     </div>
 
     <script type="module">
-        var renameButton = document.getElementById("segments-configuration-rename"),
+        var autosplitButton = document.getElementById("segments-configuration-autosplit"),
+            renameButton = document.getElementById("segments-configuration-rename"),
             mergeButton = document.getElementById("segments-configuration-merge"),
             splitButton = document.getElementById("segments-configuration-split"),
             splittingLineButton = document.getElementById("segments-configuration-cutting-line");
@@ -34,11 +38,13 @@
 
         import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
         const map = new VacuumMap(document.getElementById('segments-configuration-map'));
-window.fn.map = map;
         const topPage = fn.getTopPage();
         var segmentNames = topPage.data.names;
 
         map.initCanvas(topPage.data.map, {metaData: false, noPath: true, noGotoPoints: true, showSegments: true, segmentNames: segmentNames});
+
+        var parsedMap = map.getParsedMap();
+        autosplitButton.style.display = parsedMap.image && parsedMap.image.segments.count < 2 ? "" : "none";
 
         document.getElementById("segments-configuration-map").addEventListener('segmentSelection', (e) => {
             let segments = map.getLocations().segments;
@@ -59,6 +65,32 @@ window.fn.map = map;
         });
 
         document.querySelector("#segments-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
+        autosplitButton.onclick = () => {
+            ons.notification.confirm(i18next.t('zones.confirmSegmentsAutosplit', "The map will be automatically split into rooms after running a full cleaning, but you may try to split it right now. Continue?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('zones.autosplitSegmentsNow',"Split now")], title: i18next.t('common.confirm',"Confirm")})
+            .then(answer => {
+                if (answer === 1) {
+                    loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
+                    return fn.prequest("api/autosplit_segments");
+                }
+                return Promise.reject("cancel");
+            })
+            .then(res => fn.prequest("api/poll_map"))
+            .then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
+            .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+            .then(res => {
+                map.updateMap(map.parseMap(res));
+                let parsedMap = map.getParsedMap();
+                autosplitButton.style.display = parsedMap.image && parsedMap.image.segments.count < 2 ? "" : "none";
+                fn.notificationToastOK(i18next.t('zones.segmentsSplitOK',"Map successfully split into rooms!"));
+            })
+            .catch(err => {
+                if (err !== "cancel") fn.notificationToastError(err)
+            })
+            .finally(() => {
+                loadingBarSegmentsConfiguration.removeAttribute("indeterminate");
+            });
+        }
 
         renameButton.onclick = () => {
             let segmentIdx = map.getLocations().segments[0],
@@ -163,7 +195,7 @@ window.fn.map = map;
             .then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
             .then(res => {
                 map.updateMap(map.parseMap(res));
-                fn.notificationToastOK(i18next.t('zones.segmentSplitOK',"Segment successfully split!"));
+                fn.notificationToastOK(i18next.t('zones.segmentSplitOK',"Room successfully split!"));
             })
             .catch(err => {
                 if (err !== "cancel") fn.notificationToastError(err)

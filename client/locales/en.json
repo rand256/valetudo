@@ -106,6 +106,7 @@
         "editForbiddenZones": "Configure forbidden zones",
         "editSegments": "Edit rooms",
         "noPersistentData": "Persistent data is disabled or unavailable, unable to edit forbidden markers.",
+        "noPersistentDataSegments": "Persistent data is disabled, unable to edit rooms.",
         "noSegmentsSupport": "Your device's firmware doesn't support splitting the map into rooms.",
         "addButton": "Add",
         "renameButton": "Rename",
@@ -143,7 +144,10 @@
         "segmentSplitTooMany": "You can't have more rooms, please merge something.",
         "confirmSegmentSplit": "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place the cutting line several times until you find proper position.",
         "segmentSplitOK": "Room successfully split!",
-        "segmentSplitSingleLine": "There can be only one splitting line!"
+        "segmentSplitSingleLine": "There can be only one splitting line!",
+        "confirmSegmentsAutosplit": "The map will be automatically split into rooms after running a full cleaning, but you may try to split it right now. Continue?",
+        "autosplitSegmentsNow": "Split now",
+        "segmentsSplitOK": "Map successfully split into rooms!"
     },
     "control": {
         "startButton": "Start Manual Control",

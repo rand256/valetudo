@@ -106,6 +106,7 @@
         "editForbiddenZones": "Verbotsmarkierungen festlegen",
         "editSegments": "Räume bearbeiten",
         "noPersistentData": "Dauerhafte Daten sind abgeschaltet oder nicht verfügbar. Es können keine Verbotsmarkierungen bearbeitet werden.",
+        "noPersistentDataSegments": "Dauerhafte Daten sind abgeschaltet. Räume können nicht bearbeitet werden.",
         "noSegmentsSupport": "Dieses Gerät unterstützt die Einteilung der Karte in Räume nicht.",
         "addButton": "Hinzufügen",
         "renameButton": "Umbenennen",
@@ -143,7 +144,10 @@
         "segmentSplitTooMany": "Hinzufügen weiterer Räume nicht möglich, bitte fassen Sie Räume zusammen",
         "confirmSegmentSplit": "Sind Sie sicher dass der Raum \"{{segment}}\" getrennt werden soll? Hinweis: Die Trennlinie muss eventuell mehrfach an verschiedenen Positionen gesetzt werden bis die korrekte Position gefunden wird.",
         "segmentSplitOK": "Raum erfolgreich getrennt.",
-        "segmentSplitSingleLine": "Es kann nur eine Trennlinie gesetzt werden."
+        "segmentSplitSingleLine": "Es kann nur eine Trennlinie gesetzt werden.",
+        "confirmSegmentsAutosplit": "Die Karte wird nach einer vollständigen Reinigung automatisch in Räume aufgeteilt. Sie können jedoch versuchen, es sofort aufzuteilen. Fortsetzen?",
+        "autosplitSegmentsNow": "Jetzt teilen",
+        "segmentsSplitOK": "Karte erfolgreich in Räume aufgeteilt!"
     },
     "control": {
         "startButton": "Manuelle Steuerung starten",

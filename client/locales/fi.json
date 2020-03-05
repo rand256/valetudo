@@ -106,6 +106,7 @@
         "editForbiddenZones": "Määrittele kielletyt alueet",
         "editSegments": "Muokkaa huoneita",
         "noPersistentData": "Ei pystytä muokkaamaan kiellettuja merkkaajia, koska tallennettu data on pois päältä tai ei saatavilla.",
+        "noPersistentDataSegments": "Huoneita ei voi muokata, koska tallennettu data on pois päältä.",
         "noSegmentsSupport": "Laitteesi laiteohjelmisto ei tue kartan jakamista huoneisiin.",
         "addButton": "Lisää",
         "renameButton": "Uudelleennimeä",
@@ -143,7 +144,10 @@
         "segmentSplitTooMany": "Sinulla ei voi olla enemmän huoneita, yhdistä jotain.",
         "confirmSegmentSplit": "Haluatko varmasti kokeilla huoneen \"{{segment}}\" jakamista? Huomaa: Saatat joutua asettamaan leikkuulinjan useita kertoja, kunnes löydät oikean paikan.",
         "segmentSplitOK": "Huone jaettu onnistuneesti!",
-        "segmentSplitSingleLine": "Halkaisulinjaa voi olla vain yksi!"
+        "segmentSplitSingleLine": "Halkaisulinjaa voi olla vain yksi!",
+        "confirmSegmentsAutosplit": "Kartta jaetaan automaattisesti huoneisiin, kun olet suorittanut täydellisen siivouksen, mutta voit yrittää jakaa sen heti. Jatkaa?",
+        "autosplitSegmentsNow": "Jaa nyt",
+        "segmentsSplitOK": "Kartta on onnistuneesti jaettu huoneisiin!"
     },
     "control": {
         "startButton": "Aloita manuaaliohjaus",

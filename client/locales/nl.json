@@ -127,6 +127,7 @@
     "editForbiddenZones": "Configureer verboden gebieden en virtuele muren",
     "editSegments": "Bewerk kamers",
     "noPersistentData": "Persistente data is niet actief of beschikbaar, kan geen verboden gebieden of virtuele muren definiëren.",
+    "noPersistentDataSegments": "Persistente data is niet actief, kamers kunnen niet worden bewerkt.",
     "noSegmentsSupport": "De firmware van uw apparaat biedt geen ondersteuning voor het splitsen van de kaart in kamers.",
     "addButton": "Toevoegen",
     "renameButton": "Hernoemen",
@@ -164,7 +165,10 @@
     "segmentSplitTooMany": "Je kunt niet meer kamers hebben, alsjeblieft iets samenvoegen.",
     "confirmSegmentSplit": "Weet je zeker dat je kamer \"{{segment}}\" wilt splitsen? Opmerking: het kan nodig zijn om de snijlijn meerdere keren te plaatsen totdat u de juiste positie vindt.",
     "segmentSplitOK": "Kamer succesvol gesplitst!",
-    "segmentSplitSingleLine": "Er kan maar één splitsingslijn zijn!"
+    "segmentSplitSingleLine": "Er kan maar één splitsingslijn zijn!",
+    "confirmSegmentsAutosplit": "De kaart wordt automatisch opgesplitst in kamers na een volledige schoonmaakbeurt, maar je kunt deze nu proberen op te splitsen. Doorgaan met?",
+    "autosplitSegmentsNow": "Nu splitsen",
+    "segmentsSplitOK": "Kaart met succes opgesplitst in kamers!"
   },
   "control": {
     "startButton": "Start Handmatige Controle",
