@@ -66,7 +66,13 @@ export function VacuumMap(canvasElement) {
 
         closeWebSocket();
         clearTimeout(probeTimeout);
-        ws = new WebSocket(protocol + '://' + window.location.host + window.location.pathname);
+
+        let url = window.location.host + window.location.pathname;
+        if ('urlOverride' in localStorage) {
+            url = localStorage['urlOverride'].replace(/^.+:\/\/(.*?)\/?$/,"$1") + '/'
+        }
+        
+        ws = new WebSocket(protocol + '://' + url);
         ws.binaryType = "arraybuffer";
 
         ws.onerror = function() {
