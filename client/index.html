@@ -222,7 +222,7 @@
                 lng: res.localization || '',
                 fallbackLng: '',
                 backend: {
-                    loadPath: '/locales/{{lng}}.json'
+                    loadPath: window.location.pathname + 'locales/{{lng}}.json'
                 },
                 debug: false
             })
