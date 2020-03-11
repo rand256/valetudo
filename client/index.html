@@ -180,6 +180,25 @@
             ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
         }
 
+        // Get the url prefix (e.g "host.tld:port/reverse/proxy/path")
+        window.fn.getUrlPrefix = function(includeHost) {
+            let url = new URL(window.location.href)
+            if ('urlOverride' in localStorage) {
+                url = new URL(localStorage['urlOverride']);
+            }
+
+            let urlPrefix = url.pathname;
+            if (urlPrefix.endsWith('/')) {
+                urlPrefix = urlPrefix.slice(0, -1);
+            }
+
+            if (includeHost) {
+                urlPrefix = url.host + urlPrefix;
+            }
+
+            return urlPrefix;
+        }
+
         var pushView = function(idx,hash) {
             history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
             document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
@@ -222,7 +241,7 @@
                 lng: res.localization || '',
                 fallbackLng: '',
                 backend: {
-                    loadPath: '/locales/{{lng}}.json'
+                    loadPath: window.fn.geUrlPrefix(false) + '/locales/{{lng}}.json'
                 },
                 debug: false
             })
