@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="css/onsenui.min.css">
     <link rel="stylesheet" href="css/onsen-css-components.min.css">
-    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
     <script src="js/onsenui.min.js"></script>
     <script src="js/geometry-polyfill.js"></script>
     <script src="js/pako_inflate.min.js"></script>
@@ -222,7 +222,7 @@
                 lng: res.localization || '',
                 fallbackLng: '',
                 backend: {
-                    loadPath: '/locales/{{lng}}.json'
+                    loadPath: 'locales/{{lng}}.json'
                 },
                 debug: false
             })
