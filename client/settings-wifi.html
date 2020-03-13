@@ -121,7 +121,7 @@
         };
 
         function handleWifiSettingsSaveButton() {
-            ons.notification.confirm(i18next.t('settings.wifi.confirm',"Are you sure you want to apply the new Wifi settings?") + '<br><br><span style="font-weight: bold">' + i18next.t('settings.wifi.hint',"Hint") + ":</span> " + i18next.t('settings.wifi.hintText',"You can always revert back to the integrated Wifi Hotspot by pressing the reset button located underneath the lid."), {buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
+            ons.notification.confirm(i18next.t('settings.wifi.confirm',"Are you sure you want to apply the new Wifi settings?") + '<br><br><span style="font-weight: bold">' + i18next.t('settings.wifi.hint',"Hint") + ":</span> " + i18next.t('settings.wifi.hintText',"You can always revert back to the integrated Wifi Hotspot, consult your user manual on how to reset Wifi settings."), {buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
                 if (answer === 1) {
                     loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
                     fn.prequestWithPayload("api/wifi_configuration", JSON.stringify({

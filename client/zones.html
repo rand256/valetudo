@@ -111,8 +111,11 @@
             let mapData, segmentNames = {};
             fn.prequest("api/current_status")
             .then ((res) => {
-                if (res['lab_status'] !== 1 || fn.device.ver !== 3) {
+                if (fn.device.ver !== 3) {
                     return Promise.reject(i18next.t('zones.noSegmentsSupport',"Your device's firmware doesn't support splitting the map into rooms."));
+                }
+                if (res['lab_status'] !== 1) {
+                    return Promise.reject(i18next.t('zones.noPersistentDataSegments',"Persistent data is disabled, unable to edit rooms."));
                 }
                 return true;
             })

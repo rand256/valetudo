@@ -93,7 +93,7 @@
         "errorText": "{{error}}",
         "confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
         "cannotResume": "Nothing to resume!",
-        "noGotoTarget": "You need to choose a spot for Goto.",
+        "noGotoTarget": "You need to choose a spot for Goto on map.",
         "tooManyZones": "You can't add more than 5 zones onto the map."
     },
     "zones": {
@@ -106,6 +106,7 @@
         "editForbiddenZones": "Configure forbidden zones",
         "editSegments": "Edit rooms",
         "noPersistentData": "Persistent data is disabled or unavailable, unable to edit forbidden markers.",
+        "noPersistentDataSegments": "Persistent data is disabled, unable to edit rooms.",
         "noSegmentsSupport": "Your device's firmware doesn't support splitting the map into rooms.",
         "addButton": "Add",
         "renameButton": "Rename",
@@ -143,7 +144,10 @@
         "segmentSplitTooMany": "You can't have more rooms, please merge something.",
         "confirmSegmentSplit": "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place the cutting line several times until you find proper position.",
         "segmentSplitOK": "Room successfully split!",
-        "segmentSplitSingleLine": "There can be only one splitting line!"
+        "segmentSplitSingleLine": "There can be only one splitting line!",
+        "confirmSegmentsAutosplit": "The map will be automatically split into rooms after running a full cleaning, but you may try to split it right now. Continue?",
+        "autosplitSegmentsNow": "Split now",
+        "segmentsSplitOK": "Map successfully split into rooms!"
     },
     "control": {
         "startButton": "Start Manual Control",
@@ -176,11 +180,11 @@
             "runZoned": "-- Run zoned cleaning --",
             "runSegments": "-- Run room cleaning --"
         },
-        "missingPassword": "Password not given",
-        "wrongPassword": "Password is wrong",
-        "clientAuthorized": "Client authorized, type /help for help",
-        "clientAlreadyAuthorized": "Client already authorized, type /help for help",
-        "notAuthenticated": "You are not authenticated, use /setme *password*",
+        "missingPassword": "Password not given.",
+        "wrongPassword": "Password is wrong.",
+        "clientAuthorized": "Client authorized, type /start to begin.",
+        "clientAlreadyAuthorized": "Client already authorized, type /start to begin.",
+        "notAuthenticated": "You are not authenticated, use\n/setme *password*",
         "cbqReceivedOK": "Command accepted!",
         "cbqFailed": "Error while running a command!",
         "cbqWrongState": "Command unavailable in current device state!",
@@ -317,7 +321,7 @@
             "newValetudoVersion": "New Valetudo RE version:",
             "newVersionURL": "New version URL",
             "checkVersion": "Check",
-            "firmwareUpdateWarning": "This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to external IP address and have no redirects.",
+            "firmwareUpdateWarning": "This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to public IP address and have no redirects.",
             "firmwareUpdateEnterURL": "Please enter URL to firmware pkg file:",
             "firmwareUpdateEnterMD5": "Please enter MD5 hash of the file you just specified:",
             "firmwareUpdateSend": "Send!",
@@ -457,7 +461,7 @@
              "notConnected": "Not connected",
              "confirm": "Are you sure you want to apply the new Wifi settings?",
              "hint": "Hint",
-             "hintText": "You can always revert back to the integrated Wifi Hotspot by pressing the reset button located underneath the lid.",
+             "hintText": "You can always revert back to the integrated Wifi Hotspot, consult your user manual on how to reset Wifi settings.",
              "appliedOK": "Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."
         },
         "telegram": {
@@ -474,6 +478,10 @@
             "selectCountry": "Select a country:",
             "sendConsumables": "Send a message when one of consumables is expired:",
             "sendConsumablesEvery": "Every cleaning send a message when one of consumables is expired:",
+            "notifyStatusTypes": "Which status changes to notify about:",
+            "notifyAll": "All",
+            "notifyCleaning": "Cleaning + Errors",
+            "notifyErrors": "Only errors",
             "status": "Current telegram status",
             "clientsList": "Telegram clients",
             "noClients": "There are no authorized clients yet.",

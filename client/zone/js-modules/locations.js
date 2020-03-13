@@ -815,7 +815,6 @@ export class Segment {
 
     drawPixels(ctx) {
         if (this.changed) {
-            console.log('redrawing ' + this.idx)
             const imgData = this.segmentCtx.createImageData(1024,1024);
             var color = this.current ? {r:107,g:244,b:66,a:87} : {r:255,g:255,b:255,a:50};
             this.points.forEach(point => {
