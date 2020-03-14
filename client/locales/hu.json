@@ -411,7 +411,7 @@
             "duplicatedSegment": "You can't add the same room multiple times!",
             "confirmDeleteTimer": "Biztos törölni szeretnéd ezt az időzítőt?",
             "confirmTimezone": "Biztos át akarod állítani az időzónád a \"{{newTimezone}}\" időzónára?",
-            "noDNDEnabled": "Jelenleg nincs "\"Ne zavarjanak"\" időzítő beállítva.",
+            "noDNDEnabled": "Jelenleg nincs \"Ne zavarjanak\" időzítő beállítva.",
             "DNDSchedule": "A Ne zavarjanak időszak elindul {{startHour}}:{{startMinute}}-kor és véget ér {{endHour}}:{{endMinute}}-kor",
             "noDNDSchedule": "Nincs jelenleg Ne zavarjanak időzítő beállítva.",
             "confirmDisableDND": "Biztos ki akarod kapcsolni a Ne zavarjanak funkciót?",
