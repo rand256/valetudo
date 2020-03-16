@@ -52,7 +52,8 @@
             "storeMap": "Karte speichern",
             "loadMap": "Karte laden",
             "unknownPower": "Unbekannte Leistung",
-            "invalid": "Ungültiger Button"
+            "invalid": "Ungültiger Button",
+            "resume": "Fortsetzen"
         },
         "popups": {
             "selectFanspeed": "Leistungsstufe wählen:",
@@ -83,7 +84,8 @@
             "turbo": "Turbo",
             "max": "Maximal",
             "mop": "Wischen"
-        }
+        },
+        "cannotResume": "Keine Tätigkeiten zur Fortsetzung!"
     },
     "map": {
         "status": "Status",
@@ -168,7 +170,7 @@
             "consumables": "Verbrauch",
             "start": "Start",
             "pause": "Pause",
-            "resume": "Fortfahren",
+            "resume": "Fortsetzen",
             "stop": "Stop",
             "zones": "Zonen",
             "spot": "Spotreinigung",

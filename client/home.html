@@ -17,13 +17,15 @@
         <div>
             <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
         </div><div>
-            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
+            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="resume-button" class="button-margin" onclick="handleResumeButton()" disabled style="width:40%"><span class="resume-button"><ons-icon icon="fa-redo"></ons-icon></span><span data-i18n="home.buttons.resume">Resume</span></ons-button>
         </div><div>
-            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
+            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
         </div><div>
-            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> <span data-i18n="home.buttons.goto">Go to</span></ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> <span data-i18n="home.buttons.find">Find</span></ons-button>
+            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> <span data-i18n="home.buttons.goto">Go to</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
         </div><div id="multimap-buttons" style="display: none;">
         <ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-export"></ons-icon> <span data-i18n="home.buttons.storeMap">Store Map</span></ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
+        </div><div>
+           <ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> <span data-i18n="home.buttons.find">Find</span></ons-button>
         </div><div>
            <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
         </div>
@@ -46,6 +48,7 @@
         var startButton = document.getElementById("start-button"),
             pauseButton = document.getElementById("pause-button"),
             stopButton = document.getElementById("stop-button"),
+            resumeButton = document.getElementById("resume-button"),
             spotButton = document.getElementById("spot-button"),
             goToButton = document.getElementById("go-to-button"),
             areaButton = document.getElementById("area-button"),
@@ -211,6 +214,43 @@
                 }, 200);
             });
         }
+
+          function handleResumeButton() {
+              window.clearTimeout(currentRefreshTimer);
+              loadingBarHome.setAttribute("indeterminate", "indeterminate");
+              resumeButton.setAttribute("disabled", "disabled");
+              fn.prequest("api/current_status")
+              .then(res => {
+                if (res.state === 10 || res.state === 2) {
+                    if (res.in_returning === 1 || res.model === "rockrobo.vacuum.v1" && res.in_cleaning === 0 && res.state === 10) {
+                        fn.prequest("api/drive_home", "PUT")
+                        .then(
+                        (res) => fn.notificationToastOK(),
+                        (err) => fn.notificationToastError(err)
+                        )
+                        return;
+                    } else if (res.in_cleaning > 0) {
+                        fn.prequest("api/start_cleaning", "PUT")
+                        .then(
+                        (res) => fn.notificationToastOK(),
+                        (err) => fn.notificationToastError(err)
+                        )
+                        return;
+                    }
+                }
+                fn.notificationToastError(i18next.t('home.cannotResume',"Nothing to resume!"));
+              })
+              .then(res => fn.notificationToastOK())
+              .catch(e => {
+                  if (e !== "cancel") fn.notificationToastError(e);
+              })
+              .finally(() => {
+                  loadingBar.removeAttribute("indeterminate");
+                  window.setTimeout(function () {
+                      updateHomePage();
+                  }, 200);
+              });
+          }
 
         function handleAreaButton() {
             window.clearTimeout(currentRefreshTimer);
@@ -567,6 +607,12 @@
                     loadMapButton.setAttribute("disabled", "disabled");
                 }
 
+                if (res.state === 10 || (res.state === 2 && res.in_cleaning > 0)) {
+                    resumeButton.removeAttribute("disabled");
+                } else {
+                    resumeButton.setAttribute("disabled", "disabled");
+                }
+
                 robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
                 robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
@@ -649,6 +695,10 @@
         #robot-control-buttons > ons-button {
             margin: 5px;
             font-size: 1.2em;
+        }
+
+        #robot-control-buttons .resume-button {
+            padding: 0 0.3em;
         }
 
         #robot-state-details-m2 {

@@ -52,7 +52,8 @@
             "storeMap": "Store map",
             "loadMap": "Load map",
             "unknownPower": "Unknown power",
-            "invalid": "Invalid button"
+            "invalid": "Invalid button",
+            "resume": "Resume"
         },
         "popups": {
             "selectFanspeed": "Select power mode:",
@@ -83,7 +84,8 @@
             "turbo": "Turbo",
             "max": "Max",
             "mop": "Mop"
-        }
+        },
+        "cannotResume": "Nothing to resume!"
     },
     "map": {
         "status": "Status",
