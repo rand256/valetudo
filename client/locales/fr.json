@@ -137,7 +137,7 @@
         "enterSegmentName": "Veuillez saisir un nom pour la pièce sélectionnée:",
         "segmentRenamedOK": "Pièce renommée avec succès!",
         "segmentRenameFailed": "Une erreur s'est produite lors du changement de nom d'une pièce.",
-        "segmentsCantBeMerged": "Vous ne pouvez fusionner que les pièces adjacentes.",
+        "segmentsCantBeMerged": "Vous ne pouvez fusionner que les pièces adjacentes. Continuez quand même?",
         "confirmSegmentsMerge": "Voulez-vous vraiment essayer de fusionner des pièces \"{{segment1}}\" et \"{{segment2}}\"?",
         "segmentsMergedOK": "Les pièces ont fusionné avec succès!",
         "segmentSplitNoLine": "Vous devez d'abord placer la ligne de découpe pour diviser la pièce.",

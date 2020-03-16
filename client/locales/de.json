@@ -137,7 +137,7 @@
         "enterSegmentName": "Benennung des markierten Raums:",
         "segmentRenamedOK": "Raum erfolgreich umbenannt!",
         "segmentRenameFailed": "Bei der Umbenennung trat ein Fehler auf.",
-        "segmentsCantBeMerged": "Es können nur angrenzende Räume zusammengeführt werden.",
+        "segmentsCantBeMerged": "Es können nur angrenzende Räume zusammengeführt werden. Mache trotzdem weiter?",
         "confirmSegmentsMerge": "Sind Sie sicher dass die Räume \"{{segment1}}\" und \"{{segment2}}\" zusammengeführt werden sollen?",
         "segmentsMergedOK": "Räume wurden erfolgreich zusammengeführt.",
         "segmentSplitNoLine": "Vor der Trennung muss eine Trennlinie gesetzt werden.",

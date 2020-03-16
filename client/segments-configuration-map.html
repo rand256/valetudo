@@ -141,11 +141,16 @@
             if (segments.length !== 2) {
                 return;
             }
-            if (!map.getParsedMap().image.segments.neighbours[segments[0]*32+segments[1]]) {
-                ons.notification.alert(i18next.t('zones.segmentsCantBeMerged', "You can merge only adjacent rooms."),{title: i18next.t('common.attention',"Attention!")});
-                return;
-            }
             ons.notification.confirm(i18next.t('zones.confirmSegmentsMerge', {defaultValue: "Are you sure you want to try merging rooms \"{{segment1}}\" and \"{{segment2}}\"?", segment1: segmentNames[segments[0]] || "#" + segments[0], segment2: segmentNames[segments[1]] || "#" + segments[1]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+            .then(answer => {
+                if (answer === 1) {
+                    if (!map.getParsedMap().image.segments.neighbours[segments[0]*32+segments[1]]) {
+                        return ons.notification.confirm(i18next.t('zones.segmentsCantBeMerged', "You can merge only adjacent rooms. Continue anyway?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.continue',"Continue")], title: i18next.t('common.attention',"Attention!")});
+                    }
+                    return 1;
+                }
+                return Promise.reject("cancel");
+            })
             .then(answer => {
                 if (answer === 1) {
                     loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");

@@ -137,7 +137,7 @@
         "enterSegmentName": "Kérlek adj meg egy nevet a szobának:",
         "segmentRenamedOK": "Szoba sikeresen átnevezésre került!",
         "segmentRenameFailed": "Egy hiba lépett fel a szoba átnevezése közben!",
-        "segmentsCantBeMerged": "Csak szomszédos szobákat tudsz összevonni!",
+        "segmentsCantBeMerged": "Csak szomszédos szobákat tudsz összevonni! Mindenképp folytatni?",
         "confirmSegmentsMerge": "Biztosan össze szeretnéd vonni a \"{{segment1}}\" és \"{{segment2}}\" szobát?",
         "segmentsMergedOK": "Szobák sikersen összevonásra kerültek!",
         "segmentSplitNoLine": "Egy vonalat kell elhelyezned a szobán, hogy szétválaszd.",

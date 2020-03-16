@@ -137,7 +137,7 @@
         "enterSegmentName": "Anna valitulle huoneelle nimi:",
         "segmentRenamedOK": "Huoneen nimeäminen onnistuneesti!",
         "segmentRenameFailed": "Huoneen nimeämisessä tapahtui virhe.",
-        "segmentsCantBeMerged": "Voit yhdistää vain vierekkäiset huoneet.",
+        "segmentsCantBeMerged": "Voit yhdistää vain vierekkäiset huoneet. Jatka joka tapauksessa?",
         "confirmSegmentsMerge": "Haluatko varmasti kokeilla huoneiden \"{{segment1}}\" ja \"{{segment2}}\" yhdistämistä?",
         "segmentsMergedOK": "Huoneet yhdistettiin onnistuneesti!",
         "segmentSplitNoLine": "Sinun on asetettava leikkuulinja huoneeseen jakaaksesi se.",

@@ -137,7 +137,7 @@
         "enterSegmentName": "Please enter a name for selected room:",
         "segmentRenamedOK": "Room successfully renamed!",
         "segmentRenameFailed": "There was an error while renaming a room.",
-        "segmentsCantBeMerged": "You can merge only adjacent rooms.",
+        "segmentsCantBeMerged": "You can merge only adjacent rooms. Continue anyway?",
         "confirmSegmentsMerge": "Are you sure you want to try merging rooms \"{{segment1}}\" and \"{{segment2}}\"?",
         "segmentsMergedOK": "Rooms successfully merged!",
         "segmentSplitNoLine": "You need to place the cutting line into the room to split it.",
