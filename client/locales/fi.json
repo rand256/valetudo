@@ -357,7 +357,7 @@
             "settingsSaved": "Asetukset tallennettu!",
             "resetOK": "Kartta nollattu!",
             "exportedOK": "Tallennettu data viety konfiguraatioon.",
-            "importedOK": "Tallenettu data tuotu konfiguraatiosta."
+            "importedOK": "Tallennettu data tuotu konfiguraatiosta."
         },
         "soundAndVoice": {
             "volumeSettings": "Äänenvoimakkuuden asetukset",
