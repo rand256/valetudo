@@ -462,7 +462,7 @@
              "confirm": "Oletko varma, että haluat ottaa uudet Wifi-asetukset käyttöön?",
              "hint": "Vihje",
              "hintText": "Voit aina palata takaisin integroituun Wifi-yhteyspisteeseen. Katso käyttöoppaasta, kuinka Wifi-asetukset nollataan.",
-             "appliedOK": "Wifi tunnukset tallennettu onnistuneesti. Sivu latautuu uudelleen, kun painat OK. Todennäköisesti joudut muuttamaan URLia, koska imuri yhdistää uuteen verkkoon."
+             "appliedOK": "Wifi-tunnukset tallennettu onnistuneesti. Sivu latautuu uudelleen, kun painat OK. Todennäköisesti joudut muuttamaan URLia, koska imuri yhdistää uuteen verkkoon."
         },
         "telegram": {
             "explanation": "Luo uusi Telegram-chat ja etsi \"Botfather\" tiliä, luo uusi botti komennolla /newbot ja kopioi tokeni ja anna se tälle sivulle.",
@@ -482,7 +482,7 @@
             "notifyAll": "Kaikki",
             "notifyCleaning": "Siivous + virheet",
             "notifyErrors": "Vain virheet",
-            "status": "Nykyinen Telegramin tila",
+            "status": "Telegramin nykyinen tila",
             "clientsList": "Telegram-asiakkaat",
             "noClients": "Yhtään kirjautunutta asiakasta ei ole.",
             "confirmDeleteClient": "Haluatko varmasti poistaa tämän asiakkaan?",
