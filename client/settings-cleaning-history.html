@@ -138,7 +138,7 @@
                         setTimeout(() => {
                             fn.prequestWithPayload("api/clean_record_map", JSON.stringify({recordId : timestamp}), "PUT")
                             .then((res) => {
-                                if (res && res[0] === "map_upload_handler") {
+                                if (res && res[0].startsWith("map_slot_")) {
                                     resolve(res);
                                 } else {
                                     reject(res);
@@ -146,16 +146,13 @@
                             },(err) => { reject(err); });
                         },1000);
                     });
-                } else if (res && res[0] === "map_upload_handler") {
+                } else if (res && res[0].startsWith("map_slot_")) {
                     return res;
                 } else {
                     return Promise.reject(i18next.t('settings.cleaningHistory.unknownState',{defaultValue: "clean_record_map returned unknown state: {{state}}", state: res}));
                 }
             })
-            .then(() => {
-                return new Promise((resolve) => setTimeout(() => resolve(), 1500));
-            })
-            .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+            .then(res => fn.prequest("api/miio/" + res[0], "GET", "arraybuffer"))
             .then((mapData) => {
                 fn.pushPage({
                     'id': 'settings-cleaning-history-map.html',
