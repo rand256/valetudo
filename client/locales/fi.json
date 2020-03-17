@@ -438,7 +438,7 @@
             "multimapButtonsExt": "mahdollistaa karttojen tallentamisen ja palauttamisen (kokeellinen)",
             "mapTab": "Kartta-välilehti",
             "hideMapStatus": "Älä näytä tilaa kartassa",
-            "hideMapStatusExt": "Piilottaa tilateksti palkin",
+            "hideMapStatusExt": "Piilottaa tilatekstipalkin",
             "hideSegmentMarkers": "Älä näytä huonemerkkejä",
             "hideSegmentMarkersExt": "Piilottaa huonevalintamerkit kartalla",
             "disableMapReload": "Poista kartan uudelleenlatauksen painike käytöstä",
