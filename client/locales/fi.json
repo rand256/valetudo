@@ -480,7 +480,7 @@
             "sendConsumablesEvery": "Lähetä viesti jokaisen siivouksen yhteydessä, kun vaihdettavan osan laskuri on loppunut:",
             "notifyStatusTypes": "Mitkä tilamuutokset tulisi ilmoittaa:",
             "notifyAll": "Kaikki",
-            "notifyCleaning": "Siivous + Virheet",
+            "notifyCleaning": "Siivous + virheet",
             "notifyErrors": "Vain virheet",
             "status": "Nykyinen Telegramin tila",
             "clientsList": "Telegram-asiakkaat",
