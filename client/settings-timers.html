@@ -4,18 +4,17 @@
             <form id="add-timer-form">
                 <input type="hidden" name="zoned" value="0"/>
                 <input type="hidden" name="edit" value="0"/>
-                <p class="ntimer-item" data-i18n="settings.timers.timerDesc">Choose timer settings.</p>
-                <p class="ztimer-item" data-i18n="settings.timers.timerZoneDesc">Choose timer name and zone coordinates.</p>
+                <p class="edit-timer-desc"></p>
                 <ons-row>
                     <ons-col width="100px" align="center" data-i18n="settings.timers.name">Name:</ons-col>
                     <ons-col align="left"><ons-input type="text" placeholder="name of a timer" min="1" max="30" name="timer_name" data-i18n="[placeholder]settings.timers.namePlaceholder" /></ons-col>
                 </ons-row>
-                <ons-row class="ntimer-item">
+                <ons-row class="ctimer-item">
                     <ons-col width="100px" align="center" data-i18n="settings.timers.fanPower">Fan power:</ons-col>
                     <ons-col align="left"><ons-select select-id="fan_power_select">
                         <option value="0" data-i18n="home.fanspeedPresets.whisper">Whisper</option>
                         <option value="1" data-i18n="home.fanspeedPresets.quiet">Quiet</option>
-                        <option value="2" data-i18n="home.fanspeedPresets.balanced" selected>Balanced</option>
+                        <option value="2" data-i18n="home.fanspeedPresets.balanced">Balanced</option>
                         <option value="3" data-i18n="home.fanspeedPresets.turbo">Turbo</option>
                         <option value="4" data-i18n="home.fanspeedPresets.max">Max</option>
                         <option value="5" data-i18n="home.fanspeedPresets.mop">Mop</option>
@@ -698,7 +697,7 @@
             if (daySelection.length) {
                 daySelection = daySelection.sort().join(",");
             } else {
-                daySelection = fn.device.ver === 3 ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete"
+                daySelection = fn.device.ver === 3 && !zoned ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete" for native cleaning
             }
             if (form.once.checked && fn.device.ver === 3) {
                 daySelection = "*"; // that's it, clean and forget
@@ -779,12 +778,17 @@
             // show different headers for different modes and fw
             editTimerDialog.querySelectorAll('.ztimer-item').forEach(item => item.style.display = (zoned ? '' : 'none'));
             editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && fn.device.ver === 3 ? '' : 'none'));
+            editTimerDialog.querySelectorAll('.ctimer-item').forEach(item => item.style.display = (!zoned ? '' : 'none'));
+            editTimerDialog.querySelector('.edit-timer-desc').textContent = zoned ? i18next.t('settings.timers.timerZoneDesc',"Choose timer name and zone coordinates.") : i18next.t('settings.timers.timerDesc',"Choose timer settings.");
             if (fn.device.ver === 3) {
                 editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none';
             }
-            //
+            if (fn.device.model === "rockrobo.vacuum.v1") {
+                editTimerDialog.querySelector('select > option[value="5"]').style.display = 'none';
+            }
             clearTimerDialog(zoned);
-            editTimerDialog.querySelector('.dialog-container').style.cssText = "height: " + Math.min(zoned ? 470 : 400,window.innerHeight * 0.75) + "px; overflow: auto;";
+            let container = editTimerDialog.querySelector('.dialog-container');
+            container.style.cssText = "height: " + Math.min(zoned ? 470 : 400,window.innerHeight * 0.75) + "px; overflow: auto;";
             if (timerId !== null) {
                 loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
                 fn.prequest(zoned ? "api/ztimers" : "api/timers")
@@ -795,6 +799,7 @@
                     }
                     loadTimerDialog(timerId,zoned,res[idx]);
                     editTimerDialog.show();
+                    container.scrollTop = 0;
                 })
                 .catch(err => fn.notificationToastError(err))
                 .finally(() => {
@@ -802,6 +807,7 @@
                 });
             } else {
                 editTimerDialog.show();
+                container.scrollTop = 0;
             }
         };
     </script>

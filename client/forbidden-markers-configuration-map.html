@@ -28,7 +28,7 @@
         const saveButton = document.getElementById('forbidden-markers-configuration-save');
 
         const topPage = fn.getTopPage();
-        map.initCanvas(topPage.data.map, {metaData: false, noGotoPoints: true});
+        map.initCanvas(topPage.data.map, {metaData: false, noPath: true, noGotoPoints: true});
 
         document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 

@@ -33,7 +33,7 @@
         const topPage = fn.getTopPage();
         const zoneToModify = topPage.data.zoneToModify;
 
-        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+        map.initCanvas(topPage.data.map, {metaData: "forbidden", noPath: true, noGotoPoints: true});
 
         document.querySelector("#zones-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
