@@ -870,6 +870,14 @@ function updateMapInt(mapData) {
 		if (redrawCanvas) redrawCanvas();
 	}
 
+	function getZoneIterations() {
+		let index, activeLocation = locations.filter(location => location.active)[0];
+		if (!(activeLocation instanceof Zone)) {
+			return 0;
+		}
+		return activeLocation.iterations;
+	}
+
 	function updateSegmentNames(names) {
 		options.segmentNames = names;
 	}
@@ -890,6 +898,7 @@ function updateMapInt(mapData) {
 		addForbiddenZone: addForbiddenZone,
 		promoteCurrentZone: promoteCurrentZone,
 		addIterationsToZone: addIterationsToZone,
+		getZoneIterations: getZoneIterations,
 		updateSegmentNames: updateSegmentNames
 	};
 }
