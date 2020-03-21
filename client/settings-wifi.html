@@ -1,152 +1,152 @@
 <ons-page id="settings-wifi-page">
-    <ons-toolbar>
-        <div class="left">
-            <ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
-        </div>
-        <div class="center" data-i18n="settings.wifiTitle">Wifi</div>
-        <div class="right">
-        </div>
-    </ons-toolbar>
-    <ons-progress-bar id="loading-bar-settings-wifi" value="0" indeterminate="indeterminate"></ons-progress-bar>
+	<ons-toolbar>
+		<div class="left">
+			<ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
+		</div>
+		<div class="center" data-i18n="settings.wifiTitle">Wifi</div>
+		<div class="right">
+		</div>
+	</ons-toolbar>
+	<ons-progress-bar id="loading-bar-settings-wifi" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
-    <ons-list-title style="margin-top:5px;" data-i18n="settings.wifi.currentConnection">Current connection</ons-list-title>
-    <ons-list>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.status">
-                Status
-            </div>
-            <div class="right" id="settings-wifi-current-connection-status-connected" data-i18n="settings.loading">
-                loading...
-            </div>
-        </ons-list-item>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.ssid">
-                SSID
-            </div>
-            <div class="right" id="settings-wifi-current-connection-status-ssid" data-i18n="settings.loading">
-                loading...
-            </div>
-        </ons-list-item>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.signal">
-                Signal
-            </div>
-            <div class="right" id="settings-wifi-current-connection-status-signal">
-                0 dBm
-            </div>
-        </ons-list-item>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.txBitrate">
-                TX Bitrate
-            </div>
-            <div class="right" id="settings-wifi-current-connection-status-tx-bitrate">
-                0 MBit/s
-            </div>
-        </ons-list-item>
+	<ons-list-title style="margin-top:5px;" data-i18n="settings.wifi.currentConnection">Current connection</ons-list-title>
+	<ons-list>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.status">
+				Status
+			</div>
+			<div class="right" id="settings-wifi-current-connection-status-connected" data-i18n="settings.loading">
+				loading...
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.ssid">
+				SSID
+			</div>
+			<div class="right" id="settings-wifi-current-connection-status-ssid" data-i18n="settings.loading">
+				loading...
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.signal">
+				Signal
+			</div>
+			<div class="right" id="settings-wifi-current-connection-status-signal">
+				0 dBm
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.txBitrate">
+				TX Bitrate
+			</div>
+			<div class="right" id="settings-wifi-current-connection-status-tx-bitrate">
+				0 MBit/s
+			</div>
+		</ons-list-item>
 
-    </ons-list>
+	</ons-list>
 
-    <ons-list-title style="margin-top:20px;" data-i18n="settings.wifi.settings">Wifi Settings</ons-list-title>
-    <ons-list>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.ssid">
-                SSID:
-            </div>
-            <label class="right" style="width:75%">
-                <ons-input id="settings-wifi-input-ssid" float maxlength="32" placeholder="SSID" style="width:100%" data-i18n="[placeholder]settings.wifi.ssid"></ons-input>
-            </label>
-        </ons-list-item>
-        <ons-list-item>
-            <div class="left" data-i18n="settings.wifi.password">
-                Password:
-            </div>
-            <label class="right" style="width:75%">
-                <ons-input id="settings-wifi-input-password" type="password" float maxlength="63" placeholder="Password" style="width:100%;" data-i18n="[placeholder]settings.wifi.password"></ons-input>
-            </label>
-        </ons-list-item>
-        <ons-list-item>
-            <div class="center">
-                <ons-button id="settings-wifi-input-save-button" modifier="large" class="button-margin" disabled onclick="handleWifiSettingsSaveButton();" data-i18n="settings.wifi.save">Save new Wifi configuration</ons-button>
-            </div>
-        </ons-list-item>
-    </ons-list>
+	<ons-list-title style="margin-top:20px;" data-i18n="settings.wifi.settings">Wifi Settings</ons-list-title>
+	<ons-list>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.ssid">
+				SSID:
+			</div>
+			<label class="right" style="width:75%">
+				<ons-input id="settings-wifi-input-ssid" float maxlength="32" placeholder="SSID" style="width:100%" data-i18n="[placeholder]settings.wifi.ssid"></ons-input>
+			</label>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left" data-i18n="settings.wifi.password">
+				Password:
+			</div>
+			<label class="right" style="width:75%">
+				<ons-input id="settings-wifi-input-password" type="password" float maxlength="63" placeholder="Password" style="width:100%;" data-i18n="[placeholder]settings.wifi.password"></ons-input>
+			</label>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="center">
+				<ons-button id="settings-wifi-input-save-button" modifier="large" class="button-margin" disabled onclick="handleWifiSettingsSaveButton();" data-i18n="settings.wifi.save">Save new Wifi configuration</ons-button>
+			</div>
+		</ons-list-item>
+	</ons-list>
 
-    <script>
-        var loadingBarSettingsWifi = document.getElementById('loading-bar-settings-wifi');
-        var wifiCurrentConnectionStatusConnected = document.getElementById('settings-wifi-current-connection-status-connected');
-        var wifiCurrentConnectionStatusSSID = document.getElementById('settings-wifi-current-connection-status-ssid');
-        var wifiCurrentConnectionStatusSignal = document.getElementById('settings-wifi-current-connection-status-signal');
-        var wifiCurrentConnectionStatusTXBitrate = document.getElementById('settings-wifi-current-connection-status-tx-bitrate');
+	<script>
+		var loadingBarSettingsWifi = document.getElementById('loading-bar-settings-wifi');
+		var wifiCurrentConnectionStatusConnected = document.getElementById('settings-wifi-current-connection-status-connected');
+		var wifiCurrentConnectionStatusSSID = document.getElementById('settings-wifi-current-connection-status-ssid');
+		var wifiCurrentConnectionStatusSignal = document.getElementById('settings-wifi-current-connection-status-signal');
+		var wifiCurrentConnectionStatusTXBitrate = document.getElementById('settings-wifi-current-connection-status-tx-bitrate');
 
-        var wifiInputSSID = document.getElementById('settings-wifi-input-ssid');
-        var wifiInputPassword = document.getElementById('settings-wifi-input-password');
-        var wifiInputSaveButton = document.getElementById('settings-wifi-input-save-button');
+		var wifiInputSSID = document.getElementById('settings-wifi-input-ssid');
+		var wifiInputPassword = document.getElementById('settings-wifi-input-password');
+		var wifiInputSaveButton = document.getElementById('settings-wifi-input-save-button');
 
-        wifiInputSSID.addEventListener('input', updateWifiCredentialsSaveButton);
-        wifiInputPassword.addEventListener('input', updateWifiCredentialsSaveButton);
+		wifiInputSSID.addEventListener('input', updateWifiCredentialsSaveButton);
+		wifiInputPassword.addEventListener('input', updateWifiCredentialsSaveButton);
 
-        document.querySelector("#settings-wifi-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+		document.querySelector("#settings-wifi-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        ons.getScriptPage().onInit = function() {
-           fn.localize('#settings-wifi-page');
-        }
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#settings-wifi-page');
+		}
 
-        ons.getScriptPage().onShow = function() {
-            updateSettingsWifiPage();
-        };
+		ons.getScriptPage().onShow = function() {
+			updateSettingsWifiPage();
+		};
 
-        function updateSettingsWifiPage() {
-            loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/wifi_status")
-            .then((res) => {
-                wifiCurrentConnectionStatusConnected.innerHTML = res.connected === true ? i18next.t('settings.wifi.connected',"Connected") : i18next.t('settings.wifi.notConnected',"Not connected");
-                if (res.connected) {
-                    wifiCurrentConnectionStatusSSID.innerHTML = res.connection_info.ssid;
-                    wifiCurrentConnectionStatusSignal.innerHTML = res.connection_info.signal;
-                    wifiCurrentConnectionStatusTXBitrate.innerHTML = res.connection_info.tx_bitrate;
+		function updateSettingsWifiPage() {
+			loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/wifi_status")
+			.then((res) => {
+				wifiCurrentConnectionStatusConnected.innerHTML = res.connected === true ? i18next.t('settings.wifi.connected',"Connected") : i18next.t('settings.wifi.notConnected',"Not connected");
+				if (res.connected) {
+					wifiCurrentConnectionStatusSSID.innerHTML = res.connection_info.ssid;
+					wifiCurrentConnectionStatusSignal.innerHTML = res.connection_info.signal;
+					wifiCurrentConnectionStatusTXBitrate.innerHTML = res.connection_info.tx_bitrate;
 
-                    wifiInputSSID.value = res.connection_info.ssid;
-                }
-            },(err) => fn.notificationToastError(err))
-            .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
-        };
+					wifiInputSSID.value = res.connection_info.ssid;
+				}
+			},(err) => fn.notificationToastError(err))
+			.finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
+		};
 
-        function updateWifiCredentialsSaveButton() {
-            if (wifiInputSSID.value && wifiInputSSID.value !== "" &&
-                wifiInputPassword.value && wifiInputPassword.value !== "") {
-                wifiInputSaveButton.removeAttribute("disabled");
-            } else {
-                wifiInputSaveButton.setAttribute("disabled", "disabled");
-            }
-        };
+		function updateWifiCredentialsSaveButton() {
+			if (wifiInputSSID.value && wifiInputSSID.value !== "" &&
+				wifiInputPassword.value && wifiInputPassword.value !== "") {
+				wifiInputSaveButton.removeAttribute("disabled");
+			} else {
+				wifiInputSaveButton.setAttribute("disabled", "disabled");
+			}
+		};
 
-        function handleWifiSettingsSaveButton() {
-            ons.notification.confirm(i18next.t('settings.wifi.confirm',"Are you sure you want to apply the new Wifi settings?") + '<br><br><span style="font-weight: bold">' + i18next.t('settings.wifi.hint',"Hint") + ":</span> " + i18next.t('settings.wifi.hintText',"You can always revert back to the integrated Wifi Hotspot, consult your user manual on how to reset Wifi settings."), {buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
-                if (answer === 1) {
-                    loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
-                    fn.prequestWithPayload("api/wifi_configuration", JSON.stringify({
-                        ssid: wifiInputSSID.value,
-                        password: wifiInputPassword.value
-                    }), "PUT")
-                    .then(
-                        (res) => ons.notification.alert(i18next.t('settings.wifi.appliedOK',"Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."),{title: i18next.t('common.warning',"Warning")}).then(function () {
-                                    location.reload();
-                                }),
-                        (err) => fn.notificationToastError(err)
-                    )
-                    .finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
-                }
-            });
-        };
-    </script>
+		function handleWifiSettingsSaveButton() {
+			ons.notification.confirm(i18next.t('settings.wifi.confirm',"Are you sure you want to apply the new Wifi settings?") + '<br><br><span style="font-weight: bold">' + i18next.t('settings.wifi.hint',"Hint") + ":</span> " + i18next.t('settings.wifi.hintText',"You can always revert back to the integrated Wifi Hotspot, consult your user manual on how to reset Wifi settings."), {buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
+				if (answer === 1) {
+					loadingBarSettingsWifi.setAttribute("indeterminate", "indeterminate");
+					fn.prequestWithPayload("api/wifi_configuration", JSON.stringify({
+						ssid: wifiInputSSID.value,
+						password: wifiInputPassword.value
+					}), "PUT")
+					.then(
+						(res) => ons.notification.alert(i18next.t('settings.wifi.appliedOK',"Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."),{title: i18next.t('common.warning',"Warning")}).then(function () {
+									location.reload();
+								}),
+						(err) => fn.notificationToastError(err)
+					)
+					.finally(() => loadingBarSettingsWifi.removeAttribute("indeterminate"));
+				}
+			});
+		};
+	</script>
 
-    <style>
-        #settings-wifi-input-password > input {
-            text-align: right;
-        }
+	<style>
+		#settings-wifi-input-password > input {
+			text-align: right;
+		}
 
-        #settings-wifi-input-ssid > input {
-            text-align: right;
-        }
-    </style>
+		#settings-wifi-input-ssid > input {
+			text-align: right;
+		}
+	</style>
 </ons-page>

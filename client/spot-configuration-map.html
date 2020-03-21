@@ -1,99 +1,99 @@
 <ons-page id="spot-configuration-map-page">
-    <div id="spot-configuration-container">
-        <div class="page-with-map-header spot-configuration-header">
-            <ons-back-button data-i18n="zones.spotsPageBack" data-i18n-target=".back-button__label">Spots</ons-back-button>
-            <span id="spot-configuration-map-page-h1"></span>
-        </div>
+	<div id="spot-configuration-container">
+		<div class="page-with-map-header spot-configuration-header">
+			<ons-back-button data-i18n="zones.spotsPageBack" data-i18n-target=".back-button__label">Spots</ons-back-button>
+			<span id="spot-configuration-map-page-h1"></span>
+		</div>
 
-        <ons-progress-bar id="loading-bar-save-spot" value="0"></ons-progress-bar>
-        <canvas id="spot-configuration-map"></canvas>
-    </div>
+		<ons-progress-bar id="loading-bar-save-spot" value="0"></ons-progress-bar>
+		<canvas id="spot-configuration-map"></canvas>
+	</div>
 
-    <div class="map-page-buttons map-page-bottom">
-        <ons-fab ripple id="spot-configuration-save">
-            <ons-icon icon="fa-save"></ons-icon>
-        </ons-fab>
-    </div>
+	<div class="map-page-buttons map-page-bottom">
+		<ons-fab ripple id="spot-configuration-save">
+			<ons-icon icon="fa-save"></ons-icon>
+		</ons-fab>
+	</div>
 
-    <script type="module">
-        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
-        const map = new VacuumMap(document.getElementById('spot-configuration-map'));
-        const loadingBarSaveSpot = document.getElementById('loading-bar-save-spot');
-        const saveButton = document.getElementById('spot-configuration-save');
+	<script type="module">
+		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+		const map = new VacuumMap(document.getElementById('spot-configuration-map'));
+		const loadingBarSaveSpot = document.getElementById('loading-bar-save-spot');
+		const saveButton = document.getElementById('spot-configuration-save');
 
-        const topPage = fn.getTopPage();
-        const spotToModify = topPage.data.spotToModify;
-        map.initCanvas(topPage.data.map, {metaData: "forbidden", noPath: true});
+		const topPage = fn.getTopPage();
+		const spotToModify = topPage.data.spotToModify;
+		map.initCanvas(topPage.data.map, {metaData: "forbidden", noPath: true});
 
-        document.querySelector("#spot-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+		document.querySelector("#spot-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        document.getElementById("spot-configuration-map-page-h1").innerHTML = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotToModify.name});
+		document.getElementById("spot-configuration-map-page-h1").innerHTML = i18next.t('zones.spotEditTitle',{defaultValue: "Editing spot: {{spot}}", spot: spotToModify.name});
 
-        if (spotToModify.coordinates[0] !== null && spotToModify.coordinates[1] !== null) {
-            map.addSpot([spotToModify.coordinates[0], spotToModify.coordinates[1]]);
-        }
+		if (spotToModify.coordinates[0] !== null && spotToModify.coordinates[1] !== null) {
+			map.addSpot([spotToModify.coordinates[0], spotToModify.coordinates[1]]);
+		}
 
-        saveButton.onclick = () => {
-            const spotOnMap = map.getLocations().gotoPoints[0];
-            loadingBarSaveSpot.setAttribute("indeterminate", "indeterminate");
-            saveButton.setAttribute("disabled", "disabled");
-            fn.prequest("api/spots")
-            .then(res => {
-                if (!res.some(spot => spot.name === spotToModify.name)) {
-                    throw(i18next.t('zones.missingSpot',"No such spot."));
-                }
-                return fn.prequestWithPayload("api/spots", JSON.stringify({name: spotToModify.name, coordinates: [spotOnMap.x, spotOnMap.y], edit: spotToModify.name}), "PUT");
-            })
-            .then(() => {
-                fn.notificationToastOK(i18next.t('zones.spotsSavedOK',"Spot successfully saved!"));
-                fn.popPage();
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => {
-                loadingBarSaveSpot.removeAttribute("indeterminate");
-                saveButton.removeAttribute("disabled");
-            });
-        };
-    </script>
-    <script>
-        ons.getScriptPage().onInit = function() {
-           fn.localize('#spot-configuration-map-page');
-        }
-    </script>
-    <style>
-        #spot-configuration-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto 1fr;
+		saveButton.onclick = () => {
+			const spotOnMap = map.getLocations().gotoPoints[0];
+			loadingBarSaveSpot.setAttribute("indeterminate", "indeterminate");
+			saveButton.setAttribute("disabled", "disabled");
+			fn.prequest("api/spots")
+			.then(res => {
+				if (!res.some(spot => spot.name === spotToModify.name)) {
+					throw(i18next.t('zones.missingSpot',"No such spot."));
+				}
+				return fn.prequestWithPayload("api/spots", JSON.stringify({name: spotToModify.name, coordinates: [spotOnMap.x, spotOnMap.y], edit: spotToModify.name}), "PUT");
+			})
+			.then(() => {
+				fn.notificationToastOK(i18next.t('zones.spotsSavedOK',"Spot successfully saved!"));
+				fn.popPage();
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => {
+				loadingBarSaveSpot.removeAttribute("indeterminate");
+				saveButton.removeAttribute("disabled");
+			});
+		};
+	</script>
+	<script>
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#spot-configuration-map-page');
+		}
+	</script>
+	<style>
+		#spot-configuration-container {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto 1fr;
 
-            height: 100%;
-            width: 100%;
-        }
+			height: 100%;
+			width: 100%;
+		}
 
-        #spot-configuration-map {
-            touch-action: none;
-            height: 100%;
-            width: 100%;
-        }
+		#spot-configuration-map {
+			touch-action: none;
+			height: 100%;
+			width: 100%;
+		}
 
-        #spot-configuration-map-page-h1 {
-            flex-grow: 1;
-            text-align: center;
-        }
+		#spot-configuration-map-page-h1 {
+			flex-grow: 1;
+			text-align: center;
+		}
 
-        .spot-configuration-header {
-            display: flex;
-            align-items: center;
-        }
+		.spot-configuration-header {
+			display: flex;
+			align-items: center;
+		}
 
-        .spot-configuration-buttons {
-            position: absolute;
-            right: 1.5em;
-            bottom: 1.5em;
-            display: grid;
-            grid-template-columns: auto;
-            grid-template-rows: auto;
-            grid-gap: 0.5em;
-        }
-    </style>
+		.spot-configuration-buttons {
+			position: absolute;
+			right: 1.5em;
+			bottom: 1.5em;
+			display: grid;
+			grid-template-columns: auto;
+			grid-template-rows: auto;
+			grid-gap: 0.5em;
+		}
+	</style>
 </ons-page>

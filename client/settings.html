@@ -1,68 +1,68 @@
 <ons-page id="settings-page">
-    <ons-card onclick="fn.pushPage({'id': 'settings-info.html', 'title': 'Info'})">
-        <div class="title"><ons-icon icon="fa-info"></ons-icon> <span data-i18n="settings.infoTitle">Info</span></div>
-        <div class="content" data-i18n="settings.infoDesc">View device information</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-timers.html', 'title': 'Timers'})">
-        <div class="title"><ons-icon icon="fa-clock-o"></ons-icon> <span data-i18n="settings.timersTitle">Timers</span></div>
-        <div class="content" data-i18n="settings.timersDesc">Manage timers and timezone settings</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-carpet-mode.html', 'title': 'Carpet Mode'})">
-        <div class="title"><ons-icon icon="fa-cart-arrow-down"></ons-icon> <span data-i18n="settings.carpetModeTitle">Carpet Mode</span></div>
-        <div class="content" data-i18n="settings.carpetModeDesc">Configure carpet mode</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-persistent-data.html', 'title': 'Persistent Maps'})">
-        <div class="title"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="settings.persistentDataTitle">Persistent Data</span></div>
-        <div class="content" data-i18n="settings.persistentDataDesc">Configure the lab mode for enabling virtual walls etc</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-consumables.html', 'title': 'Consumables'})">
-        <div class="title"><ons-icon icon="fa-wrench"></ons-icon> <span data-i18n="settings.consumablesTitle">Consumables</span></div>
-        <div class="content" data-i18n="settings.consumablesDesc">View/reset consumable usage counters</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-cleaning-history.html', 'title': 'Cleaning History'})">
-        <div class="title"><ons-icon icon="fa-history"></ons-icon> <span data-i18n="settings.cleaningHistoryTitle">Cleaning History</span></div>
-        <div class="content" data-i18n="settings.cleaningHistoryDesc">View the cleaning history</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-wifi.html', 'title': 'Wifi'})">
-        <div class="title"><ons-icon icon="fa-wifi"></ons-icon> <span data-i18n="settings.wifiTitle">Wifi</span></div>
-        <div class="content" data-i18n="settings.wifiDesc">View/change wifi details and settings</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-sound-voice.html', 'title': 'Sound & Voice'})">
-        <div class="title"><ons-icon icon="fa-volume-up"></ons-icon> <span data-i18n="settings.soundAndVoiceTitle">Sound & Voice</span></div>
-        <div class="content" data-i18n="settings.soundAndVoiceDesc">Change the sound volume and the voice of the robot</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-web-interface.html', 'title': 'Web Interface'})">
-        <div class="title"><ons-icon icon="fa-tasks"></ons-icon> <span data-i18n="settings.webInterfaceTitle">Web Interface</span></div>
-        <div class="content" data-i18n="settings.webInterfaceDesc">Change web interface parameters</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-access-control.html', 'title': 'Access Control'})">
-        <div class="title"><ons-icon icon="fa-lock"></ons-icon> <span data-i18n="settings.accessControlTitle">Access Control</span></div>
-        <div class="content" data-i18n="settings.accessControlDesc">Configure SSH keys and HTTP authentication</div>
-    </ons-card>
-    <ons-card onclick="fn.pushPage({'id': 'settings-telegrambot.html', 'title': 'Telegram Bot'})">
-        <div class="title"><ons-icon icon="fa-telegram"></ons-icon> <span data-i18n="settings.telegramTitle">Telegram Bot</span></div>
-        <div class="content" data-i18n="settings.telegramDesc">Enable and configure Telegram bot settings</div>
-    </ons-card>
-    <script>
-        ons.getScriptPage().onInit = function() {
-           fn.localize('#settings-page');
-        }
-    </script>
-    <style>
-        .intro {
-            text-align: center;
-            padding: 0 20px;
-            margin-top: 40px;
-        }
+	<ons-card onclick="fn.pushPage({'id': 'settings-info.html', 'title': 'Info'})">
+		<div class="title"><ons-icon icon="fa-info"></ons-icon> <span data-i18n="settings.infoTitle">Info</span></div>
+		<div class="content" data-i18n="settings.infoDesc">View device information</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-timers.html', 'title': 'Timers'})">
+		<div class="title"><ons-icon icon="fa-clock-o"></ons-icon> <span data-i18n="settings.timersTitle">Timers</span></div>
+		<div class="content" data-i18n="settings.timersDesc">Manage timers and timezone settings</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-carpet-mode.html', 'title': 'Carpet Mode'})">
+		<div class="title"><ons-icon icon="fa-cart-arrow-down"></ons-icon> <span data-i18n="settings.carpetModeTitle">Carpet Mode</span></div>
+		<div class="content" data-i18n="settings.carpetModeDesc">Configure carpet mode</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-persistent-data.html', 'title': 'Persistent Maps'})">
+		<div class="title"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="settings.persistentDataTitle">Persistent Data</span></div>
+		<div class="content" data-i18n="settings.persistentDataDesc">Configure the lab mode for enabling virtual walls etc</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-consumables.html', 'title': 'Consumables'})">
+		<div class="title"><ons-icon icon="fa-wrench"></ons-icon> <span data-i18n="settings.consumablesTitle">Consumables</span></div>
+		<div class="content" data-i18n="settings.consumablesDesc">View/reset consumable usage counters</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-cleaning-history.html', 'title': 'Cleaning History'})">
+		<div class="title"><ons-icon icon="fa-history"></ons-icon> <span data-i18n="settings.cleaningHistoryTitle">Cleaning History</span></div>
+		<div class="content" data-i18n="settings.cleaningHistoryDesc">View the cleaning history</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-wifi.html', 'title': 'Wifi'})">
+		<div class="title"><ons-icon icon="fa-wifi"></ons-icon> <span data-i18n="settings.wifiTitle">Wifi</span></div>
+		<div class="content" data-i18n="settings.wifiDesc">View/change wifi details and settings</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-sound-voice.html', 'title': 'Sound & Voice'})">
+		<div class="title"><ons-icon icon="fa-volume-up"></ons-icon> <span data-i18n="settings.soundAndVoiceTitle">Sound & Voice</span></div>
+		<div class="content" data-i18n="settings.soundAndVoiceDesc">Change the sound volume and the voice of the robot</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-web-interface.html', 'title': 'Web Interface'})">
+		<div class="title"><ons-icon icon="fa-tasks"></ons-icon> <span data-i18n="settings.webInterfaceTitle">Web Interface</span></div>
+		<div class="content" data-i18n="settings.webInterfaceDesc">Change web interface parameters</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-access-control.html', 'title': 'Access Control'})">
+		<div class="title"><ons-icon icon="fa-lock"></ons-icon> <span data-i18n="settings.accessControlTitle">Access Control</span></div>
+		<div class="content" data-i18n="settings.accessControlDesc">Configure SSH keys and HTTP authentication</div>
+	</ons-card>
+	<ons-card onclick="fn.pushPage({'id': 'settings-telegrambot.html', 'title': 'Telegram Bot'})">
+		<div class="title"><ons-icon icon="fa-telegram"></ons-icon> <span data-i18n="settings.telegramTitle">Telegram Bot</span></div>
+		<div class="content" data-i18n="settings.telegramDesc">Enable and configure Telegram bot settings</div>
+	</ons-card>
+	<script>
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#settings-page');
+		}
+	</script>
+	<style>
+		.intro {
+			text-align: center;
+			padding: 0 20px;
+			margin-top: 40px;
+		}
 
-        ons-card {
-            cursor: pointer;
-            color: #333;
-        }
+		ons-card {
+			cursor: pointer;
+			color: #333;
+		}
 
-        .card__title,
-        .card--material__title {
-            font-size: 20px;
-        }
-    </style>
+		.card__title,
+		.card--material__title {
+			font-size: 20px;
+		}
+	</style>
 </ons-page>

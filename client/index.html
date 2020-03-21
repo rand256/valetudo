@@ -1,453 +1,453 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="css/onsenui.min.css">
-    <link rel="stylesheet" href="css/onsen-css-components.min.css">
-    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
-    <script src="js/onsenui.min.js"></script>
-    <script src="js/geometry-polyfill.js"></script>
-    <script src="js/pako_inflate.min.js"></script>
-    <script src="js/i18n.min.js" ></script>
-    <script src="js/i18n.html5.min.js"></script>
-    <script src="js/i18n.xhr.min.js"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#4285f4">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta charset="utf-8">
-    <link rel="icon" sizes="192x192" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-    <title>Mi Robot Vacuum</title>
+	<link rel="stylesheet" href="css/onsenui.min.css">
+	<link rel="stylesheet" href="css/onsen-css-components.min.css">
+	<link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+	<script src="js/onsenui.min.js"></script>
+	<script src="js/geometry-polyfill.js"></script>
+	<script src="js/pako_inflate.min.js"></script>
+	<script src="js/i18n.min.js" ></script>
+	<script src="js/i18n.html5.min.js"></script>
+	<script src="js/i18n.xhr.min.js"></script>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#4285f4">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta charset="utf-8">
+	<link rel="icon" sizes="192x192" href="icon.png">
+	<link rel="apple-touch-icon" href="icon.png">
+	<title>Mi Robot Vacuum</title>
 </head>
 <body>
-    <script>
-        window.fn = {};
+	<script>
+		window.fn = {};
 
-        window.fn.toggleMenu = function () {
-            document.getElementById('appSplitter').left.toggle();
-        };
+		window.fn.toggleMenu = function () {
+			document.getElementById('appSplitter').left.toggle();
+		};
 
-        window.fn.loadView = function (index, options) {
-            options = options || {};
-            document.getElementById('appTabbar').setActiveTab(index, options);
-            document.getElementById('sidemenu').close();
-        };
+		window.fn.loadView = function (index, options) {
+			options = options || {};
+			document.getElementById('appTabbar').setActiveTab(index, options);
+			document.getElementById('sidemenu').close();
+		};
 
-        window.fn.loadLink = function (url) {
-            window.open(url, '_blank');
-        };
+		window.fn.loadLink = function (url) {
+			window.open(url, '_blank');
+		};
 
-        window.fn.pushPage = function (page, anim) {
-            if (anim) {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim }).catch(_ => {});
-            } else {
-                document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } }).catch(_ => {});
-            }
-            let stateObj = {moveView: (history.state && history.state.moveView || 0)};
-            if (history.state && history.state.moveSubPage) {
-                stateObj.moveSubPage = history.state.moveSubPage.splice(0).concat(page);
-            } else {
-                stateObj.moveSubPage = [page];
-            }
-            history.pushState(stateObj, page.id);
-        };
+		window.fn.pushPage = function (page, anim) {
+			if (anim) {
+				document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: anim }).catch(_ => {});
+			} else {
+				document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data } }).catch(_ => {});
+			}
+			let stateObj = {moveView: (history.state && history.state.moveView || 0)};
+			if (history.state && history.state.moveSubPage) {
+				stateObj.moveSubPage = history.state.moveSubPage.splice(0).concat(page);
+			} else {
+				stateObj.moveSubPage = [page];
+			}
+			history.pushState(stateObj, page.id);
+		};
 
-        window.fn.popPage = function() {
-            document.getElementById('appNavigator').popPage();
-            let stateObj = {moveView: (history.state && history.state.moveView || 0)};
-            if (history.state && history.state.moveSubPage && history.state.moveSubPage.length > 1) {
-                stateObj.moveSubPage = history.state.moveSubPage.splice(0);
-                stateObj.moveSubPage.shift();
-            }
-            history.pushState(stateObj, "");
-        }
+		window.fn.popPage = function() {
+			document.getElementById('appNavigator').popPage();
+			let stateObj = {moveView: (history.state && history.state.moveView || 0)};
+			if (history.state && history.state.moveSubPage && history.state.moveSubPage.length > 1) {
+				stateObj.moveSubPage = history.state.moveSubPage.splice(0);
+				stateObj.moveSubPage.shift();
+			}
+			history.pushState(stateObj, "");
+		}
 
-        window.fn.getTopPage = function() {
-            return document.getElementById('appNavigator').topPage;
-        }
+		window.fn.getTopPage = function() {
+			return document.getElementById('appNavigator').topPage;
+		}
 
-        window.fn.postFile = function (url, path, progressCallback, callback){
-            var formData = new FormData();
-            formData.append("file", path);
+		window.fn.postFile = function (url, path, progressCallback, callback){
+			var formData = new FormData();
+			formData.append("file", path);
 
-            var request = new XMLHttpRequest();
-            request.onerror = function(e) {
-                console.error(request);
-                callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
-            };
+			var request = new XMLHttpRequest();
+			request.onerror = function(e) {
+				console.error(request);
+				callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+			};
 
-            request.onload = function(e) {
-                if (request.status >= 200 && request.status < 400) {
-                    callback(null, JSON.parse(request.responseText));
-                } else {
-                    console.error(request);
-                    callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
-                }
-            };
+			request.onload = function(e) {
+				if (request.status >= 200 && request.status < 400) {
+					callback(null, JSON.parse(request.responseText));
+				} else {
+					console.error(request);
+					callback(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (request.responseText ? ' - ' + request.responseText : ''));
+				}
+			};
 
-            request.upload.onprogress = function(e) {
-                var p = Math.round(100 / e.total * e.loaded);
-                progressCallback(p);
-            };
+			request.upload.onprogress = function(e) {
+				var p = Math.round(100 / e.total * e.loaded);
+				progressCallback(p);
+			};
 
-            request.onerror = function () {
-                callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
-            };
+			request.onerror = function () {
+				callback(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
+			};
 
-            request.open("POST", (localStorage['urlOverride'] || '') + url);
-            request.send(formData);
-        }
+			request.open("POST", (localStorage['urlOverride'] || '') + url);
+			request.send(formData);
+		}
 
-        window.fn.prequest = function (url, method, type) {
-            return new Promise(function(resolve, reject) {
-                method = method || "GET";
-                var request = new XMLHttpRequest();
-                if (type) request.responseType = type;
-                request.open(method, (localStorage['urlOverride'] || '') + url, true);
-                request.onload = function () {
-                    if (request.status >= 200 && request.status < 400) {
-                        if (request.responseType === "") {
-                            resolve(JSON.parse(request.responseText));
-                        } else {
-                            resolve(request.response);
-                        }
-                    } else {
-                        console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
-                    }
-                };
-                request.onerror = function () {
-                    reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
-                };
-                request.send();
-            });
-        };
+		window.fn.prequest = function (url, method, type) {
+			return new Promise(function(resolve, reject) {
+				method = method || "GET";
+				var request = new XMLHttpRequest();
+				if (type) request.responseType = type;
+				request.open(method, (localStorage['urlOverride'] || '') + url, true);
+				request.onload = function () {
+					if (request.status >= 200 && request.status < 400) {
+						if (request.responseType === "") {
+							resolve(JSON.parse(request.responseText));
+						} else {
+							resolve(request.response);
+						}
+					} else {
+						console.error(request);
+						reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
+					}
+				};
+				request.onerror = function () {
+					reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
+				};
+				request.send();
+			});
+		};
 
-        window.fn.prequestWithPayload = function (url, payload, method, type) {
-            return new Promise(function(resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open(method, (localStorage['urlOverride'] || '') + url, true);
-                if (type) request.responseType = type;
-                request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-                request.send(payload);
+		window.fn.prequestWithPayload = function (url, payload, method, type) {
+			return new Promise(function(resolve, reject) {
+				var request = new XMLHttpRequest();
+				request.open(method, (localStorage['urlOverride'] || '') + url, true);
+				if (type) request.responseType = type;
+				request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+				request.send(payload);
 
-                request.onload = function () {
-                    if (request.status >= 200 && request.status < 400) {
-                        try {
-                            resolve(JSON.parse(request.responseText));
-                        } catch (e) { console.error(e); }
-                    } else {
-                        console.error(request);
-                        reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
-                    }
-                };
+				request.onload = function () {
+					if (request.status >= 200 && request.status < 400) {
+						try {
+							resolve(JSON.parse(request.responseText));
+						} catch (e) { console.error(e); }
+					} else {
+						console.error(request);
+						reject(i18next.t('common.commandFailed',"There was an error:") + " " + request.status + (!type && request.responseText ? ' - ' + request.responseText : ''));
+					}
+				};
 
-                request.onerror = function () {
-                    reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
-                };
-            });
-        };
+				request.onerror = function () {
+					reject(i18next.t('common.connectionError',"Connection error") + (request.statusText ? ": " + request.statusText : ""));
+				};
+			});
+		};
 
-        window.fn.secondsToHms = function (d) {
-            d = Number(d);
+		window.fn.secondsToHms = function (d) {
+			d = Number(d);
 
-            var h = Math.floor(d / 3600);
-            var m = Math.floor(d % 3600 / 60);
-            var s = Math.floor(d % 3600 % 60);
+			var h = Math.floor(d / 3600);
+			var m = Math.floor(d % 3600 / 60);
+			var s = Math.floor(d % 3600 % 60);
 
-            return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
-        };
+			return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+		};
 
-        window.fn.toastOKTimeout = 15e2;
-        window.fn.toastErrorTimeout = 5e3;
+		window.fn.toastOKTimeout = 15e2;
+		window.fn.toastErrorTimeout = 5e3;
 
-        window.fn.notificationToastOK = function(text,timeout) {
-            text = text && String(text) || i18next.t('common.commandOK',"Command successfully sent!");
-            timeout = timeout || fn.toastOKTimeout;
-            fn.notificationToastSend(text,timeout);
-        }
+		window.fn.notificationToastOK = function(text,timeout) {
+			text = text && String(text) || i18next.t('common.commandOK',"Command successfully sent!");
+			timeout = timeout || fn.toastOKTimeout;
+			fn.notificationToastSend(text,timeout);
+		}
 
-        window.fn.notificationToastError = function(text,timeout) {
-            text = text && String(text) || i18next.t('common.commandFailed',"There was an error").slice(0,-1) + '.';
-            timeout = timeout || fn.toastErrorTimeout;
-            fn.notificationToastSend(text,timeout);
-        }
+		window.fn.notificationToastError = function(text,timeout) {
+			text = text && String(text) || i18next.t('common.commandFailed',"There was an error").slice(0,-1) + '.';
+			timeout = timeout || fn.toastErrorTimeout;
+			fn.notificationToastSend(text,timeout);
+		}
 
-        window.fn.notificationToastSend = function(text, timeout) {
-            for (let toast of document.querySelectorAll('.toast .toast__message')) {
-                if (toast.textContent.trim() === text.trim()) return;
-            }
-            label = i18next.t('common.dismiss',"Dismiss");
-            ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
-        }
+		window.fn.notificationToastSend = function(text, timeout) {
+			for (let toast of document.querySelectorAll('.toast .toast__message')) {
+				if (toast.textContent.trim() === text.trim()) return;
+			}
+			label = i18next.t('common.dismiss',"Dismiss");
+			ons.notification.toast(text, { buttonLabel: label, timeout: timeout });
+		}
 
-        var pushView = function(idx,hash) {
-            history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
-            document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
-        }
+		var pushView = function(idx,hash) {
+			history.pushState({moveView: idx}, '', hash ? '#' + hash : '');
+			document.title = 'Mi Robot Vacuum' + ((idx > 0) ? ' - ' + document.querySelectorAll('#appTabbar ons-tab')[idx].textContent : '');
+		}
 
-        var preSwitchTab = function(targetID) {
-            if (!document.querySelectorAll('.ons-swiper-target > .page')[targetID]) {
-                setTimeout(() => preSwitchTab(targetID),100);
-                return;
-            }
-            fn.loadView(targetID);
-        }
+		var preSwitchTab = function(targetID) {
+			if (!document.querySelectorAll('.ons-swiper-target > .page')[targetID]) {
+				setTimeout(() => preSwitchTab(targetID),100);
+				return;
+			}
+			fn.loadView(targetID);
+		}
 
-        var waitForGlobals = fn.prequest("api/current_status")
-        .then(res => {
-            fn.device = {
-                model: res.model,
-                ver: res.msg_ver
-            };
-        }, err => {
-            fn.device = {
-                model: "unknown",
-                ver: 1
-            };
-        })
-        .then(res => fn.prequest("api/get_interface_config"))
-        .then(res => {
-            fn.webifSettings = res;
-            if(fn.webifSettings.style !== "" && fn.webifSettings.style !== undefined) {
-                document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" type="text/css" href="css/' + fn.webifSettings.style + '.css">');
-            }
-            return i18next.use(i18nextXHRBackend).init({
-                interpolation: {
-                    format: function(value, format, lng) {
-                        if (format === 'lowercase') return value.toLowerCase();
-                        if (format === 'uppercase') return value.toUpperCase();
-                        return value;
-                    }
-                },
-                lng: res.localization || '',
-                fallbackLng: '',
-                backend: {
-                    loadPath: 'locales/{{lng}}.json'
-                },
-                debug: false
-            })
-        })
-        .then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-        .catch(e => {
-            fn.localize = function() {};
-            console.error('loading interface configuration has failed', e);
-        });
+		var waitForGlobals = fn.prequest("api/current_status")
+		.then(res => {
+			fn.device = {
+				model: res.model,
+				ver: res.msg_ver
+			};
+		}, err => {
+			fn.device = {
+				model: "unknown",
+				ver: 1
+			};
+		})
+		.then(res => fn.prequest("api/get_interface_config"))
+		.then(res => {
+			fn.webifSettings = res;
+			if(fn.webifSettings.style !== "" && fn.webifSettings.style !== undefined) {
+				document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" type="text/css" href="css/' + fn.webifSettings.style + '.css">');
+			}
+			return i18next.use(i18nextXHRBackend).init({
+				interpolation: {
+					format: function(value, format, lng) {
+						if (format === 'lowercase') return value.toLowerCase();
+						if (format === 'uppercase') return value.toUpperCase();
+						return value;
+					}
+				},
+				lng: res.localization || '',
+				fallbackLng: '',
+				backend: {
+					loadPath: 'locales/{{lng}}.json'
+				},
+				debug: false
+			})
+		})
+		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+		.catch(e => {
+			fn.localize = function() {};
+			console.error('loading interface configuration has failed', e);
+		});
 
-        if (ons.platform.isIPhoneX()) {
-            document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
-        }
-    </script>
-    <div>Loading...</div>
-    <script type="module" crossorigin>
-        import { RRMapParser } from "./zone/js-modules/rr-map-parser.js";
-        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
-        window.fn.parseBinaryMap = function(gzippedMap) { return RRMapParser.PARSE(pako.inflate(gzippedMap)) || {}; };
-        window.fn.createVacuumMap = function(canvasElement) { return new VacuumMap(canvasElement); }
+		if (ons.platform.isIPhoneX()) {
+			document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+		}
+	</script>
+	<div>Loading...</div>
+	<script type="module" crossorigin>
+		import { RRMapParser } from "./zone/js-modules/rr-map-parser.js";
+		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+		window.fn.parseBinaryMap = function(gzippedMap) { return RRMapParser.PARSE(pako.inflate(gzippedMap)) || {}; };
+		window.fn.createVacuumMap = function(canvasElement) { return new VacuumMap(canvasElement); }
 
-        ons.ready(function () {
-            waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
+		ons.ready(function () {
+			waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
 
-            // todo: make it work without timeout hacks
-            switch (window.location.hash) {
-                case '#home': break;
-                case '#map.html': preSwitchTab(1); break;
-                case '#zones.html': preSwitchTab(2); break;
-                case '#control.html': preSwitchTab(3); break;
-                case '#settings.html': preSwitchTab(4); break;
-                default: history.replaceState({},'','#home.html');
-            }
-            window.addEventListener('popstate', function (e) {
-                if (document.getElementById('appNavigator').pages.length > 1) {
-                    document.getElementById('appNavigator').popPage({times: (document.getElementById('appNavigator').pages.length - 1), animation: "none"});
-                }
-                if (history.state && history.state.moveView !== undefined) {
-                    fn.loadView(history.state.moveView, {animation: history.state.moveSubPage ? "none" : "default"});
-                } else {
-                    fn.loadView(0, {animation: history.state.moveSubPage ? "none" : "default"});
-                }
-                if (history.state && Array.isArray(history.state.moveSubPage)) {
-                    let i = j = 0, max = history.state.moveSubPage.length;
-                    history.state.moveSubPage.forEach(page => setTimeout(() => { j++; document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: (j === max ? "default" : "none") }).catch(_ => {}); }, ++i*150))
-                }
-            }, false);
-        });
-        </script>
+			// todo: make it work without timeout hacks
+			switch (window.location.hash) {
+				case '#home': break;
+				case '#map.html': preSwitchTab(1); break;
+				case '#zones.html': preSwitchTab(2); break;
+				case '#control.html': preSwitchTab(3); break;
+				case '#settings.html': preSwitchTab(4); break;
+				default: history.replaceState({},'','#home.html');
+			}
+			window.addEventListener('popstate', function (e) {
+				if (document.getElementById('appNavigator').pages.length > 1) {
+					document.getElementById('appNavigator').popPage({times: (document.getElementById('appNavigator').pages.length - 1), animation: "none"});
+				}
+				if (history.state && history.state.moveView !== undefined) {
+					fn.loadView(history.state.moveView, {animation: history.state.moveSubPage ? "none" : "default"});
+				} else {
+					fn.loadView(0, {animation: history.state.moveSubPage ? "none" : "default"});
+				}
+				if (history.state && Array.isArray(history.state.moveSubPage)) {
+					let i = j = 0, max = history.state.moveSubPage.length;
+					history.state.moveSubPage.forEach(page => setTimeout(() => { j++; document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title, ...page.data }, animation: (j === max ? "default" : "none") }).catch(_ => {}); }, ++i*150))
+				}
+			}, false);
+		});
+		</script>
 
-    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px"></ons-navigator>
+	<ons-navigator id="appNavigator" swipeable swipe-target-width="80px"></ons-navigator>
 
-    <template id="app-splitter.html">
-        <ons-page id="app-splitter-page">
-            <ons-splitter id="appSplitter">
-                <ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
-                <ons-splitter-content page="tabbar.html"></ons-splitter-content>
-            </ons-splitter>
-        </ons-page>
-    </template>
+	<template id="app-splitter.html">
+		<ons-page id="app-splitter-page">
+			<ons-splitter id="appSplitter">
+				<ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
+				<ons-splitter-content page="tabbar.html"></ons-splitter-content>
+			</ons-splitter>
+		</ons-page>
+	</template>
 
-    <template id="tabbar.html">
-        <ons-page id="tabbar-page">
-            <ons-toolbar>
-                <div class="left">
-                    <ons-toolbar-button onclick="fn.toggleMenu()">
-                        <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-                    </ons-toolbar-button>
-                </div>
-                <div class="center" data-i18n="navi.home">Home</div>
-            </ons-toolbar>
-            <ons-tabbar swipeable id="appTabbar" position="auto">
-                <ons-tab label="Home" data-i18n="[label]navi.home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
-                <ons-tab label="Map" data-i18n="[label]navi.map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
-                <ons-tab label="Zones" data-i18n="[label]navi.zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
-                <ons-tab label="Control" data-i18n="[label]navi.control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'control.html');"></ons-tab>
-                <ons-tab label="Settings" data-i18n="[label]navi.settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
-            </ons-tabbar>
+	<template id="tabbar.html">
+		<ons-page id="tabbar-page">
+			<ons-toolbar>
+				<div class="left">
+					<ons-toolbar-button onclick="fn.toggleMenu()">
+						<ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+					</ons-toolbar-button>
+				</div>
+				<div class="center" data-i18n="navi.home">Home</div>
+			</ons-toolbar>
+			<ons-tabbar swipeable id="appTabbar" position="auto">
+				<ons-tab label="Home" data-i18n="[label]navi.home" icon="ion-home" page="home.html" onclick="pushView(0,'home.html');" active></ons-tab>
+				<ons-tab label="Map" data-i18n="[label]navi.map" icon="fa-map-marker" page="map.html" onclick="pushView(1,'map.html');"></ons-tab>
+				<ons-tab label="Zones" data-i18n="[label]navi.zones" icon="fa-share-square" page="zones.html" onclick="pushView(2,'zones.html');"></ons-tab>
+				<ons-tab label="Control" data-i18n="[label]navi.control" icon="fa-gamepad" page="manualcontrol.html" onclick="pushView(3,'control.html');"></ons-tab>
+				<ons-tab label="Settings" data-i18n="[label]navi.settings" icon="fa-cog" page="settings.html" onclick="pushView(4,'settings.html');"></ons-tab>
+			</ons-tabbar>
 
-            <script>
-                ons.getScriptPage().onInit = function() {
-                    fn.localize('#tabbar-page');
-                }
-                ons.getScriptPage().addEventListener('prechange', function (event) {
-                    if (event.target.matches('#appTabbar')) {
-                        event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
-                    }
-                });
-            </script>
-        </ons-page>
-    </template>
+			<script>
+				ons.getScriptPage().onInit = function() {
+					fn.localize('#tabbar-page');
+				}
+				ons.getScriptPage().addEventListener('prechange', function (event) {
+					if (event.target.matches('#appTabbar')) {
+						event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
+					}
+				});
+			</script>
+		</ons-page>
+	</template>
 
-    <template id="sidemenu.html">
-        <ons-page id="sidemenu-page">
-            <div class="profile-header">
-                <span>Valetudo</span>
-            </div>
-            <ons-list>
-                <ons-list-item onclick="pushView(0,'home.html'); fn.loadView(0);">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="ion-home, material:md-home"></ons-icon>
-                    </div>
-                    <div class="center" data-i18n="navi.home">
-                        Home
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-                <ons-list-item onclick="pushView(1,'map.html'); fn.loadView(1);">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="fa-map-marker, material:fa-map-marker"></ons-icon>
-                    </div>
-                    <div class="center" data-i18n="navi.map" >
-                        Map
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-                <ons-list-item onclick="pushView(2,'zones.html'); fn.loadView(2);">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="fa-share-square, material:fa-share-square"></ons-icon>
-                    </div>
-                    <div class="center" data-i18n="navi.zones" >
-                        Zones
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-                <ons-list-item onclick="pushView(3,'manualcontrol.html'); fn.loadView(3);">
-                        <div class="left">
-                            <ons-icon fixed-width class="list-item__icon" icon="fa-gamepad, material:fa-gamepad"></ons-icon>
-                        </div>
-                        <div class="center" data-i18n="navi.control" >
-                            Manual Control
-                        </div>
-                        <div class="right">
-                            <ons-icon icon="fa-link"></ons-icon>
-                        </div>
-                    </ons-list-item>
-                <ons-list-item onclick="pushView(4,'settings.html'); fn.loadView(4);">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="fa-cog, material: md-settings"></ons-icon>
-                    </div>
-                    <div class="center" data-i18n="navi.settings" >
-                        Settings
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-            </ons-list>
+	<template id="sidemenu.html">
+		<ons-page id="sidemenu-page">
+			<div class="profile-header">
+				<span>Valetudo</span>
+			</div>
+			<ons-list>
+				<ons-list-item onclick="pushView(0,'home.html'); fn.loadView(0);">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="ion-home, material:md-home"></ons-icon>
+					</div>
+					<div class="center" data-i18n="navi.home">
+						Home
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-link"></ons-icon>
+					</div>
+				</ons-list-item>
+				<ons-list-item onclick="pushView(1,'map.html'); fn.loadView(1);">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="fa-map-marker, material:fa-map-marker"></ons-icon>
+					</div>
+					<div class="center" data-i18n="navi.map" >
+						Map
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-link"></ons-icon>
+					</div>
+				</ons-list-item>
+				<ons-list-item onclick="pushView(2,'zones.html'); fn.loadView(2);">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="fa-share-square, material:fa-share-square"></ons-icon>
+					</div>
+					<div class="center" data-i18n="navi.zones" >
+						Zones
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-link"></ons-icon>
+					</div>
+				</ons-list-item>
+				<ons-list-item onclick="pushView(3,'manualcontrol.html'); fn.loadView(3);">
+						<div class="left">
+							<ons-icon fixed-width class="list-item__icon" icon="fa-gamepad, material:fa-gamepad"></ons-icon>
+						</div>
+						<div class="center" data-i18n="navi.control" >
+							Manual Control
+						</div>
+						<div class="right">
+							<ons-icon icon="fa-link"></ons-icon>
+						</div>
+					</ons-list-item>
+				<ons-list-item onclick="pushView(4,'settings.html'); fn.loadView(4);">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="fa-cog, material: md-settings"></ons-icon>
+					</div>
+					<div class="center" data-i18n="navi.settings" >
+						Settings
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-link"></ons-icon>
+					</div>
+				</ons-list-item>
+			</ons-list>
 
-            <ons-list-title style="margin-top: 10px" data-i18n="navi.links">Links</ons-list-title>
-            <ons-list>
-                <ons-list-item onclick="fn.loadLink('https://github.com/rand256/valetudo')">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
-                    </div>
-                    <div class="center">
-                        GitHub
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-external-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-                <ons-list-item onclick="fn.loadLink('https://github.com/Hypfer/Valetudo')">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
-                    </div>
-                    <div class="center">
-                        GitHub Origin
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-external-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-                <ons-list-item onclick="fn.pushPage({'id': 'about.html', 'title': 'About'});">
-                    <div class="left">
-                        <ons-icon fixed-width class="list-item__icon" icon="fa-info-circle"></ons-icon>
-                    </div>
-                    <div class="center" data-i18n="navi.about">
-                        About
-                    </div>
-                    <div class="right">
-                        <ons-icon icon="fa-link"></ons-icon>
-                    </div>
-                </ons-list-item>
-            </ons-list>
+			<ons-list-title style="margin-top: 10px" data-i18n="navi.links">Links</ons-list-title>
+			<ons-list>
+				<ons-list-item onclick="fn.loadLink('https://github.com/rand256/valetudo')">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
+					</div>
+					<div class="center">
+						GitHub
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-external-link"></ons-icon>
+					</div>
+				</ons-list-item>
+				<ons-list-item onclick="fn.loadLink('https://github.com/Hypfer/Valetudo')">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
+					</div>
+					<div class="center">
+						GitHub Origin
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-external-link"></ons-icon>
+					</div>
+				</ons-list-item>
+				<ons-list-item onclick="fn.pushPage({'id': 'about.html', 'title': 'About'});">
+					<div class="left">
+						<ons-icon fixed-width class="list-item__icon" icon="fa-info-circle"></ons-icon>
+					</div>
+					<div class="center" data-i18n="navi.about">
+						About
+					</div>
+					<div class="right">
+						<ons-icon icon="fa-link"></ons-icon>
+					</div>
+				</ons-list-item>
+			</ons-list>
 
-            <script>
-                ons.getScriptPage().onInit = function () {
-                    // Set ons-splitter-side animation
-                    this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
-                    fn.localize('#sidemenu-page');
-                };
-            </script>
+			<script>
+				ons.getScriptPage().onInit = function () {
+					// Set ons-splitter-side animation
+					this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
+					fn.localize('#sidemenu-page');
+				};
+			</script>
 
-            <style>
-                .profile-header {
-                    width: 200px;
-                    margin: 10px auto 10px;
-                    text-align: center;
-                    font-size: 2em;
-                    font-weight: bolder;
-                }
+			<style>
+				.profile-header {
+					width: 200px;
+					margin: 10px auto 10px;
+					text-align: center;
+					font-size: 2em;
+					font-weight: bolder;
+				}
 
-                    .profile-header > span {
-                        display: block;
-                        max-width: 100%;
-                    }
+					.profile-header > span {
+						display: block;
+						max-width: 100%;
+					}
 
-                ons-list-item {
-                    color: #444;
-                }
+				ons-list-item {
+					color: #444;
+				}
 
-                .progress-bar-container {
-                    position: fixed;
-                    width: 100%;
-                }
-            </style>
-        </ons-page>
-    </template>
+				.progress-bar-container {
+					position: fixed;
+					width: 100%;
+				}
+			</style>
+		</ons-page>
+	</template>
 </body>
 </html>

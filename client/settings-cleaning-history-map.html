@@ -1,55 +1,55 @@
 <ons-page id="settings-cleaning-history-map-page">
-    <div id="settings-cleaning-history-container">
-        <div class="page-with-map-header settings-cleaning-history-header">
-            <ons-back-button data-i18n="settings.cleaningHistoryTitle" data-i18n-target=".back-button__label">Cleaning History</ons-back-button>
-            <span id="settings-cleaning-history-map-page-h1"></span>
-        </div>
-        <ons-progress-bar id="loading-bar-none" value="0"></ons-progress-bar>
-        <canvas id="cleaning-history-map"></canvas>
-    </div>
+	<div id="settings-cleaning-history-container">
+		<div class="page-with-map-header settings-cleaning-history-header">
+			<ons-back-button data-i18n="settings.cleaningHistoryTitle" data-i18n-target=".back-button__label">Cleaning History</ons-back-button>
+			<span id="settings-cleaning-history-map-page-h1"></span>
+		</div>
+		<ons-progress-bar id="loading-bar-none" value="0"></ons-progress-bar>
+		<canvas id="cleaning-history-map"></canvas>
+	</div>
 
-    <script type="module">
-        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
-        const map = new VacuumMap(document.getElementById('cleaning-history-map'));
+	<script type="module">
+		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+		const map = new VacuumMap(document.getElementById('cleaning-history-map'));
 
-        document.querySelector("#settings-cleaning-history-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+		document.querySelector("#settings-cleaning-history-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        const topPage = fn.getTopPage();
-        const cleaningDate = topPage.data.cleaningDate;
+		const topPage = fn.getTopPage();
+		const cleaningDate = topPage.data.cleaningDate;
 
-        map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
-        window.fn.map = map;
+		map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+		window.fn.map = map;
 
-        document.getElementById("settings-cleaning-history-map-page-h1").textContent = i18next.t('settings.cleaningHistory.mapTitle',{defaultValue: "Cleaning map from {{cleaningDate}}", cleaningDate: cleaningDate});
-    </script>
-    <script>
-        ons.getScriptPage().onInit = function() {
-           fn.localize('#settings-cleaning-history-map-page');
-        }
-    </script>
-    <style>
-        #settings-cleaning-history-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto 1fr;
-            height: 100%;
-            width: 100%;
-        }
+		document.getElementById("settings-cleaning-history-map-page-h1").textContent = i18next.t('settings.cleaningHistory.mapTitle',{defaultValue: "Cleaning map from {{cleaningDate}}", cleaningDate: cleaningDate});
+	</script>
+	<script>
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#settings-cleaning-history-map-page');
+		}
+	</script>
+	<style>
+		#settings-cleaning-history-container {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto 1fr;
+			height: 100%;
+			width: 100%;
+		}
 
-        #cleaning-history-map {
-            touch-action: none;
-            height: 100%;
-            width: 100%;
-        }
+		#cleaning-history-map {
+			touch-action: none;
+			height: 100%;
+			width: 100%;
+		}
 
-        #settings-cleaning-history-map-page-h1 {
-            flex-grow: 1;
-            text-align: center;
-        }
+		#settings-cleaning-history-map-page-h1 {
+			flex-grow: 1;
+			text-align: center;
+		}
 
-        .settings-cleaning-history-header {
-            display: flex;
-            align-items: center;
-        }
-    </style>
+		.settings-cleaning-history-header {
+			display: flex;
+			align-items: center;
+		}
+	</style>
 </ons-page>

@@ -1,391 +1,391 @@
 <ons-page id="zones-page">
-    <div class="progress-bar-container"><ons-progress-bar id="loading-bar-zones" value="0"></ons-progress-bar></div>
+	<div class="progress-bar-container"><ons-progress-bar id="loading-bar-zones" value="0"></ons-progress-bar></div>
 
-    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerZones">Configured zones</ons-list-title>
-    <ons-list id="zones-list">
-        <ons-list-item data-i18n="zones.noZonesConfigured" data-i18n-target=".list-item__center">No zones are configured yet.</ons-list-item>
-    </ons-list>
+	<ons-list-title style="margin-top:20px;" data-i18n="zones.headerZones">Configured zones</ons-list-title>
+	<ons-list id="zones-list">
+		<ons-list-item data-i18n="zones.noZonesConfigured" data-i18n-target=".list-item__center">No zones are configured yet.</ons-list-item>
+	</ons-list>
 
-    <ons-list-title style="margin-top:20px;" data-i18n="zones.headerGotoLocations">Configured goto locations</ons-list-title>
-    <ons-list id="spot-list">
-        <ons-list-item data-i18n="zones.noSpotsConfigured" data-i18n-target=".list-item__center">No spots are configured yet.</ons-list-item>
-    </ons-list>
+	<ons-list-title style="margin-top:20px;" data-i18n="zones.headerGotoLocations">Configured goto locations</ons-list-title>
+	<ons-list id="spot-list">
+		<ons-list-item data-i18n="zones.noSpotsConfigured" data-i18n-target=".list-item__center">No spots are configured yet.</ons-list-item>
+	</ons-list>
 
-    <div id="forbidden-markers-configuration-section">
-        <ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
-        <ons-list id="spot-list">
-             <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
-                 <label><ons-icon icon="edit"></ons-icon></label>
-                 <label data-i18n="zones.editForbiddenZones">Configure forbidden zones</label>
-             </ons-list-item>
-        </ons-list>
-    </div>
+	<div id="forbidden-markers-configuration-section">
+		<ons-list-title style="margin-top:20px;" data-i18n="zones.headerForbiddenMarkers">Forbidden markers</ons-list-title>
+		<ons-list id="spot-list">
+			 <ons-list-item tappable class="locations-list-item" onclick="switchToForbiddenMarkersEdit()">
+				 <label><ons-icon icon="edit"></ons-icon></label>
+				 <label data-i18n="zones.editForbiddenZones">Configure forbidden zones</label>
+			 </ons-list-item>
+		</ons-list>
+	</div>
 
-    <div id="rooms-configuration-section">
-        <ons-list-title style="margin-top:20px;" data-i18n="zones.headerSegments">Rooms configuration</ons-list-title>
-        <ons-list id="spot-list">
-             <ons-list-item tappable class="locations-list-item" onclick="switchToSegmentsEdit()">
-                 <label><ons-icon icon="edit"></ons-icon></label>
-                 <label data-i18n="zones.editSegments">Edit rooms</label>
-             </ons-list-item>
-        </ons-list>
-    </div>
+	<div id="rooms-configuration-section">
+		<ons-list-title style="margin-top:20px;" data-i18n="zones.headerSegments">Rooms configuration</ons-list-title>
+		<ons-list id="spot-list">
+			 <ons-list-item tappable class="locations-list-item" onclick="switchToSegmentsEdit()">
+				 <label><ons-icon icon="edit"></ons-icon></label>
+				 <label data-i18n="zones.editSegments">Edit rooms</label>
+			 </ons-list-item>
+		</ons-list>
+	</div>
 
-    <script>
-        let loadingBarZones = document.getElementById('loading-bar-zones');
-        let zonesList = document.getElementById('zones-list');
-        let spotList = document.getElementById('spot-list');
+	<script>
+		let loadingBarZones = document.getElementById('loading-bar-zones');
+		let zonesList = document.getElementById('zones-list');
+		let spotList = document.getElementById('spot-list');
 
-        function switchToMapZoneEdit(name) {
-            let zoneToModify;
-            loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/zones")
-            .then(res => {
-                if ((zoneToModify = res.find(zone => zone.name === name)) === undefined) {
-                    return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
-                }
-                return fn.prequest("api/map/latest", "GET", "arraybuffer");
-            })
-            .then(mapData => {
-                fn.pushPage({
-                    'id': 'zones-configuration-map.html',
-                    'title': "Zone configuration map",
-                    'data': {
-                        'map': mapData,
-                        'zoneToModify': zoneToModify
-                    }
-                });
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function switchToMapZoneEdit(name) {
+			let zoneToModify;
+			loadingBarZones.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/zones")
+			.then(res => {
+				if ((zoneToModify = res.find(zone => zone.name === name)) === undefined) {
+					return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
+				}
+				return fn.prequest("api/map/latest", "GET", "arraybuffer");
+			})
+			.then(mapData => {
+				fn.pushPage({
+					'id': 'zones-configuration-map.html',
+					'title': "Zone configuration map",
+					'data': {
+						'map': mapData,
+						'zoneToModify': zoneToModify
+					}
+				});
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
 
-        function switchToMapSpotEdit(name) {
-            let spotToModify;
-            loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/spots")
-            .then(res => {
-                if ((spotToModify = res.find(spot => spot.name === name)) === undefined) {
-                    return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
-                }
-                return fn.prequest("api/map/latest", "GET", "arraybuffer");
-            })
-            .then(mapData => {
-                fn.pushPage({
-                    'id': 'spot-configuration-map.html',
-                    'title': "Spot configuration map",
-                    'data': {
-                        'map': mapData,
-                        'spotToModify': spotToModify
-                    }
-                });
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function switchToMapSpotEdit(name) {
+			let spotToModify;
+			loadingBarZones.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/spots")
+			.then(res => {
+				if ((spotToModify = res.find(spot => spot.name === name)) === undefined) {
+					return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
+				}
+				return fn.prequest("api/map/latest", "GET", "arraybuffer");
+			})
+			.then(mapData => {
+				fn.pushPage({
+					'id': 'spot-configuration-map.html',
+					'title': "Spot configuration map",
+					'data': {
+						'map': mapData,
+						'spotToModify': spotToModify
+					}
+				});
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function switchToForbiddenMarkersEdit(index) {
-            loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/current_status")
-            .then ((res) => {
-                if (res['lab_status'] !== 1) return Promise.reject(i18next.t('zones.noPersistentData',"Persistent data is disabled or unavailable, unable to edit forbidden markers."));
-                return true;
-            })
-            .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
-            .then(mapData => {
-                fn.pushPage({
-                    'id': 'forbidden-markers-configuration-map.html',
-                    'title': "Forbidden markers configuration map",
-                    'data': {
-                        'map': mapData
-                    }
-                });
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function switchToForbiddenMarkersEdit(index) {
+			loadingBarZones.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/current_status")
+			.then ((res) => {
+				if (res['lab_status'] !== 1) return Promise.reject(i18next.t('zones.noPersistentData',"Persistent data is disabled or unavailable, unable to edit forbidden markers."));
+				return true;
+			})
+			.then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+			.then(mapData => {
+				fn.pushPage({
+					'id': 'forbidden-markers-configuration-map.html',
+					'title': "Forbidden markers configuration map",
+					'data': {
+						'map': mapData
+					}
+				});
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function switchToSegmentsEdit(index) {
-            loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            let mapData, segmentNames = {};
-            fn.prequest("api/current_status")
-            .then ((res) => {
-                if (fn.device.ver !== 3) {
-                    return Promise.reject(i18next.t('zones.noSegmentsSupport',"Your device's firmware doesn't support splitting the map into rooms."));
-                }
-                if (res['lab_status'] !== 1) {
-                    return Promise.reject(i18next.t('zones.noPersistentDataSegments',"Persistent data is disabled, unable to edit rooms."));
-                }
-                return true;
-            })
-            .then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
-            .then(res => {
-                mapData = res;
-                return fn.prequest("api/segment_names");
-            })
-            .then(res => {
-                res.forEach(pair => segmentNames[pair[0]] = pair[1]);
-                fn.pushPage({
-                    id: 'segments-configuration-map.html',
-                    title: "Segments configuration map",
-                    data: {
-                        map: mapData,
-                        names: segmentNames
-                    }
-                });
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function switchToSegmentsEdit(index) {
+			loadingBarZones.setAttribute("indeterminate", "indeterminate");
+			let mapData, segmentNames = {};
+			fn.prequest("api/current_status")
+			.then ((res) => {
+				if (fn.device.ver !== 3) {
+					return Promise.reject(i18next.t('zones.noSegmentsSupport',"Your device's firmware doesn't support splitting the map into rooms."));
+				}
+				if (res['lab_status'] !== 1) {
+					return Promise.reject(i18next.t('zones.noPersistentDataSegments',"Persistent data is disabled, unable to edit rooms."));
+				}
+				return true;
+			})
+			.then(() => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+			.then(res => {
+				mapData = res;
+				return fn.prequest("api/segment_names");
+			})
+			.then(res => {
+				res.forEach(pair => segmentNames[pair[0]] = pair[1]);
+				fn.pushPage({
+					id: 'segments-configuration-map.html',
+					title: "Segments configuration map",
+					data: {
+						map: mapData,
+						names: segmentNames
+					}
+				});
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function deleteZone(name) {
-            ons.notification.confirm(i18next.t('zones.confirmDeleteZone', {defaultValue: "Are you sure you want to delete zone \"{{zone}}\"?", zone: name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
-            .then(function (answer) {
-                if (answer === 1) {
-                    loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                    return fn.prequest("api/zones");
-                }
-                return Promise.reject("cancel");
-            })
-            .then(res => {
-                let zoneToModify = res.find(zone => zone.name === name);
-                if (zoneToModify === undefined) {
-                    return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
-                }
-                return fn.prequest("api/zones/" + encodeURIComponent(zoneToModify.name), "DELETE");
-            })
-            .then(res => fn.prequest("api/zones"))
-            .then(res => generateZonesList(res))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err)
-            })
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function deleteZone(name) {
+			ons.notification.confirm(i18next.t('zones.confirmDeleteZone', {defaultValue: "Are you sure you want to delete zone \"{{zone}}\"?", zone: name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+			.then(function (answer) {
+				if (answer === 1) {
+					loadingBarZones.setAttribute("indeterminate", "indeterminate");
+					return fn.prequest("api/zones");
+				}
+				return Promise.reject("cancel");
+			})
+			.then(res => {
+				let zoneToModify = res.find(zone => zone.name === name);
+				if (zoneToModify === undefined) {
+					return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
+				}
+				return fn.prequest("api/zones/" + encodeURIComponent(zoneToModify.name), "DELETE");
+			})
+			.then(res => fn.prequest("api/zones"))
+			.then(res => generateZonesList(res))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err)
+			})
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function renameZone(oldName) {
-            let name;
-            ons.notification.prompt({message: i18next.t('zones.renameZone', {defaultValue: "Enter new name for zone \"{{zone}}\":", zone: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
-            .then(newName => {
-                name = newName;
-                if (newName && newName.length && newName !== oldName) {
-                    loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                    return fn.prequest("api/zones");
-                }
-                return Promise.reject("cancel");
-            })
-            .then(res => {
-                let zoneToModify = res.find(zone => zone.name === oldName);
-                if (zoneToModify === undefined) {
-                    return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
-                }
-                return fn.prequestWithPayload("api/zones", JSON.stringify({name: name, coordinates: zoneToModify.coordinates, edit: zoneToModify.name}), "PUT");
-            })
-            .then(res => fn.prequest("api/zones"))
-            .then(res => generateZonesList(res))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err)
-            })
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function renameZone(oldName) {
+			let name;
+			ons.notification.prompt({message: i18next.t('zones.renameZone', {defaultValue: "Enter new name for zone \"{{zone}}\":", zone: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
+			.then(newName => {
+				name = newName;
+				if (newName && newName.length && newName !== oldName) {
+					loadingBarZones.setAttribute("indeterminate", "indeterminate");
+					return fn.prequest("api/zones");
+				}
+				return Promise.reject("cancel");
+			})
+			.then(res => {
+				let zoneToModify = res.find(zone => zone.name === oldName);
+				if (zoneToModify === undefined) {
+					return Promise.reject(i18next.t('zones.missingZone',"No such zone."));
+				}
+				return fn.prequestWithPayload("api/zones", JSON.stringify({name: name, coordinates: zoneToModify.coordinates, edit: zoneToModify.name}), "PUT");
+			})
+			.then(res => fn.prequest("api/zones"))
+			.then(res => generateZonesList(res))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err)
+			})
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function deleteSpot(name) {
-            ons.notification.confirm(i18next.t('zones.confirmDeleteSpot', {defaultValue: "Are you sure you want to delete spot \"{{spot}}\"?", spot: name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
-            .then(function (answer) {
-                if (answer === 1) {
-                    loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                    return fn.prequest("api/spots");
-                }
-                return Promise.reject("cancel");
-            })
-            .then(res => {
-                let spotToModify = res.find(spot => spot.name === name);
-                if (spotToModify === undefined) {
-                    return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
-                }
-                return fn.prequest("api/spots/" + encodeURIComponent(spotToModify.name), "DELETE");
-            })
-            .then(res => fn.prequest("api/spots"))
-            .then(res => generateSpotsList(res))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err)
-            })
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function deleteSpot(name) {
+			ons.notification.confirm(i18next.t('zones.confirmDeleteSpot', {defaultValue: "Are you sure you want to delete spot \"{{spot}}\"?", spot: name}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+			.then(function (answer) {
+				if (answer === 1) {
+					loadingBarZones.setAttribute("indeterminate", "indeterminate");
+					return fn.prequest("api/spots");
+				}
+				return Promise.reject("cancel");
+			})
+			.then(res => {
+				let spotToModify = res.find(spot => spot.name === name);
+				if (spotToModify === undefined) {
+					return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
+				}
+				return fn.prequest("api/spots/" + encodeURIComponent(spotToModify.name), "DELETE");
+			})
+			.then(res => fn.prequest("api/spots"))
+			.then(res => generateSpotsList(res))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err)
+			})
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function renameSpot(oldName) {
-            let name;
-            ons.notification.prompt({message: i18next.t('zones.renameSpot', {defaultValue: "Enter new name for spot \"{{spot}}\":", spot: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
-            .then(newName => {
-                name = newName;
-                if (newName && newName.length && newName !== oldName) {
-                    loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                    return fn.prequest("api/spots");
-                }
-                return Promise.reject("cancel");
-            })
-            .then(res => {
-                let spotToModify = res.find(spot => spot.name === oldName);
-                if (spotToModify === undefined) {
-                    return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
-                }
-                return fn.prequestWithPayload("api/spots", JSON.stringify({name: name, coordinates: spotToModify.coordinates, edit: spotToModify.name}), "PUT");
-            })
-            .then(res => fn.prequest("api/spots"))
-            .then(res => generateSpotsList(res))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err)
-            })
-            .finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
+		function renameSpot(oldName) {
+			let name;
+			ons.notification.prompt({message: i18next.t('zones.renameSpot', {defaultValue: "Enter new name for spot \"{{spot}}\":", spot: oldName}), title: i18next.t('common.prompt',"Prompt"), defaultValue: oldName, cancelable: true })
+			.then(newName => {
+				name = newName;
+				if (newName && newName.length && newName !== oldName) {
+					loadingBarZones.setAttribute("indeterminate", "indeterminate");
+					return fn.prequest("api/spots");
+				}
+				return Promise.reject("cancel");
+			})
+			.then(res => {
+				let spotToModify = res.find(spot => spot.name === oldName);
+				if (spotToModify === undefined) {
+					return Promise.reject(i18next.t('zones.missingSpot',"No such spot."));
+				}
+				return fn.prequestWithPayload("api/spots", JSON.stringify({name: name, coordinates: spotToModify.coordinates, edit: spotToModify.name}), "PUT");
+			})
+			.then(res => fn.prequest("api/spots"))
+			.then(res => generateSpotsList(res))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err)
+			})
+			.finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
 
-        function addNewZone() {
-            const newZoneName = document.getElementById("add-zone-name").value.trim();
-            if(newZoneName === "") {
-                fn.notificationToastError(i18next.t('zones.enterZoneName',"Please enter a zone name"));
-            } else {
-                loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                fn.prequest("api/zones")
-                .then(res => {
-                    if (res.some(zone => zone.name === newZoneName)) {
-                        fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newZoneName}) + ".");
-                        return Promise.reject("cancel");
-                    }
-                    return fn.prequestWithPayload("api/zones", JSON.stringify({name: newZoneName, coordinates: [], edit: null}), "PUT");
-                })
-                .then(res => fn.prequest("api/zones"))
-                .then(res => generateZonesList(res))
-                .catch(err => {
-                    if (err !== "cancel") fn.notificationToastError(err);
-                })
-                .finally(() => loadingBarZones.removeAttribute("indeterminate"))
-            }
-        };
+		function addNewZone() {
+			const newZoneName = document.getElementById("add-zone-name").value.trim();
+			if(newZoneName === "") {
+				fn.notificationToastError(i18next.t('zones.enterZoneName',"Please enter a zone name"));
+			} else {
+				loadingBarZones.setAttribute("indeterminate", "indeterminate");
+				fn.prequest("api/zones")
+				.then(res => {
+					if (res.some(zone => zone.name === newZoneName)) {
+						fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newZoneName}) + ".");
+						return Promise.reject("cancel");
+					}
+					return fn.prequestWithPayload("api/zones", JSON.stringify({name: newZoneName, coordinates: [], edit: null}), "PUT");
+				})
+				.then(res => fn.prequest("api/zones"))
+				.then(res => generateZonesList(res))
+				.catch(err => {
+					if (err !== "cancel") fn.notificationToastError(err);
+				})
+				.finally(() => loadingBarZones.removeAttribute("indeterminate"))
+			}
+		};
 
-        function addNewSpot() {
-            const newSpotName = document.getElementById("add-spot-name").value.trim();
-            if(newSpotName === "") {
-                fn.notificationToastError(i18next.t('zones.enterSpotName',"Please enter a spot name"));
-            } else {
-                loadingBarZones.setAttribute("indeterminate", "indeterminate");
-                fn.prequest("api/spots")
-                .then(res => {
-                    if (res.some(spot => spot.name === newSpotName)) {
-                        fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newSpotName}) + ".");
-                        return Promise.reject("cancel");
-                    }
-                    return fn.prequestWithPayload("api/spots", JSON.stringify({name: newSpotName, coordinates: [], edit: null}), "PUT");
-                })
-                .then(res => fn.prequest("api/spots"))
-                .then(res => generateSpotsList(res))
-                .catch(err => {
-                    if (err !== "cancel") fn.notificationToastError(err);
-                })
-                .finally(() => loadingBarZones.removeAttribute("indeterminate"))
-            }
-        };
+		function addNewSpot() {
+			const newSpotName = document.getElementById("add-spot-name").value.trim();
+			if(newSpotName === "") {
+				fn.notificationToastError(i18next.t('zones.enterSpotName',"Please enter a spot name"));
+			} else {
+				loadingBarZones.setAttribute("indeterminate", "indeterminate");
+				fn.prequest("api/spots")
+				.then(res => {
+					if (res.some(spot => spot.name === newSpotName)) {
+						fn.notificationToastError(i18next.t('common.nameAlreadyUsed',{defaultValue: "Name \"{{name}}\" is already in use", name: newSpotName}) + ".");
+						return Promise.reject("cancel");
+					}
+					return fn.prequestWithPayload("api/spots", JSON.stringify({name: newSpotName, coordinates: [], edit: null}), "PUT");
+				})
+				.then(res => fn.prequest("api/spots"))
+				.then(res => generateSpotsList(res))
+				.catch(err => {
+					if (err !== "cancel") fn.notificationToastError(err);
+				})
+				.finally(() => loadingBarZones.removeAttribute("indeterminate"))
+			}
+		};
 
-        function generateZonesList(zones) {
-            zones.sort((a, b) => a.name.localeCompare(b.name));
-            while (zonesList.firstChild) {
-                zonesList.removeChild(zonesList.firstChild);
-            }
-            zones.forEach(zone => {
-                let elem = ons.createElement(
-                    "<ons-list-item tappable class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label><label class='zone-name'></label>" +
-                    "    <span><ons-button class='button-pencil'><ons-icon icon='fa-pencil'></ons-icon><span class='button_title'> " + i18next.t('zones.renameButton',"Rename") + "</span></ons-button>" +
-                    "    <ons-button class='button-delete'><ons-icon icon='fa-trash'></ons-icon><span class='button_title'> " + i18next.t('zones.deleteButton',"Delete") + "</span></ons-button></span>" +
-                    "</ons-list-item>"
-                );
-                elem.addEventListener('click', event => switchToMapZoneEdit(zone.name));
-                elem.querySelector('.button-pencil').addEventListener('click', event => {
-                    event.stopPropagation();
-                    renameZone(zone.name);
-                });
-                elem.querySelector('.button-delete').addEventListener('click', event => {
-                    event.stopPropagation();
-                    deleteZone(zone.name);
-                });
-                elem.querySelector('.zone-name').textContent = zone.name;
-                zonesList.appendChild(elem);
-            });
-            let elem = ons.createElement(
-                "<ons-list-item class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label>" +
-                "    <ons-input id='add-zone-name' placeholder='" + i18next.t('zones.newZoneName',"Enter name for zone ...") + "'></ons-input>" +
-                "    <ons-button class='delete-button-right' onclick='addNewZone()'><ons-icon icon='fa-plus'></ons-icon><span class='button_title'> " + i18next.t('zones.addButton',"Add") + "</span></ons-button>" +
-                "</ons-list-item>"
-            );
-            zonesList.appendChild(elem);
-        }
+		function generateZonesList(zones) {
+			zones.sort((a, b) => a.name.localeCompare(b.name));
+			while (zonesList.firstChild) {
+				zonesList.removeChild(zonesList.firstChild);
+			}
+			zones.forEach(zone => {
+				let elem = ons.createElement(
+					"<ons-list-item tappable class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label><label class='zone-name'></label>" +
+					"	<span><ons-button class='button-pencil'><ons-icon icon='fa-pencil'></ons-icon><span class='button_title'> " + i18next.t('zones.renameButton',"Rename") + "</span></ons-button>" +
+					"	<ons-button class='button-delete'><ons-icon icon='fa-trash'></ons-icon><span class='button_title'> " + i18next.t('zones.deleteButton',"Delete") + "</span></ons-button></span>" +
+					"</ons-list-item>"
+				);
+				elem.addEventListener('click', event => switchToMapZoneEdit(zone.name));
+				elem.querySelector('.button-pencil').addEventListener('click', event => {
+					event.stopPropagation();
+					renameZone(zone.name);
+				});
+				elem.querySelector('.button-delete').addEventListener('click', event => {
+					event.stopPropagation();
+					deleteZone(zone.name);
+				});
+				elem.querySelector('.zone-name').textContent = zone.name;
+				zonesList.appendChild(elem);
+			});
+			let elem = ons.createElement(
+				"<ons-list-item class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label>" +
+				"	<ons-input id='add-zone-name' placeholder='" + i18next.t('zones.newZoneName',"Enter name for zone ...") + "'></ons-input>" +
+				"	<ons-button class='delete-button-right' onclick='addNewZone()'><ons-icon icon='fa-plus'></ons-icon><span class='button_title'> " + i18next.t('zones.addButton',"Add") + "</span></ons-button>" +
+				"</ons-list-item>"
+			);
+			zonesList.appendChild(elem);
+		}
 
-        function generateSpotsList(spots) {
-            spots.sort((a, b) => a.name.localeCompare(b.name));
-            while (spotList.firstChild) {
-                spotList.removeChild(spotList.firstChild);
-            }
-            spots.forEach(spot => {
-                let elem = ons.createElement(
-                    "<ons-list-item tappable class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label><label class='spot-name'></label>" +
-                    "    <span><ons-button class='button-pencil'><ons-icon icon='fa-pencil'></ons-icon><span class='button_title'> " + i18next.t('zones.renameButton',"Rename") + "</span></ons-button>" +
-                    "    <ons-button class='button-delete'><ons-icon icon='fa-trash'></ons-icon><span class='button_title'> " + i18next.t('zones.deleteButton',"Delete") + "</span></ons-button></span>" +
-                    "</ons-list-item>"
-                );
-                elem.addEventListener('click', event => switchToMapSpotEdit(spot.name));
-                elem.querySelector('.button-pencil').addEventListener('click', event => {
-                    event.stopPropagation();
-                    renameSpot(spot.name);
-                });
-                elem.querySelector('.button-delete').addEventListener('click', event => {
-                    event.stopPropagation();
-                    deleteSpot(spot.name);
-                });
-                elem.querySelector('.spot-name').textContent = spot.name;
-                spotList.appendChild(elem);
-            });
-            let elem = ons.createElement(
-                "<ons-list-item class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label>" +
-                "    <ons-input id='add-spot-name' placeholder='" + i18next.t('zones.newSpotName',"Enter name for spot ...") + "'></ons-input>" +
-                "    <ons-button class='delete-button-right' onclick='addNewSpot()'><ons-icon icon='fa-plus'></ons-icon><span class='button_title'> " + i18next.t('zones.addButton',"Add") + "</span></ons-button>" +
-                "</ons-list-item>"
-            );
-            spotList.appendChild(elem);
-        }
+		function generateSpotsList(spots) {
+			spots.sort((a, b) => a.name.localeCompare(b.name));
+			while (spotList.firstChild) {
+				spotList.removeChild(spotList.firstChild);
+			}
+			spots.forEach(spot => {
+				let elem = ons.createElement(
+					"<ons-list-item tappable class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label><label class='spot-name'></label>" +
+					"	<span><ons-button class='button-pencil'><ons-icon icon='fa-pencil'></ons-icon><span class='button_title'> " + i18next.t('zones.renameButton',"Rename") + "</span></ons-button>" +
+					"	<ons-button class='button-delete'><ons-icon icon='fa-trash'></ons-icon><span class='button_title'> " + i18next.t('zones.deleteButton',"Delete") + "</span></ons-button></span>" +
+					"</ons-list-item>"
+				);
+				elem.addEventListener('click', event => switchToMapSpotEdit(spot.name));
+				elem.querySelector('.button-pencil').addEventListener('click', event => {
+					event.stopPropagation();
+					renameSpot(spot.name);
+				});
+				elem.querySelector('.button-delete').addEventListener('click', event => {
+					event.stopPropagation();
+					deleteSpot(spot.name);
+				});
+				elem.querySelector('.spot-name').textContent = spot.name;
+				spotList.appendChild(elem);
+			});
+			let elem = ons.createElement(
+				"<ons-list-item class='locations-list-item'><label><ons-icon icon='edit'></ons-icon></label>" +
+				"	<ons-input id='add-spot-name' placeholder='" + i18next.t('zones.newSpotName',"Enter name for spot ...") + "'></ons-input>" +
+				"	<ons-button class='delete-button-right' onclick='addNewSpot()'><ons-icon icon='fa-plus'></ons-icon><span class='button_title'> " + i18next.t('zones.addButton',"Add") + "</span></ons-button>" +
+				"</ons-list-item>"
+			);
+			spotList.appendChild(elem);
+		}
 
-        ons.getScriptPage().onInit = function() {
-            fn.localize('#zones-page');
-        }
+		ons.getScriptPage().onInit = function() {
+			fn.localize('#zones-page');
+		}
 
-        ons.getScriptPage().onShow = function () {
-            if (fn.device.model === "rockrobo.vacuum.v1") {
-                document.getElementById("forbidden-markers-configuration-section").style.display = "none";
-            }
-            if (fn.device.ver !== 3) {
-                document.getElementById("rooms-configuration-section").style.display = "none";
-            }
-            loadingBarZones.setAttribute("indeterminate", "indeterminate");
-            // request map update
-            fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
-            // check for area and go to configuration
-            const getZones = fn.prequest("api/zones").then(res => generateZonesList(res));
-            const getSpots = fn.prequest("api/spots").then(res => generateSpotsList(res));
-            Promise.all([getZones, getSpots]).catch(err => fn.notificationToastError(err)).finally(() => loadingBarZones.removeAttribute("indeterminate"));
-        };
-    </script>
-    <style>
-        .locations-list-item > div {
-            display: grid;
-            gap: 1em;
-            grid-template-columns: auto 1fr auto;
-            width: 100%;
-        }
+		ons.getScriptPage().onShow = function () {
+			if (fn.device.model === "rockrobo.vacuum.v1") {
+				document.getElementById("forbidden-markers-configuration-section").style.display = "none";
+			}
+			if (fn.device.ver !== 3) {
+				document.getElementById("rooms-configuration-section").style.display = "none";
+			}
+			loadingBarZones.setAttribute("indeterminate", "indeterminate");
+			// request map update
+			fn.prequest("api/poll_map").then(null, (err) => fn.notificationToastError(err));
+			// check for area and go to configuration
+			const getZones = fn.prequest("api/zones").then(res => generateZonesList(res));
+			const getSpots = fn.prequest("api/spots").then(res => generateSpotsList(res));
+			Promise.all([getZones, getSpots]).catch(err => fn.notificationToastError(err)).finally(() => loadingBarZones.removeAttribute("indeterminate"));
+		};
+	</script>
+	<style>
+		.locations-list-item > div {
+			display: grid;
+			gap: 1em;
+			grid-template-columns: auto 1fr auto;
+			width: 100%;
+		}
 
-        .button-delete {
-            background-color: #f45942; /* Random nice red color :) */
-        }
+		.button-delete {
+			background-color: #f45942; /* Random nice red color :) */
+		}
 
-        @media only screen and (max-width: 600px) {
-            span.button_title { display: none; }
-          }
-        }
-    </style>
+		@media only screen and (max-width: 600px) {
+			span.button_title { display: none; }
+		  }
+		}
+	</style>
 </ons-page>

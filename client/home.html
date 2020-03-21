@@ -1,741 +1,741 @@
 <ons-page id="home-page">
-    <ons-progress-bar id="loading-bar-home" value="0" indeterminate="indeterminate"></ons-progress-bar>
-    <section>
-        <p id="robot-state" data-i18n="home.labels.state">
-            Loading state...
-        </p>
-        <div style="width:100%; text-align:center;">
-            <p id="robot-state-details">
-                <span id="robot-state-details-m2"><span data-i18n="home.labels.area">Area</span>: <span id="robot-state-details-m2-value">0.0</span> <span data-i18n="common.m2">m²</span></span>
-                <span id="robot-state-details-time"><span data-i18n="home.labels.time">Time</span>: <span id="robot-state-details-time-value">00:00:00</span></span>
-            </p>
-        </div>
-    </section>
-    <hr style="width:98%; opacity: 0.3">
+	<ons-progress-bar id="loading-bar-home" value="0" indeterminate="indeterminate"></ons-progress-bar>
+	<section>
+		<p id="robot-state" data-i18n="home.labels.state">
+			Loading state...
+		</p>
+		<div style="width:100%; text-align:center;">
+			<p id="robot-state-details">
+				<span id="robot-state-details-m2"><span data-i18n="home.labels.area">Area</span>: <span id="robot-state-details-m2-value">0.0</span> <span data-i18n="common.m2">m²</span></span>
+				<span id="robot-state-details-time"><span data-i18n="home.labels.time">Time</span>: <span id="robot-state-details-time-value">00:00:00</span></span>
+			</p>
+		</div>
+	</section>
+	<hr style="width:98%; opacity: 0.3">
 
-    <section id="robot-control-buttons">
-        <div>
-            <ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
-        </div><div>
-            <ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
-        </div><div>
-            <ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
-        </div><div>
-            <ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> <span data-i18n="home.buttons.goto">Go to</span></ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> <span data-i18n="home.buttons.find">Find</span></ons-button>
-        </div><div id="multimap-buttons" style="display: none;">
-        <ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-export"></ons-icon> <span data-i18n="home.buttons.storeMap">Store Map</span></ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
-        </div><div>
-           <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
-        </div>
-    </section>
-    <hr style="width:98%; opacity: 0.3">
+	<section id="robot-control-buttons">
+		<div>
+			<ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
+		</div><div>
+			<ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleControlButton('home')" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
+		</div><div>
+			<ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
+		</div><div>
+			<ons-button id="go-to-button" class="button-margin" onclick="handleGoToButton()" disabled style="width:40%"><ons-icon icon="fa-map-signs"></ons-icon> <span data-i18n="home.buttons.goto">Go to</span></ons-button><ons-button id="find-robot-button" class="button-margin" onclick="handleControlButton('find')" disabled style="width:40%"><ons-icon icon="fa-map-marker"></ons-icon> <span data-i18n="home.buttons.find">Find</span></ons-button>
+		</div><div id="multimap-buttons" style="display: none;">
+		<ons-button id="store-map-button" class="button-margin" onclick="handleStoreMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-export"></ons-icon> <span data-i18n="home.buttons.storeMap">Store Map</span></ons-button><ons-button id="load-map-button" class="button-margin" onclick="handleLoadMapButton()" disabled style="width:40%"><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
+		</div><div>
+		   <ons-button id="fanspeed-button" class="button-margin" onclick="handleFanspeedButton()" disabled style="width:40%"><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
+		</div>
+	</section>
+	<hr style="width:98%; opacity: 0.3">
 
-    <section style="margin: 10px 16px">
-        <p id="battery-status-text">
-            <span data-i18n="home.labels.battery">Battery</span>: <span id="battery-status-text-value">0</span>%
-        </p>
-        <p>
-            <ons-progress-bar id="battery-status-bar" secondary-value="100"></ons-progress-bar>
-        </p>
-    </section>
+	<section style="margin: 10px 16px">
+		<p id="battery-status-text">
+			<span data-i18n="home.labels.battery">Battery</span>: <span id="battery-status-text-value">0</span>%
+		</p>
+		<p>
+			<ons-progress-bar id="battery-status-bar" secondary-value="100"></ons-progress-bar>
+		</p>
+	</section>
 
 
-    <script>
-        var currentRefreshTimer, refreshInProgress = false, refreshDisabled = true;
+	<script>
+		var currentRefreshTimer, refreshInProgress = false, refreshDisabled = true;
 
-        var startButton = document.getElementById("start-button"),
-            pauseButton = document.getElementById("pause-button"),
-            stopButton = document.getElementById("stop-button"),
-            spotButton = document.getElementById("spot-button"),
-            goToButton = document.getElementById("go-to-button"),
-            areaButton = document.getElementById("area-button"),
-            storeMapButton = document.getElementById("store-map-button"),
-            loadMapButton = document.getElementById("load-map-button"),
-            fanspeedButton = document.getElementById("fanspeed-button"),
-            findRobotButton = document.getElementById("find-robot-button"),
-            homeButton = document.getElementById("home-button"),
-            batteryStatusText = document.getElementById('battery-status-text-value'),
-            batteryStatusBar = document.getElementById('battery-status-bar'),
-            robotState = document.getElementById('robot-state'),
-            robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value"),
-            robotStateDetailsTime = document.getElementById("robot-state-details-time-value"),
-            loadingBarHome = document.getElementById('loading-bar-home');
+		var startButton = document.getElementById("start-button"),
+			pauseButton = document.getElementById("pause-button"),
+			stopButton = document.getElementById("stop-button"),
+			spotButton = document.getElementById("spot-button"),
+			goToButton = document.getElementById("go-to-button"),
+			areaButton = document.getElementById("area-button"),
+			storeMapButton = document.getElementById("store-map-button"),
+			loadMapButton = document.getElementById("load-map-button"),
+			fanspeedButton = document.getElementById("fanspeed-button"),
+			findRobotButton = document.getElementById("find-robot-button"),
+			homeButton = document.getElementById("home-button"),
+			batteryStatusText = document.getElementById('battery-status-text-value'),
+			batteryStatusBar = document.getElementById('battery-status-bar'),
+			robotState = document.getElementById('robot-state'),
+			robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value"),
+			robotStateDetailsTime = document.getElementById("robot-state-details-time-value"),
+			loadingBarHome = document.getElementById('loading-bar-home');
 
-        var fanspeedPresets = {};
-        var config = {};
+		var fanspeedPresets = {};
+		var config = {};
 
-        var BUTTONS = {
-            "start": {
-                button: startButton,
-                url: "api/start_cleaning"
-            },
-            "pause": {
-                button: pauseButton,
-                url: "api/pause_cleaning"
-            },
-            "stop": {
-                button: stopButton,
-                url: "api/stop_cleaning"
-            },
-            "home": {
-                button: homeButton,
-                url: "api/drive_home"
-            },
-            "find": {
-                button: findRobotButton,
-                url: "api/find_robot"
-            },
-            "spot": {
-                button: spotButton,
-                url: "api/spot_clean"
-            }
-        };
+		var BUTTONS = {
+			"start": {
+				button: startButton,
+				url: "api/start_cleaning"
+			},
+			"pause": {
+				button: pauseButton,
+				url: "api/pause_cleaning"
+			},
+			"stop": {
+				button: stopButton,
+				url: "api/stop_cleaning"
+			},
+			"home": {
+				button: homeButton,
+				url: "api/drive_home"
+			},
+			"find": {
+				button: findRobotButton,
+				url: "api/find_robot"
+			},
+			"spot": {
+				button: spotButton,
+				url: "api/spot_clean"
+			}
+		};
 
-        if (!ons.platform.isAndroid()) {
-            var progressStyle = document.querySelectorAll('.progressStyle');
-            for (progress of progressStyle) { //How Why Help
-                progress.hasAttribute('modifier') ?
-                    progress.setAttribute('modifier', progress.getAttribute('modifier') + ' ios') :
-                    progress.setAttribute('modifier', 'ios');
-            }
-        }
+		if (!ons.platform.isAndroid()) {
+			var progressStyle = document.querySelectorAll('.progressStyle');
+			for (progress of progressStyle) { //How Why Help
+				progress.hasAttribute('modifier') ?
+					progress.setAttribute('modifier', progress.getAttribute('modifier') + ' ios') :
+					progress.setAttribute('modifier', 'ios');
+			}
+		}
 
-        function handleControlButton(button) {
-            var btn = BUTTONS[button];
-            if (btn === undefined) {
-                throw new Error(i18next.t('home.buttons.invalid',"Invalid button"));
-            } else {
-                btn.button.setAttribute("disabled", "disabled");
-                loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                fn.prequest(btn.url, "PUT")
-                .then(() => {
-                    window.clearTimeout(currentRefreshTimer);
-                    window.setTimeout(function () { updateHomePage(); }, 500);
-                }, (err) => {
-                    btn.button.removeAttribute("disabled");
-                    loadingBarHome.removeAttribute("indeterminate");
-                    fn.notificationToastError(err);
-                });
-            }
-        }
+		function handleControlButton(button) {
+			var btn = BUTTONS[button];
+			if (btn === undefined) {
+				throw new Error(i18next.t('home.buttons.invalid',"Invalid button"));
+			} else {
+				btn.button.setAttribute("disabled", "disabled");
+				loadingBarHome.setAttribute("indeterminate", "indeterminate");
+				fn.prequest(btn.url, "PUT")
+				.then(() => {
+					window.clearTimeout(currentRefreshTimer);
+					window.setTimeout(function () { updateHomePage(); }, 500);
+				}, (err) => {
+					btn.button.removeAttribute("disabled");
+					loadingBarHome.removeAttribute("indeterminate");
+					fn.notificationToastError(err);
+				});
+			}
+		}
 
-        function handleFanspeedButton() {
-            window.clearTimeout(currentRefreshTimer);
+		function handleFanspeedButton() {
+			window.clearTimeout(currentRefreshTimer);
 
-            ons.openActionSheet({
-                title: i18next.t('home.popups.selectFanspeed',"Select power mode:"),
-                cancelable: true,
-                buttons: [
-                    ...Object.values(fanspeedPresets),
-                    {
-                        label: i18next.t('common.cancel',"Cancel"),
-                        icon: 'md-close'
-                    }
-                ]
-            })
-            .then(index => {
-                var level = Object.keys(fanspeedPresets)[index];
+			ons.openActionSheet({
+				title: i18next.t('home.popups.selectFanspeed',"Select power mode:"),
+				cancelable: true,
+				buttons: [
+					...Object.values(fanspeedPresets),
+					{
+						label: i18next.t('common.cancel',"Cancel"),
+						icon: 'md-close'
+					}
+				]
+			})
+			.then(index => {
+				var level = Object.keys(fanspeedPresets)[index];
 
-                if (level) {
-                    loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                    fanspeedButton.setAttribute("disabled", "disabled");
-                    fn.prequestWithPayload("api/fanspeed", JSON.stringify({ speed: level }), "PUT")
-                    .then(() => {
-                        window.clearTimeout(currentRefreshTimer);
-                        window.setTimeout(function () { updateHomePage(); }, 500);
-                    }, (err) => {
-                        fanspeedButton.removeAttribute("disabled");
-                        loadingBarHome.removeAttribute("indeterminate");
-                        fn.notificationToastError(err);
-                    });
-                } else {
-                    currentRefreshTimer = window.setTimeout(function () {
-                        updateHomePage();
-                    }, 3000);
-                }
-            });
-        }
+				if (level) {
+					loadingBarHome.setAttribute("indeterminate", "indeterminate");
+					fanspeedButton.setAttribute("disabled", "disabled");
+					fn.prequestWithPayload("api/fanspeed", JSON.stringify({ speed: level }), "PUT")
+					.then(() => {
+						window.clearTimeout(currentRefreshTimer);
+						window.setTimeout(function () { updateHomePage(); }, 500);
+					}, (err) => {
+						fanspeedButton.removeAttribute("disabled");
+						loadingBarHome.removeAttribute("indeterminate");
+						fn.notificationToastError(err);
+					});
+				} else {
+					currentRefreshTimer = window.setTimeout(function () {
+						updateHomePage();
+					}, 3000);
+				}
+			});
+		}
 
-        function handleGoToButton() {
-            window.clearTimeout(currentRefreshTimer);
-            loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            var spots;
-            fn.prequest("api/spots")
-            .then(res => {
-                loadingBarHome.removeAttribute("indeterminate");
-                spots = res;
-                spots.sort((a, b) => a.name.localeCompare(b.name));
-                var options = [];
-                for (var i = 0; i < spots.length; i++) {
-                    options.push(spots[i].name);
-                }
-                options.push({
-                    label: i18next.t('common.cancel',"Cancel"),
-                    icon: 'md-close'
-                });
-                let openActionSheet = ons.openActionSheet({
-                    title: i18next.t('home.popups.selectGotoTarget',"Select go to target:"),
-                    cancelable: true,
-                    buttons: options
-                });
-                var spotButtons = document.querySelectorAll('ons-action-sheet-button');
-                for (var i = 0; i < spotButtons.length; i++) {
-                    if (!i) spotButtons[i].parentNode.parentNode.title = '';
-                    spotButtons[i].title = ''; // get rid of stupid title repeating on all buttons
-                }
-                return openActionSheet;
-            }).then(index => {
-                if(index > -1 && index < spots.length) {
-                    if (spots[index].coordinates[0] === null) spots[index].coordinates = [25500,25500]; // todo: show message about spot is undefined or something
-                    if (!fn.webifSettings.gotoImmediate) {
-                        document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                            updateMapPage(true).then(function(map) {
-                                map.addSpot(spots[index].coordinates);
-                            })
-                            .catch(() => {});
-                        }});
-                        return Promise.reject("cancel");
-                    } else {
-                        return fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT");
-                    }
-                }
-                return Promise.reject("cancel");
-            })
-            .then(res => fn.notificationToastOK())
-            .catch(e => {
-                if (e !== "cancel") fn.notificationToastError(e);
-            })
-            .finally(() => {
-                window.setTimeout(function () {
-                    updateHomePage();
-                }, 200);
-            });
-        }
+		function handleGoToButton() {
+			window.clearTimeout(currentRefreshTimer);
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			var spots;
+			fn.prequest("api/spots")
+			.then(res => {
+				loadingBarHome.removeAttribute("indeterminate");
+				spots = res;
+				spots.sort((a, b) => a.name.localeCompare(b.name));
+				var options = [];
+				for (var i = 0; i < spots.length; i++) {
+					options.push(spots[i].name);
+				}
+				options.push({
+					label: i18next.t('common.cancel',"Cancel"),
+					icon: 'md-close'
+				});
+				let openActionSheet = ons.openActionSheet({
+					title: i18next.t('home.popups.selectGotoTarget',"Select go to target:"),
+					cancelable: true,
+					buttons: options
+				});
+				var spotButtons = document.querySelectorAll('ons-action-sheet-button');
+				for (var i = 0; i < spotButtons.length; i++) {
+					if (!i) spotButtons[i].parentNode.parentNode.title = '';
+					spotButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+				}
+				return openActionSheet;
+			}).then(index => {
+				if(index > -1 && index < spots.length) {
+					if (spots[index].coordinates[0] === null) spots[index].coordinates = [25500,25500]; // todo: show message about spot is undefined or something
+					if (!fn.webifSettings.gotoImmediate) {
+						document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+							updateMapPage(true).then(function(map) {
+								map.addSpot(spots[index].coordinates);
+							})
+							.catch(() => {});
+						}});
+						return Promise.reject("cancel");
+					} else {
+						return fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT");
+					}
+				}
+				return Promise.reject("cancel");
+			})
+			.then(res => fn.notificationToastOK())
+			.catch(e => {
+				if (e !== "cancel") fn.notificationToastError(e);
+			})
+			.finally(() => {
+				window.setTimeout(function () {
+					updateHomePage();
+				}, 200);
+			});
+		}
 
-        function handleAreaButton() {
-            window.clearTimeout(currentRefreshTimer);
-            loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            var zones, payload, calcPayload, markSubmitButton, zoneNumber = 0;
-            fn.prequest("api/zones")
-            .then(res => {
-                loadingBarHome.removeAttribute("indeterminate");
-                zones = res;
-                zones.sort((a, b) => a.name.localeCompare(b.name));
-                var options = [];
-                for(var i = 0; i < zones.length; i++) {
-                    options.push(zones[i].name);
-                }
-                options.push({
-                    label: i18next.t('common.submit',"Submit"),
-                    icon: 'md-collection-item'
-                },{
-                    label: i18next.t('common.cancel',"Cancel"),
-                    icon: 'md-close'
-                });
-                let openActionSheet = ons.openActionSheet({
-                    title: i18next.t('home.popups.selectZones',"Select zones for cleaning:"),
-                    cancelable: true,
-                    buttons: options
-                });
-                document.querySelector('ons-action-sheet').classList.add('ons-action-sheet-zoned');
-                var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
-                for (var i = 0; i < zoneButtons.length; i++) {
-                    if (!i) zoneButtons[i].parentNode.parentNode.title = '';
-                    zoneButtons[i].title = ''; // get rid of stupid title repeating on all buttons
-                    if (zoneButtons[i].getAttribute('icon') === null) {
-                        zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
-                    } else if (zoneButtons[i].getAttribute('icon') === 'md-close') {
-                        zoneButtons[i].classList.add('action-sheet-button-zcancel','action-sheet-button-half');
-                    } else {
-                        zoneButtons[i].classList.add('action-sheet-button-zsubmit','action-sheet-button-half', 'zdisabled');
-                    }
-                }
-                calcPayload = function() {
-                    var payload = [];
-                    var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                    for (var i = 0; i < zoneCheckboxes.length; i++) {
-                        if (!zoneCheckboxes[i].dataset.num) {
-                            continue;
-                        }
-                        payload[zoneCheckboxes[i].dataset.num - 1] = zones[zoneCheckboxes[i].dataset.id].coordinates;
-                    }
-                    return payload.reduce((acc, val) => acc.concat(val), []);
-                }
-                markSubmitButton = function() {
-                    var submitButton = document.querySelector('.action-sheet-button[icon="md-collection-item"]');
-                    if (!submitButton) return;
-                    submitButton.classList.toggle('zdisabled',!calcPayload().length);
-                }
-                document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
-                    if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
-                    if (e.target.className === 'zone-cblabel') {
-                        e.stopPropagation();
-                        return;
-                    }
-                    if (e.target.className === 'zone-checkbox') {
-                        e.stopPropagation();
-                        if (e.target.checked) {
-                            // checked right now
-                            var attemptedLength = calcPayload().length + zones[e.target.dataset.id].coordinates.length;
-                            if (attemptedLength > 5) {
-                                ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
-                                e.target.checked = false;
-                                return;
-                            }
-                            e.target.dataset.num = ++zoneNumber;
-                            e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + zones[e.target.dataset.id].coordinates.length + ']';
-                            e.target.parentNode.parentNode.classList.add('zone_selected');
-                        } else {
-                            // unchecked
-                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                            for (var i = 0; i < zoneCheckboxes.length; i++) {
-                                if (zoneCheckboxes[i].checked && zoneCheckboxes[i].dataset.num > e.target.dataset.num) {
-                                    zoneCheckboxes[i].dataset.num--;
-                                    zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '[' + zoneCheckboxes[i].dataset.num + '/' + zones[zoneCheckboxes[i].dataset.id].coordinates.length + ']';
-                                }
-                            }
-                            zoneNumber--;
-                            delete e.target.dataset.num;
-                            e.target.parentNode.nextElementSibling.textContent = '';
-                            e.target.parentNode.parentNode.classList.remove('zone_selected');
-                        }
-                        markSubmitButton();
-                    } else if (e.target.getAttribute('icon') === 'md-collection-item') {
-                        e.stopPropagation();
-                        if (calcPayload().length) {
-                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                            for (var i = 0; i < zoneCheckboxes.length; i++) {
-                                if (zoneCheckboxes[i].checked) {
-                                    zoneCheckboxes[i].parentNode.parentNode.click();
-                                    break;
-                                }
-                            }
-                        }
-                    } else if (zoneNumber > 0) {
-                        let findCheckbox = e.target.querySelector('.zone-checkbox');
-                        if (!findCheckbox || !findCheckbox.checked) {
-                            e.stopPropagation();
-                            var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
-                            for (var i = 0; i < zoneCheckboxes.length; i++) {
-                                if (zoneCheckboxes[i].checked) {
-                                    delete zoneCheckboxes[i].dataset.num;
-                                    zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '';
-                                    zoneCheckboxes[i].parentNode.parentNode.classList.remove('zone_selected');
-                                    zoneCheckboxes[i].checked = false;
-                                }
-                            }
-                            zoneNumber = 0;
-                        } else {
-                            payload = calcPayload();
-                        }
-                        markSubmitButton();
-                    }
-                },true);
-                return openActionSheet;
-            })
-            .then(index => {
-                if(index > -1 && index < zones.length){
-                    if (zoneNumber < 2) {
-                        payload = zones[index].coordinates;
-                    }
-                    if (!payload.length) {
-                        ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."),{title: i18next.t('common.attention',"Attention!")});
-                        return Promise.reject("cancel");
-                    }
-                    if (!fn.webifSettings.zonedImmediate) {
-                        document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
-                            updateMapPage(true).then(function(map) {
-                                map.clearZones();
-                                payload.forEach(function(zone) {
-                                    map.addZone(zone, true);
-                                });
-                            })
-                            .catch(() => {});
-                        }});
-                        return Promise.reject("cancel");
-                    } else {
-                        loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                        return fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
-                    }
-                } else {
-                    return Promise.reject("cancel");
-                }
-            })
-            .then(res => fn.notificationToastOK())
-            .catch(e => {
-                if (e !== "cancel") fn.notificationToastError(e);
-            })
-            .finally(() => {
-                window.setTimeout(function () {
-                    updateHomePage();
-                }, 200);
-            });
-        }
+		function handleAreaButton() {
+			window.clearTimeout(currentRefreshTimer);
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			var zones, payload, calcPayload, markSubmitButton, zoneNumber = 0;
+			fn.prequest("api/zones")
+			.then(res => {
+				loadingBarHome.removeAttribute("indeterminate");
+				zones = res;
+				zones.sort((a, b) => a.name.localeCompare(b.name));
+				var options = [];
+				for(var i = 0; i < zones.length; i++) {
+					options.push(zones[i].name);
+				}
+				options.push({
+					label: i18next.t('common.submit',"Submit"),
+					icon: 'md-collection-item'
+				},{
+					label: i18next.t('common.cancel',"Cancel"),
+					icon: 'md-close'
+				});
+				let openActionSheet = ons.openActionSheet({
+					title: i18next.t('home.popups.selectZones',"Select zones for cleaning:"),
+					cancelable: true,
+					buttons: options
+				});
+				document.querySelector('ons-action-sheet').classList.add('ons-action-sheet-zoned');
+				var zoneButtons = document.querySelectorAll('ons-action-sheet-button');
+				for (var i = 0; i < zoneButtons.length; i++) {
+					if (!i) zoneButtons[i].parentNode.parentNode.title = '';
+					zoneButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+					if (zoneButtons[i].getAttribute('icon') === null) {
+						zoneButtons[i].insertAdjacentHTML('beforeend','<label class="zone-cblabel"><input type="checkbox" class="zone-checkbox" data-id="' + i + '"></input></label><span class="zone-numspan"></span>')
+					} else if (zoneButtons[i].getAttribute('icon') === 'md-close') {
+						zoneButtons[i].classList.add('action-sheet-button-zcancel','action-sheet-button-half');
+					} else {
+						zoneButtons[i].classList.add('action-sheet-button-zsubmit','action-sheet-button-half', 'zdisabled');
+					}
+				}
+				calcPayload = function() {
+					var payload = [];
+					var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+					for (var i = 0; i < zoneCheckboxes.length; i++) {
+						if (!zoneCheckboxes[i].dataset.num) {
+							continue;
+						}
+						payload[zoneCheckboxes[i].dataset.num - 1] = zones[zoneCheckboxes[i].dataset.id].coordinates;
+					}
+					return payload.reduce((acc, val) => acc.concat(val), []);
+				}
+				markSubmitButton = function() {
+					var submitButton = document.querySelector('.action-sheet-button[icon="md-collection-item"]');
+					if (!submitButton) return;
+					submitButton.classList.toggle('zdisabled',!calcPayload().length);
+				}
+				document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
+					if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+					if (e.target.className === 'zone-cblabel') {
+						e.stopPropagation();
+						return;
+					}
+					if (e.target.className === 'zone-checkbox') {
+						e.stopPropagation();
+						if (e.target.checked) {
+							// checked right now
+							var attemptedLength = calcPayload().length + zones[e.target.dataset.id].coordinates.length;
+							if (attemptedLength > 5) {
+								ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
+								e.target.checked = false;
+								return;
+							}
+							e.target.dataset.num = ++zoneNumber;
+							e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + zones[e.target.dataset.id].coordinates.length + ']';
+							e.target.parentNode.parentNode.classList.add('zone_selected');
+						} else {
+							// unchecked
+							var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+							for (var i = 0; i < zoneCheckboxes.length; i++) {
+								if (zoneCheckboxes[i].checked && zoneCheckboxes[i].dataset.num > e.target.dataset.num) {
+									zoneCheckboxes[i].dataset.num--;
+									zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '[' + zoneCheckboxes[i].dataset.num + '/' + zones[zoneCheckboxes[i].dataset.id].coordinates.length + ']';
+								}
+							}
+							zoneNumber--;
+							delete e.target.dataset.num;
+							e.target.parentNode.nextElementSibling.textContent = '';
+							e.target.parentNode.parentNode.classList.remove('zone_selected');
+						}
+						markSubmitButton();
+					} else if (e.target.getAttribute('icon') === 'md-collection-item') {
+						e.stopPropagation();
+						if (calcPayload().length) {
+							var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+							for (var i = 0; i < zoneCheckboxes.length; i++) {
+								if (zoneCheckboxes[i].checked) {
+									zoneCheckboxes[i].parentNode.parentNode.click();
+									break;
+								}
+							}
+						}
+					} else if (zoneNumber > 0) {
+						let findCheckbox = e.target.querySelector('.zone-checkbox');
+						if (!findCheckbox || !findCheckbox.checked) {
+							e.stopPropagation();
+							var zoneCheckboxes = document.querySelectorAll('.zone-checkbox');
+							for (var i = 0; i < zoneCheckboxes.length; i++) {
+								if (zoneCheckboxes[i].checked) {
+									delete zoneCheckboxes[i].dataset.num;
+									zoneCheckboxes[i].parentNode.nextElementSibling.textContent = '';
+									zoneCheckboxes[i].parentNode.parentNode.classList.remove('zone_selected');
+									zoneCheckboxes[i].checked = false;
+								}
+							}
+							zoneNumber = 0;
+						} else {
+							payload = calcPayload();
+						}
+						markSubmitButton();
+					}
+				},true);
+				return openActionSheet;
+			})
+			.then(index => {
+				if(index > -1 && index < zones.length){
+					if (zoneNumber < 2) {
+						payload = zones[index].coordinates;
+					}
+					if (!payload.length) {
+						ons.notification.alert(i18next.t('home.popups.emptyZoneChosen',"You've chosen an empty zone to clean. Please set it up first."),{title: i18next.t('common.attention',"Attention!")});
+						return Promise.reject("cancel");
+					}
+					if (!fn.webifSettings.zonedImmediate) {
+						document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
+							updateMapPage(true).then(function(map) {
+								map.clearZones();
+								payload.forEach(function(zone) {
+									map.addZone(zone, true);
+								});
+							})
+							.catch(() => {});
+						}});
+						return Promise.reject("cancel");
+					} else {
+						loadingBarHome.setAttribute("indeterminate", "indeterminate");
+						return fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
+					}
+				} else {
+					return Promise.reject("cancel");
+				}
+			})
+			.then(res => fn.notificationToastOK())
+			.catch(e => {
+				if (e !== "cancel") fn.notificationToastError(e);
+			})
+			.finally(() => {
+				window.setTimeout(function () {
+					updateHomePage();
+				}, 200);
+			});
+		}
 
-        function handleStoreMapButton() {
-            window.clearTimeout(currentRefreshTimer);
-            let slotName;
-            ons.notification.prompt({message: i18next.t('home.popups.chooseMapName',"Choose a title to save the map files as:"), title: i18next.t('common.prompt',"Prompt"), placeholder: "name", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")] })
-            .then(slot => {
-                if (slot === null) {
-                    return Promise.reject("cancel");
-                }
-                slot = slot.trim();
-                if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
-                    return Promise.reject(i18next.t('home.popups.invalidMapName',"Title may contain only latin letters or numbers, spaces and hyphen."));
-                }
-                slotName = slot;
-                loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                return fn.prequest("api/list_maps");
-            })
-            .then(res => {
-                if (res.includes(slotName)) {
-                    return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? i18next.t('home.popups.slotAlreadyTaken',{defaultValue: "Slot #{{slot}} is already occupied", slot: slotName}) : i18next.t('home.popups.nameAlreadyTaken',{defaultValue: "Name \"{{name}}\" is already taken", name: slotName})) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
-                }
-                return 1;
-            })
-            .then(res => {
-                if (res === 0) {
-                    return Promise.reject("cancel");
-                }
-                return fn.prequestWithPayload("api/store_map", JSON.stringify({name: slotName}), "PUT");
-            })
-            .then(res => fn.notificationToastOK(i18next.t('home.popups.mapStoredOK',"Map stored successfully!")))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err);
-            })
-            .finally(() => {
-                loadingBarHome.removeAttribute("indeterminate");
-                window.setTimeout(function () {
-                    updateHomePage();
-                }, 500);
-            });
-        }
+		function handleStoreMapButton() {
+			window.clearTimeout(currentRefreshTimer);
+			let slotName;
+			ons.notification.prompt({message: i18next.t('home.popups.chooseMapName',"Choose a title to save the map files as:"), title: i18next.t('common.prompt',"Prompt"), placeholder: "name", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")] })
+			.then(slot => {
+				if (slot === null) {
+					return Promise.reject("cancel");
+				}
+				slot = slot.trim();
+				if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
+					return Promise.reject(i18next.t('home.popups.invalidMapName',"Title may contain only latin letters or numbers, spaces and hyphen."));
+				}
+				slotName = slot;
+				loadingBarHome.setAttribute("indeterminate", "indeterminate");
+				return fn.prequest("api/list_maps");
+			})
+			.then(res => {
+				if (res.includes(slotName)) {
+					return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? i18next.t('home.popups.slotAlreadyTaken',{defaultValue: "Slot #{{slot}} is already occupied", slot: slotName}) : i18next.t('home.popups.nameAlreadyTaken',{defaultValue: "Name \"{{name}}\" is already taken", name: slotName})) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
+				}
+				return 1;
+			})
+			.then(res => {
+				if (res === 0) {
+					return Promise.reject("cancel");
+				}
+				return fn.prequestWithPayload("api/store_map", JSON.stringify({name: slotName}), "PUT");
+			})
+			.then(res => fn.notificationToastOK(i18next.t('home.popups.mapStoredOK',"Map stored successfully!")))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err);
+			})
+			.finally(() => {
+				loadingBarHome.removeAttribute("indeterminate");
+				window.setTimeout(function () {
+					updateHomePage();
+				}, 500);
+			});
+		}
 
-        function handleLoadMapButton() {
-            window.clearTimeout(currentRefreshTimer);
-            loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            let slots = [], options = [];
-            fn.prequest("api/list_maps")
-            .then(data => {
-                data.sort((a, b) => a.localeCompare(b));
-                loadingBarHome.removeAttribute("indeterminate");
-                slots = data;
-                for (var i = 0; i < data.length; i++) {
-                    options.push((/^[0-9]+$/.test(data[i]) ? i18next.t('home.popups.slotNo',"slot #") : "") + data[i]);
-                }
-                options.push({
-                    label: options.length ? i18next.t('common.cancel',"Cancel") : i18next.t('home.popups.noMapsStored',"No saved maps!"),
-                    icon: 'md-close'
-                });
-                let slotsList = ons.openActionSheet({
-                    title: i18next.t('home.popups.selectMapToLoad',"Select a slot to load the map from:"),
-                    cancelable: true,
-                    buttons: options
-                });
-                var slotsButtons = document.querySelectorAll('ons-action-sheet-button');
-                for (var i = 0; i < slotsButtons.length; i++) {
-                    if (!i) slotsButtons[i].parentNode.parentNode.title = '';
-                    slotsButtons[i].title = ''; // get rid of stupid title repeating on all buttons
-                    if (slotsButtons[i].getAttribute('icon') === null) {
-                        slotsButtons[i].insertAdjacentHTML('beforeend','<span class="remove-stored-map" data-id="' + i + '"><i class="fas fa-times"></i></span>')
-                    }
-                }
-                document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
-                    if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
-                    if (e.target.className === 'remove-stored-map') {
-                        e.stopPropagation();
-                        let slotName = slots[e.target.dataset.id];
-                        ons.notification.confirm(i18next.t('home.popups.confirmMapDelete',{defaultValue: "Are you sure you want to delete \"{{name}}\"?",name: options[e.target.dataset.id]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(answer => {
-                            if (answer === 1) {
-                                loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                                fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
-                                    (res) => fn.notificationToastOK(i18next.t('home.popups.mapDeletedOK',"Stored map successfully deleted!")),
-                                    (err) => fn.notificationToastError(err)
-                                )
-                                .finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
-                            }
-                        });
-                    }
-                },true);
-                return slotsList;
-            })
-            .then(index => {
-                if (index > -1 && index < slots.length) {
-                    document.querySelectorAll('#robot-control-buttons ons-button').forEach(button => button.setAttribute('disabled','disabled'));
-                    loadingBarHome.setAttribute("indeterminate", "indeterminate");
-                    return fn.prequestWithPayload("api/load_map", JSON.stringify({ name: slots[index] }), "PUT");
-                } else {
-                    return Promise.reject("cancel");
-                }
-            })
-            .then(res => {
-                if (res.message === 'wait') {
-                    let waiting = ons.notification.alert(i18next.t('home.popups.waitMapTicks',{defaultValue: "Map replacement routines are running. Please wait for {{seconds}} seconds...", seconds: 30}),{class: 'load-map-waiting', title: i18next.t('home.popups.wait',"Wait"), cancelable: false});
-                    let adb = document.querySelector('.load-map-waiting .alert-dialog-button'),
-                        adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
-                        adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
-                        adi = setInterval(() => {
-                           let seconds = +(adc.textContent.match(/(\d+)/) || [])[1] || 0;
-                           if (seconds <= 1) {
-                               clearInterval(adi);
-                               adb.classList.remove('ok-disabled');
-                               adt.textContent = i18next.t('home.popups.waitMapFinished',"Finished");
-                               adc.textContent = i18next.t('home.popups.waitMapEncourage',"Requested routines should be completed now.");
-                           } else {
-                               adc.textContent = adc.textContent.replace(seconds,--seconds);
-                           }
-                        },1e3);
-                    adb.classList.add('ok-disabled');
-                    return waiting;
-                }
-                return true;
-            })
-            .then(res => fn.notificationToastOK(i18next.t('home.popups.mapRestoredOK',"Map restored successfully!")))
-            .catch(err => {
-                if (err !== "cancel") fn.notificationToastError(err);
-            })
-            .finally(() => {
-                loadingBarHome.removeAttribute("indeterminate");
-                window.setTimeout(function () {
-                    updateHomePage();
-                }, 500);
-            });
-        }
+		function handleLoadMapButton() {
+			window.clearTimeout(currentRefreshTimer);
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			let slots = [], options = [];
+			fn.prequest("api/list_maps")
+			.then(data => {
+				data.sort((a, b) => a.localeCompare(b));
+				loadingBarHome.removeAttribute("indeterminate");
+				slots = data;
+				for (var i = 0; i < data.length; i++) {
+					options.push((/^[0-9]+$/.test(data[i]) ? i18next.t('home.popups.slotNo',"slot #") : "") + data[i]);
+				}
+				options.push({
+					label: options.length ? i18next.t('common.cancel',"Cancel") : i18next.t('home.popups.noMapsStored',"No saved maps!"),
+					icon: 'md-close'
+				});
+				let slotsList = ons.openActionSheet({
+					title: i18next.t('home.popups.selectMapToLoad',"Select a slot to load the map from:"),
+					cancelable: true,
+					buttons: options
+				});
+				var slotsButtons = document.querySelectorAll('ons-action-sheet-button');
+				for (var i = 0; i < slotsButtons.length; i++) {
+					if (!i) slotsButtons[i].parentNode.parentNode.title = '';
+					slotsButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+					if (slotsButtons[i].getAttribute('icon') === null) {
+						slotsButtons[i].insertAdjacentHTML('beforeend','<span class="remove-stored-map" data-id="' + i + '"><i class="fas fa-times"></i></span>')
+					}
+				}
+				document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
+					if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+					if (e.target.className === 'remove-stored-map') {
+						e.stopPropagation();
+						let slotName = slots[e.target.dataset.id];
+						ons.notification.confirm(i18next.t('home.popups.confirmMapDelete',{defaultValue: "Are you sure you want to delete \"{{name}}\"?",name: options[e.target.dataset.id]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(answer => {
+							if (answer === 1) {
+								loadingBarHome.setAttribute("indeterminate", "indeterminate");
+								fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
+									(res) => fn.notificationToastOK(i18next.t('home.popups.mapDeletedOK',"Stored map successfully deleted!")),
+									(err) => fn.notificationToastError(err)
+								)
+								.finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
+							}
+						});
+					}
+				},true);
+				return slotsList;
+			})
+			.then(index => {
+				if (index > -1 && index < slots.length) {
+					document.querySelectorAll('#robot-control-buttons ons-button').forEach(button => button.setAttribute('disabled','disabled'));
+					loadingBarHome.setAttribute("indeterminate", "indeterminate");
+					return fn.prequestWithPayload("api/load_map", JSON.stringify({ name: slots[index] }), "PUT");
+				} else {
+					return Promise.reject("cancel");
+				}
+			})
+			.then(res => {
+				if (res.message === 'wait') {
+					let waiting = ons.notification.alert(i18next.t('home.popups.waitMapTicks',{defaultValue: "Map replacement routines are running. Please wait for {{seconds}} seconds...", seconds: 30}),{class: 'load-map-waiting', title: i18next.t('home.popups.wait',"Wait"), cancelable: false});
+					let adb = document.querySelector('.load-map-waiting .alert-dialog-button'),
+						adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
+						adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
+						adi = setInterval(() => {
+						   let seconds = +(adc.textContent.match(/(\d+)/) || [])[1] || 0;
+						   if (seconds <= 1) {
+							   clearInterval(adi);
+							   adb.classList.remove('ok-disabled');
+							   adt.textContent = i18next.t('home.popups.waitMapFinished',"Finished");
+							   adc.textContent = i18next.t('home.popups.waitMapEncourage',"Requested routines should be completed now.");
+						   } else {
+							   adc.textContent = adc.textContent.replace(seconds,--seconds);
+						   }
+						},1e3);
+					adb.classList.add('ok-disabled');
+					return waiting;
+				}
+				return true;
+			})
+			.then(res => fn.notificationToastOK(i18next.t('home.popups.mapRestoredOK',"Map restored successfully!")))
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err);
+			})
+			.finally(() => {
+				loadingBarHome.removeAttribute("indeterminate");
+				window.setTimeout(function () {
+					updateHomePage();
+				}, 500);
+			});
+		}
 
-        function updateHomePage() {
-            if (refreshInProgress || refreshDisabled) {
-                return;
-            }
-            refreshInProgress = true;
-            window.clearTimeout(currentRefreshTimer);
-            loadingBarHome.setAttribute("indeterminate", "indeterminate");
-            fn.prequest("api/current_status")
-            .then((res) => {
-                batteryStatusText.textContent = res.battery;
-                batteryStatusBar.value = res.battery;
+		function updateHomePage() {
+			if (refreshInProgress || refreshDisabled) {
+				return;
+			}
+			refreshInProgress = true;
+			window.clearTimeout(currentRefreshTimer);
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/current_status")
+			.then((res) => {
+				batteryStatusText.textContent = res.battery;
+				batteryStatusBar.value = res.battery;
 
-                robotState.innerHTML = i18next.t('robot.states.n' + res.state, res.human_state);
-                if (res.error_code != 0) {
-                    robotState.innerHTML +=
-                        '<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
-                        i18next.t('robot.errors.n' + res.error_code, res.human_error) +
-                        ' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
-                }
+				robotState.innerHTML = i18next.t('robot.states.n' + res.state, res.human_state);
+				if (res.error_code != 0) {
+					robotState.innerHTML +=
+						'<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
+						i18next.t('robot.errors.n' + res.error_code, res.human_error) +
+						' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
+				}
 
-                if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
-                    if ([2,3,10].includes(res.state)) {
-                        pauseButton.setAttribute("disabled", "disabled");
-                        startButton.removeAttribute("disabled");
-                    } else {
-                        pauseButton.removeAttribute("disabled");
-                        startButton.setAttribute("disabled", "disabled");
-                    }
-                } else {
-                    pauseButton.setAttribute("disabled", "disabled");
-                    if (res.state !== 6) {
-                        startButton.removeAttribute("disabled");
-                    } else {
-                        pauseButton.removeAttribute("disabled");
-                        startButton.setAttribute("disabled", "disabled");
-                    }
-                }
+				if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
+					if ([2,3,10].includes(res.state)) {
+						pauseButton.setAttribute("disabled", "disabled");
+						startButton.removeAttribute("disabled");
+					} else {
+						pauseButton.removeAttribute("disabled");
+						startButton.setAttribute("disabled", "disabled");
+					}
+				} else {
+					pauseButton.setAttribute("disabled", "disabled");
+					if (res.state !== 6) {
+						startButton.removeAttribute("disabled");
+					} else {
+						pauseButton.removeAttribute("disabled");
+						startButton.setAttribute("disabled", "disabled");
+					}
+				}
 
-                if ([3,6,8,10,11,15,16].includes(res.state)) {
-                    stopButton.setAttribute("disabled", "disabled");
-                } else {
-                    stopButton.removeAttribute("disabled");
-                }
+				if ([3,6,8,10,11,15,16].includes(res.state)) {
+					stopButton.setAttribute("disabled", "disabled");
+				} else {
+					stopButton.removeAttribute("disabled");
+				}
 
-                if ([5,6,8,9,11,16,17,18].includes(res.state)) {
-                    homeButton.setAttribute("disabled", "disabled");
-                } else {
-                    homeButton.removeAttribute("disabled");
-                }
+				if ([5,6,8,9,11,16,17,18].includes(res.state)) {
+					homeButton.setAttribute("disabled", "disabled");
+				} else {
+					homeButton.removeAttribute("disabled");
+				}
 
-                if ([2,3,10].includes(res.state)) {
-                    spotButton.removeAttribute("disabled");
-                } else {
-                    spotButton.setAttribute("disabled", "disabled");
-                }
+				if ([2,3,10].includes(res.state)) {
+					spotButton.removeAttribute("disabled");
+				} else {
+					spotButton.setAttribute("disabled", "disabled");
+				}
 
-                if ([3,8].includes(res.state)) {
-                    storeMapButton.removeAttribute("disabled");
-                    loadMapButton.removeAttribute("disabled");
-                } else {
-                    storeMapButton.setAttribute("disabled", "disabled");
-                    loadMapButton.setAttribute("disabled", "disabled");
-                }
+				if ([3,8].includes(res.state)) {
+					storeMapButton.removeAttribute("disabled");
+					loadMapButton.removeAttribute("disabled");
+				} else {
+					storeMapButton.setAttribute("disabled", "disabled");
+					loadMapButton.setAttribute("disabled", "disabled");
+				}
 
-                robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
-                robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
+				robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
+				robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
-                fanspeedPresets = fn.device.ver !== 3 ? {
-                    1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
-                    38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
-                    60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
-                    75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
-                    100: i18next.t('home.fanspeedPresets.max',"Max")
-                } : {
-                    101: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
-                    102: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
-                    103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
-                    104: i18next.t('home.fanspeedPresets.max',"Max")
-                };
-                if (fn.device.model !== "rockrobo.vacuum.v1") {
-                    fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
-                }
-                fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
-            }, (err) => fn.notificationToastError(err))
-            .finally(() => {
-                refreshInProgress = false;
-                loadingBarHome.removeAttribute("indeterminate");
-                fanspeedButton.removeAttribute("disabled");
-                findRobotButton.removeAttribute("disabled");
+				fanspeedPresets = fn.device.ver !== 3 ? {
+					1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
+					38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
+					60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
+					75: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
+					100: i18next.t('home.fanspeedPresets.max',"Max")
+				} : {
+					101: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
+					102: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
+					103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
+					104: i18next.t('home.fanspeedPresets.max',"Max")
+				};
+				if (fn.device.model !== "rockrobo.vacuum.v1") {
+					fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
+				}
+				fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
+			}, (err) => fn.notificationToastError(err))
+			.finally(() => {
+				refreshInProgress = false;
+				loadingBarHome.removeAttribute("indeterminate");
+				fanspeedButton.removeAttribute("disabled");
+				findRobotButton.removeAttribute("disabled");
 
-                currentRefreshTimer = window.setTimeout(function () {
-                    updateHomePage();
-                }.bind(this), 5000);
-            });
-        };
+				currentRefreshTimer = window.setTimeout(function () {
+					updateHomePage();
+				}.bind(this), 5000);
+			});
+		};
 
-        ons.getScriptPage().onInit = function() {
-            fn.localize('#home-page');
-        }
+		ons.getScriptPage().onInit = function() {
+			fn.localize('#home-page');
+		}
 
-        ons.getScriptPage().onShow = function () {
-            refreshDisabled = false;
-            /* multimap visibility */
-            document.getElementById('multimap-buttons').style.display = fn.webifSettings.showMultimap ? '' : 'none';
-            /* check for area and go to configuration */
-            fn.prequest("api/get_config")
-            .then((res) => {
-                config = res;
-                if (config.spots && config.spots.length > 0) {
-                    goToButton.removeAttribute("disabled");
-                }
-                if (config.areas && config.areas.length > 0) {
-                    areaButton.removeAttribute("disabled");
-                }
-            })
-            .catch(err => fn.notificationToastError(err))
-            .finally(() => {
-                updateHomePage();
-            });
-        };
+		ons.getScriptPage().onShow = function () {
+			refreshDisabled = false;
+			/* multimap visibility */
+			document.getElementById('multimap-buttons').style.display = fn.webifSettings.showMultimap ? '' : 'none';
+			/* check for area and go to configuration */
+			fn.prequest("api/get_config")
+			.then((res) => {
+				config = res;
+				if (config.spots && config.spots.length > 0) {
+					goToButton.removeAttribute("disabled");
+				}
+				if (config.areas && config.areas.length > 0) {
+					areaButton.removeAttribute("disabled");
+				}
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => {
+				updateHomePage();
+			});
+		};
 
-        ons.getScriptPage().onHide = function () {
-            refreshDisabled = true;
-            window.clearTimeout(currentRefreshTimer);
-        }
+		ons.getScriptPage().onHide = function () {
+			refreshDisabled = true;
+			window.clearTimeout(currentRefreshTimer);
+		}
 
-    </script>
-    <style>
-        #robot-state {
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: 500;
-        }
+	</script>
+	<style>
+		#robot-state {
+			text-align: center;
+			font-size: 1.2em;
+			font-weight: 500;
+		}
 
-        .robot-error {
-            color: #eb5959;
-            display: block;
-        }
+		.robot-error {
+			color: #eb5959;
+			display: block;
+		}
 
-        #robot-control-buttons {
-            text-align: center;
-        }
+		#robot-control-buttons {
+			text-align: center;
+		}
 
-        #robot-control-buttons > ons-button {
-            margin: 5px;
-            font-size: 1.2em;
-        }
+		#robot-control-buttons > ons-button {
+			margin: 5px;
+			font-size: 1.2em;
+		}
 
-        #robot-state-details-m2 {
-            margin-right: 5%;
-        }
+		#robot-state-details-m2 {
+			margin-right: 5%;
+		}
 
-        #robot-state-details-time {
-            text-align: right;
-        }
-        .button-margin {
-            margin: 0.2em;
-        }
+		#robot-state-details-time {
+			text-align: right;
+		}
+		.button-margin {
+			margin: 0.2em;
+		}
 
-        .action-sheet {
-            max-height: 100%;
-            overflow-y: auto;
-        }
-        .action-sheet-button.zone_selected {
-            background-color: #c9c9c9;
-        }
-        .action-sheet-button .zone-numspan {
-            font-size: 0.67em;
-            font-weight: 700;
-            pointer-events: none;
-            position: absolute;
-            right: 3.5em;
-        }
-        .action-sheet-button .zone-cblabel {
-            position: absolute;
-            right: 0;
-            padding: 0 0.8em;
-        }
-        .action-sheet-button .remove-stored-map {
-            position: absolute;
-            right: 5px;
-            padding: 0 0.8em;
-            cursor: pointer;
-            color: black;
-        }
-        .action-sheet-button .remove-stored-map i {
-            pointer-events: none;
-        }
-        .ons-action-sheet-zoned .action-sheet-button:nth-last-of-type(3) {
-            border-bottom-right-radius: 12px;
-            border-bottom-left-radius: 12px;
-        }
-        .ons-action-sheet-zoned .action-sheet-button--material:nth-last-of-type(3) {
-            border-radius: 0;
-        }
-        .ons-action-sheet-zoned .action-sheet-button-half {
-            width: 49.86%;
-            border-radius: 12px;
-            margin: 8px 0 0;
-            background-color: #fff;
-            background-image: none;
-            font-weight: 600;
-        }
-        .ons-action-sheet-zoned .action-sheet-button--material.action-sheet-button-half {
-            width: 50%;
-            border-radius: 0;
-            margin: 0;
-            background-color: #fff;
-            background-image: none;
-            font-weight: 400;
-        }
-        .ons-action-sheet-zoned .action-sheet-button-zsubmit {
-            float: left;
-        }
-        .ons-action-sheet-zoned .action-sheet-button-zcancel {
-            float: right;
-        }
-        .ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled {
-            color: darkgray;
-        }
-        .ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled:active {
-            background-color: #fff;
-        }
-        .ons-action-sheet-zoned .zone-checkbox {
-            transform: scale(1.5);
-        }
-        .load-map-waiting .ok-disabled {
-            color: silver;
-            pointer-events: none;
-        }
-        .load-map-waiting .ok-disabled:active {
-            background-color: inherit;
-        }
-    </style>
+		.action-sheet {
+			max-height: 100%;
+			overflow-y: auto;
+		}
+		.action-sheet-button.zone_selected {
+			background-color: #c9c9c9;
+		}
+		.action-sheet-button .zone-numspan {
+			font-size: 0.67em;
+			font-weight: 700;
+			pointer-events: none;
+			position: absolute;
+			right: 3.5em;
+		}
+		.action-sheet-button .zone-cblabel {
+			position: absolute;
+			right: 0;
+			padding: 0 0.8em;
+		}
+		.action-sheet-button .remove-stored-map {
+			position: absolute;
+			right: 5px;
+			padding: 0 0.8em;
+			cursor: pointer;
+			color: black;
+		}
+		.action-sheet-button .remove-stored-map i {
+			pointer-events: none;
+		}
+		.ons-action-sheet-zoned .action-sheet-button:nth-last-of-type(3) {
+			border-bottom-right-radius: 12px;
+			border-bottom-left-radius: 12px;
+		}
+		.ons-action-sheet-zoned .action-sheet-button--material:nth-last-of-type(3) {
+			border-radius: 0;
+		}
+		.ons-action-sheet-zoned .action-sheet-button-half {
+			width: 49.86%;
+			border-radius: 12px;
+			margin: 8px 0 0;
+			background-color: #fff;
+			background-image: none;
+			font-weight: 600;
+		}
+		.ons-action-sheet-zoned .action-sheet-button--material.action-sheet-button-half {
+			width: 50%;
+			border-radius: 0;
+			margin: 0;
+			background-color: #fff;
+			background-image: none;
+			font-weight: 400;
+		}
+		.ons-action-sheet-zoned .action-sheet-button-zsubmit {
+			float: left;
+		}
+		.ons-action-sheet-zoned .action-sheet-button-zcancel {
+			float: right;
+		}
+		.ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled {
+			color: darkgray;
+		}
+		.ons-action-sheet-zoned .action-sheet-button-zsubmit.zdisabled:active {
+			background-color: #fff;
+		}
+		.ons-action-sheet-zoned .zone-checkbox {
+			transform: scale(1.5);
+		}
+		.load-map-waiting .ok-disabled {
+			color: silver;
+			pointer-events: none;
+		}
+		.load-map-waiting .ok-disabled:active {
+			background-color: inherit;
+		}
+	</style>
 
 </ons-page>

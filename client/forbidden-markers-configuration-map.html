@@ -1,119 +1,119 @@
 <ons-page id="forbidden-markers-configuration-map-page">
-    <div id="forbidden-markers-configuration-container">
-        <div class="page-with-map-header forbidden-markers-configuration-header">
-            <ons-back-button data-i18n="zones.forbiddenMarkersPageBack" data-i18n-target=".back-button__label">Forbidden Markers</ons-back-button>
-            <span id="forbidden-markers-configuration-map-page-h1" data-i18n="zones.forbiddenMarkersTitle">Editing markers</span>
-        </div>
+	<div id="forbidden-markers-configuration-container">
+		<div class="page-with-map-header forbidden-markers-configuration-header">
+			<ons-back-button data-i18n="zones.forbiddenMarkersPageBack" data-i18n-target=".back-button__label">Forbidden Markers</ons-back-button>
+			<span id="forbidden-markers-configuration-map-page-h1" data-i18n="zones.forbiddenMarkersTitle">Editing markers</span>
+		</div>
 
-        <ons-progress-bar id="loading-bar-save-markers" value="0"></ons-progress-bar>
-        <canvas id="forbidden-markers-configuration-map"></canvas>
-    </div>
+		<ons-progress-bar id="loading-bar-save-markers" value="0"></ons-progress-bar>
+		<canvas id="forbidden-markers-configuration-map"></canvas>
+	</div>
 
-    <div class="map-page-buttons map-page-bottom">
-        <ons-fab ripple id="forbidden-markers-configuration-add-wall">
-            <ons-icon icon="fa-ellipsis-v"></ons-icon>
-        </ons-fab>
-        <ons-fab ripple id="forbidden-markers-configuration-add-zone">
-            <ons-icon icon="fa-window-close-o"></ons-icon>
-        </ons-fab>
-        <ons-fab ripple id="forbidden-markers-configuration-save">
-            <ons-icon icon="fa-save"></ons-icon>
-        </ons-fab>
-    </div>
+	<div class="map-page-buttons map-page-bottom">
+		<ons-fab ripple id="forbidden-markers-configuration-add-wall">
+			<ons-icon icon="fa-ellipsis-v"></ons-icon>
+		</ons-fab>
+		<ons-fab ripple id="forbidden-markers-configuration-add-zone">
+			<ons-icon icon="fa-window-close-o"></ons-icon>
+		</ons-fab>
+		<ons-fab ripple id="forbidden-markers-configuration-save">
+			<ons-icon icon="fa-save"></ons-icon>
+		</ons-fab>
+	</div>
 
-    <script type="module">
-        import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
-        const map = new VacuumMap(document.getElementById('forbidden-markers-configuration-map'));
-        const loadingBarSaveMarkers = document.getElementById('loading-bar-save-markers');
-        const saveButton = document.getElementById('forbidden-markers-configuration-save');
+	<script type="module">
+		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+		const map = new VacuumMap(document.getElementById('forbidden-markers-configuration-map'));
+		const loadingBarSaveMarkers = document.getElementById('loading-bar-save-markers');
+		const saveButton = document.getElementById('forbidden-markers-configuration-save');
 
-        const topPage = fn.getTopPage();
-        map.initCanvas(topPage.data.map, {metaData: false, noPath: true, noGotoPoints: true});
+		const topPage = fn.getTopPage();
+		map.initCanvas(topPage.data.map, {metaData: false, noPath: true, noGotoPoints: true});
 
-        document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+		document.querySelector("#forbidden-markers-configuration-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-        const parsedMap = map.getParsedMap();
+		const parsedMap = map.getParsedMap();
 
-        if (parsedMap.forbidden_zones)
-        for (let zone of parsedMap.forbidden_zones) {
-            map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
-        }
+		if (parsedMap.forbidden_zones)
+		for (let zone of parsedMap.forbidden_zones) {
+			map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
+		}
 
-        if (parsedMap.virtual_walls)
-        for (let wall of parsedMap.virtual_walls) {
-            map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
-        }
+		if (parsedMap.virtual_walls)
+		for (let wall of parsedMap.virtual_walls) {
+			map.addVirtualWall([wall[0], wall[1], wall[2], wall[3]], true, true);
+		}
 
-        document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
-            if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 66) {
-                fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
-                return;
-            }
-            map.addVirtualWall(null, false, true);
-        }
+		document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
+			if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 66) {
+				fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
+				return;
+			}
+			map.addVirtualWall(null, false, true);
+		}
 
-        document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
-            if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 64) {
-                fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
-                return;
-            }
-            map.addForbiddenZone(null, false, true);
-        }
+		document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
+			if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 64) {
+				fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
+				return;
+			}
+			map.addForbiddenZone(null, false, true);
+		}
 
-        saveButton.onclick = () => {
-            const persistentData = {virtual_walls: map.getLocations().virtualWalls, forbidden_zones: map.getLocations().forbiddenZones};
-            loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
-            saveButton.setAttribute("disabled", "disabled");
-            fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
-            .then(() => {
-                fn.notificationToastOK(i18next.t('zones.forbiddenMarkersSavedOK',"Forbidden markers successfully saved!"));
-                fn.popPage();
-            }, (err) => fn.notificationToastError(err))
-            .finally(() => {
-                loadingBarSaveMarkers.removeAttribute("indeterminate");
-                saveButton.removeAttribute("disabled");
-            });
-        }
-    </script>
-    <script>
-        ons.getScriptPage().onInit = function() {
-           fn.localize('#forbidden-markers-configuration-map-page');
-        }
-    </script>
-    <style>
-        #forbidden-markers-configuration-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto 1fr;
+		saveButton.onclick = () => {
+			const persistentData = {virtual_walls: map.getLocations().virtualWalls, forbidden_zones: map.getLocations().forbiddenZones};
+			loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
+			saveButton.setAttribute("disabled", "disabled");
+			fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
+			.then(() => {
+				fn.notificationToastOK(i18next.t('zones.forbiddenMarkersSavedOK',"Forbidden markers successfully saved!"));
+				fn.popPage();
+			}, (err) => fn.notificationToastError(err))
+			.finally(() => {
+				loadingBarSaveMarkers.removeAttribute("indeterminate");
+				saveButton.removeAttribute("disabled");
+			});
+		}
+	</script>
+	<script>
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#forbidden-markers-configuration-map-page');
+		}
+	</script>
+	<style>
+		#forbidden-markers-configuration-container {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto 1fr;
 
-            height: 100%;
-            width: 100%;
-        }
+			height: 100%;
+			width: 100%;
+		}
 
-        #forbidden-markers-configuration-map {
-            touch-action: none;
-            height: 100%;
-            width: 100%;
-        }
+		#forbidden-markers-configuration-map {
+			touch-action: none;
+			height: 100%;
+			width: 100%;
+		}
 
-        #forbidden-markers-configuration-map-page-h1 {
-            flex-grow: 1;
-            text-align: center;
-        }
+		#forbidden-markers-configuration-map-page-h1 {
+			flex-grow: 1;
+			text-align: center;
+		}
 
-        .forbidden-markers-configuration-header {
-            display: flex;
-            align-items: center;
-        }
+		.forbidden-markers-configuration-header {
+			display: flex;
+			align-items: center;
+		}
 
-        .forbidden-markers-configuration-buttons {
-            position: absolute;
-            right: 1.5em;
-            bottom: 1.5em;
-            display: grid;
-            grid-template-columns: auto;
-            grid-template-rows: auto;
-            grid-gap: 0.5em;
-        }
-    </style>
+		.forbidden-markers-configuration-buttons {
+			position: absolute;
+			right: 1.5em;
+			bottom: 1.5em;
+			display: grid;
+			grid-template-columns: auto;
+			grid-template-rows: auto;
+			grid-gap: 0.5em;
+		}
+	</style>
 </ons-page>
