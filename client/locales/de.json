@@ -325,7 +325,9 @@
             "firmwareUpdateEnterURL": "Bitte geben Sie den Link zur Firmware-Paketdatei ein:",
             "firmwareUpdateEnterMD5": "Bitte geben Sie den MD5-Hash der soeben angegebenen Datei ein:",
             "firmwareUpdateSend": "Absenden!",
-            "firmwareUpdateSentOK": "Update-Anfrage sollte gesendet sein! Warten Sie auf die LED-Anzeige des Update-Vorgangs."
+            "firmwareUpdateSentOK": "Update-Anfrage sollte gesendet sein! Warten Sie auf die LED-Anzeige des Update-Vorgangs.",
+            "exp_fw_update": "Mit dieser Funktion wird die Basisfirmware des Roboters durch das Flashen einer Firmwaredatei (*.pkg) überschrieben. Bei der neuen Firmware kann es sich um eine originale, gerootete oder eine bereits mit Valetudo modifizierten Version handeln. Für die erfolgreiche Durchführung ist eine öffentlich erreichbare http-Linkadresse zur pkg-Datei sowie der zugehörige MD5-Hash-Wert notwendig.",
+            "close": "Schließen"
         },
         "persistentData": {
             "pageTitle": "\"Dauerhafte Daten\"-Konfiguration",

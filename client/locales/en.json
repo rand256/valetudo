@@ -325,7 +325,9 @@
             "firmwareUpdateEnterURL": "Please enter URL to firmware pkg file:",
             "firmwareUpdateEnterMD5": "Please enter MD5 hash of the file you just specified:",
             "firmwareUpdateSend": "Send!",
-            "firmwareUpdateSentOK": "Update request should be sent! Wait for LED indication of update process."
+            "firmwareUpdateSentOK": "Update request should be sent! Wait for LED indication of update process.",
+            "exp_fw_update": "This function will override the base firmware of the robot by flashing a firmwarefile (*.pkg). The new firmware version can be stock, rooted or enhanced with valetudo. You'll need a public http-link address to the pkg-file and the corresponding MD5 hash value to successfully complete the process.",
+            "close": "Close"
         },
         "persistentData": {
             "pageTitle": "Persistent Data Configuration",

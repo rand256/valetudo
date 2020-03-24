@@ -33,6 +33,7 @@
 			</div>
 			<div class="right" id="info_fw_update">
 				<a id="sendUpdateRequestButton" onclick="sendUpdateRequest();" data-i18n="settings.info.firmwareUpdateLink">[send request]</a>
+				<a id="UpdateRequestExplanation" onclick="showPopover(this);" <i class="far fa-question-circle"></i></a>
 			</div>
 		</ons-list-item>
 	</ons-list>
@@ -127,6 +128,14 @@
 			</div>
 		</ons-list-item>
 	</ons-list>
+	<ons-popover direction="left" id="exp_fw_update" cancelable>
+		<div style="padding: 5px; text-align: center;">
+			<p><span data-i18n="settings.info.exp_fw_update">This function will override the base firmware of the robot by flashing a firmwarefile (*.pkg). The new firmware version can be stock, rooted or enhanced with valetudo. You'll need a public http-link address to the pkg-file and the corresponding MD5 hash value to successfully complete the process.</span></p>
+			<p>
+				<ons-button onclick="hidePopover()" data-i18n="settings.info.close">Close</ons-button>
+			</p>
+		</div>
+	</ons-popover>
 
 	<script>
 		var loadingBarSettingsInfo = document.getElementById('loading-bar-settings-info');
@@ -156,6 +165,18 @@
 				document.getElementById('current-token-label').innerHTML = res.token;
 			}, (err) => fn.notificationToastError(err));
 			Promise.all([updateSystemInfo, updateAppLocaleInfo, updateCurrentTokenInfo]).finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
+		};
+		
+		var showPopover = function(target) {
+			document
+			.getElementById('exp_fw_update')
+			.show(target);
+		};
+
+		var hidePopover = function() {
+			document
+			.getElementById('exp_fw_update')
+			.hide();
 		};
 
 		function sendUpdateRequest() {
@@ -232,6 +253,9 @@
 			color: blue;
 			text-decoration: underline;
 			cursor: pointer;
+		}
+		#UpdateRequestExplanation {
+			padding: 0 0.5em;
 		}
 	</style>
 </ons-page>
