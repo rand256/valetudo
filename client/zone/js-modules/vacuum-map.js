@@ -315,10 +315,10 @@ function updateMapInt(mapData) {
 			maxX: parsedMap.image.position.left + parsedMap.image.dimensions.width,
 			maxY: parsedMap.image.position.top + parsedMap.image.dimensions.height
 		}
-		const initialScalingFactor = Math.min(
+		const initialScalingFactor = Math.max(Math.min(Math.min(
 			canvas.width / (boundingBox.maxX - boundingBox.minX),
 			canvas.height / (boundingBox.maxY - boundingBox.minY)
-		);
+		),6.5),0.7);
 		currentScale = initialScalingFactor;
 
 		ctx.scale(initialScalingFactor, initialScalingFactor);
