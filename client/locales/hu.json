@@ -27,8 +27,8 @@
     "navi": {
         "home": "Kezdőoldal",
         "map": "Térkép",
-        "zones": "Zonák",
-        "control": "Irányítás",
+        "zones": "Zónák",
+        "control": "Kézi vezérlés",
         "settings": "Beállítások",
         "links": "Linkek",
         "about": "Rólunk"
@@ -44,7 +44,7 @@
             "start": "Indítás",
             "pause": "Szünet",
             "stop": "Stop",
-            "home": "Otthon",
+            "home": "Dokkoló",
             "spot": "Spot",
             "find": "Keresés",
             "goto": "Menj a célponthoz",
@@ -79,9 +79,9 @@
         "fanspeedPresets": {
             "whisper": "Legcsendesebb",
             "quiet": "Csendes",
-            "balanced": "Balanced",
+            "balanced": "Kiegyensúlyozott",
             "turbo": "Turbó",
-            "max": "Max",
+            "max": "Maximum teljesítmény",
             "mop": "Felmosás"
         }
     },
@@ -165,7 +165,7 @@
         "buttons": {
             "status": "Státusz",
             "map": "Térkép",
-            "consumables": "Fogyóeszközök",
+            "consumables": "Kellékek",
             "start": "Start",
             "pause": "Szünet",
             "resume": "Folytatás",
@@ -217,8 +217,8 @@
         "mapLoadWait": "A térkép kb. 30 másodperc múlva frissítésre kerül.",
         "notificationsEnabled": "Állapot értesítések engedélyezve.",
         "notificationsDisabled": "Állapot értesítések letiltva.",
-        "consumablesHeader": "Hátrelévő idő a fogyóeszközök cseréjéig/tisztításig:\n\n",
-        "consumablesAlert": "Az egyik fogyóeszköz cserére szorul:\n\n",
+        "consumablesHeader": "Hátrelévő idő a kellékek cseréjéig/tisztításig:\n\n",
+        "consumablesAlert": "Az egyik kellékek cserére szorul:\n\n",
         "consumablesContent": "Főkefe {{mainBrush}} óra van hátra\nOldalkefe {{sideBrush}} óra van hátra\nSzűrő {{filter}} óra van hátra\nSzenzorok {{sensors}} óra van hátra",
         "binFull": "Úgy tűnik a portartály teli van, kérlek ellenőrizd!",
         "currentStatus": "Aktuális állapot: ",
@@ -237,8 +237,8 @@
         "carpetModeDesc": "Szőnyeg mód beállítása",
         "persistentDataTitle": "Tárolt adatok",
         "persistentDataDesc": "A fejlesztői mód engedélyezése, amivel elérhetővé válnak a virtuális falak, stb...",
-        "consumablesTitle": "Fogyóeszközök",
-        "consumablesDesc": "Fogyóeszközök megtekintése és visszaállítása",
+        "consumablesTitle": "Kellékek",
+        "consumablesDesc": "Kellékek megtekintése és visszaállítása",
         "cleaningHistoryTitle": "Takarítási előzmények",
         "cleaningHistoryDesc": "Takarítási előzmények megtekintése",
         "wifiTitle": "Wi-Fi",
@@ -299,7 +299,7 @@
             "totalCount": "Takarítások száma:",
             "hoursLeft": "{{hours}} óra van hátra",
             "hoursLeft_plural": "{{hours}} óra van hátra",
-            "confirm": "Biztos vissza szeretnéd állítani ennek a fogyóeszköznek a számlálóját?"
+            "confirm": "Biztos vissza szeretnéd állítani ennek a kellékek a számlálóját?"
         },
         "info": {
             "system": "Rendszer",
@@ -476,7 +476,7 @@
             "proxyPlaceholder": "felhaszn:jelszo@hoszt:port",
             "getRandomProxy": "Proxy Get",
             "selectCountry": "Válaszd ki az országot:",
-            "sendConsumables": "Küldj üzenet amikor bármelyik fogyóeszköz időzítője lejárt:",
+            "sendConsumables": "Küldj üzenet amikor bármelyik kellék időzítője lejárt:",
             "sendConsumablesEvery": "Minden egyes takarításkor küldjön értesítést, ha valamelyik kellék időzítője lejárt:",
             "notifyStatusTypes": "Melyik állapotváltozásokról küldjek értesítést:",
             "notifyAll": "Összes",
