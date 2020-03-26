@@ -157,9 +157,9 @@
         "fanpower": {
             "whisper": "Legcsendesebb",
             "quiet": "Csendes",
-            "balanced": "Balanced",
+            "balanced": "Kiegyensúlyozott",
             "turbo": "Turbó",
-            "max": "Max",
+            "max": "Maximum teljesítmény",
             "mop": "Felmosás"
         },
         "buttons": {
