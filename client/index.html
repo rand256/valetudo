@@ -148,6 +148,29 @@
 			});
 		};
 
+		window.fn.prequestMap = function(url,payload,retry) {
+			retry = retry || 0;
+			return new Promise((resolve,reject) => {
+				fn.prequestWithPayload(url, payload, "PUT")
+				.then((res) => {
+					if (res && res[0].startsWith("map_slot_")) {
+						resolve(res[0]);
+					} else if (res && res[0] === "retry") {
+						if (retry > 10) {
+							reject("operation timed out");
+							return;
+						}
+						setTimeout(() => {
+							fn.prequestMap(url,payload,retry+1).then(res => resolve(res)).catch(err => reject(err));
+						},500);
+					} else {
+						reject(i18next.t('common.unknownState',{defaultValue: "returned unknown state: {{state}}", state: res}));
+					}
+				})
+				.catch(err => reject(err));
+			})
+		};
+
 		window.fn.secondsToHms = function (d) {
 			d = Number(d);
 
