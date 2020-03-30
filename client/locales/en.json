@@ -215,7 +215,7 @@
 		"noMapAvailable": "Sorry, the map is currently unavailable.",
 		"powerChanged": "Fan power changed to {{fanPower}}.",
 		"mapLoadOK": "Map should be reloaded now.",
-		"mapLoadWait": "Map should be reloaded in 30 seconds.",
+		"mapLoadWait": "Map should be reloaded in 30 seconds. Please wait.",
 		"notificationsEnabled": "Status notifications enabled.",
 		"notificationsDisabled": "Status notifications disabled.",
 		"consumablesHeader": "Remaining time until consumables timers expire:\n\n",
@@ -465,7 +465,7 @@
 			 "appliedOK": "Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."
 		},
 		"telegram": {
-			"explanation": "Create a new chat in Telegram and search for \"Botfather\" account, create a new bot with /newbot, then copy the token and insert on this page.",
+			"explanation": "Create a new chat in Telegram and search for \"Botfather\" account, create a new bot with /newbot, then copy the token and insert on this page. The password set here will be asked from bot.",
 			"general": "Telegram settings",
 			"token": "HTTP API Token:",
 			"tokenPlaceholder": "HTTP API Token from Botfather",
