@@ -470,7 +470,7 @@
             "token": "HTTP API Token:",
             "tokenPlaceholder": "HTTP API Token da Botfather",
             "authPassword": "Bot password:",
-            "authPasswordPlaceholder": "per autenticarti sul bot
+            "authPasswordPlaceholder": "per autenticarti sul bot",
             "host": "API Host (opzionale):",
             "proxy": "SOCKS5 Proxy (opzionale):",
             "proxyPlaceholder": "user:password@host:port",
