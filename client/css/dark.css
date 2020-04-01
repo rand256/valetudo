@@ -18,7 +18,7 @@
     color: #DDEEFF !important;
 }
 
-.button, .card, .alert-dialog, .action-sheet-button, .action-sheet-title, .action-sheet-button:last-of-type,
+.button, .card, .alert-dialog, .action-sheet-button, .action-sheet-title, .remove-stored-map, .action-sheet-button:last-of-type,
 ons-action-sheet-button.action-sheet-button.action-sheet-button-half{
     color: #DDEEFF !important;
     background-color: #223344;
