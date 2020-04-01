@@ -170,22 +170,22 @@
 		function sendUpdateRequest() {
 			let url, md5;
 			ons.notification.prompt(i18next.t('settings.info.firmwareUpdateEnterURL',"Please enter URL to firmware pkg file:"),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]})
-			.then((res) => {
+			.then(res => {
 				if (!res) return Promise.reject("cancel");
 				url = res;
 				return ons.notification.prompt(i18next.t('settings.info.firmwareUpdateEnterMD5',"Please enter MD5 hash of the file you just specified:"),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('settings.info.firmwareUpdateSend',"Send!")]});
 			})
-			.then((res) => {
+			.then(res => {
 				if (!res) return Promise.reject("cancel");
 				md5 = res;
 				loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
 				return fn.prequestWithPayload("api/send_update_request", JSON.stringify({url: url, md5: md5}), "PUT");
 			})
-			.then(res => fn.notificationToastOK(i18next.t('settings.info.firmwareUpdateSentOK',"Update request should be sent! Wait for LED indication of update process.")))
 			.then(res => {
 				document.getElementById('info_fw_update').innerText = 'status: waiting...';
 				setTimeout(getUpdateRequestStatus,3e3);
 			})
+			.then(res => fn.notificationToastOK(i18next.t('settings.info.firmwareUpdateSentOK',"Update request should be sent! Wait for LED indication of update process."),6e3))
 			.catch(err => {
 				if (err !== "cancel") fn.notificationToastError(err);
 			})
