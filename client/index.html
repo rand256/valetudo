@@ -157,7 +157,7 @@
 						resolve(res[0]);
 					} else if (res && res[0] === "retry") {
 						if (retry > 10) {
-							reject("operation timed out");
+							reject(i18next.t('common.timedOut',"operation timed out"));
 							return;
 						}
 						setTimeout(() => {

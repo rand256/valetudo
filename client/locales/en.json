@@ -23,7 +23,8 @@
 		"hours_plural": "hours",
 		"months": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 		"days": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-		"unknownState": "returned unknown state: {{state}}"
+		"unknownState": "returned unknown state: {{state}}",
+		"timedOut": "operation timed out"
 	},
 	"navi": {
 		"home": "Home",
@@ -141,7 +142,7 @@
 		"segmentsCantBeMerged": "You can merge only adjacent rooms. Continue anyway?",
 		"confirmSegmentsMerge": "Are you sure you want to try merging rooms \"{{segment1}}\" and \"{{segment2}}\"?",
 		"segmentsMergedOK": "Rooms successfully merged!",
-		"segmentSplitNoLine": "You need to place the cutting line into the room to split it.",
+		"segmentSplitNoLine": "You need to place the cutting line above the room to split it.",
 		"segmentSplitTooMany": "You can't have more rooms, please merge something.",
 		"confirmSegmentSplit": "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place the cutting line several times until you find proper position.",
 		"segmentSplitOK": "Room successfully split!",
@@ -285,7 +286,7 @@
 			"duration": "Duration",
 			"area": "Area",
 			"completed": "Completed",
-			"code": "Code"
+			"code": "Code",
 			"mapTitle": "Cleaning map from {{cleaningDate}}"
 		},
 		"consumables": {
@@ -465,7 +466,7 @@
 			 "appliedOK": "Successfully applied new wifi credentials. After pressing OK the page will refresh. However, you will most likely need to change the URL since the robot will try to connect to the new Wifi."
 		},
 		"telegram": {
-			"explanation": "Create a new chat in Telegram and search for \"Botfather\" account, create a new bot with /newbot, then copy the token and insert on this page. The password set here will be asked from bot.",
+			"explanation": "Create a new chat in Telegram and search for \"Botfather\" account, create a new bot with /newbot, then copy the token and insert on this page. The password set here will be used to auth on the bot.",
 			"general": "Telegram settings",
 			"token": "HTTP API Token:",
 			"tokenPlaceholder": "HTTP API Token from Botfather",

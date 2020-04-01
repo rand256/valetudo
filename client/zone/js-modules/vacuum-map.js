@@ -787,8 +787,8 @@ function updateMapInt(mapData) {
 		if (redrawCanvas) redrawCanvas();
 	}
 
-	function clearZones() {
-		locations = locations.filter(l => !(l instanceof Zone));
+	function clearLocations() {
+		locations = locations.filter(l => l.editable !== true);
 		if (redrawCanvas) redrawCanvas();
 	}
 
@@ -893,7 +893,7 @@ function updateMapInt(mapData) {
 		getParsedMap: getParsedMap,
 		addZone: addZone,
 		addSpot: addSpot,
-		clearZones: clearZones,
+		clearLocations: clearLocations,
 		addVirtualWall: addVirtualWall,
 		addForbiddenZone: addForbiddenZone,
 		promoteCurrentZone: promoteCurrentZone,

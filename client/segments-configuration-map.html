@@ -23,7 +23,7 @@
 			<ons-icon icon="fa-cut"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="segments-configuration-cutting-line" disabled>
-			<ons-icon icon="fa-ellipsis-v"></ons-icon>
+			<ons-icon icon="fa-highlighter"></ons-icon>
 		</ons-fab>
 	</div>
 
@@ -45,6 +45,25 @@
 
 		var parsedMap = map.getParsedMap();
 		autosplitButton.style.display = parsedMap.image && parsedMap.image.segments.count < 2 ? "" : "none";
+
+		function prequestModifiedMap(segments,retry) {
+			retry = retry || 0;
+			return new Promise((resolve,reject) => {
+				setTimeout(() => {
+					fn.prequest("api/poll_map")
+					.then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+					.then(res => {
+						const newParsedMap = map.parseMap(res);
+						if (newParsedMap.image && newParsedMap.image.segments.count !== segments || retry > 5) {
+							resolve(newParsedMap);
+						} else {
+							prequestModifiedMap(segments,retry+1).then(res => resolve(res)).catch(err => reject(err));
+						}
+					})
+					.catch(err => reject(err));
+				},1000);
+			})
+		};
 
 		document.getElementById("segments-configuration-map").addEventListener('segmentSelection', (e) => {
 			let segments = map.getLocations().segments;
@@ -75,13 +94,11 @@
 				}
 				return Promise.reject("cancel");
 			})
-			.then(res => fn.prequest("api/poll_map"))
-			.then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
-			.then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+			.then(res => prequestModifiedMap(map.getParsedMap().image.segments.count))
 			.then(res => {
-				map.updateMap(map.parseMap(res));
-				let parsedMap = map.getParsedMap();
-				autosplitButton.style.display = parsedMap.image && parsedMap.image.segments.count < 2 ? "" : "none";
+				map.clearLocations();
+				map.updateMap(res);
+				autosplitButton.style.display = res.image && res.image.segments.count < 2 ? "" : "none";
 				fn.notificationToastOK(i18next.t('zones.segmentsSplitOK',"Map successfully split into rooms!"));
 			})
 			.catch(err => {
@@ -158,11 +175,10 @@
 				}
 				return Promise.reject("cancel");
 			})
-			.then(res => fn.prequest("api/poll_map"))
-			.then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
-			.then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+			.then(res => prequestModifiedMap(map.getParsedMap().image.segments.count))
 			.then(res => {
-				map.updateMap(map.parseMap(res));
+				map.clearLocations();
+				map.updateMap(res);
 				fn.notificationToastOK(i18next.t('zones.segmentsMergedOK',"Rooms successfully merged!"));
 			})
 			.catch(err => {
@@ -180,13 +196,89 @@
 				return;
 			}
 			if (!map.getLocations().virtualWalls.length) {
-				fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line first to split the room."));
+				fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line above the room to split it."));
 				return;
 			}
-			if (Object.keys(map.getParsedMap().image.segments.center).length > 31) {
-				fn.notificationToastError(i18next.t('zones.segmentSplitTooMany',"You can't have more rooms, please merge something.")); // interesting that native app uses 16 as a limit, but it's 32 in constants. why?
+			if (Object.keys(map.getParsedMap().image.segments.center).length >= 16) {
+				fn.notificationToastError(i18next.t('zones.segmentSplitTooMany',"You can't have more rooms, please merge something."));
 				return;
 			}
+			function formLine(p1, p2) {
+				var a = 0, b = 0, c = 0;
+				if (p1.x == p2.x) {
+					a = 1;
+					b = 0;
+					c = -1 * p1.x;
+				} else {
+					a = (p2.y - p1.y) / (p2.x - p1.x);
+					b = -1;
+					c = p1.y - a * p1.x;
+					if (Math.abs(a) > 1) {
+						a = 1;
+						b = -(p2.x - p1.x) / (p2.y - p1.y);
+						c = -1 * (p1.x + b * p1.y);
+					}
+				}
+				return {A: a, B: b, C: c};
+			}
+			let currentX, currentY, splitPoints = [],
+				shiftedSegmentIdx = segmentIdx << 1,
+				pixels = map.getParsedMap().image.pixels,
+				linePoints = map.getLocations().virtualWalls[0].map(p => Math.floor(p/50)),
+				lineForm = formLine({x: linePoints[0], y: linePoints[1]}, {x: linePoints[2], y: linePoints[3]});
+
+			if (lineForm.B == 0 || Math.abs(lineForm.A) == 1) {
+				let upperY = linePoints[1] >= linePoints[3] ? linePoints[1] : linePoints[3],
+					lowerY = linePoints[1] <= linePoints[3] ? linePoints[1] : linePoints[3];
+				for (let i = 0; i < 1024; i++) {
+					if (upperY - i <= lowerY) break;
+					currentY = upperY - i;
+					currentX = -1 / lineForm.A * Math.floor(lineForm.B * currentY + lineForm.C);
+					if (pixels[Math.floor(currentY) * 1024 + Math.floor(currentX)] === shiftedSegmentIdx) {
+						splitPoints.push(currentX,currentY);
+						break;
+					}
+				}
+				for (let i = 0; i < 1024; i++) {
+					if (lowerY + i >= upperY) break;
+					currentY = lowerY + i;
+					currentX = -1 / lineForm.A * Math.floor(lineForm.B * currentY + lineForm.C);
+					if (pixels[Math.floor(currentY) * 1024 + Math.floor(currentX)] === shiftedSegmentIdx) {
+						splitPoints.push(currentX,currentY);
+						break;
+					}
+				}
+			} else {
+				let upperX = linePoints[0] >= linePoints[2] ? linePoints[0] : linePoints[2],
+					lowerX = linePoints[0] <= linePoints[2] ? linePoints[0] : linePoints[2];
+				for (let i = 0; i < 1024; i++) {
+					if (upperX - i <= lowerX) break;
+					currentX = upperX - i;
+					currentY = Math.floor(lineForm.A * currentX + lineForm.C);
+					if (pixels[Math.floor(currentY) * 1024 + Math.floor(currentX)] === shiftedSegmentIdx) {
+						splitPoints.push(currentX,currentY);
+						break;
+					}
+				}
+				for (let i = 0; i < 1024; i++) {
+					if (lowerX + i >= upperX) break;
+					currentX = lowerX + i,
+					currentY = Math.floor(lineForm.A * currentX + lineForm.C);
+					if (pixels[Math.floor(currentY) * 1024 + Math.floor(currentX)] === shiftedSegmentIdx) {
+						splitPoints.push(currentX,currentY);
+						break;
+					}
+				}
+			}
+			if (splitPoints.length !== 4) {
+				fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line above the room to split it."));
+				return;
+			}
+			map.clearLocations();
+			if (Math.hypot(splitPoints[0]-linePoints[0], splitPoints[1]-linePoints[1]) > Math.hypot(splitPoints[0]-linePoints[2], splitPoints[1]-linePoints[3])) {
+				splitPoints.push(...splitPoints.splice(0,2));
+			}
+			map.addVirtualWall(splitPoints.map(p => p*50), false, true);
 			ons.notification.confirm(i18next.t('zones.confirmSegmentSplit', {defaultValue: "Are you sure you want to try splitting room \"{{segment}}\"? Note: it might be needed to place cutting line differently multiple times until you find proper position.", segment: segmentNames[segmentIdx] || "#" + segmentIdx}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
 			.then(answer => {
 				if (answer === 1) {
@@ -195,11 +287,10 @@
 				}
 				return Promise.reject("cancel");
 			})
-			.then(res => fn.prequest("api/poll_map"))
-			.then(res => new Promise((resolve) => setTimeout(() => resolve(), 2000)))
-			.then(res => fn.prequest("api/map/latest", "GET", "arraybuffer"))
+			.then(res => prequestModifiedMap(map.getParsedMap().image.segments.count))
 			.then(res => {
-				map.updateMap(map.parseMap(res));
+				map.clearLocations();
+				map.updateMap(res);
 				fn.notificationToastOK(i18next.t('zones.segmentSplitOK',"Room successfully split!"));
 			})
 			.catch(err => {

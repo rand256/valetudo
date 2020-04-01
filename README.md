@@ -11,7 +11,7 @@ This is a heavily modified version of [Valetudo by Hypfer](https://github.com/Hy
 
 * Ability to select multiple saved zones at once;
 * Selected zones optionally shown at the map tab to see and edit what's actually going to be cleaned;
-* Configurable virtual walls and forbidden zones, finally! (Gen2 only)
+* Configurable virtual walls and forbidden zones, finally! (requires Gen2)
 * Scheduled zoned cleaning - when you do not need to clean the whole house;
 * Ability to specify the number of iterations to clean the same zone multiple times;
 * Showing device status on the map, and also dynamically switching buttons;
