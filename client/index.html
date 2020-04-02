@@ -252,6 +252,17 @@
 			})
 		})
 		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+		.then(res => {
+			let ploadImg = (name,file) => {
+				return new Promise((resolve,reject) => {
+					window.fn[name] = new Image();
+					window.fn[name].onload = () => resolve();
+					window.fn[name].onerror = () => reject("icon loading failed");
+					window.fn[name].src = 'img/' + file;
+				});
+			}
+			return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
+		})
 		.catch(e => {
 			fn.localize = function() {};
 			console.error('loading interface configuration has failed', e);
