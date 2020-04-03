@@ -48,6 +48,10 @@ button.fab:active, ons-fab.fab:active, ons-speed-dial-item.fab:active {
     background-color: #9a9a9a;
 }
 
+.range--material__input {
+     background-image: linear-gradient(#0076ff,#0076ff);
+}
+
 ons-select option {
     background-color: #9a9a9a;
 }
