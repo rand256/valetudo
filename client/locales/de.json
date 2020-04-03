@@ -23,7 +23,8 @@
 		"hours_plural": "Stunden",
 		"months": ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
 		"days": ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
-		"unknownState": "hat unbekannten Zustand zurückgegeben: {{state}}"
+		"unknownState": "hat unbekannten Zustand zurückgegeben: {{state}}",
+		"timedOut": "Zeitüberschreitung"
 	},
 	"navi": {
 		"home": "Startseite",
@@ -141,7 +142,7 @@
 		"segmentsCantBeMerged": "Es können nur angrenzende Räume zusammengefasst werden. Trotzdem weitermachen?",
 		"confirmSegmentsMerge": "Sind Sie sicher dass die Räume \"{{segment1}}\" und \"{{segment2}}\" zusammengefasst werden sollen?",
 		"segmentsMergedOK": "Räume wurden erfolgreich zusammengefasst.",
-		"segmentSplitNoLine": "Vor der Trennung muss eine Trennlinie gesetzt werden.",
+		"segmentSplitNoLine": "Vor der Trennung muss eine Trennlinie über dem Raum gesetzt werden.",
 		"segmentSplitTooMany": "Hinzufügen weiterer Räume nicht möglich, bitte fassen Sie Räume zusammen",
 		"confirmSegmentSplit": "Sind Sie sicher dass der Raum \"{{segment}}\" getrennt werden soll? Hinweis: Die Trennlinie muss eventuell mehrfach an verschiedenen Positionen gesetzt werden, bis die korrekte Position gefunden wird.",
 		"segmentSplitOK": "Raum erfolgreich getrennt.",
@@ -465,7 +466,7 @@
 			 "appliedOK": "Neue WLAN-Anmeldeinformationen wurden erfolgreich angewandt. Nach dem Drücken auf OK wird die Seite aktualisiert. Sie müssen voraussichtlich die Adresse auf die neue IP des Roboters ändern, da der Roboter versucht, eine Verbindung zum neuen WLAN herzustellen. (ggf. anderer DHCP Bereich, Routereinstellungen prüfen)"
 		},
 		"telegram": {
-			"explanation": "Erstellen Sie einen neuen Chat und suchen Sie nach \"Botfather\".\nErstellen Sie einen neuen Bot mit /newbot.\nNach der Erstellung kopieren Sie den Token und fügen Sie ihn auf der Seite ein. Das hier gesetzte Passwort wird danach vom Bot abgefragt.",
+			"explanation": "Erstellen Sie einen neuen Chat und suchen Sie nach \"Botfather\".\nErstellen Sie einen neuen Bot mit /newbot.\nNach der Erstellung kopieren Sie den Token und fügen Sie ihn auf der Seite ein. Das hier gesetzte Passwort wird zur Authentifizierung des Bots verwendet.",
 			"general": "Telegram-Einstellungen",
 			"token": "HTTP-API-Token:",
 			"tokenPlaceholder": "HTTP-API-Token von Botfather",
