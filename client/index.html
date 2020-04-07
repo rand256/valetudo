@@ -232,8 +232,11 @@
 		.then(res => fn.prequest("api/get_interface_config"))
 		.then(res => {
 			fn.webifSettings = res;
-			if(fn.webifSettings.style === "dark") {
+			if (fn.webifSettings.style === "dark") {
 				document.getElementById('color-theme').setAttribute('href', 'css/dark-onsen-css-components.min.css');
+			}
+			else if (fn.webifSettings.style === "system") {
+				document.getElementById('color-theme').setAttribute('href', 'css/system-onsen-css-components.min.css');
 			}
 			return i18next.use(i18nextXHRBackend).init({
 				interpolation: {
