@@ -1,0 +1,2 @@
+@import url('onsen-css-components.min.css') screen;
+@import url('dark-onsen-css-components.min.css') screen and (prefers-color-scheme: dark);
