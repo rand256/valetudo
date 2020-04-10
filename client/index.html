@@ -2,7 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="css/onsenui.min.css">
-	<link rel="stylesheet" href="css/onsen-css-components.min.css">
+	<link rel="stylesheet" id="color-theme" href="css/onsen-css-components.min.css">
 	<link rel="manifest" href="manifest.json" crossorigin="use-credentials">
 	<script src="js/onsenui.min.js"></script>
 	<script src="js/geometry-polyfill.js"></script>
@@ -148,6 +148,29 @@
 			});
 		};
 
+		window.fn.prequestMap = function(url,payload,retry) {
+			retry = retry || 0;
+			return new Promise((resolve,reject) => {
+				fn.prequestWithPayload(url, payload, "PUT")
+				.then((res) => {
+					if (res && res[0].startsWith("map_slot_")) {
+						resolve(res[0]);
+					} else if (res && res[0] === "retry") {
+						if (retry > 10) {
+							reject(i18next.t('common.timedOut',"operation timed out"));
+							return;
+						}
+						setTimeout(() => {
+							fn.prequestMap(url,payload,retry+1).then(res => resolve(res)).catch(err => reject(err));
+						},500);
+					} else {
+						reject(i18next.t('common.unknownState',{defaultValue: "returned unknown state: {{state}}", state: res}));
+					}
+				})
+				.catch(err => reject(err));
+			})
+		};
+
 		window.fn.secondsToHms = function (d) {
 			d = Number(d);
 
@@ -209,8 +232,11 @@
 		.then(res => fn.prequest("api/get_interface_config"))
 		.then(res => {
 			fn.webifSettings = res;
-			if(fn.webifSettings.style !== "" && fn.webifSettings.style !== undefined) {
-				document.head.insertAdjacentHTML('beforeend','<link rel="stylesheet" type="text/css" href="css/' + fn.webifSettings.style + '.css">');
+			if (fn.webifSettings.style === "dark") {
+				document.getElementById('color-theme').setAttribute('href', 'css/dark-onsen-css-components.min.css');
+			}
+			else if (fn.webifSettings.style === "system") {
+				document.getElementById('color-theme').setAttribute('href', 'css/system-onsen-css-components.min.css');
 			}
 			return i18next.use(i18nextXHRBackend).init({
 				interpolation: {
@@ -229,6 +255,17 @@
 			})
 		})
 		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+		.then(res => {
+			let ploadImg = (name,file) => {
+				return new Promise((resolve,reject) => {
+					window.fn[name] = new Image();
+					window.fn[name].onload = () => resolve();
+					window.fn[name].onerror = () => reject("icon loading failed");
+					window.fn[name].src = 'img/' + file;
+				});
+			}
+			return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
+		})
 		.catch(e => {
 			fn.localize = function() {};
 			console.error('loading interface configuration has failed', e);

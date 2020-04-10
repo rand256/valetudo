@@ -42,6 +42,7 @@ export class Zone {
 		this.buttonSize = this.buttonSizeInitial = 12;
 
 		this.active = true;
+		this.editable = true;
 		this.isResizing = false;
 
 		this.x1 = Math.min(x1, x2);

@@ -83,7 +83,7 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 					height: buf.readInt32LE(0x10 + g3offset + offset),
 					width: buf.readInt32LE(0x14 + g3offset + offset)
 				},
-				pixels: []
+				pixels: {}
 			};
 
 			// position.left has to be position right for supporting the flipped map
@@ -91,7 +91,6 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 
 			//There can only be pixels if there is an image
 			if(parameters.dimensions.height > 0 && parameters.dimensions.width > 0) {
-				parameters.pixels = {};
 				for (let x, y, v, s, k, m, n, i = 0; i < length; i++) {
 					x = (i % parameters.dimensions.width) + parameters.position.left;
 					y = (parameters.dimensions.height - 1 - Math.floor(i / parameters.dimensions.width)) + parameters.position.top;

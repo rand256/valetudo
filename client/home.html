@@ -347,7 +347,7 @@
 						pushView(1,'map.html');
 						document.getElementById('appTabbar').setActiveTab(1,{callback: function() {
 							updateMapPage(true).then(function(map) {
-								map.clearZones();
+								map.clearLocations();
 								payload.forEach(function(zone) {
 									map.addZone(zone, true);
 								});
