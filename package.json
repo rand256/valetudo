@@ -1,6 +1,6 @@
 {
 	"name": "valetudo-re",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"description": "Self-contained control webinterface for xiaomi vacuum robots",
 	"main": "index.js",
 	"bin": "index.js",
@@ -24,11 +24,11 @@
 		"express-dynamic-middleware": "^1.0.0",
 		"mqtt": "^3.0.0",
 		"multer": "^1.4.2",
+		"pngjs": "^4.0.0",
 		"prettycron": "^0.10.0",
 		"slimbot": "^4.4.0",
 		"socks5-client": "^1.2.8",
-		"pngjs": "^3.4.0",
-		"ws": "^7.1.2"
+		"ws": "^7.2.3"
 	},
 	"devDependencies": {
 		"pkg": "4.4.0"
