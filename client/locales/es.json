@@ -23,6 +23,8 @@
         "hours_plural": "horas",
         "months": ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
         "days": ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
+		"unknownState": "estado desconocido: {{state}}",
+		"timedOut": "tiempo excedido para la operación"
     },
     "navi": {
         "home": "Inicio",
@@ -285,7 +287,6 @@
             "area": "Área",
             "completed": "Completada",
             "code": "Código",
-            "unknownState": "clean_record_map regresa un estado desconocido: {{state}}",
             "mapTitle": "Mapa de limpieza del {{cleaningDate}}"
         },
         "consumables": {
