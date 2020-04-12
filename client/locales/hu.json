@@ -24,7 +24,7 @@
         "months": ["Jan","Feb","Már","Ápr","Máj","Jún","Júl","Aug","Szept","Okt","Nov","Dec"],
         "days": ["Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat","Vasárnap"],
         "unknownState": "Ismeretlen állapot: {{state}}",
-		"timedOut": "A parancs végrehajtása közben időtúllépés történt!"
+        "timedOut": "A parancs végrehajtása közben időtúllépés történt!"
     },
     "navi": {
         "home": "Kezdőoldal",
