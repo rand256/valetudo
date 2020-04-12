@@ -21,7 +21,7 @@
         "m2": "m²",
         "hours": "Ora",
         "hours_plural": "Ore",
-        "months": ["Jan","Feb","Már","Ápr","Máj","Jún","Júl","Aug","Szept","Okt","Nov","Dec"],
+        "months": ["Jan","Feb","Már","Apr","Máj","Jún","Júl","Aug","Szept","Okt","Nov","Dec"],
         "days": ["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"],
         "unknownState": "Condizione sconosciuta: {{state}}"		
     },
@@ -309,7 +309,7 @@
             "firmwareUpdateLink": "[send request]",
             "currentToken": "Token",
             "token": "Token:",
-            "appLocale": "App Lokalizáció",
+            "appLocale": "Localizzazione app",
             "appLocaleName": "Nome:",
             "appLocaleBom": "Bom:",
             "appLocaleLocation": "Posizione:",
@@ -470,7 +470,7 @@
             "token": "HTTP API Token:",
             "tokenPlaceholder": "HTTP API Token da Botfather",
             "authPassword": "Bot password:",
-            "authPasswordPlaceholder": "per autenticarti sul bot
+            "authPasswordPlaceholder": "per autenticarti sul bot"
             "host": "API Host (opzionale):",
             "proxy": "SOCKS5 Proxy (opzionale):",
             "proxyPlaceholder": "user:password@host:port",
