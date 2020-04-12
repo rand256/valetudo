@@ -14,7 +14,7 @@
 			<ons-icon icon="fa-angle-double-up"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="zones-configuration-iterations" style="display: none;">
-			<span style="font-weight: 700; font-family: monospace;">&#x00D7;k</span>
+			<span style="font-weight: 700; font-family: monospace;">&#x00D7;<span id="zones_iterations_number">1</span></span>
 		</ons-fab>
 		<ons-fab ripple id="zones-configuration-add-zone">
 			<ons-icon icon="fa-plus"></ons-icon>
@@ -50,10 +50,11 @@
 			}
 		}
 		document.getElementById("zones-configuration-iterations").onclick = () => {
-			 map.addIterationsToZone();
+			map.addIterationsToZone();
+			document.getElementById('zones_iterations_number').textContent = map.getZoneIterations();
 		}
 		document.getElementById("zones-configuration-promote").onclick = () => {
-			 map.promoteCurrentZone();
+			map.promoteCurrentZone();
 		}
 		document.getElementById("zone-configuration-map").addEventListener('zoneSelection', (e) => {
 			document.getElementById("zones-configuration-promote").style.display = e.detail.nf ? "" : "none";
