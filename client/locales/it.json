@@ -21,8 +21,8 @@
 		"m2": "m²",
 		"hours": "Ora",
 		"hours_plural": "Ore",
-		"months": ["Jan","Feb","Már","Ápr","Máj","Jún","Júl","Aug","Szept","Okt","Nov","Dec"],
-		"days": ["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"],
+		"months": ["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"],
+		"days": ["Lun","Mart","Merc","Giov","Ven","Sab","Dom"],
 		"unknownState": "Condizione sconosciuta: {{state}}"
 	},
 	"navi": {
@@ -309,7 +309,7 @@
 			"firmwareUpdateLink": "[send request]",
 			"currentToken": "Token",
 			"token": "Token:",
-			"appLocale": "App Lokalizáció",
+			"appLocale": "Localizzazione App",
 			"appLocaleName": "Nome:",
 			"appLocaleBom": "Bom:",
 			"appLocaleLocation": "Posizione:",
