@@ -22,7 +22,9 @@
         "hours": "óra",
         "hours_plural": "óra",
         "months": ["Jan","Feb","Már","Ápr","Máj","Jún","Júl","Aug","Szept","Okt","Nov","Dec"],
-        "days": ["Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat","Vasárnap"]
+        "days": ["Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat","Vasárnap"],
+        "unknownState": "Ismeretlen állapot: {{state}}",
+		"timedOut": "A parancs végrehajtása közben időtúllépés történt!"
     },
     "navi": {
         "home": "Kezdőoldal",
@@ -285,7 +287,6 @@
             "area": "Terület",
             "completed": "Befejeződött",
             "code": "Kód",
-            "unknownState": "clean_record_map ismeretlen állapot: {{state}}",
             "mapTitle": "Takarítási térkép ekkor: {{cleaningDate}}"
         },
         "consumables": {
