@@ -16,7 +16,7 @@ This is a heavily modified version of [Valetudo by Hypfer](https://github.com/Hy
 * Ability to specify the number of iterations to clean the same zone multiple times;
 * Showing device status on the map, and also dynamically switching buttons;
 * Experimental ability to save/restore maps;
-* Multilanguage support, currently available in bg/de/en/es/fi/fr/hu/it/nl/ru;
+* Multilanguage support, currently available in bg/de/en/es/fi/fr/hu/it/nl/ru/pl;
 * A telegram bot software for controlling the vacuum from the outside world;
 * Full support of room cleaning (requires Gen2 with firmware 2008+).
 
