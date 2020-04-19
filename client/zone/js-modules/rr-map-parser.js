@@ -83,6 +83,12 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 					height: buf.readInt32LE(0x10 + g3offset + offset),
 					width: buf.readInt32LE(0x14 + g3offset + offset)
 				},
+				box: {
+					minX: Infinity,
+					minY: Infinity,
+					maxX: -Infinity,
+					maxY: -Infinity
+				},
 				pixels: {}
 			};
 
@@ -133,6 +139,10 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 							break;
 					}
 					if (v < 0) continue;
+					if (parameters.box.minX > x) parameters.box.minX = x;
+					if (parameters.box.maxX < x) parameters.box.maxX = x;
+					if (parameters.box.minY > y) parameters.box.minY = y;
+					if (parameters.box.maxY < y) parameters.box.maxY = y;
 					parameters.pixels[k] = v;
 				}
 			}

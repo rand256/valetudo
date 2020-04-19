@@ -222,7 +222,7 @@ export function VacuumMap(canvasElement) {
 	/**
 	 * Private function to update the displayed mapdata periodically.
 	 */
-function updateMapInt(mapData) {
+	function updateMapInt(mapData) {
 		mapDrawer.draw(parsedMap.image);
 		if (options.noPath) {
 			pathDrawer.setPath({},{});
@@ -301,20 +301,19 @@ function updateMapInt(mapData) {
 			redraw();
 		});
 
-		const boundingBox = {
-			minX: parsedMap.image.position.left,
-			minY: parsedMap.image.position.top,
-			maxX: parsedMap.image.position.left + parsedMap.image.dimensions.width,
-			maxY: parsedMap.image.position.top + parsedMap.image.dimensions.height
-		}
+		const boundingBox = parsedMap.image.box;
 		const initialScalingFactor = Math.max(Math.min(Math.min(
-			canvas.width / (boundingBox.maxX - boundingBox.minX),
-			canvas.height / (boundingBox.maxY - boundingBox.minY)
+			canvas.width / (boundingBox.maxX - boundingBox.minX + 50),
+			canvas.height / (boundingBox.maxY - boundingBox.minY + 50)
 		),6.5),0.7);
-		currentScale = initialScalingFactor;
+		const sst = fetchScaleTranslate();
 
-		ctx.scale(initialScalingFactor, initialScalingFactor);
-		ctx.translate(-boundingBox.minX, -boundingBox.minY);
+		currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
+		ctx.scale(currentScale, currentScale);
+		ctx.translate(
+			(sst.x < boundingBox.maxX - 50 && sst.x > boundingBox.minX + 50 - canvas.width/currentScale) ? -sst.x : -boundingBox.minX + 25,
+			(sst.y < boundingBox.maxY - 50 && sst.y > boundingBox.minY + 50 - canvas.height/currentScale) ? -sst.y : -boundingBox.minY + 25
+		);
 
 		function clearContext(ctx) {
 			ctx.save();
@@ -444,10 +443,21 @@ function updateMapInt(mapData) {
 		}
 		redrawCanvas = redraw;
 
-		pathDrawer.scale(initialScalingFactor, {noDraw: true});
-		scaleIcons(initialScalingFactor);
+		pathDrawer.scale(currentScale, {noDraw: true});
+		scaleIcons(currentScale);
 
 		updateMapInt();
+
+		function storeScaleTranslate() {
+			const { x, y } = ctx.transformedPoint(0,0);
+			localStorage.setItem('scaleTranslate', JSON.stringify({x: x, y: y, z: currentScale}));
+		}
+
+		function fetchScaleTranslate() {
+			try {
+				return JSON.parse(localStorage.getItem('scaleTranslate')) || {};
+			} catch (e) { return {}; }
+		}
 
 		let lastX = canvas.width / 2, lastY = canvas.height / 2,
 			dragStart;
@@ -502,6 +512,7 @@ function updateMapInt(mapData) {
 		function endTranslate(evt) {
 			dragStart = null;
 			locations.forEach(location => location.isResizing && (location.isResizing = false));
+			storeScaleTranslate();
 			redraw();
 		}
 
@@ -657,7 +668,7 @@ function updateMapInt(mapData) {
 				pathDrawer.scale(scaleX);
 				scaleIcons(scaleX);
 				currentScale = scaleX;
-
+				storeScaleTranslate();
 				redraw();
 			}
 			return evt.preventDefault() && false;
