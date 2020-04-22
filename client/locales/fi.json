@@ -22,9 +22,9 @@
         "hours": "tunti",
         "hours_plural": "tuntia",
         "months": [".1.",".2.",".3.",".4.",".5.",".6.",".7.",".8.",".9.",".10.",".11.",".12."],
-        "days": ["Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai","Sunnuntai"]  
+        "days": ["maanantai","tiistai","keskiviikko","torstai","perjantai","lauantai","sunnuntai"]  
         "unknownState": "palautti tuntemattoman tilan: {{state}}",
-   		"timedOut": "toiminto aikakatkaistiin"
+        "timedOut": "toiminto aikakatkaistiin"
     },
     "navi": {
         "home": "Koti",
@@ -96,7 +96,7 @@
         "confirmFullCleaning": "Aluesiivouksen käynnistäminen ei onnistu, koska aluetta ei ole määritetty. Haluatko suorittaa täyden imuroinnin sen sijaan?",
         "cannotResume": "Jatkaminen ei ole mahdollista!",
         "noGotoTarget": "Sinun on valittava paikka mennä.",
-        "tooManyZones": "Et voi lisätä enempää kuin 5 aluetta karttaan."
+        "tooManyZones": "Voit lisätä korkeintaan 5 aluetta karttaan."
     },
     "zones": {
         "headerZones": "Määritellyt alueet",
@@ -393,11 +393,11 @@
             "segments": "Huoneet:",
             "addSegments": "Lisää...",
             "timerDesc": "Valitse ajastimen asetukset.",
-            "timerZoneDesc": "Valitse ajastimen nimi ja koordinaatit.",
-            "timerTimeDesc": "Valitse aika, jolloin siivous alkaa.",
+            "timerZoneDesc": "Valitse ajastimen nimi ja siivottavat alueet.",
+            "timerTimeDesc": "Valitse siivouksen ajankohta.",
             "timerEmptyTimeNote": "Tyhjä tarkoittaa milloin tahansa.",
             "timerDaysDesc": "Valitse päivät, jolloin siivotaan.",
-            "timerEmptyDayNote": "Tyhjä tarkoittaa minä päivänä tahansa.",
+            "timerEmptyDayNote": "Tyhjä tarkoittaa minä viikonpäivänä tahansa.",
             "runOnce": "Aja kerran ja poista",
             "currentTimezone": "Aikavyöhykkeesi on:",
             "zonedCleaningHeader": "Aluesiivouksen aikataulut (beta)",
@@ -418,9 +418,9 @@
             "confirmDisableDND": "Haluatko varmasti poistaa älä häiritse -ajoituksen?",
             "tooManyZones": "Et voi käyttää yli 5 aluetta yhdessä aluesiivouksessa.",
             "notEnoughDataDND": "Älä häiritse ajastimen tallennus ei onnistunut, koska kaikkia tarvittavia tietoja ei ole annettu!",
-            "missingHoursMinutes": "Sekä tunnit että minuutit tulee määritellä.",
-            "missingName": "Nimi on määriteltävä.",
-            "missingZones": "Yksi tai enemmän ei-tyhjää aluetta tulee määritellä.",
+            "missingHoursMinutes": "Määritä aloituskellonaika (tunnit ja minuutit).",
+            "missingName": "Ajastimen nimi on määriteltävä.",
+            "missingZones": "Sinun tulee valita vähintään yksi siivottava alue.",
             "missingTimer": "Kyseistä ajastinta ei ole olemassa.",
             "missingSegment": "Huoneita ei löydy nykyisestä kartasta!"
         },
