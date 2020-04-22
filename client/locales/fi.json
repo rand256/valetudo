@@ -54,7 +54,7 @@
             "storeMap": "Tallenna kartta",
             "loadMap": "Lataa kartta",
             "unknownPower": "Tuntematon teho",
-            "invalid": "Tuntematon nappi"
+            "invalid": "Virheellinen painike"
         },
         "popups": {
             "selectFanspeed": "Valitse imurin teho:",
@@ -71,12 +71,12 @@
             "slotNo": "Kohta #",
             "confirmMapDelete": "Haluatko varmasti poistaa kartan \"{{name}}\"?",
             "wait": "Odota",
-            "waitMapTicks": "Kartan korvausrutiini käynnissä. Ole hyvä ja odota {{seconds}}...",
+            "waitMapTicks": "Kartan korvausrutiini käynnissä. Ole hyvä ja odota {{seconds}} sekuntia...",
             "waitMapFinished": "Valmis",
             "waitMapEncourage": "Pyydetyt rutiinit ovat nyt valmiina.",
-            "mapStoredOK": "Kartta tallennettu onnistuneesti!",
-            "mapDeletedOK": "Tallennettu kartta on poistettu onnistuneesti!",
-            "mapRestoredOK": "Kartta palautettu onnistuneesti!"
+            "mapStoredOK": "Kartan tallennus onnistui!",
+            "mapDeletedOK": "Tallennettu kartta on poistaminen onnistui!",
+            "mapRestoredOK": "Kartan palautus onnistui!"
         },
         "fanspeedPresets": {
             "whisper": "Kuiskaus",
