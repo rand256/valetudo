@@ -22,7 +22,7 @@
         "hours": "tunti",
         "hours_plural": "tuntia",
         "months": [".1.",".2.",".3.",".4.",".5.",".6.",".7.",".8.",".9.",".10.",".11.",".12."],
-        "days": ["maanantai","tiistai","keskiviikko","torstai","perjantai","lauantai","sunnuntai"]  
+        "days": ["maanantai","tiistai","keskiviikko","torstai","perjantai","lauantai","sunnuntai"],
         "unknownState": "palautti tuntemattoman tilan: {{state}}",
         "timedOut": "toiminto aikakatkaistiin"
     },
@@ -401,9 +401,9 @@
             "runOnce": "Aja kerran ja poista",
             "currentTimezone": "Aikavyöhykkeesi on:",
             "zonedCleaningHeader": "Aluesiivouksen aikataulut (beta)",
-            "noZonedCleaningSchedule": "Yhtään ajoitettua aluesiivousta ei ole määritelty.",
+            "noZonedCleaningSchedule": "Yhtään ajastettua aluesiivousta ei ole määritelty.",
             "cleaningHeader": "Siivousaikataulut",
-            "noCleaningSchedule": "Yhtään ajoitettua siivousta ei ole määritelty.",
+            "noCleaningSchedule": "Yhtään ajastettua siivousta ei ole määritelty.",
             "DNDHeader": "\"Älä häiritse\" -ajastin",
             "chooseZone": "Valitse alue:",
             "zoneCount": "{{count}} alue",
