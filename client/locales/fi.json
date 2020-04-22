@@ -6,7 +6,7 @@
         "overwrite": "Ylikirjoita",
         "continue": "Jatka",
         "dismiss": "Hylkää",
-        "prompt": "Prompt",
+        "prompt": "Kehote",
         "warning": "Varoitus",
         "attention": "Huomio!",
         "confirm": "Vahvista",
@@ -20,9 +20,11 @@
         "nameAlreadyUsed": "Nimi \"{{name}}\" on jo käytössä",
         "m2": "m²",
         "hours": "tunti",
-        "hours_plural": "tunnit",
-        "months": ["Tam","Hel","Maa","Huh","Tou","Kes","Hei","Elo","Syy","Lok","Mar","Jou"],
-        "days": ["Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai","Sunnuntai"]
+        "hours_plural": "tuntia",
+        "months": [".1.",".2.",".3.",".4.",".5.",".6.",".7.",".8.",".9.",".10.",".11.",".12."],
+        "days": ["Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai","Sunnuntai"]  
+        "unknownState": "palautti tuntemattoman tilan: {{state}}",
+   		"timedOut": "toiminto aikakatkaistiin"
     },
     "navi": {
         "home": "Koti",
@@ -246,7 +248,7 @@
         "soundAndVoiceTitle": "Äänet",
         "soundAndVoiceDesc": "Muuta imurin ääntä ja äänenvoimakkuutta",
         "webInterfaceTitle": "Käyttöliittymä",
-        "webInterfaceDesc": "Muuta käyttöliittymän parametrejä",
+        "webInterfaceDesc": "Muuta käyttöliittymän asetuksia",
         "accessControlTitle": "Pääsyn hallinta",
         "accessControlDesc": "Määrittele SSH-avaimet ja HTTP-autentikaatio",
         "telegramTitle": "Telegram-botti",
@@ -277,7 +279,7 @@
             "confirm": "Haluatko varmasti tallentaa mattotilan asetukset?"
         },
         "cleaningHistory": {
-            "header": "Viimeiset siivouskerrats",
+            "header": "Viimeiset siivouskerrat",
             "loadMore": "Näytä enemmän...",
             "showMap": "Näytä siivouskartta",
             "historyRecord": "#{{id}} käynnistetty {{startDate}}",
@@ -285,7 +287,6 @@
             "area": "Alue",
             "completed": "Valmistunut",
             "code": "Koodi",
-            "unknownState": "clean_record_map palautti tuntemattoman tilan: {{state}}",
             "mapTitle": "Siivouskartta ajalta {{cleaningDate}}"
         },
         "consumables": {
@@ -429,7 +430,7 @@
             "localizationExt": "vaihtaa käyttöliittymän käännöksen.",
             "homeTab": "Koti-välilehti",
             "zonedImmediate": "Imuroi alueet välittömästi",
-            "zonedImmediateExt": "kartta välilehteen siirtymisen sijaan",
+            "zonedImmediateExt": "kartta-välilehteen siirtymisen sijaan",
             "style": "Teema",
             "styleExt": "muuttaa web-käyttöliittymän väriteeman",
             "gotoImmediate": "Mene spottiin välittömästi",
@@ -438,13 +439,13 @@
             "multimapButtonsExt": "mahdollistaa karttojen tallentamisen ja palauttamisen (kokeellinen)",
             "mapTab": "Kartta-välilehti",
             "hideMapStatus": "Älä näytä tilaa kartassa",
-            "hideMapStatusExt": "Piilottaa tilatekstipalkin",
+            "hideMapStatusExt": "piilottaa tilatekstipalkin",
             "hideSegmentMarkers": "Älä näytä huonemerkkejä",
-            "hideSegmentMarkersExt": "Piilottaa huonevalintamerkit kartalla",
+            "hideSegmentMarkersExt": "piilottaa huonevalintamerkit kartalla",
             "disableMapReload": "Poista kartan uudelleenlatauksen painike käytöstä",
             "disableMapReloadExt": "piilottaa pakotetun uudelleenlatauksen painikkeen kartassa",
             "disableDynamicButtons": "Poista dynaamiset painikkeet käytöstä",
-            "disableDynamicButtonsExt": "Näytä ainoastaan kartan peruspainikkeet",
+            "disableDynamicButtonsExt": "näyttää ainoastaan kartan peruspainikkeet",
             "applyChangesConfirm": "Haluatko ottaa muutokset käyttöön nyt?",
             "enableMultimapConfirm": "Tämä ominaisuus ei ole osa Roborockin toiminnallisuutta, vaan se koostuu useista sen ympärille rakennetuista viritelmistä. Se voi toimia hyvin, mutta se voi myös aiheuttaa tehdasasetusten palautuksen jonkin mennessä pieleen. Haluatko varmasti jatkaa?"
         },
@@ -537,7 +538,7 @@
             "n21": "Etäisyyslaserin yläosa on jumissa",
             "n22": "Etupuskurin sensori likainen",
             "n23": "Telakan signaalinlähetysalue on likainen",
-            "n24": "Kielletty alue havaittu, evakuoi robotti sallittuun paikkaan"
+            "n24": "Kielletty alue havaittu, vie robotti sallittuun paikkaan"
         }
     }
 }
