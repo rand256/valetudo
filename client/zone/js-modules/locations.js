@@ -6,6 +6,9 @@
  * and can define hooks for user-interaction such as tapping or panning.
  */
 
+const initialButtonSize = 10;
+const maxButtonSizeMultiplier = 3;
+
 /**
  * Represents a point the robot can be sent to.
  */
@@ -39,7 +42,7 @@ export class GotoPoint  {
 export class Zone {
 
 	constructor(x1 ,y1, x2, y2, iterations) {
-		this.buttonSize = this.buttonSizeInitial = 12;
+		this.buttonSize = initialButtonSize;
 
 		this.active = true;
 		this.editable = true;
@@ -55,7 +58,7 @@ export class Zone {
 	}
 
 	draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
-		this.buttonSize = this.buttonSizeInitial * scaleFactor;
+		this.buttonSize = initialButtonSize * Math.min(scaleFactor,maxButtonSizeMultiplier);
 		const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
 		const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
 
@@ -295,7 +298,7 @@ export class VirtualWall  {
 		if (editable) {
 			this.active = true;
 			this.isResizing = false;
-			this.buttonSize = this.buttonSizeInitial = 10;
+			this.buttonSize = initialButtonSize
 		} else {
 			this.active = false;
 		}
@@ -332,7 +335,7 @@ export class VirtualWall  {
 		ctx.restore();
 
 		if (this.active) {
-			this.buttonSize = this.buttonSizeInitial * scaleFactor;
+			this.buttonSize = initialButtonSize * Math.min(scaleFactor,maxButtonSizeMultiplier);
 			ctx.lineWidth = 2;
 			ctx.beginPath();
 			ctx.arc(p1.x, p1.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
@@ -518,7 +521,7 @@ export class ForbiddenZone  {
 		if (editable) {
 			this.active = true;
 			this.isResizing = false;
-			this.buttonSize = this.buttonSizeInitial = 12;
+			this.buttonSize = initialButtonSize;
 		} else {
 			this.active = false;
 		}
@@ -535,7 +538,7 @@ export class ForbiddenZone  {
 	}
 
 	draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
-		this.buttonSize = this.buttonSizeInitial * scaleFactor;
+		this.buttonSize = initialButtonSize * Math.min(scaleFactor,maxButtonSizeMultiplier);
 		const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
 		const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
 		const p3 = new DOMPoint(this.x3, this.y3).matrixTransform(transformMapToScreenSpace);
