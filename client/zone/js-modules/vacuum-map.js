@@ -348,23 +348,23 @@ export function VacuumMap(canvasElement) {
 		function drawRobot(ctx, transformMapToScreenSpace) {
 			function rotateRobot(img, angle) {
 				var canvasimg = document.createElement("canvas");
-				canvasimg.width = img.width;
-				canvasimg.height = img.height;
+				canvasimg.width = img.width + 4;
+				canvasimg.height = img.height + 4
 				var ctximg = canvasimg.getContext('2d');
 				ctximg.imageSmoothingQuality = 'high';
 				const offset = 90;
-				ctximg.clearRect(0, 0, img.width, img.height);
-				ctximg.translate(img.width / 2, img.width / 2);
+				ctximg.clearRect(0, 0, canvasimg.width, canvasimg.height);
+				ctximg.translate(canvasimg.width / 2, canvasimg.height / 2);
 				ctximg.rotate((angle + offset) * Math.PI / 180);
-				ctximg.translate(-img.width / 2, -img.width / 2);
-				ctximg.drawImage(img, 0, 0);
+				ctximg.drawImage(img, -img.width / 2, -img.height / 2);
 				return canvasimg;
 			}
 			const robotPositionInPixels = new DOMPoint(robotPosition[0] / 50, robotPosition[1] / 50).matrixTransform(transformMapToScreenSpace);
+			const robotIcon = robotAngle ? rotateRobot(img_rocky_scaled, robotAngle) : img_rocky_scaled;
 			ctx.drawImage(
-				robotAngle ? rotateRobot(img_rocky_scaled, robotAngle) : img_rocky_scaled,
-				robotPositionInPixels.x - img_rocky_scaled.width / 2, // x
-				robotPositionInPixels.y - img_rocky_scaled.height / 2, // y
+				robotIcon,
+				robotPositionInPixels.x - robotIcon.width / 2,
+				robotPositionInPixels.y - robotIcon.height / 2,
 			);
 		}
 
