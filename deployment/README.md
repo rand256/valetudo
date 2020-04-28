@@ -1,3 +1,13 @@
+### Conformance notice
+
+The instuctions below are suitable for devices with firmware based on full-featured
+Ubuntu 14.04 distribution. As of 20.04.2020 any firmware fits this term except
+for 3.5.7_002008 version for Gen2 devices.
+
+To initially install valetudo into 2008 firmware, users would have to create a special
+version of firmware image using [rand256](https://github.com/rand256/vacuum)'s or [zvldz](https://github.com/zvldz/vacuum)'s image builder.
+For further updating valetudo on that firmware, continue to the [wiki page](https://github.com/rand256/valetudo/wiki/Updating-valetudo-binary-on-2008-firmware).
+
 ### Downloading pre-built Valetudo
 
 You can simply download pre-built binaries of Valetudo from the
@@ -61,6 +71,7 @@ To install scp `*.deb`s to the vacuum and run `dpkg -i file.deb`.
 
 Another way to deal with this issue is to manually rebuild `pkg` binaries to link
 libstd++ statically. This is the way how prebuilt Valetudo binary was created here.
+Some ready to use patched node.js binaries are available in this repository [Releases section](https://github.com/rand256/valetudo/releases).
 
 ### Installing and configuring
 
