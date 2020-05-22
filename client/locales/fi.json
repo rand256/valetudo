@@ -279,7 +279,7 @@
 			"confirm": "Haluatko varmasti tallentaa mattotilan asetukset?"
 		},
 		"cleaningHistory": {
-			"header": "Viimeiset siivouskerrats",
+			"header": "Viimeiset siivouskerrat",
 			"loadMore": "Näytä lisää...",
 			"showMap": "Näytä siivouskartta",
 			"historyRecord": "#{{id}} käynnistetty {{startDate}}",
