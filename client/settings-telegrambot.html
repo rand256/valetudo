@@ -135,7 +135,7 @@
 
 		function getSettingsTelegramPage() {
 			loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/get_telegram_config")
+			fn.prequest("api/telegram_config")
 			.then((res) => {
 				settingsTelegramEnabled.checked = res.enabled;
 				settingsTelegramToken.value = res.token || '';
@@ -200,7 +200,7 @@
 
 		function getTelegramStatus() {
 			loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/get_telegram_status").then(
+			fn.prequest("api/telegram_status").then(
 				(res) => {
 					if (/[^0-9]/.test(res.running)) {
 						settingsTelegramStatus.textContent = i18next.t('settings.telegram.connectedAs',{defaultValue: "Telegrambot connected as {{botname}}", botname: res.running});
@@ -258,7 +258,7 @@
 
 		function setSettingsTelegramPage() {
 			loadingBarSettingsTelegram.setAttribute("indeterminate", "indeterminate");
-			fn.prequestWithPayload("api/set_telegram_config", JSON.stringify({
+			fn.prequestWithPayload("api/telegram_config", JSON.stringify({
 				"enabled": settingsTelegramEnabled.checked,
 				"token": settingsTelegramToken.value.trim() || '',
 				"password": settingsTelegramPassword.value.trim() || '',

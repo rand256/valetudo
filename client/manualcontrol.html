@@ -31,6 +31,8 @@
 		var endManualControlButton = document.getElementById("stop-manual-control-button");
 		var manualControlLoadingBar = document.getElementById('loading-bar-manualcontrol');
 
+		var cX, cY, manualControlCanvasContext, manualControlCanvas = document.getElementById("manual-control-area");
+
 		//API / Manual Control Handling
 		function manualMoveRobot(angle, velocity) {
 			manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");
@@ -142,20 +144,22 @@
 			}
 		}
 
-		//Canvas orga
-		manualControlCanvas = document.getElementById("manual-control-area");
-		//apply shown dimensions to canvas - required because of percentual css dimension
-		manualControlCanvas.setAttribute("width", manualControlCanvas.clientWidth);
-		manualControlCanvas.setAttribute("height", manualControlCanvas.clientHeight);
+		function resizer() {
+			//apply shown dimensions to canvas - required because of percentual css dimension
+			manualControlCanvas.setAttribute("width", manualControlCanvas.clientWidth);
+			manualControlCanvas.setAttribute("height", manualControlCanvas.clientHeight);
 
-		var manualControlCanvasContext= manualControlCanvas.getContext("2d");
-		var cX = manualControlCanvas.width / 2;
-		var cY = manualControlCanvas.height / 2;
+			manualControlCanvasContext = manualControlCanvas.getContext("2d");
+			cX = manualControlCanvas.width / 2;
+			cY = manualControlCanvas.height / 2;
 
-		manualControlCanvasContext.moveTo(cX, cY);
-		manualControlCanvasContext.fillStyle = "#ff0044";
-		manualControlCanvasContext.arc(cX, cY, 5, 0, 360, false);
-		manualControlCanvasContext.fill();
+			manualControlCanvasContext.moveTo(cX, cY);
+			manualControlCanvasContext.fillStyle = "#ff0044";
+			manualControlCanvasContext.arc(cX, cY, 5, 0, 360, false);
+			manualControlCanvasContext.fill();
+		}
+		resizer();
+		window.addEventListener('resize',resizer);
 
 		function drawValuesToCanvas () {
 			//delete old values / draw background

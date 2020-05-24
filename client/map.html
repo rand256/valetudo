@@ -224,7 +224,7 @@
 				document.getElementById("resume_cleaning").style.display = 'none';
 			}
 			// stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
-			if ([0,3,6,8,9,10,11,14,15,16].includes(res.state)) { 
+			if ([0,3,6,8,9,11,14,15,16].includes(res.state) || (res.state === 10 && !res.in_cleaning)) { 
 				document.getElementById("stop_cleaning").style.display = 'none';
 			} else {
 				document.getElementById("stop_cleaning").style.display = '';

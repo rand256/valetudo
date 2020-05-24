@@ -41,7 +41,7 @@
 
 
 	<script>
-		var currentRefreshTimer, refreshInProgress = false, refreshDisabled = true;
+		var currentRefreshTimer, refreshInProgress = false;
 
 		var startButton = document.getElementById("start-button"),
 			pauseButton = document.getElementById("pause-button"),
@@ -478,15 +478,15 @@
 						adc = document.querySelector('.load-map-waiting .alert-dialog-content'),
 						adt = document.querySelector('.load-map-waiting .alert-dialog-title'),
 						adi = setInterval(() => {
-						   let seconds = +(adc.textContent.match(/(\d+)/) || [])[1] || 0;
-						   if (seconds <= 1) {
-							   clearInterval(adi);
-							   adb.classList.remove('ok-disabled');
-							   adt.textContent = i18next.t('home.popups.waitMapFinished',"Finished");
-							   adc.textContent = i18next.t('home.popups.waitMapEncourage',"Requested routines should be completed now.");
-						   } else {
-							   adc.textContent = adc.textContent.replace(seconds,--seconds);
-						   }
+							let seconds = +(adc.textContent.match(/(\d+)/) || [])[1] || 0;
+							if (seconds <= 1) {
+								clearInterval(adi);
+								adb.classList.remove('ok-disabled');
+								adt.textContent = i18next.t('home.popups.waitMapFinished',"Finished");
+								adc.textContent = i18next.t('home.popups.waitMapEncourage',"Requested routines should be completed now.");
+							} else {
+								adc.textContent = adc.textContent.replace(seconds,--seconds);
+							}
 						},1e3);
 					adb.classList.add('ok-disabled');
 					return waiting;
@@ -506,7 +506,7 @@
 		}
 
 		function updateHomePage() {
-			if (refreshInProgress || refreshDisabled) {
+			if (refreshInProgress || document.querySelector('ons-tabbar ons-tab.active').page !== "home.html") { // workaround: due to bug in onsenui sometimes 'shown' attribute remains on a hidden page, thus this hack
 				return;
 			}
 			refreshInProgress = true;
@@ -543,7 +543,7 @@
 					}
 				}
 
-				if ([3,6,8,10,11,15,16].includes(res.state)) {
+				if ([3,6,8,11,15,16].includes(res.state) || (res.state === 10 && !res.in_cleaning)) {
 					stopButton.setAttribute("disabled", "disabled");
 				} else {
 					stopButton.removeAttribute("disabled");
@@ -605,8 +605,11 @@
 			fn.localize('#home-page');
 		}
 
+		ons.getScriptPage().onHide = function () {
+			window.clearTimeout(currentRefreshTimer);
+		}
+
 		ons.getScriptPage().onShow = function () {
-			refreshDisabled = false;
 			/* multimap visibility */
 			document.getElementById('multimap-buttons').style.display = fn.webifSettings.showMultimap ? '' : 'none';
 			/* check for area and go to configuration */
@@ -625,11 +628,6 @@
 				updateHomePage();
 			});
 		};
-
-		ons.getScriptPage().onHide = function () {
-			refreshDisabled = true;
-			window.clearTimeout(currentRefreshTimer);
-		}
 
 	</script>
 	<style>
