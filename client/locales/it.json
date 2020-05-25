@@ -250,6 +250,8 @@
 		"webInterfaceDesc": "Cambia i parametri dell'interfaccia web",
 		"accessControlTitle": "Impostazioni di accesso",
 		"accessControlDesc": "Impostazioni chiavi SSH e autenticazione HTTP",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Visualizza e modifica le impostazioni MQTT",
 		"telegramTitle": "Bot Telegram",
 		"telegramDesc": "Abilita e imposta il Bot Telegram",
 		"loading": "caricamento...",
@@ -463,6 +465,17 @@
 			 "hint": "Suggerimento",
 			 "hintText": "Puoi ripristinare la modalità hotspot Wi-Fi integrata del robot in qualsiasi momento, premendo il pulsante RESET sotto il coperchio (vicino ai LED).",
 			 "appliedOK": "La nuova configurazione Wi-Fi è stata salvata correttamente. Premendo il pulsante OK si aggiorna la pagina. Molto probabilmente dovrai cambiare l'URL dato che il robot si collegherá al nuova rete Wi-Fi."
+		},
+		"mqtt": {
+			"settings": "Impostazioni MQTT",
+			"url": "URL:",
+			"capath": "CA Path (per SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Pubblica mappa:",
+			"save": "Salva la configurazione MQTT"
 		},
 		"telegram": {
 			"explanation": "Crea una nuova chat in Telegram e cerca \"Botfather\" , crea un nuovo bot con /newbot, poi copia il token e inseriscilo in questa pagina .",

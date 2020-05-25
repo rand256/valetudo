@@ -251,6 +251,8 @@
 		"webInterfaceDesc": "Cambiar los parámetros de la interfaz Web",
 		"accessControlTitle": "Control de accesos",
 		"accessControlDesc": "Configurar claves SSH y autentificación HTTP",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Ver y cambiar la configuración de MQTT",
 		"telegramTitle": "Telegram Bot",
 		"telegramDesc": "Activar y configurar Bot de Telegram",
 		"loading": "cargando...",
@@ -464,6 +466,17 @@
 			 "hint": "Pista",
 			 "hintText": "Siempre puede volver al punto de acceso Wifi integrado, consulte su manual de usuario sobre cómo restablecer la configuración de Wifi.",
 			 "appliedOK": "Se aplicaron con éxito nuevas credenciales Wifi. Después de presionar OK, la página se actualizará. Sin embargo, lo más probable es que necesite cambiar la URL ya que el robot intentará conectarse al nuevo Wifi."
+		},
+		"mqtt": {
+			"settings": "Configuraciones MQTT",
+			"url": "URL:",
+			"capath": "Ruta de CA (para SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Publicar datos del mapa:",
+			"save": "Guardar configuración"
 		},
 		"telegram": {
 			"explanation": "Cree un nuevo chat en Telegram y busque la cuenta \"Botfather\", cree un nuevo bot con / newbot, luego copie el token e insértelo en esta página.",

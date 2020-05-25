@@ -270,6 +270,8 @@
 		"webInterfaceDesc": "Configureren van de webinterface-opties",
 		"accessControlTitle": "Toegang",
 		"accessControlDesc": "Configureren van de SSH sleutels en HTTP authenticatie",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "MQTT instellingen bekijken en wijzigen",
 		"telegramTitle": "Telegram Bot",
 		"telegramDesc": "Activeren en configureren van de Telegram bot",
 		"loading": "Wordt geladen...",
@@ -483,6 +485,17 @@
 			"hint": "Hint",
 			"hintText": "Je kunt altijd terugkeren naar de geïntegreerde Wifi Hotspot, raadpleeg uw gebruikershandleiding voor het resetten van Wifi-instellingen.",
 			"appliedOK": "De Wifi instellingen zijn succesvol opgeslagen. Door op OK te klikken wordt de webinterface ververst. Het kan zijn dat je het adres dient aan te passen, omdat de verbinding nu anders loopt."
+		},
+		"mqtt": {
+			"settings": "MQTT-Instellingen",
+			"url": "URL:",
+			"capath": "CA pad (voor SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Publiceer kaartgegevens:",
+			"save": "Configuratie opslaan"
 		},
 		"telegram": {
 			"explanation": "Maak een nieuwe chat aan en zoek het \"Botfather\" account, creer een nieuwe bot met /newbot, kopieer en plak het token in het tokenveld alhier.",

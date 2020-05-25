@@ -251,6 +251,8 @@
 		"webInterfaceDesc": "Mainiet tīmekļa saskarnes parametrus",
 		"accessControlTitle": "Piekļuves kontrole",
 		"accessControlDesc": "Konfigurējiet SSH atslēgas un HTTP autentifikāciju",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Skatiet un mainiet MQTT iestatījumus",
 		"telegramTitle": "Telegram Bots",
 		"telegramDesc": "Ieslēgt un konfigurēt Telegram bota uzstādījumus",
 		"loading": "ielādē...",
@@ -464,6 +466,17 @@
 			 "hint": "Piezīme",
 			 "hintText": "Jūs vienmēr varat iestatīt ierīci piekļuves punkta režīmā; skatiet lietotāja rokasgrāmatā sniegtos norādījumus par Wifi iestatījumu atiestatīšanu.",
 			 "appliedOK": "Jaunie wifi akreditācijas dati tika veiksmīgi piemēroti. Pēc pogas nospiešanas lapa tiks atsvaidzināta. Tomēr, visticamāk, būs jāmaina URL saite, jo robots mēģinās izveidot savienojumu ar jauno Wifi."
+		},
+		"mqtt": {
+			"settings": "MQTT iestatījumi",
+			"url": "URL:",
+			"capath": "CA ceļš (SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Publicēt kartes datus:",
+			"save": "Saglabājiet MQTT konfigurāciju"
 		},
 		"telegram": {
 			"explanation": "Izveidojiet jaunu tērzēšanu Telegramā un atrodiet kontu \"Botfather\", izveidojiet jaunu robotu ar komandu /newbot, pēc tam nokopējiet saņemto token un ielīmējiet to šajā lapā. Šeit iestatītā parole tiks izmantota, lai autentificētu botu.",

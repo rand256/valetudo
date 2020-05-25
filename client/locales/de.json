@@ -251,6 +251,8 @@
 		"webInterfaceDesc": "Webinterface-Parameter anpassen",
 		"accessControlTitle": "Zugangskontrolle",
 		"accessControlDesc": "Einstellen von SSH-Schlüsseln und HTTP-Authentifizierung",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Anzeigen und Ändern der MQTT-Einstellungen",
 		"telegramTitle": "Telegram-Bot",
 		"telegramDesc": "Einschalten und konfigurieren der Telegram-Bot-Einstellungen",
 		"loading": "Laden...",
@@ -464,6 +466,17 @@
 			 "hint": "Hinweis",
 			 "hintText": "Es kann jederzeit zum integrierten WLAN-Hotspot zurückgekehrt werden, Informationen zum Zurücksetzen der Wifi-Einstellungen finden Sie in Ihrem Benutzerhandbuch.",
 			 "appliedOK": "Neue WLAN-Anmeldeinformationen wurden erfolgreich angewandt. Nach dem Drücken auf OK wird die Seite aktualisiert. Sie müssen voraussichtlich die Adresse auf die neue IP des Roboters ändern, da der Roboter versucht, eine Verbindung zum neuen WLAN herzustellen. (ggf. anderer DHCP Bereich, Routereinstellungen prüfen)"
+		},
+		"mqtt": {
+			"settings": "MQTT-Einstellungen",
+			"url": "URL:",
+			"capath": "CA-Pfad (für SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Kartendaten veröffentlichen:",
+			"save": "Konfiguration speichern"
 		},
 		"telegram": {
 			"explanation": "Erstellen Sie einen neuen Chat und suchen Sie nach \"Botfather\".\nErstellen Sie einen neuen Bot mit /newbot.\nNach der Erstellung kopieren Sie den Token und fügen Sie ihn auf der Seite ein. Das hier gesetzte Passwort wird zur Authentifizierung des Bots verwendet.",

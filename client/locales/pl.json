@@ -272,6 +272,8 @@
 		"webInterfaceDesc": "Zmień parametry interfejsu internetowego",
 		"accessControlTitle": "Kontrola dostępu",
 		"accessControlDesc": "Skonfiguruj klucze SSH i uwierzytelnianie HTTP",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Wyświetl i zmień ustawienia MQTT",
 		"telegramTitle": "Telegram Bot",
 		"telegramDesc": "Włącz i skonfiguruj ustawienia bota Telegram",
 		"loading": "Ładowanie...",
@@ -485,6 +487,17 @@
 			"hint": "Wskazówka",
 			"hintText": "Zawsze możesz wrócić do zintegrowanego hotspotu Wi-Fi, zapoznaj się z instrukcją obsługi dotyczącą resetowania ustawień Wi-Fi.",
 			"appliedOK": "Pomyślnie zastosowano nowe poświadczenia Wi-Fi. Po naciśnięciu OK strona zostanie odświeżona. Jednak najprawdopodobniej będziesz musiał zmienić adres URL, ponieważ robot spróbuje połączyć się z nowym Wi-Fi."
+		},
+		"mqtt": {
+			"settings": "Ustawienia MQTT",
+			"url": "URL:",
+			"capath": "Ścieżka CA (dla SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Opublikuj dane mapy:",
+			"save": "Zapisz konfigurację MQTT"
 		},
 		"telegram": {
 			"explanation": "Utwórz nowy czat w Telegramie i wyszukaj konto „Botfather”, utwórz nowego bota za pomocą / newbot, a następnie skopiuj token i wstaw na tej stronie. Hasło ustawione tutaj zostanie użyte do autoryzacji bota.",

@@ -251,6 +251,8 @@
 		"webInterfaceDesc": "Muuta käyttöliittymän parametrejä",
 		"accessControlTitle": "Pääsyn hallinta",
 		"accessControlDesc": "Määrittele SSH-avaimet ja HTTP-autentikaatio",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Tarkastele ja muuta MQTT-asetuksia",
 		"telegramTitle": "Telegram-botti",
 		"telegramDesc": "Ota Telegram-botti käyttöön tai muuta sen asetuksia.",
 		"loading": "ladataan...",
@@ -464,6 +466,17 @@
 			 "hint": "Vihje",
 			 "hintText": "Voit aina palata takaisin integroituun Wifi-hotspotiin. Katso käyttöoppaasta, kuinka Wifi-asetukset nollataan.",
 			 "appliedOK": "Wifi-tunnusten tallennus onnistui. Sivu latautuu uudelleen, kun painat OK. Todennäköisesti joudut muuttamaan URLia, koska imuri yhdistää uuteen verkkoon."
+		},
+		"mqtt": {
+			"settings": "MQTT-asetukset",
+			"url": "URL:",
+			"capath": "CA-polku (SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Julkaise karttatiedot:",
+			"save": "Tallenna kokoonpano"
 		},
 		"telegram": {
 			"explanation": "Luo uusi Telegram-chat ja etsi \"Botfather\" tiliä, luo uusi botti komennolla /newbot ja kopioi tokeni ja syötä se tälle sivulle.",

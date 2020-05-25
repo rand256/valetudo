@@ -251,6 +251,8 @@
 		"webInterfaceDesc": "Webes felület paramétereinek beállítása",
 		"accessControlTitle": "Hozzáférési beállítások",
 		"accessControlDesc": "SSH kulcsok és HTTP autentikáció beállítása",
+		"mqttTitle": "MQTT",
+		"mqttDesc": "Az MQTT beállításainak megtekintése és módosítása",
 		"telegramTitle": "Telegram Bot",
 		"telegramDesc": "Telegram bot engedélyezése és beállítása",
 		"loading": "betöltés...",
@@ -464,6 +466,17 @@
 			 "hint": "Tipp",
 			 "hintText": "Bármikor vissza tudod állítani a beépített Wi-Fi hotspot módot a fedél alatti RESET gomb megnyomásával.",
 			 "appliedOK": "Sikeresen beállításra került az új Wi-Fi konfiguráció. Az OK gomb megnyomása után az oldal frissülni fog. De nagy valószínűséggel az URL-t meg kell változtatni, mivel a robot megpróbál csatlakozni az új Wi-Fi ponthoz."
+		},
+		"mqtt": {
+			"settings": "MQTT beállítások",
+			"url": "URL:",
+			"capath": "CA út (SSL):",
+			"qos": "QoS:",
+			"identifier": "Identifier:",
+			"prefix": "Topic Prefix:",
+			"autoprefix": "Autoconfiguration Prefix:",
+			"mapdata": "Térképadatok közzététele:",
+			"save": "Mentse az MQTT konfigurációt"
 		},
 		"telegram": {
 			"explanation": "Indíts egy új beszélgetést Telegramon a \"Botfather\" bottal, majd készíts egy új botot a /newbot paranccsal, majd illeszd be ide a kapott Tokent.",
