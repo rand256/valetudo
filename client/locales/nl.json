@@ -18,6 +18,9 @@
 		"commandFailed": "Er is een fout opgetreden:",
 		"connectionError": "Verbindingsfout",
 		"nameAlreadyUsed": "\"{{name}}\" is al in gebruik",
+		"area": "Gebied",
+		"time": "Tijd",
+		"battery": "Batterij",
 		"m2": "m²",
 		"hours": "uur",
 		"hours_plural": "uren",
@@ -57,9 +60,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Gebied",
-			"time": "Tijd",
-			"battery": "Batterij",
 			"state": "Laden status..."
 		},
 		"buttons": {
@@ -109,7 +109,6 @@
 	},
 	"map": {
 		"status": "Status",
-		"battery": "Batterij",
 		"connecting": "Verbinden...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

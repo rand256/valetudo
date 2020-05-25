@@ -18,6 +18,9 @@
 		"commandFailed": "Napotkano błąd:",
 		"connectionError": "Błąd połączenia",
 		"nameAlreadyUsed": "Nazwa \"{{name}}\" jest już w użyciu",
+		"area": "Obszar",
+		"time": "Czas",
+		"battery": "Bateria",
 		"m2": "m²",
 		"hours": "godzina",
 		"hours_plural": "godzina",
@@ -58,9 +61,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Obszar",
-			"time": "Czas",
-			"battery": "Bateria",
 			"state": "Ładowanie stanu..."
 		},
 		"buttons": {
@@ -110,7 +110,6 @@
 	},
 	"map": {
 		"status": "Stan",
-		"battery": "Bateria",
 		"connecting": "Łączę...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

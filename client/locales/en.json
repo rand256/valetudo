@@ -18,6 +18,9 @@
 		"commandFailed": "There was an error:",
 		"connectionError": "Connection error",
 		"nameAlreadyUsed": "Name \"{{name}}\" is already used",
+		"battery": "Battery",
+		"area": "Area",
+		"time": "Time",
 		"m2": "m²",
 		"hours": "hour",
 		"hours_plural": "hours",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Area",
-			"time": "Time",
-			"battery": "Battery",
 			"state": "Loading state..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Status",
-		"battery": "Battery",
 		"connecting": "Connecting...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",
@@ -470,7 +469,7 @@
 		"mqtt": {
 			"settings": "MQTT Settings",
 			"url": "URL:",
-			"capath": "CA Path (optional):",
+			"capath": "CA Path (for SSL):",
 			"qos": "Quality of Service:",
 			"identifier": "Identifier:",
 			"prefix": "Topic Prefix:",

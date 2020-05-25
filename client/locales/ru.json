@@ -17,6 +17,9 @@
 		"commandFailed": "Произошла ошибка:",
 		"connectionError": "Ошибка соединения",
 		"nameAlreadyUsed": "Имя \"{{name}}\" уже используется",
+		"area": "Площадь",
+		"time": "Время",
+		"battery": "Батарея",
 		"m2": "м²",
 		"hours_0": "час",
 		"hours_1": "часа",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Площадь",
-			"time": "Время",
-			"battery": "Батарея",
 			"state": "Загрузка состояния..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Состояние",
-		"battery": "Батарея",
 		"connecting": "подключение...",
 		"statusText": "{{status, lowercase}}",
 		"errorText": "{{error, lowercase}}",
@@ -474,7 +473,7 @@
 		"mqtt": {
 			"settings": "Настройки MQTT",
 			"url": "URL:",
-			"capath": "Файл CA (опционально):",
+			"capath": "Файл CA (для SSL):",
 			"qos": "QoS:",
 			"identifier": "Идентификатор:",
 			"prefix": "Префикс:",

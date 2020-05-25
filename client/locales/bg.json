@@ -18,6 +18,9 @@
 		"commandFailed": "Възникна грешка:",
 		"connectionError": "Грешка във връзката",
 		"nameAlreadyUsed": "Името \"{{name}}\" е заето вече",
+		"area": "Площ",
+		"time": "Време",
+		"battery": "Батерия",
 		"m2": "m²",
 		"hours": "час",
 		"hours_plural": "часа",
@@ -36,9 +39,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Площ",
-			"time": "Време",
-			"battery": "Батерия",
 			"state": "Зареждане на състоянието..."
 		},
 		"buttons": {
@@ -88,7 +88,6 @@
 	},
 	"map": {
 		"status": "Състояние",
-		"battery": "Батерия",
 		"connecting": "Свързване...",
 		"statusText": "{{status, lowercase}}",
 		"errorText": "{{error, lowercase}}",

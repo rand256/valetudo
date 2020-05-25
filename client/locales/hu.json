@@ -18,6 +18,9 @@
 		"commandFailed": "Hiba lépett fel:",
 		"connectionError": "Kapcsolódási hiba",
 		"nameAlreadyUsed": "A név \"{{name}}\" már használatban van",
+		"area": "Terület",
+		"time": "Idő",
+		"battery": "Akkumulátor",
 		"m2": "m²",
 		"hours": "óra",
 		"hours_plural": "óra",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Terület",
-			"time": "Idő",
-			"battery": "Akkumulátor",
 			"state": "Állapot betöltése..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Állapot",
-		"battery": "Akkumulátor",
 		"connecting": "Kapcsolódás...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

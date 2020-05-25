@@ -18,6 +18,9 @@
 		"commandFailed": "Il y a eu une erreur:",
 		"connectionError": "Erreur de connexion",
 		"nameAlreadyUsed": "Nom \"{{name}}\" est déjà utilisé",
+		"area": "Surface",
+		"time": "Temps",
+		"battery": "Batterie",
 		"m2": "m²",
 		"hours": "heure",
 		"hours_plural": "heures",
@@ -36,9 +39,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Surface",
-			"time": "Temps",
-			"battery": "Batterie",
 			"state": "État de chargement..."
 		},
 		"buttons": {
@@ -88,7 +88,6 @@
 	},
 	"map": {
 		"status": "Status",
-		"battery": "Batterie",
 		"connecting": "Connexion...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

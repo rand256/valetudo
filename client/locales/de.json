@@ -18,6 +18,9 @@
 		"commandFailed": "Fehler beim Senden:",
 		"connectionError": "Verbindungsfehler",
 		"nameAlreadyUsed": "Name \"{{name}}\" wurde schon verwendet",
+		"area": "Bereich",
+		"time": "Zeit",
+		"battery": "Akkustand",
 		"m2": "m²",
 		"hours": "Stunde",
 		"hours_plural": "Stunden",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Bereich",
-			"time": "Zeit",
-			"battery": "Akkustand",
 			"state": "Ladestatus..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Status",
-		"battery": "Akkustand",
 		"connecting": "Verbinde...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

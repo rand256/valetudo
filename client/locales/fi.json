@@ -18,6 +18,9 @@
 		"commandFailed": "Tapahtui virhe:",
 		"connectionError": "Yhteysvirhe",
 		"nameAlreadyUsed": "Nimi \"{{name}}\" on jo käytössä",
+		"area": "Alue",
+		"time": "Aika",
+		"battery": "Akku",
 		"m2": "m²",
 		"hours": "tunti",
 		"hours_plural": "tuntia",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Alue",
-			"time": "Aika",
-			"battery": "Akku",
 			"state": "Ladataan tilaa..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Tila",
-		"battery": "Akku",
 		"connecting": "Yhdistetään...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

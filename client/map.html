@@ -7,7 +7,9 @@
 
 	<div class="map-page-stats map-page-top" style="display: none;">
 		<div><span data-i18n="map.status">Status</span>: <span class="map-page-status" data-i18n="map.connecting">Connecting...</span></div>
-		<div><span data-i18n="map.battery">Battery</span>: <span class="map-page-battery">0%</span></div>
+		<div><span data-i18n="common.battery">Battery</span>: <span class="map-page-battery">0%</span></div>
+		<div style="display: none"><span data-i18n="common.area">Area</span>: <span class="map-page-area">0.0</span> <span data-i18n="common.m2">m²</span></div>
+		<div style="display: none"><span data-i18n="common.time">Time</span>: <span class="map-page-time">00:00:00</span></div>
 	</div>
 
 	<div class="map-page-buttons map-page-top" style="display: none;">
@@ -131,7 +133,10 @@
 			button.setAttribute("disabled", "disabled");
 			fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT")
 			.then(
-				(res) => fn.notificationToastOK(),
+				(res) => {
+					fn.notificationToastOK();
+					map.clearLocations();
+				},
 				(err) => fn.notificationToastError(err)
 			)
 			.finally(() => {
@@ -340,6 +345,15 @@
 				mapPageStatus.dataset['model'] = res['model'];
 				if (!fn.webifSettings.staticMapButtons) {
 					fn.reload_map_buttons(res);
+				}
+				let areaLabel = document.querySelector('.map-page-area'),
+					timeLabel = document.querySelector('.map-page-time'),
+					ciEnabled = [5,11,17,18].includes(res.state) || res.clean_area > 0
+				areaLabel.parentNode.style.display = ciEnabled ? '' : 'none';
+				timeLabel.parentNode.style.display = ciEnabled ? '' : 'none';
+				if (ciEnabled) {
+					areaLabel.textContent = (res.clean_area / 1000000).toFixed(2);
+					timeLabel.textContent = fn.secondsToHms(res.clean_time).slice(0,-3);
 				}
 			}
 		});

@@ -18,6 +18,9 @@
 		"commandFailed": "Radās kļūda:",
 		"connectionError": "Savienojuma kļūme",
 		"nameAlreadyUsed": "Vārds \"{{name}}\" tiek jau izmantots",
+		"area": "Platība",
+		"time": "Laiks",
+		"battery": "Akumulators",
 		"m2": "m²",
 		"hours": "stunda",
 		"hours_plural": "stundas",
@@ -37,9 +40,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Platība",
-			"time": "Laiks",
-			"battery": "Akumulators",
 			"state": "Notiek ielāde..."
 		},
 		"buttons": {
@@ -89,7 +89,6 @@
 	},
 	"map": {
 		"status": "Stāvoklis",
-		"battery": "Akumulators",
 		"connecting": "Savieno...",
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",

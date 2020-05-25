@@ -18,6 +18,9 @@
 		"commandFailed": "Invio comando fallito",
 		"connectionError": "Errore di connessione",
 		"nameAlreadyUsed": "Il nome \"{{name}}\" é gia stato utilizzato",
+		"area": "Area coperta",
+		"time": "Tempo",
+		"battery": "Batteria",
 		"m2": "m²",
 		"hours": "Ora",
 		"hours_plural": "Ore",
@@ -36,9 +39,6 @@
 	},
 	"home": {
 		"labels": {
-			"area": "Area coperta",
-			"time": "Tempo",
-			"battery": "Batteria",
 			"state": "Caricamento stato in corso ..."
 		},
 		"buttons": {
@@ -88,7 +88,6 @@
 	},
 	"map": {
 		"status": "Stato",
-		"battery": "Batteria",
 		"connecting": "Connessione in corso...",
 		"statusText": "{{stato}}",
 		"errorText": "{{errore}}",
