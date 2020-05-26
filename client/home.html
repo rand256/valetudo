@@ -736,6 +736,18 @@
 		.load-map-waiting .ok-disabled:active {
 			background-color: inherit;
 		}
+		#battery-status-bar > div {
+			height: 6px;
+		}
+		#battery-status-bar > div::before {
+			content: " ";
+			display: block;
+			position: absolute;
+			z-index: 10000;
+			width: 100%;
+			height: 6px;
+			background:  repeating-linear-gradient(90deg, #ddd, #ddd 1px, transparent 1px, transparent calc(10% - 1px), #ddd calc(10% - 1px), #ddd 10%)
+		}
 	</style>
 
 </ons-page>
