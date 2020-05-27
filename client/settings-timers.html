@@ -595,7 +595,7 @@
 			form.day.value = cron[2] || "";
 			form.hour.value = cron[1] || "";
 			form.minute.value = cron[0] || "";
-			if (cron[4] === "*" && fn.device.ver === 3) {
+			if (cron[4] === "*" && fn.device.ver === 3 && !zoned) {
 				form.once.checked = true;
 				switchTimerOnce(form.once);
 			} else if (cron[4] !== "0,1,2,3,4,5,6") {
