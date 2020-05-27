@@ -8,69 +8,86 @@
 		</div>
 	</ons-toolbar>
 	<ons-progress-bar id="loading-bar-settings-persistent-data" value="0" indeterminate="indeterminate"></ons-progress-bar>
+	<ons-list-item>
+		<label class="right" style="width:100%">
+			<ons-row>
+				<ons-col vertical-align='center' style='text-align:center;' data-i18n="settings.persistentData.explanation">Persistent data or "lab mode" is a feature of the Roborock S5x which allows saving forbidden zones and virtual walls. It also allows the robot to drive back to the dock wherever it is and keeps the map from being rotated.</ons-col>
+			</ons-row>
+		</label>
+	</ons-list-item>
 	<ons-list-title style="margin-top:5px;" data-i18n="settings.persistentData.pageTitle">Persistent Data Configuration</ons-list-title>
-	<ons-row>
-		<ons-col></ons-col>
-		<ons-col width="85%" vertical-align='center' style='text-align:center;' data-i18n="settings.persistentData.explanation">Persistent data or "lab mode" is a feature of the Roborock S5x which allows saving forbidden zones and virtual walls. It also allows the robot to drive back to the dock wherever it is and keeps the map from being rotated.</ons-col>
-		<ons-col></ons-col>
-	</ons-row>
+	<ons-list-item class="persistent_data_not_supported hidden">
+		<label class="right" style="width:100%">
+			<ons-row>
+				<ons-col vertical-align='center' style='text-align:center; font-weigth: 700;' data-i18n="settings.persistentData.notSupported">Sorry, only Roborock S5x supports the persistent map features.</ons-col>
+			</ons-row>
+		</label>
+	</ons-list-item>
 
-	<ons-row id="persistent_data_not_supported" class="hidden">
-		<ons-col></ons-col>
-		<ons-col width="66%" vertical-align='center'>
-			<strong data-i18n="settings.persistentData.notSupported">Sorry, only Roborock S5x supports the persistent map features.</strong>
-		</ons-col>
-		<ons-col></ons-col>
-	</ons-row>
-
-	<form id="persistent_data_form" class="hidden">
-		<ons-row>
-			<ons-col></ons-col>
-			<ons-col width="150px" vertical-align='center' data-i18n="common.enabled">Enabled</ons-col>
-			<ons-col width="35px" vertical-align='center'><ons-checkbox input-id="lab_mode_enabled"></ons-checkbox></ons-col>
-			<ons-col width="125px" vertical-align='center'><ons-button modifier="large" class="button-margin" onclick="saveLabMode();" data-i18n="common.save">Save</ons-button></ons-col>
-			<ons-col></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col><br/></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col></ons-col>
-			<ons-col width="150px" vertical-align='center' data-i18n="settings.persistentData.deleteData">Delete persistent data</ons-col>
-			<ons-col width="160px" vertical-align='center'>
-				<ons-button id="reset_map_button" title="This deletes the current map, all forbidden zones and virtual walls!" modifier="large" class="button-margin" onclick="document.getElementById('confirm_reset_map').show();" data-i18n="[title]settings.persistentData.deleteDataTitle;settings.persistentData.deleteDataButton">
+	<ons-list class="persistent_data_form hidden">
+		<ons-list-item>
+			<div data-i18n="common.enabled" class="left">
+				Enabled:
+			</div>
+			<div class="right">
+				<ons-switch id="lab_mode_enabled" onchange="disableMapFunctions(!this.checked);"></ons-switch>
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.deleteDataTitle">Delete persistent data</div>
+				<div class="small" data-i18n="settings.persistentData.deleteDataDesc">deletes the current map, all forbidden zones and virtual walls</div>
+			</div></div>
+			<div class="right">
+				<ons-button id="reset_map_button" modifier="large" class="button-margin" onclick="document.getElementById('confirm_reset_map').show();" data-i18n="settings.persistentData.deleteDataButton">
 					Reset Map
 				</ons-button>
-			</ons-col>
-			<ons-col></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col><br/></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col></ons-col>
-			<ons-col width="150px" vertical-align='center' data-i18n="settings.persistentData.exportDesc">Export forbidden markers to Valetudo config</ons-col>
-			<ons-col width="160px" vertical-align='center'>
-				<ons-button id="export_persistent_data" title="This exports forbidden zones and virtual walls data from firmware and saves it in Valetudo" modifier="large" class="button-margin" onclick="showExportDialog();" data-i18n="[title]settings.persistentData.exportTitle;settings.persistentData.exportButton">
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.exportTitle">Export forbidden markers to Valetudo config</div>
+				<div class="small" data-i18n="settings.persistentData.exportDesc">This exports forbidden zones and virtual walls data from firmware and saves it in Valetudo</div>
+			</div></div>
+			<div class="right">
+				<ons-button id="export_persistent_data" modifier="large" class="button-margin" onclick="showExportDialog();" data-i18n="settings.persistentData.exportButton">
 					Export
 				</ons-button>
-			</ons-col>
-			<ons-col></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col><br/></ons-col>
-		</ons-row>
-		<ons-row>
-			<ons-col></ons-col>
-			<ons-col width="150px" vertical-align='center' data-i18n="settings.persistentData.importDesc">Import forbidden markers from Valetudo config</ons-col>
-			<ons-col width="160px" vertical-align='center'>
-				<ons-button id="import_persistent_data" title="This imports forbidden zones and virtual walls data from Valetudo and sets it in firmware" modifier="large" class="button-margin" onclick="showImportDialog();" data-i18n="[title]settings.persistentData.importTitle;settings.persistentData.importButton">
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.importTitle">Import forbidden markers from Valetudo config</div>
+				<div class="small" data-i18n="settings.persistentData.importDesc">This imports forbidden zones and virtual walls data from Valetudo and sets it in firmware</div>
+			</div></div>
+			<div class="right">
+				<ons-button id="import_persistent_data" modifier="large" class="button-margin" onclick="showImportDialog();" data-i18n="settings.persistentData.importButton">
 					Import
 				</ons-button>
-			</ons-col>
-			<ons-col></ons-col>
-		</ons-row>
-	</form>
+			</div>
+		</ons-list-item>
+	</ons-list>
+	<ons-list class="persistent_data_form hidden">
+		<ons-list-item>
+			<div class="center">
+				<ons-button id="settings-mqtt-input-save-button" modifier="large" class="button-margin" onclick="saveLabMode();" data-i18n="common.save">Save</ons-button>
+			</div>
+		</ons-list-item>
+	</ons-list>
+	<ons-list-title style="margin-top:5px;" data-i18n="settings.persistentData.systemSettingsTitle">System Settings</ons-list-title>
+	<ons-list>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.rebootTitle">Reboot device</div>
+				<div class="small" data-i18n="settings.persistentData.rebootDesc">will attempt to restart the onboard operating system</div>
+			</div></div>
+			<div class="right">
+				<ons-button id="export_persistent_data" modifier="large" class="button-margin" onclick="rebootDevice();" data-i18n="settings.persistentData.reboot">
+					Reboot
+				</ons-button>
+			</div>
+		</ons-list-item>
+	</ons-list>
 
 	<ons-dialog id="confirm_reset_map" class="persistent-data-confirm">
 		<p class="persistent-data-warning"><span data-i18n="settings.persistentData.deleteDataConfirm">This deletes the currently saved map, all forbidden zones and virtual walls.</span> <span data-i18n="settings.persistentData.genericConfirm">Are you sure to proceed?</span></p>
@@ -91,14 +108,12 @@
 	</ons-dialog>
 
 	<style>
-		#persistent_data_form {
-			margin-top: 1em;
-		}
-		#persistent_data_not_supported {
-			margin-top: 1em;
-		}
 		.hidden {
 			display: none;
+		}
+		div.small {
+			font-size: 0.8em;
+			color: darkgray;
 		}
 		.persistent-data-confirm .dialog-container {
 			display: grid;
@@ -123,7 +138,7 @@
 
 	<script>
 		ons.getScriptPage().onInit = function() {
-		   fn.localize('#settings-persistent-data-page');
+			fn.localize('#settings-persistent-data-page');
 		}
 
 		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data');
@@ -131,16 +146,11 @@
 		document.querySelector("#settings-persistent-data-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
 		ons.getScriptPage().onShow = function () {
-			document.getElementById('lab_mode_enabled').addEventListener("change", function(event) {
-				disableMapFunctions(!event.target.checked)
-			});
-
 			updateSettingsPersistentDataPage();
 		};
 
 		function disableMapFunctions(flag) {
-			const dataButtons = document.querySelectorAll("#reset_map_button, #export_persistent_data, #import_persistent_data");
-			Array.from(dataButtons).forEach(button => {
+			document.querySelectorAll("#reset_map_button, #export_persistent_data, #import_persistent_data").forEach(button => {
 				if (flag) {
 					button.setAttribute("disabled", "true");
 				} else {
@@ -149,21 +159,16 @@
 			});
 		};
 
-		function initForm(currentStatus) {
-			var persistentDataForm = document.getElementById('persistent_data_form');
-			document.getElementById('lab_mode_enabled').checked = (currentStatus.lab_status === 1);
-			disableMapFunctions(currentStatus.lab_status !== 1);
-		};
-
 		function updateSettingsPersistentDataPage() {
 			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
 			fn.prequest("api/current_status")
 			.then((res) => {
 				if(fn.device.model === "roborock.vacuum.s5") {
-					document.getElementById('persistent_data_form').classList.remove("hidden");
-					initForm(res);
+					document.querySelectorAll('.persistent_data_form').forEach(item => item.classList.remove('hidden'));
+					document.getElementById('lab_mode_enabled').checked = (res.lab_status === 1);
+					disableMapFunctions(res.lab_status !== 1);
 				} else {
-					document.getElementById('persistent_data_not_supported').classList.remove("hidden");
+					document.querySelector('.persistent_data_not_supported').classList.remove("hidden");
 				}
 			}, (err) => fn.notificationToastError(err))
 			.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
@@ -240,6 +245,19 @@
 			)
 			.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
 		};
+
+		function rebootDevice() {
+			ons.notification.confirm(i18next.t('settings.persistentData.rebootConfirm',"Are you sure you want to reboot the operating system of the device?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('settings.persistentData.reboot',"Reboot")], title: i18next.t('common.confirm',"Confirm")})
+			.then(answer => {
+				if (answer === 1) {
+					loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+					fn.prequest("api/reboot_device","PUT")
+					.then(res => ons.notification.alert(i18next.t('settings.persistentData.rebootNotice',"Device is now restarting, please wait a bit for it to boot."),{title: i18next.t('common.attention',"Attention!")}))
+					.catch(err => fn.notificationToastError(err))
+					.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
+				}
+			});
+		}
 	</script>
 	<script type="module" crossorigin>
 		import { RRMapParser } from "./zone/js-modules/rr-map-parser.js"
@@ -250,7 +268,7 @@
 					virtual_walls: mapData.virtual_walls || [],
 					forbidden_zones: mapData.forbidden_zones || []
 				};
-			} catch (e) {}
+			} catch (e) { return {}; }
 		}
 	</script>
 </ons-page>
