@@ -83,19 +83,33 @@
 		<ons-list-item>
 			<div class="left"><div>
 				<div data-i18n="settings.persistentData.afterCleanTitle">After Cleaning Destination</div>
-				<div class="small" data-i18n="settings.persistentData.afterCleanDesc">defines where the robot should go after cleaning ends</div>
+				<div class="small" data-i18n="settings.persistentData.afterCleanDesc">defines where robot should go after the cleaning ends</div>
 			</div></div>
 			<div class="right">
 				<ons-select select-id="after_clean_dest" onchange="afterCleanChanged(this);">
 					<option value="0" data-i18n="settings.persistentData.afterCleanDefault">Default</option>
 					<option value="1" data-i18n="settings.persistentData.afterCleanNowhere">Nowhere</option>
 					<option value="2" id="after_clean_spot" style="display: none;" data-i18n="settings.persistentData.afterCleanSpot">Spot</option>
-					<option value="3" id="after_clean_spot_new" data-i18n="settings.persistentData.afterCleanChooseSpot">Choose custom spot</option>
+					<option value="3" id="after_clean_spot_new" data-i18n="settings.persistentData.afterCleanChooseSpot">Choose spot...</option>
+				</ons-select>
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.autoDockTitle">Dock Auto Return</div>
+				<div class="small" data-i18n="settings.persistentData.autoDockDesc">defines whether robot should return to dock when idle</div>
+			</div></div>
+			<div class="right">
+				<ons-select select-id="auto_dock_return" onchange="autoDockChanged(this);">
+					<option value="0" data-i18n="settings.persistentData.autoDockNever">Never</option>
+					<option value="1" data-i18n="settings.persistentData.autoDockSleep">On sleep</option>
+					<option value="2" id="auto_dock_delay" style="display: none;" data-i18n="settings.persistentData.autoDockDelay">After</option>
+					<option value="3" id="auto_dock_delay_new" data-i18n="settings.persistentData.autoDockChooseDelay">Choose delay...</option>
 				</ons-select>
 			</div>
 		</ons-list-item>
 	</ons-list>
-	<ons-list class="persistent_data_form hidden">
+	<ons-list>
 		<ons-list-item>
 			<div class="center">
 				<ons-button id="persistent_data_save_button" modifier="large" class="button-margin" onclick="savePersistentData();" disabled data-i18n="common.save">Save</ons-button>
@@ -153,8 +167,9 @@
 	<script>
 		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data'),
 			afterCleanDestSelect = document.getElementById('after_clean_dest'),
+			autoDockReturnSelect = document.getElementById('auto_dock_return'),
 			labModeSwitch = document.getElementById('lab_mode_enabled');
-		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords;
+		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords, oldADR, ADR;
 
 		ons.getScriptPage().onInit = function() {
 			fn.localize('#settings-persistent-data-page');
@@ -184,13 +199,21 @@
 			option.parentNode.selectedIndex = 2;
 		}
 
+		function setADRDelayOptionText(delay) {
+			const option = document.getElementById('auto_dock_delay')
+			option.textContent = option.textContent.replace(/: \d{2}:\d{2}\:\d{2}/,'') + ': ' + fn.secondsToHms(delay*60);
+			option.style.display = '';
+			option.parentNode.options[2].value = delay;
+			option.parentNode.selectedIndex = 2;
+		}
+
 		function updateSettingsPersistentDataPage() {
 			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
 			Promise.all([
 				fn.prequest("api/current_status").then(res => {
 					if(fn.device.model === "roborock.vacuum.s5") {
 						oldLabStatus = res.lab_status === 1;
-						document.querySelectorAll('.persistent_data_form').forEach(item => item.classList.remove('hidden'));
+						document.querySelector('.persistent_data_form').classList.remove('hidden');
 						labModeSwitch.checked = oldLabStatus;
 						disableMapFunctions(!oldLabStatus);
 					} else {
@@ -198,14 +221,19 @@
 					}
 				}),
 				fn.prequest("api/system_config").then(res => {
-					oldACD = ACD = res.afterCleanDest;
+					oldACD = ACD = res.afterCleanDest || 0;
 					oldACDCoords = '';
 					if (Array.isArray(oldACD)) {
 						oldACDCoords = ACDCoords = oldACD;
 						oldACD = ACD = 2;
 						setACDSpotOptionText(oldACDCoords);
 					}
-					afterCleanDestSelect.value = oldACD || 0;
+					afterCleanDestSelect.value = oldACD;
+					oldADR = ADR = res.autoDockReturn || 0;
+					if (oldADR > 3) {
+						setADRDelayOptionText(oldADR);
+					}
+					autoDockReturnSelect.value = oldADR;
 				})
 			])
 			.catch(err => fn.notificationToastError(err))
@@ -294,7 +322,7 @@
 					let spots = res,
 						options = [];
 					if (!spots.length) {
-						ons.notification.alert(i18next.t('settings.persistentData.noACDSpots',"No spots are available to use for after cleaning destination."),{title: i18next.t('common.attention',"Attention!")});
+						ons.notification.alert(i18next.t('settings.persistentData.afterCleanMenuNoSpots',"No spots are available to use as destination after cleaning."),{title: i18next.t('common.attention',"Attention!")});
 						select.value = oldACD;
 						return;
 					}
@@ -306,11 +334,11 @@
 						icon: 'md-close'
 					});
 					return ons.openActionSheet({
-						title: i18next.t('settings.persistentData.chooseACDSpot',"Choose a spot to go after cleaning:"),
+						title: i18next.t('settings.persistentData.afterCleanMenuDesc',"Choose a spot to move to after the cleaning:"),
 						cancelable: true,
 						buttons: options
 					}).then(function (index) {
-						if (index > -1 && index < spots.length) {
+						if (index > -1 && index < spots.length && spots[index].coordinates[0] > 0 && spots[index].coordinates[1] > 0) {
 							ACD = 2;
 							ACDCoords = spots[index].coordinates;
 							setACDSpotOptionText(ACDCoords);
@@ -330,11 +358,34 @@
 			}
 		}
 
+		function autoDockChanged(select) {
+			if (select.value === "3") {
+				ons.notification.prompt(i18next.t('settings.persistentData.autoDockDelayPrompt',{defaultValue: "Please enter delay in minutes ({{range}}) after which idle robot should return to dock:", range: '5-60'}),{title: i18next.t('common.prompt',"Prompt"), cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]})
+				.then(res => {
+					res = parseInt(res);
+					if (!res || !(res >= 5 && res <= 60)) {
+						if (res !== undefined) ons.notification.alert(i18next.t('settings.persistentData.autoDockDelayErr',"The specified value does not fall within the allowed range."),{title: i18next.t('common.attention',"Attention!")});
+						select.value = oldADR;
+						return;
+					}
+					ADR = res;
+					setADRDelayOptionText(ADR);
+				})
+				.catch(err => fn.notificationToastError(err))
+				.finally(() => {
+					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
+					updateSavePersistentDataButton();
+				});
+			} else {
+				ADR = +select.value;
+				updateSavePersistentDataButton();
+			}
+		}
+
 		function updateSavePersistentDataButton() {
 			const button = document.getElementById('persistent_data_save_button');
-			if (labModeSwitch.checked !== oldLabStatus ||
-				ACD !== 2 && ACD !== oldACD ||
-				ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords)) {
+			if (labModeSwitch.checked !== oldLabStatus || ADR !== oldADR ||
+				ACD !== 2 && ACD !== oldACD || ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords)) {
 				button.removeAttribute('disabled');
 			} else {
 				button.setAttribute('disabled','disabled');
@@ -343,7 +394,10 @@
 
 		function savePersistentData() {
 			const labStatus = true === labModeSwitch.checked;
-			let promises = [fn.prequestWithPayload("api/system_config", JSON.stringify({ afterCleanDest: +afterCleanDestSelect.value === 2 ? ACDCoords : +afterCleanDestSelect.value }), "PUT")];
+			let promises = [fn.prequestWithPayload("api/system_config", JSON.stringify({
+				afterCleanDest: +afterCleanDestSelect.value === 2 ? ACDCoords : +afterCleanDestSelect.value,
+				autoDockReturn: +autoDockReturnSelect.value
+			}), "PUT")];
 			if (labModeSwitch.checked !== oldLabStatus) {
 				promises.push(fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT"));
 			}
