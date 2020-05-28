@@ -62,7 +62,6 @@
 			loadingBarHome = document.getElementById('loading-bar-home');
 
 		var fanspeedPresets = {};
-		var config = {};
 
 		var BUTTONS = {
 			"start": {
@@ -613,16 +612,10 @@
 			/* multimap visibility */
 			document.getElementById('multimap-buttons').style.display = fn.webifSettings.showMultimap ? '' : 'none';
 			/* check for area and go to configuration */
-			fn.prequest("api/get_config")
-			.then((res) => {
-				config = res;
-				if (config.spots && config.spots.length > 0) {
-					goToButton.removeAttribute("disabled");
-				}
-				if (config.areas && config.areas.length > 0) {
-					areaButton.removeAttribute("disabled");
-				}
-			})
+			Promise.all([
+				fn.prequest("api/zones").then(res => res.length > 0 && areaButton.removeAttribute("disabled")),
+				fn.prequest("api/spots").then(res => res.length > 0 && goToButton.removeAttribute("disabled"))
+			])
 			.catch(err => fn.notificationToastError(err))
 			.finally(() => {
 				updateHomePage();

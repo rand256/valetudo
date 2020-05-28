@@ -135,7 +135,7 @@
 			.then(
 				(res) => {
 					fn.notificationToastOK();
-					map.clearLocations();
+					setTimeout(() => map.clearLocations(),3e3);
 				},
 				(err) => fn.notificationToastError(err)
 			)

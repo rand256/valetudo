@@ -3,7 +3,7 @@
 		<div class="left">
 			<ons-back-button data-i18n="settings.title" data-i18n-target=".back-button__label">Settings</ons-back-button>
 		</div>
-		<div class="center" data-i18n="settings.persistentDataTitle">Persistent Data</div>
+		<div class="center" data-i18n="settings.persistentData.systemSettingsTitle">System Settings</div>
 		<div class="right">
 		</div>
 	</ons-toolbar>
@@ -67,13 +67,6 @@
 			</div>
 		</ons-list-item>
 	</ons-list>
-	<ons-list class="persistent_data_form hidden">
-		<ons-list-item>
-			<div class="center">
-				<ons-button id="settings-mqtt-input-save-button" modifier="large" class="button-margin" onclick="saveLabMode();" data-i18n="common.save">Save</ons-button>
-			</div>
-		</ons-list-item>
-	</ons-list>
 	<ons-list-title style="margin-top:5px;" data-i18n="settings.persistentData.systemSettingsTitle">System Settings</ons-list-title>
 	<ons-list>
 		<ons-list-item>
@@ -85,6 +78,27 @@
 				<ons-button id="export_persistent_data" modifier="large" class="button-margin" onclick="rebootDevice();" data-i18n="settings.persistentData.reboot">
 					Reboot
 				</ons-button>
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.afterCleanTitle">After Cleaning Destination</div>
+				<div class="small" data-i18n="settings.persistentData.afterCleanDesc">defines where the robot should go after cleaning ends</div>
+			</div></div>
+			<div class="right">
+				<ons-select select-id="after_clean_dest" onchange="afterCleanChanged(this);">
+					<option value="0" data-i18n="settings.persistentData.afterCleanDefault">Default</option>
+					<option value="1" data-i18n="settings.persistentData.afterCleanNowhere">Nowhere</option>
+					<option value="2" id="after_clean_spot" style="display: none;" data-i18n="settings.persistentData.afterCleanSpot">Spot</option>
+					<option value="3" id="after_clean_spot_new" data-i18n="settings.persistentData.afterCleanChooseSpot">Choose custom spot</option>
+				</ons-select>
+			</div>
+		</ons-list-item>
+	</ons-list>
+	<ons-list class="persistent_data_form hidden">
+		<ons-list-item>
+			<div class="center">
+				<ons-button id="persistent_data_save_button" modifier="large" class="button-margin" onclick="savePersistentData();" disabled data-i18n="common.save">Save</ons-button>
 			</div>
 		</ons-list-item>
 	</ons-list>
@@ -137,11 +151,14 @@
 	</style>
 
 	<script>
+		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data'),
+			afterCleanDestSelect = document.getElementById('after_clean_dest'),
+			labModeSwitch = document.getElementById('lab_mode_enabled');
+		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords;
+
 		ons.getScriptPage().onInit = function() {
 			fn.localize('#settings-persistent-data-page');
 		}
-
-		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data');
 
 		document.querySelector("#settings-persistent-data-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
@@ -157,20 +174,41 @@
 					button.removeAttribute("disabled");
 				}
 			});
+			updateSavePersistentDataButton();
 		};
+
+		function setACDSpotOptionText(coords) {
+			const option = document.getElementById('after_clean_spot')
+			option.textContent = option.textContent.replace(/: \[\d+,\d+\]/,'') + ': ' + JSON.stringify(coords);
+			option.style.display = '';
+			option.parentNode.selectedIndex = 2;
+		}
 
 		function updateSettingsPersistentDataPage() {
 			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/current_status")
-			.then((res) => {
-				if(fn.device.model === "roborock.vacuum.s5") {
-					document.querySelectorAll('.persistent_data_form').forEach(item => item.classList.remove('hidden'));
-					document.getElementById('lab_mode_enabled').checked = (res.lab_status === 1);
-					disableMapFunctions(res.lab_status !== 1);
-				} else {
-					document.querySelector('.persistent_data_not_supported').classList.remove("hidden");
-				}
-			}, (err) => fn.notificationToastError(err))
+			Promise.all([
+				fn.prequest("api/current_status").then(res => {
+					if(fn.device.model === "roborock.vacuum.s5") {
+						oldLabStatus = res.lab_status === 1;
+						document.querySelectorAll('.persistent_data_form').forEach(item => item.classList.remove('hidden'));
+						labModeSwitch.checked = oldLabStatus;
+						disableMapFunctions(!oldLabStatus);
+					} else {
+						document.querySelector('.persistent_data_not_supported').classList.remove("hidden");
+					}
+				}),
+				fn.prequest("api/system_config").then(res => {
+					oldACD = ACD = res.afterCleanDest;
+					oldACDCoords = '';
+					if (Array.isArray(oldACD)) {
+						oldACDCoords = ACDCoords = oldACD;
+						oldACD = ACD = 2;
+						setACDSpotOptionText(oldACDCoords);
+					}
+					afterCleanDestSelect.value = oldACD || 0;
+				})
+			])
+			.catch(err => fn.notificationToastError(err))
 			.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
 		};
 
@@ -235,17 +273,6 @@
 			.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
 		};
 
-		function saveLabMode() {
-			const labStatus = true === document.getElementById('lab_mode_enabled').checked;
-			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
-			fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT")
-			.then(
-				(res) => fn.notificationToastOK(i18next.t('settings.persistentData.settingsSaved',"Settings saved!")),
-				(err) => fn.notificationToastError(err)
-			)
-			.finally(() => loadingBarSettingsPersistentData.removeAttribute("indeterminate"));
-		};
-
 		function rebootDevice() {
 			ons.notification.confirm(i18next.t('settings.persistentData.rebootConfirm',"Are you sure you want to reboot the operating system of the device?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('settings.persistentData.reboot',"Reboot")], title: i18next.t('common.confirm',"Confirm")})
 			.then(answer => {
@@ -258,6 +285,76 @@
 				}
 			});
 		}
+
+		function afterCleanChanged(select) {
+			if (select.value === "3") {
+				loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+				fn.prequest("api/spots")
+				.then(res => {
+					let spots = res,
+						options = [];
+					if (!spots.length) {
+						ons.notification.alert(i18next.t('settings.persistentData.noACDSpots',"No spots are available to use for after cleaning destination."),{title: i18next.t('common.attention',"Attention!")});
+						select.value = oldACD;
+						return;
+					}
+					for (var i = 0; i < spots.length; i++){
+						options.push(spots[i].name);
+					}
+					options.push({
+						label: i18next.t('common.cancel',"Cancel"),
+						icon: 'md-close'
+					});
+					return ons.openActionSheet({
+						title: i18next.t('settings.persistentData.chooseACDSpot',"Choose a spot to go after cleaning:"),
+						cancelable: true,
+						buttons: options
+					}).then(function (index) {
+						if (index > -1 && index < spots.length) {
+							ACD = 2;
+							ACDCoords = spots[index].coordinates;
+							setACDSpotOptionText(ACDCoords);
+						} else {
+							select.value = oldACD;
+						}
+					});
+				})
+				.catch(err => fn.notificationToastError(err))
+				.finally(() => {
+					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
+					updateSavePersistentDataButton();
+				});
+			} else {
+				ACD = +select.value;
+				updateSavePersistentDataButton();
+			}
+		}
+
+		function updateSavePersistentDataButton() {
+			const button = document.getElementById('persistent_data_save_button');
+			if (labModeSwitch.checked !== oldLabStatus ||
+				ACD !== 2 && ACD !== oldACD ||
+				ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords)) {
+				button.removeAttribute('disabled');
+			} else {
+				button.setAttribute('disabled','disabled');
+			}
+		}
+
+		function savePersistentData() {
+			const labStatus = true === labModeSwitch.checked;
+			let promises = [fn.prequestWithPayload("api/system_config", JSON.stringify({ afterCleanDest: +afterCleanDestSelect.value === 2 ? ACDCoords : +afterCleanDestSelect.value }), "PUT")];
+			if (labModeSwitch.checked !== oldLabStatus) {
+				promises.push(fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT"));
+			}
+			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+			Promise.all(promises)
+			.then(
+				(res) => fn.notificationToastOK(i18next.t('settings.persistentData.settingsSaved',"Settings saved!")),
+				(err) => fn.notificationToastError(err)
+			)
+			.finally(() => updateSettingsPersistentDataPage());
+		};
 	</script>
 	<script type="module" crossorigin>
 		import { RRMapParser } from "./zone/js-modules/rr-map-parser.js"
