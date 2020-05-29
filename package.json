@@ -12,7 +12,9 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "pkg --targets node12.16.1-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo"
+		"prebuild": "cp -a client client.b && find client/ -type f \\( -iname \\*.json -o -iname \\*.js -o -iname \\*.html -o -iname \\*.css \\) -exec gzip -9 {} +",
+		"build": "pkg --targets node12.16.1-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo || npm run postbuild",
+		"postbuild": "if [ -d client.b ]; then rm -fr client && mv client.b client; fi"
 	},
 	"author": "",
 	"dependencies": {
