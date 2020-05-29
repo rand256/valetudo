@@ -380,7 +380,13 @@
 			"autoDockDelay": "Ritardo",
 			"autoDockChooseDelay": "Scegli ritardo...",
 			"autoDockDelayPrompt": "Inserisci il ritardo in minuti ({{range}}) dopo il quale il robot inattivo dovrebbe tornare al dock:",
-			"autoDockDelayErr": "Il valore specificato non rientra nell'intervallo consentito."
+			"autoDockDelayErr": "Il valore specificato non rientra nell'intervallo consentito.",
+			"mapRestoreTypeTitle": "Tipo di ripristino della mappa",
+			"mapRestoreTypeDesc": "definisce il metodo da utilizzare per il ripristino di mappe sperimentali",
+			"restoreTypeDefault": "Predefinito",
+			"restoreTypeRestart": "Riavvio del servizio",
+			"restoreTypeCleaning": "Sequenza di pulizia",
+			"restoreTypeNative": "Ripristino del backup"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Impostazioni volume suono",

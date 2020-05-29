@@ -379,7 +379,13 @@
 			"autoDockDelay": "Интервал",
 			"autoDockChooseDelay": "Изберете закъснение...",
 			"autoDockDelayPrompt": "Въведете закъснение в минути ({{range}}), след което празен робот трябва да се върне на док:",
-			"autoDockDelayErr": "Посочената стойност не попада в допустимия диапазон."
+			"autoDockDelayErr": "Посочената стойност не попада в допустимия диапазон.",
+			"mapRestoreTypeTitle": "Тип за възстановяване на картата",
+			"mapRestoreTypeDesc": "определя метода, който да се използва за експериментално възстановяване на картата",
+			"restoreTypeDefault": "По подразбиране",
+			"restoreTypeRestart": "Рестартиране на сървис",
+			"restoreTypeCleaning": "Почистване инициализация",
+			"restoreTypeNative": "Резервно възстановяване"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Настройка силата на звука",

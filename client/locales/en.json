@@ -381,7 +381,13 @@
 			"autoDockDelay": "Delay",
 			"autoDockChooseDelay": "Choose delay...",
 			"autoDockDelayPrompt": "Please enter delay in minutes ({{range}}) after which idle robot should return to dock:",
-			"autoDockDelayErr": "The specified value does not fall within the allowed range."
+			"autoDockDelayErr": "The specified value does not fall within the allowed range.",
+			"mapRestoreTypeTitle": "Map restore type",
+			"mapRestoreTypeDesc": "defines the method to use for experimental map restoring",
+			"restoreTypeDefault": "Default",
+			"restoreTypeRestart": "Service Restart",
+			"restoreTypeCleaning": "Cleaning Sequence",
+			"restoreTypeNative": "Backup Recovery"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Sound Volume Settings",

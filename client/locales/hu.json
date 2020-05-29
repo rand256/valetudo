@@ -381,7 +381,13 @@
 			"autoDockDelay": "Késleltetés",
 			"autoDockChooseDelay": "Válasszon késleltetést...",
 			"autoDockDelayPrompt": "Adja meg a késleltetést percekben ({{range}}), amely után az alapjárati robotnak visszatérnie kell a dokkhoz:",
-			"autoDockDelayErr": "A megadott érték nem esik a megengedett tartományba."
+			"autoDockDelayErr": "A megadott érték nem esik a megengedett tartományba.",
+			"mapRestoreTypeTitle": "A térkép helyreállítási típusa",
+			"mapRestoreTypeDesc": "meghatározza a kísérleti térkép-helyreállításhoz használandó módszert",
+			"restoreTypeDefault": "Alapértelmezett",
+			"restoreTypeRestart": "Szolgáltatás újraindítása",
+			"restoreTypeCleaning": "Tisztító sorozat",
+			"restoreTypeNative": "Biztonsági mentés helyreállítása"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Hangerő Beállítások",

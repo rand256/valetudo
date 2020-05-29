@@ -381,7 +381,13 @@
 			"autoDockDelay": "Retrasar",
 			"autoDockChooseDelay": "Elija retraso...",
 			"autoDockDelayPrompt": "Ingrese el retraso en minutos ({{range}}) después del cual el robot inactivo debe regresar al muelle:",
-			"autoDockDelayErr": "El valor especificado no se encuentra dentro del rango permitido."
+			"autoDockDelayErr": "El valor especificado no se encuentra dentro del rango permitido.",
+			"mapRestoreTypeTitle": "Tipo de restauración del mapa",
+			"mapRestoreTypeDesc": "define el método a utilizar para la restauración experimental de mapas",
+			"restoreTypeDefault": "Defecto",
+			"restoreTypeRestart": "Reinicio de servicio",
+			"restoreTypeCleaning": "Secuencia de limpieza",
+			"restoreTypeNative": "Recuperación de respaldo"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Ajuste de volumen",

@@ -400,7 +400,13 @@
 			"autoDockDelay": "Vertraging",
 			"autoDockChooseDelay": "Kies uitstel...",
 			"autoDockDelayPrompt": "Voer vertraging in in in minuten ({range}}) waarna idle robot terug moet keren naar het aankoppelen:",
-			"autoDockDelayErr": "De gespecificeerde waarde valt niet binnen het toegestane bereik."
+			"autoDockDelayErr": "De gespecificeerde waarde valt niet binnen het toegestane bereik.",
+			"mapRestoreTypeTitle": "Type Map herstellen",
+			"mapRestoreTypeDesc": "definieert de te gebruiken methode voor het herstellen van experimentele kaart",
+			"restoreTypeDefault": "Standaard",
+			"restoreTypeRestart": "Herstart Dienst",
+			"restoreTypeCleaning": "Reinigingssequentie",
+			"restoreTypeNative": "Back-Upherstel"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Geluidsinstellingen",

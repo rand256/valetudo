@@ -402,7 +402,13 @@
 			"autoDockDelay": "Opóźnienie",
 			"autoDockChooseDelay": "Wybierz opóźnienie...",
 			"autoDockDelayPrompt": "Wprowadź opóźnienie w minutach ({{zakres}}), po którym bezczynny robot powinien wrócić do stacji dokującej:",
-			"autoDockDelayErr": "Podana wartość nie mieści się w dozwolonym zakresie."
+			"autoDockDelayErr": "Podana wartość nie mieści się w dozwolonym zakresie.",
+			"mapRestoreTypeTitle": "Typ przywracania mapy",
+			"mapRestoreTypeDesc": "określa metodę używaną do eksperymentalnego przywracania map",
+			"restoreTypeDefault": "Default",
+			"restoreTypeRestart": "Zrestartuj serwis",
+			"restoreTypeCleaning": "Sekwencja czyszczenia",
+			"restoreTypeNative": "Odzyskiwanie kopii zapasowej"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Ustawienia głośności dźwięku",

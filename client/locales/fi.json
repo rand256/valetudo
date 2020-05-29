@@ -381,7 +381,13 @@
 			"autoDockDelay": "Viive",
 			"autoDockChooseDelay": "Valitse viive...",
 			"autoDockDelayPrompt": "Anna viive minuutteina ({{range}}), jonka jälkeen joutumattoman robotin tulisi palata laituriin:",
-			"autoDockDelayErr": "Määritetty arvo ei kuulu sallittuun alueeseen."
+			"autoDockDelayErr": "Määritetty arvo ei kuulu sallittuun alueeseen.",
+			"mapRestoreTypeTitle": "Kartan palautustyyppi",
+			"mapRestoreTypeDesc": "määrittelee menetelmän, jota käytetään kokeellisessa kartan palauttamisessa",
+			"restoreTypeDefault": "Oletusarvo",
+			"restoreTypeRestart": "Palvelun uudelleenkäynnistys",
+			"restoreTypeCleaning": "Siivousjärjestys",
+			"restoreTypeNative": "Varmuuskopiointi"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Äänenvoimakkuuden asetukset",

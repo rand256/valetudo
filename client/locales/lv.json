@@ -381,7 +381,13 @@
 			"autoDockDelay": "Kavēšanās",
 			"autoDockChooseDelay": "Izvēlieties kavēšanos...",
 			"autoDockDelayPrompt": "Lūdzu, ievadiet kavēšanos minūtēs ({{range}}), pēc kuras dīkstāves robotam vajadzētu atgriezties piestātnē:",
-			"autoDockDelayErr": "Norādītā vērtība neietilpst atļautajā diapazonā."
+			"autoDockDelayErr": "Norādītā vērtība neietilpst atļautajā diapazonā.",
+			"mapRestoreTypeTitle": "Kartes atjaunošanas tips",
+			"mapRestoreTypeDesc": "definē metodi, ko izmantot eksperimentālai kartes atjaunošanai",
+			"restoreTypeDefault": "Noklusējums",
+			"restoreTypeRestart": "Pakalpojuma restartēšana",
+			"restoreTypeCleaning": "Tīrīšanas secība",
+			"restoreTypeNative": "Dublējuma atkopšana"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Skaļuma iestatīšana",

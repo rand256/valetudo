@@ -108,6 +108,20 @@
 				</ons-select>
 			</div>
 		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.mapRestoreTypeTitle">Map restore type</div>
+				<div class="small" data-i18n="settings.persistentData.mapRestoreTypeDesc">defines the method to use for experimental map restoring</div>
+			</div></div>
+			<div class="right">
+				<ons-select select-id="map_restore_type" onchange="restoreTypeChanged(this);">
+					<option value="0" data-i18n="settings.persistentData.restoreTypeDefault">Default</option>
+					<option value="1" data-i18n="settings.persistentData.restoreTypeRestart">Service Restart</option>
+					<option value="2" data-i18n="settings.persistentData.restoreTypeCleaning" disabled>Cleaning Sequence</option>
+					<option value="3" data-i18n="settings.persistentData.restoreTypeNative" disabled>Backup Recovery</option>
+				</ons-select>
+			</div>
+		</ons-list-item>
 	</ons-list>
 	<ons-list>
 		<ons-list-item>
@@ -168,8 +182,9 @@
 		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data'),
 			afterCleanDestSelect = document.getElementById('after_clean_dest'),
 			autoDockReturnSelect = document.getElementById('auto_dock_return'),
+			mapRestoreTypeSelect = document.getElementById('map_restore_type'),
 			labModeSwitch = document.getElementById('lab_mode_enabled');
-		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords, oldADR, ADR;
+		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords, oldADR, ADR, oldMRT, MRT;
 
 		ons.getScriptPage().onInit = function() {
 			fn.localize('#settings-persistent-data-page');
@@ -216,6 +231,12 @@
 						document.querySelector('.persistent_data_form').classList.remove('hidden');
 						labModeSwitch.checked = oldLabStatus;
 						disableMapFunctions(!oldLabStatus);
+						if (oldLabStatus) {
+							mapRestoreTypeSelect.options[2].removeAttribute('disabled');
+							if (res.msg_ver === 3) {
+								mapRestoreTypeSelect.options[3].removeAttribute('disabled');
+							}
+						}
 					} else {
 						document.querySelector('.persistent_data_not_supported').classList.remove("hidden");
 					}
@@ -234,6 +255,8 @@
 						setADRDelayOptionText(oldADR);
 					}
 					autoDockReturnSelect.value = oldADR;
+					oldMRT = MRT = res.mapRestoreType || 0;
+					mapRestoreTypeSelect.value = oldMRT;
 				})
 			])
 			.catch(err => fn.notificationToastError(err))
@@ -382,9 +405,14 @@
 			}
 		}
 
+		function restoreTypeChanged(select) {
+			MRT = +select.value;
+			updateSavePersistentDataButton();
+		}
+
 		function updateSavePersistentDataButton() {
 			const button = document.getElementById('persistent_data_save_button');
-			if (labModeSwitch.checked !== oldLabStatus || ADR !== oldADR ||
+			if (labModeSwitch.checked !== oldLabStatus || ADR !== oldADR || MRT !== oldMRT ||
 				ACD !== 2 && ACD !== oldACD || ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords)) {
 				button.removeAttribute('disabled');
 			} else {
@@ -396,7 +424,8 @@
 			const labStatus = true === labModeSwitch.checked;
 			let promises = [fn.prequestWithPayload("api/system_config", JSON.stringify({
 				afterCleanDest: +afterCleanDestSelect.value === 2 ? ACDCoords : +afterCleanDestSelect.value,
-				autoDockReturn: +autoDockReturnSelect.value
+				autoDockReturn: +autoDockReturnSelect.value,
+				mapRestoreType: +mapRestoreTypeSelect.value
 			}), "PUT")];
 			if (labModeSwitch.checked !== oldLabStatus) {
 				promises.push(fn.prequestWithPayload("api/set_lab_status", JSON.stringify({ lab_status: labStatus }), "PUT"));

@@ -380,7 +380,13 @@
 			"autoDockDelay": "Verzögern",
 			"autoDockChooseDelay": "Wählen Sie Verzögerung ...",
 			"autoDockDelayPrompt": "Bitte geben Sie die Verzögerung in Minuten ({{range}}) ein, nach der der Leerlaufroboter zum Dock zurückkehren soll:",
-			"autoDockDelayErr": "Der angegebene Wert fällt nicht in den zulässigen Bereich."
+			"autoDockDelayErr": "Der angegebene Wert fällt nicht in den zulässigen Bereich.",
+			"mapRestoreTypeTitle": "Map-Wiederherstellungstyp",
+			"mapRestoreTypeDesc": "definiert die Methode für die experimentelle Kartenwiederherstellung",
+			"restoreTypeDefault": "Standard",
+			"restoreTypeRestart": "Neustart Dienstes",
+			"restoreTypeCleaning": "Reinigungssequenz",
+			"restoreTypeNative": "Backup-Wiederherstellung"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Lautstärkeeinstellungen",

@@ -384,7 +384,13 @@
 			"autoDockDelay": "Интервал",
 			"autoDockChooseDelay": "Выбрать интервал...",
 			"autoDockDelayPrompt": "Укажите интервал в минутах ({{range}}), по истечении которого бездействующий робот должен вернуться к док-станции:",
-			"autoDockDelayErr": "Введенное значение не соответствует разрешенному диапазону."
+			"autoDockDelayErr": "Введенное значение не соответствует разрешенному диапазону.",
+			"mapRestoreTypeTitle": "Тип загрузки карты",
+			"mapRestoreTypeDesc": "определяет метод восстановления сохраненных карт",
+			"restoreTypeDefault": "По умолчанию",
+			"restoreTypeRestart": "Перезапуск сервисов",
+			"restoreTypeCleaning": "Инициализация уборки",
+			"restoreTypeNative": "Загрузка бэкапа"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Настройка уровня громкости",

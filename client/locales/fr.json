@@ -380,7 +380,13 @@
 			"autoDockDelay": "Retard",
 			"autoDockChooseDelay": "Choisissez le délai...",
 			"autoDockDelayPrompt": "Veuillez entrer le délai en minutes ({{range}}) après lequel le robot inactif devrait retourner au quai:",
-			"autoDockDelayErr": "La valeur spécifiée ne tombe pas dans la plage autorisée."
+			"autoDockDelayErr": "La valeur spécifiée ne tombe pas dans la plage autorisée.",
+			"mapRestoreTypeTitle": "Type de restauration de carte",
+			"mapRestoreTypeDesc": "définit la méthode à utiliser pour la restauration expérimentale de cartes",
+			"restoreTypeDefault": "Défaut",
+			"restoreTypeRestart": "Redémarrage du service",
+			"restoreTypeCleaning": "Séquence de nettoyage",
+			"restoreTypeNative": "Récupération de sauvegarde"
 		},
 		"soundAndVoice": {
 			"volumeSettings": "Paramètre du son",
