@@ -145,6 +145,8 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 					if (parameters.box.maxY < y) parameters.box.maxY = y;
 					parameters.pixels[k] = v;
 				}
+			} else {
+				parameters.box = { minX: 0, minY: 0, maxX: 100, maxY: 100 }
 			}
 			result[type] = parameters;
 			break;

@@ -83,7 +83,7 @@
 						}
 					} else {
 						map.updateSegmentNames(segmentNames);
-						map.updateMap(map.parseMap(gzippedMapData));
+						map.updateMap(map.parseMap(gzippedMapData),true);
 					}
 					map.initWebSocket();
 					resolve(map);

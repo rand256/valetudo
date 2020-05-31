@@ -213,16 +213,32 @@ export function VacuumMap(canvasElement) {
 	 * Public function to update mapdata and call internal update to redraw it.
 	 * Data is distributed into the subcomponents for rendering the map / path.
 	 * @param {object} mapData - parsed by RRMapParser data from "/api/map/latest" route
+	 * @param {bool} initial - should be set to true when user reopens the map
 	 */
-	function updateMap(mapData) {
+	function updateMap(mapData,initial) {
 		parsedMap = mapData;
 		updateMapInt();
+		if (initial) {
+			checkTranslatePosition();
+		}
+	}
+
+	// makes sure map is still visible on canvas and fixes that if it's not
+	function checkTranslatePosition() {
+		const ctx = canvas.getContext('2d'), tmatrix = ctx.getTransform();
+		if (!(-tmatrix.e < (parsedMap.image.box.maxX - 50)*currentScale && -tmatrix.e > (parsedMap.image.box.minX + 50)*currentScale - canvas.width)) {
+			tmatrix.e = (-parsedMap.image.box.minX + 25)*currentScale;
+		}
+		if (!(-tmatrix.f < (parsedMap.image.box.maxY - 50)*currentScale && -tmatrix.f > (parsedMap.image.box.minY + 50)*currentScale - canvas.height)) {
+			tmatrix.f = (-parsedMap.image.box.minY + 25)*currentScale;
+		}
+		ctx.setTransform(tmatrix.a,tmatrix.b,tmatrix.c,tmatrix.d,tmatrix.e,tmatrix.f);
 	}
 
 	/**
 	 * Private function to update the displayed mapdata periodically.
 	 */
-	function updateMapInt(mapData) {
+	function updateMapInt() {
 		mapDrawer.draw(parsedMap.image);
 		if (options.noPath) {
 			pathDrawer.setPath({},{});
@@ -307,13 +323,10 @@ export function VacuumMap(canvasElement) {
 			canvas.height / (boundingBox.maxY - boundingBox.minY + 50)
 		),6.5),0.7);
 		const sst = fetchScaleTranslate();
-
 		currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
 		ctx.scale(currentScale, currentScale);
-		ctx.translate(
-			(sst.x < boundingBox.maxX - 50 && sst.x > boundingBox.minX + 50 - canvas.width/currentScale) ? -sst.x : -boundingBox.minX + 25,
-			(sst.y < boundingBox.maxY - 50 && sst.y > boundingBox.minY + 50 - canvas.height/currentScale) ? -sst.y : -boundingBox.minY + 25
-		);
+		ctx.translate(-sst.x,-sst.y);
+		checkTranslatePosition();
 
 		function clearContext(ctx) {
 			ctx.save();
