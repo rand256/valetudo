@@ -325,7 +325,9 @@ export function VacuumMap(canvasElement) {
 		const sst = fetchScaleTranslate();
 		currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
 		ctx.scale(currentScale, currentScale);
-		ctx.translate(-sst.x,-sst.y);
+		if (!isNaN(sst.x) && !isNaN(sst.y)) {
+			ctx.translate(-sst.x,-sst.y);
+		}
 		checkTranslatePosition();
 
 		function clearContext(ctx) {
