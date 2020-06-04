@@ -320,8 +320,8 @@
 			"totalCleanedArea": "Całkowity czyszczony obszar:",
 			"totalHours": "Łączne godziny sprzątania:",
 			"totalCount": "Całkowita ilość sprzątań:",
-			"hoursLeft": "Pozostało {{godziny}} godziny",
-			"hoursLeft_plural": "Pozostało {{godziny}} godzin",
+			"hoursLeft": "Pozostało {{hours}} godziny",
+			"hoursLeft_plural": "Pozostało {{hours}} godzin",
 			"confirm": "Czy naprawdę chcesz zresetować ten materiał eksploatacyjny?"
 		},
 		"info": {
@@ -401,7 +401,7 @@
 			"autoDockSleep": "We śnie",
 			"autoDockDelay": "Opóźnienie",
 			"autoDockChooseDelay": "Wybierz opóźnienie...",
-			"autoDockDelayPrompt": "Wprowadź opóźnienie w minutach ({{zakres}}), po którym bezczynny robot powinien wrócić do stacji dokującej:",
+			"autoDockDelayPrompt": "Wprowadź opóźnienie w minutach ({{range}}), po którym bezczynny robot powinien wrócić do stacji dokującej:",
 			"autoDockDelayErr": "Podana wartość nie mieści się w dozwolonym zakresie.",
 			"mapRestoreTypeTitle": "Typ przywracania mapy",
 			"mapRestoreTypeDesc": "określa metodę używaną do eksperymentalnego przywracania map",

@@ -46,7 +46,7 @@
 		</ons-list-item>
 		<ons-list-item>
 			<div class="left consumables-list-item-title" data-i18n="settings.consumables.sensorCleaning">
-				Sensor cleaning
+				Sensor Cleaning
 			</div>
 			<div class="center" id="settings-consumables-status-sensor" style="margin-left:5%" data-i18n="settings.loading">
 				loading...
@@ -123,10 +123,14 @@
 			loadingBarSettingsConsumables.setAttribute("indeterminate", "indeterminate");
 			fn.prequest("api/consumable_status")
 			.then((res) => {
-				consumableMainBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 300 - (res.consumables.main_brush_work_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.main_brush_work_time / 60 / 60)))});
-				consumableSideBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 200 - (res.consumables.side_brush_work_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.side_brush_work_time / 60 / 60)))});
-				consumableFilterStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 150 - (res.consumables.filter_work_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.filter_work_time / 60 / 60)))});
-				consumableSensorStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{count}} hours left", hours: (Math.max(0, 30 - (res.consumables.sensor_dirty_time / 60 / 60))).toFixed(1), count: Math.floor(Math.max(0, 300 - (res.consumables.sensor_dirty_time / 60 / 60)))});
+				res.consumables.main_brush_work_time = Math.max(0, 300 - (res.consumables.main_brush_work_time / 60 / 60)).toFixed(1);
+				res.consumables.side_brush_work_time = Math.max(0, 200 - (res.consumables.side_brush_work_time / 60 / 60)).toFixed(1);
+				res.consumables.filter_work_time = Math.max(0, 150 - (res.consumables.filter_work_time / 60 / 60)).toFixed(1);
+				res.consumables.sensor_dirty_time = Math.max(0, 30 - (res.consumables.sensor_dirty_time / 60 / 60)).toFixed(1);
+				consumableMainBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{hours}} hours left", hours: res.consumables.main_brush_work_time, count: +res.consumables.main_brush_work_time});
+				consumableSideBrushStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{hours}} hours left", hours: res.consumables.side_brush_work_time, count: +res.consumables.side_brush_work_time});
+				consumableFilterStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{hours}} hours left", hours: res.consumables.filter_work_time, count: +res.consumables.filter_work_time});
+				consumableSensorStatus.textContent = i18next.t('settings.consumables.hoursLeft', {defaultValue: "{{hours}} hours left", hours: res.consumables.sensor_dirty_time, count: +res.consumables.sensor_dirty_time});
 				consumableStatisticsArea.textContent = (res.summary[1] / 1000000).toFixed(1) + " " + i18next.t('common.m2',"m²");
 				consumableStatisticsHours.textContent = (res.summary[0] / 60 / 60).toFixed(1) + " " + i18next.t('common.hours',{defaultValue: "hours", count: Math.floor(res.summary[0] / 60 / 60)});
 				consumableStatisticsCount.textContent = res.summary[2];
