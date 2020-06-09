@@ -548,10 +548,10 @@
 					stopButton.removeAttribute("disabled");
 				}
 
-				if ([5,6,8,9,11,16,17,18].includes(res.state)) {
-					homeButton.setAttribute("disabled", "disabled");
-				} else {
+				if ([2,3,5,10,11,12,16,17,18].includes(res.state)) {
 					homeButton.removeAttribute("disabled");
+				} else {
+					homeButton.setAttribute("disabled", "disabled");
 				}
 
 				if ([2,3,10].includes(res.state)) {
