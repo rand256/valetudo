@@ -201,7 +201,7 @@
 		window.fn.reload_map_buttons = function(res) {
 			res = res || document.querySelector('.map-page-status').dataset;
 			if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
-				if ([2,3,10].includes(res.state)) {
+				if ([2,3,10,12].includes(res.state)) {
 					document.getElementById("pause_cleaning").style.display = 'none';
 					document.getElementById("start_cleaning").style.display = '';
 					if (res.in_cleaning !== 2) {
@@ -222,8 +222,8 @@
 					document.getElementById("start_cleaning").style.display = 'none';
 				}
 			}
-			// resume available in paused and charger disconnected while in cleaning states
-			if (res.state === 10 || (res.state === 2 && res.in_cleaning > 0)) {
+			// resume available in paused, error and charger disconnected while in cleaning states
+			if (res.state === 10 || [2,12].includes(res.state) && res.in_cleaning > 0) {
 				document.getElementById("resume_cleaning").style.display = '';
 			} else {
 				document.getElementById("resume_cleaning").style.display = 'none';
@@ -235,13 +235,13 @@
 				document.getElementById("stop_cleaning").style.display = '';
 			}
 			// goto available in paused, idle and charging states
-			if ([2,3,8,10].includes(res.state)) {
+			if ([2,3,8,10,12].includes(res.state)) {
 				document.getElementById("goto").style.display = '';
 			} else {
 				document.getElementById("goto").style.display = 'none';
 			}
 			// spot available in paused and idle states
-			if ([2,3,10].includes(res.state)) {
+			if ([2,3,10,12].includes(res.state)) {
 				document.getElementById("spot_clean").style.display = '';
 			} else {
 				document.getElementById("spot_clean").style.display = 'none';
@@ -282,7 +282,7 @@
 		}
 		document.getElementById("resume_cleaning").onclick = () => {
 			const res = document.querySelector('.map-page-status').dataset;
-			if (+res.state === 10 || +res.state === 2) {
+			if ([2,10,12].includes(+res.state)) {
 				if (+res.in_returning === 1 || res.model === "rockrobo.vacuum.v1" && +res.in_cleaning === 0 && +res.state === 10) { // Gen1 is missing in_returning state
 					put_command("drive_home","resume_cleaning");
 					return;
