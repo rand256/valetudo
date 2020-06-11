@@ -61,7 +61,6 @@
 			"selectZones": "Seleziona zone da pulire:",
 			"selectMapToLoad": "Seleziona la mappa da caricare:",
 			"emptyZoneChosen": "Hai selezionato un'area vuota. Si prega di impostare prima la zona desiderata.",
-			"tooManyZones": "Hai selezionato {{count}} zone, é possibile selezionarne un massimo di 5!",
 			"chooseMapName": "Imposta nome mappa:",
 			"invalidMapName": "Il nome della mappa può contenere solo lettere, numeri, spazi e caratteri latini.",
 			"slotAlreadyTaken": "Slot #{{slot}} giá occupato",
@@ -93,8 +92,7 @@
 		"errorText": "{{errore}}",
 		"confirmFullCleaning": "Impossibile avviare la pulizia delle zone: nessuna zona impostata. Vuoi invece iniziare una pulizia completa?",
 		"cannotResume": "Nessuna pulizia in corso!",
-		"noGotoTarget": "Devi selezionare un punto per il bersaglio",
-		"tooManyZones": "Non puoi aggiungere più di 5 zone contemporaneamente alla mappa!"
+		"noGotoTarget": "Devi selezionare un punto per il bersaglio"
 	},
 	"zones": {
 		"headerZones": "Zone configurate",
@@ -121,7 +119,6 @@
 		"confirmDeleteZone": "Sei sicuro di voler eliminare la zona \"{{zone}}\" ?",
 		"zonesPageBack": "Zone",
 		"zoneEditTitle": "Per modificare una zona: {{zone}}",
-		"tooManySubzones": "Non puoi aggiungere più di 5 sotto-zone a una zona!",
 		"tooManyMarkers": "Non puoi aggiungere più zone proibite alla mappa!",
 		"zonesSavedOK": "Zona salvata correttamente!",
 		"spotsPageBack": "Punti",
@@ -208,7 +205,6 @@
 		"noMapSpecified": "Devi selezionare il nome della mappa.",
 		"selectedZones": "Zone selezionate: {{zonesList}} ({{subzonesCount}}/5)",
 		"selectZoneIterations": "Fare clic più volte per selezionare il numero di cicli di pulizia.",
-		"tooManyZones": "Sono state selezionate troppe zone secondarie!  Numero massimo consentito - 5, hai selezionato - {{zonesCount}}.",
 		"noSegmentsSupported": "La pulizia delle stanze non é supportata dal firmware del tuo dispositivo.",
 		"selectedSegments": "Attualmente selezionato: {{segmentsList}}",
 		"noMapAvailable": "Mi dispiace, la mappa é temporaneamente non disponibile.",
@@ -444,7 +440,6 @@
 			"DNDSchedule": "Timer NonDisturbare inizia alle {{startHour}}:{{startMinute}} e finisce alle {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "Nessuno schema NonDisturbare é giá stato impostato.",
 			"confirmDisableDND": "Vuoi davvero disabilitate il NonDisturbare?",
-			"tooManyZones": "Non puoi selezionare più di 5 zone per sessione di pulizia",
 			"notEnoughDataDND": "Non posso salvare il timer NonDisturbare se non vengono forniti tutti i dettagli!",
 			"missingHoursMinutes": "Sia i minuti che le ore devono essere specificati!",
 			"missingName": "Devi impostare un nome.",

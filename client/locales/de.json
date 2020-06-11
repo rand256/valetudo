@@ -62,7 +62,6 @@
 			"selectZones": "Zonen zur Reinigung wählen:",
 			"selectMapToLoad": "Karte zum Laden auswählen:",
 			"emptyZoneChosen": "Es wurde eine leere Zone gewählt. Bitte zuerst die Zone einrichten.",
-			"tooManyZones": "Es wurde versucht {{count}} Unterzonen auszuwählen. Es werden maximal 5 Unterzonen unterstützt.",
 			"chooseMapName": "Name zum Speichern der Karte wählen:",
 			"invalidMapName": "Nur Buchstaben von A-Z (keine Umlaute), Nummern, Leerzeichen und Bindestriche sind zulässig.",
 			"slotAlreadyTaken": "Speicherplatz #{{slot}} ist bereits belegt",
@@ -94,8 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Zonenreinigung nicht möglich, keine Zonen angegeben. Soll stattdessen eine komplette Reinigung gestartet werden?",
 		"cannotResume": "Keine Tätigkeiten zur Fortsetzung!",
-		"noGotoTarget": "Sie müssen ein Ziel auf der Karte auswählen.",
-		"tooManyZones": "Es können maximal 5 Bereiche zur Karte hinzugefügt werden."
+		"noGotoTarget": "Sie müssen ein Ziel auf der Karte auswählen."
 	},
 	"zones": {
 		"headerZones": "Gespeicherte Zonen",
@@ -122,7 +120,6 @@
 		"confirmDeleteZone": "Soll die Zone \"{{zone}}\" wirklich gelöscht werden?",
 		"zonesPageBack": "Zonen",
 		"zoneEditTitle": "Bearbeiten von Zone: {{zone}}",
-		"tooManySubzones": "Es können nicht mehr als 5 Unterzonen in einer Zone gesetzt werden.",
 		"tooManyMarkers": "Es können keine weiteren Verbotsmarker gesetzt werden!",
 		"zonesSavedOK": "Zone erfolgreich gespeichert!",
 		"spotsPageBack": "Ziele",
@@ -209,7 +206,6 @@
 		"noMapSpecified": "Sie müssen eine Karte auswählen.",
 		"selectedZones": "Aktuell ausgewählte Zonen:\n{{zonesList}} ({{subzonesCount}}/5 Zonen)",
 		"selectZoneIterations": "Mehrfachauswahl der gleichen Zone erhöht die Anzahl der Reinigungsvorgänge.",
-		"tooManyZones": "Es wurden zu viele Zonen ausgewählt! Erlaubt - 5, Ausgewählt - {{zonesCount}}.",
 		"noSegmentsSupported": "Gerätefirmware unterstützt die Raumreinigung nicht.",
 		"selectedSegments": "Aktuell ausgewählte Räume: {{segmentsList}}",
 		"noMapAvailable": "Leider ist die Karte derzeit nicht verfügbar.",
@@ -444,7 +440,6 @@
 			"DNDSchedule": "\"Bitte nicht stören\"-Zeitraum startet um {{startHour}}:{{startMinute}} und endet um {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "\"Bitte nicht stören\"-Zeiten sind noch nicht konfiguriert.",
 			"confirmDisableDND": "Soll \"Bitte nicht stören\" wirklich deaktiviert werden?",
-			"tooManyZones": "Es können nicht mehr als 5 Zonen in einer Reinigungssitzung verwendet werden.",
 			"notEnoughDataDND": "\"Bitte nicht stören\"-Zeit konnte nicht gespeichert werden, da nicht alle erforderlichen Attribute angegeben wurden!",
 			"missingHoursMinutes": "Es müssen sowohl Minuten als auch Stunden angegeben werden.",
 			"missingName": "Es sollte ein Name angeben werden.",

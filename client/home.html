@@ -276,12 +276,6 @@
 						e.stopPropagation();
 						if (e.target.checked) {
 							// checked right now
-							var attemptedLength = calcPayload().length + zones[e.target.dataset.id].coordinates.length;
-							if (attemptedLength > 5) {
-								ons.notification.alert(i18next.t('home.popups.tooManyZones',{defaultValue: "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.", count: attemptedLength}),{title: i18next.t('common.attention',"Attention!")});
-								e.target.checked = false;
-								return;
-							}
 							e.target.dataset.num = ++zoneNumber;
 							e.target.parentNode.nextElementSibling.textContent = '[' + e.target.dataset.num + '/' + zones[e.target.dataset.id].coordinates.length + ']';
 							e.target.parentNode.parentNode.classList.add('zone_selected');

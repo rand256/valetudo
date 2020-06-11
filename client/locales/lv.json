@@ -62,7 +62,6 @@
 			"selectZones": "Izvēlieties zonas tīrīšanai:",
 			"selectMapToLoad": "Izvēlieties karti kuru vēlaties ielādēt:",
 			"emptyZoneChosen": "Jūs izvēlējāties tukšu zonu tīrīšanai. Izveidojiet zonu un mēģiniet vēlreiz.",
-			"tooManyZones": "Jūs mēģinat izvēlēties {{count}} apakšzonas, ir atļauts ne vairāk par 5 apakšzonām.",
 			"chooseMapName": "Norādiet nosaukumu ar kuru vēlaties saglabāt karti:",
 			"invalidMapName": "Virsrakstā var būt tikai latīņu burti vai cipari, atstarpes un defise.",
 			"slotAlreadyTaken": "Slots #{{slot}} ir jau aizņemts",
@@ -94,8 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nevar sākt zonu tīrīšanu: nav norādītas zonas. Vai vēlaties tā vietā veikt pilnu tīrīšanu?",
 		"cannotResume": "Nav darbības ko atsākt!",
-		"noGotoTarget": "Norādiet punktu kartē uz kuru doties.",
-		"tooManyZones": "Jūs nevarat norādīt vairāk par 5 zonām kartē."
+		"noGotoTarget": "Norādiet punktu kartē uz kuru doties."
 	},
 	"zones": {
 		"headerZones": "Tīrāmās zonas",
@@ -122,7 +120,6 @@
 		"confirmDeleteZone": "Vai esat drošs, ka vēlaties dzēst zonu \"{{zone}}\"?",
 		"zonesPageBack": "Zonas",
 		"zoneEditTitle": "Zonas rediģēšana: {{zone}}",
-		"tooManySubzones": "Jūs nevarat pievienot vienai zonai vairāk par 5 apakšzonām.",
 		"tooManyMarkers": "Pārāk daudz aizliegto marķieru kartē!",
 		"zonesSavedOK": "Veiksmīgi saglabāta zona!",
 		"spotsPageBack": "Punkti",
@@ -209,7 +206,6 @@
 		"noMapSpecified": "Jums jāizvēlas kartes nosaukums.",
 		"selectedZones": "Pašreiz atlasīts: {{zonesList}} ({{subzonesCount}}/5 apakšzonas)",
 		"selectZoneIterations": "Noklikšķiniet vairākas reizes, lai noregulētu iterāciju skaitu.",
-		"tooManyZones": "Atlasīts pārāk daudz apakšzonu! Atļauts - 5, pieprasīts - {{zonesCount}}.",
 		"noSegmentsSupported": "Jūsu ierīces programmaparatūra neatbalsta telpu režīma uzkopšanu.",
 		"selectedSegments": "Pašreiz atlasīts: {{segmentsList}}",
 		"noMapAvailable": "Atvainojiet, karte šobrīd nav pieejama.",
@@ -445,7 +441,6 @@
 			"DNDSchedule": "Nakts režīms sākas {{startHour}}:{{startMinute}} un beidzas {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "Nakts režīma taimeris nav iestatīts.",
 			"confirmDisableDND": "Vai tiešām vēlaties izslēgt nakts režīmu?",
-			"tooManyZones": "Vienā tīrīšanas sesijā nevar izmantot vairāk kā 5 zonas.",
 			"notEnoughDataDND": "Nakts taimeri nav iespējams saglabāt, jo ne visi nepieciešamie lauki ir aizpildīti!",
 			"missingHoursMinutes": "Jānorāda gan stundas, gan minūtes.",
 			"missingName": "Jums jānorāda nosaukums.",

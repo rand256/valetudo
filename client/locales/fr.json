@@ -61,7 +61,6 @@
 			"selectZones": "Sélectionnez les zones à nettoyer:",
 			"selectMapToLoad": "Sélectionnez un emplacement à partir duquel charger la carte:",
 			"emptyZoneChosen": "Vous avez choisi une zone vide à nettoyer. Veuillez d'abord la configurer.",
-			"tooManyZones": "Vous avez essayé de choisir {{count}} sous-zones, alors qu'il est possible d'utiliser 5 sous-zones au maximum.",
 			"chooseMapName": "Choisissez un titre pour enregistrer les fichiers de carte sous:",
 			"invalidMapName": "Le titre ne peut contenir que des lettres ou des chiffres latins, des espaces et des tirets.",
 			"slotAlreadyTaken": "Le slot #{{slot}} est déjà occupé",
@@ -93,8 +92,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Impossible de démarrer le nettoyage zoné: aucune zone spécifiée. Voulez-vous exécuter un nettoyage complet à la place?",
 		"cannotResume": "Aucun résumé!",
-		"noGotoTarget": "Vous devez choisir un emplacement pour Goto.",
-		"tooManyZones": "Vous ne pouvez pas ajouter plus de 5 zones sur la carte."
+		"noGotoTarget": "Vous devez choisir un emplacement pour Goto."
 	},
 	"zones": {
 		"headerZones": "Zones configurées",
@@ -121,7 +119,6 @@
 		"confirmDeleteZone": "Êtes-vous sûr de vouloir supprimer la zone \"{{zone}}\"?",
 		"zonesPageBack": "Zones",
 		"zoneEditTitle": "Edition de la zone: {{zone}}",
-		"tooManySubzones": "Vous ne pouvez pas ajouter plus de 5 sous-zones dans une seule zone.",
 		"tooManyMarkers": "Vous ne pouvez pas ajouter plus de marqueurs interdits sur la carte!",
 		"zonesSavedOK": "Zone enregistrée avec succès!",
 		"spotsPageBack": "Spots",
@@ -208,7 +205,6 @@
 		"noMapSpecified": "Vous devez sélectionner le nom de la carte.",
 		"selectedZones": "Actuellement sélectionné: {{zonesList}} ({{subzonesCount}}/5 subzones)",
 		"selectZoneIterations": "Cliquez plusieurs fois pour régler le nombre de passage.",
-		"tooManyZones": "Trop de sous-zones sélectionnées! Permis - 5, demandé - {{zonesCount}}.",
 		"noSegmentsSupported": "Le nettoyage des pièces n'est pas pris en charge dans le micrologiciel de votre appareil.",
 		"selectedSegments": "Actuellement sélectionné: {{segmentsList}}",
 		"noMapAvailable": "Désolé, la carte est actuellement indisponible.",
@@ -444,7 +440,6 @@
 			"DNDSchedule": "NPD commencera à {{startHour}}:{{startMinute}} et se terminera le {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "Aucun programme NPD n'est encore configuré.",
 			"confirmDisableDND": "Voulez-vous vraiment désactiver le NPD?",
-			"tooManyZones": "Vous ne pouvez pas utiliser plus de 5 zones en une seule session de nettoyage.",
 			"notEnoughDataDND": "Impossible d'enregistrer le minuteur NPD car tous les attributs requis ne sont pas fournis!",
 			"missingHoursMinutes": "Les minutes et les heures doivent être spécifiées.",
 			"missingName": "Vous devez spécifier un nom.",

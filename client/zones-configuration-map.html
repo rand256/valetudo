@@ -43,11 +43,7 @@
 		}
 
 		document.getElementById("zones-configuration-add-zone").onclick = () => {
-			if (map.getLocations().zones.length < 5) {
-				map.addZone();
-			} else {
-				fn.notificationToastError(i18next.t('zones.tooManySubzones',"You can\'t add more than 5 subzones into a single zone."));
-			}
+			map.addZone();
 		}
 		document.getElementById("zones-configuration-iterations").onclick = () => {
 			map.addIterationsToZone();

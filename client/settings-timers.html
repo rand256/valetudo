@@ -198,10 +198,6 @@
 				coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
 			}
 			coords = coords.concat(coordinates);
-			if (coords.length > 5) {
-				fn.notificationToastError(i18next.t('settings.timers.tooManyZones',"You can't use more than 5 zones in one cleaning session."));
-				return;
-			}
 			let anchor = document.querySelector('#add-timer-form > hr');
 			anchor.parentNode.insertBefore(ons.createElement(
 				'<ons-row><ons-col width="100px" class="delete-field-link" onclick="removeTimerLocation(this);">[x] (' + (i18next.t('settings.timers.zoneCount',{defaultValue: "{{count}} zone" + (coordinates.length !== 1 ? "s" : ""), count: coordinates.length})) + ')</ons-col><ons-col><ons-input type="hidden" name="zoned_timer_coords[]" value="' + JSON.stringify(coordinates) + '" disabled>' + name + '</ons-col></ons-row>'

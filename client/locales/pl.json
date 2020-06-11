@@ -83,7 +83,6 @@
 			"selectZones": "Wybierz strefy do sprzątania:",
 			"selectMapToLoad": "Wybierz mapę do załadowania:",
 			"emptyZoneChosen": "Wybrano pustą strefę. Proszę najpierw ustawić strefy.",
-			"tooManyZones": "Wybrano {{count}} stref, podczas gdy można wybrać do 5 stref.",
 			"chooseMapName": "Wprowadź nazwę mapy do zapisania:",
 			"invalidMapName": "Nazwa może zawierać only litery i liczby, spacje i myślnik",
 			"slotAlreadyTaken": "Miejsce #{{slot}} jest już zajęte",
@@ -115,8 +114,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nie można rozpocząć sprzątania strefowego. Czy rozpocząć pełne sprzątanie?",
 		"cannotResume": "Nie można kontynuować!",
-		"noGotoTarget": "Należy wybrać miejsce dla komendy Idź do na mapie.",
-		"tooManyZones": "Nie można dodać więcej niż 5 stref na mapie."
+		"noGotoTarget": "Należy wybrać miejsce dla komendy Idź do na mapie."
 	},
 	"zones": {
 		"headerZones": "Skonfigurowane strefy",
@@ -143,7 +141,6 @@
 		"confirmDeleteZone": "Czy na pewno usunąć strefę \"{{zone}}\"?",
 		"zonesPageBack": "Strefy",
 		"zoneEditTitle": "Edycja strefy: {{zone}}",
-		"tooManySubzones": "Nie można dodać ponad 5 podstref do jednej strefy.",
 		"tooManyMarkers": "Nie można dodać więcej stref zakazanych na mapie!",
 		"zonesSavedOK": "Poprawnie zapisano strefę!",
 		"spotsPageBack": "Miejsce",
@@ -230,7 +227,6 @@
 		"noMapSpecified": "Musisz wybrać nazwę mapy.",
 		"selectedZones": "Aktualnie wybrane: {{zoneList}} ({{subzonesCount}}/5 podstref)",
 		"selectZoneIterations": "Kliknij wiele razy, aby dostroić liczbę iteracji.",
-		"tooManyZones": "Wybrano zbyt wiele podstref! Dozwolone - 5, wymagane - {{zoneCount}}.",
 		"noSegmentsSupported": "Sprzątanie pokoi nie jest wspierane przez oprogramowanie urządzenia.",
 		"selectedSegments": "Obecnie wybrano: {{segmentsList}}",
 		"noMapAvailable": "Przepraszamy, mapa jest obecnie niedostępna.",
@@ -466,7 +462,6 @@
 			"DNDSchedule": "DND rozpocznie się o {{startHour}}: {{startMinute}} i zakończy się {{endHour}}: {{endMinute}}",
 			"noDNDSchedule": "Nie skonfigurowano jeszcze harmonogramu DND.",
 			"confirmDisableDND": "Czy naprawdę chcesz wyłączyć DND?",
-			"tooManyZones": "Podczas jednej sesji sprzątania nie można użyć więcej niż 5 stref.",
 			"notEnoughDataDND": "Nie można zapisać harmonogramu DND, ponieważ nie wszystkie wymagane atrybuty są podane!",
 			"missingHoursMinutes": "Należy podać zarówno minuty, jak i godziny.",
 			"missingName": "Powinieneś podać nazwę.",

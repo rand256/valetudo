@@ -82,7 +82,6 @@
 			"selectZones": "Selecteer zones om stof te zuigen:",
 			"selectMapToLoad": "Selecteer de map die geladen dient te worden:",
 			"emptyZoneChosen": "Je hebt een lege zone gekozen. Definieer deze eerst.",
-			"tooManyZones": "Je hebt {{count}} subzones gekozen. Het maximum is 5.",
 			"chooseMapName": "Onder welke naam dient de map opgeslagen te worden?",
 			"invalidMapName": "De naam mag alleen letters, nummers, spaties of streepjes bevatten.",
 			"slotAlreadyTaken": "Nummer #{{slot}} is reeds bezet",
@@ -114,8 +113,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Kan de zone(s) niet schoonmaken: geen zone opgegeven. Wil je een volledige schoonmaak starten?",
 		"cannotResume": "Niks om te hervatten!",
-		"noGotoTarget": "Je moet een plek op de kaart kiezen om naar te gaan.",
-		"tooManyZones": "Je kunt maximaal 5 gebieden definiëren."
+		"noGotoTarget": "Je moet een plek op de kaart kiezen om naar te gaan."
 	},
 	"zones": {
 		"headerZones": "Geconfigureerde zones",
@@ -142,7 +140,6 @@
 		"confirmDeleteZone": "Weet je zeker dat je zone \"{{zone}}\" wilt verwijderen?",
 		"zonesPageBack": "Zones",
 		"zoneEditTitle": "Bewerken van zone: {{zone}}",
-		"tooManySubzones": "Je kunt maximaal 5 gebieden in een zone definiëren.",
 		"tooManyMarkers": "Je hebt maximale aantal verboden gebieden bereikt!",
 		"zonesSavedOK": "Zone is met succes opgeslagen!",
 		"spotsPageBack": "Plekken",
@@ -228,7 +225,6 @@
 		"noMapSpecified": "U moet de kaartnaam selecteren.",
 		"selectedZones": "Momenteel geselecteerd: {{zonesList}} ({{subzonesCount}}/5 subzones)",
 		"selectZoneIterations": "Klik meerdere keren om het aantal iteraties af te stemmen.",
-		"tooManyZones": "Je hebt te veel zones opgegeven!\nMaximum is 5, jij hebt {{zonesCount}} zones opgegeven.",
 		"noSegmentsSupported": "Het opschonen van kamers wordt niet ondersteund in de firmware van uw apparaat.",
 		"selectedSegments": "Momenteel geselecteerd: {{segmentsList}}",
 		"noMapAvailable": "Sorry, de map is momenteel niet beschikbaar.",
@@ -464,7 +460,6 @@
 			"DNDSchedule": "Niet Storen zal starten om {{startHour}}:{{startMinute}} en eindigen om {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "Niet Storen schema is niet geconfigureerd.",
 			"confirmDisableDND": "Weet je zeker dat jet Niet Storen wilt uitzetten?",
-			"tooManyZones": "Je kunt maximaal 5 zones per schoonmaakactie opgeven.",
 			"notEnoughDataDND": "Kan de Niet Storen timer niet opslaan, er ontbreken nog gegevens!",
 			"missingHoursMinutes": "Zowel de minuten als uren dienen te worden gespecificeerd",
 			"missingName": "Geef een naam op.",

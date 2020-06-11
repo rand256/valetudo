@@ -62,7 +62,6 @@
 			"selectZones": "Válaszd ki a zónákat takarításhoz:",
 			"selectMapToLoad": "Térkép betöltése innen:",
 			"emptyZoneChosen": "Egy üres területet választottál ki. Kérlek állítsd be először a kívánt zónát.",
-			"tooManyZones": "{{count}} alzónát próbáltál kiválasztani, de legfeljebb 5 választható ki!",
 			"chooseMapName": "Válassz egy nevet a térképnek:",
 			"invalidMapName": "A térkép neve csak latin betűket, számokat, szóközt és kötőjeleket tartalmazhat.",
 			"slotAlreadyTaken": "A #{{slot}} térképmemória hely foglalt!",
@@ -94,8 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nem lehet a zóna takarítást elindítani: nincsenek zónák beállítva. El akarsz helyette egy teljes takarítást indítani?",
 		"cannotResume": "Nincsen folyamatban takarítás!",
-		"noGotoTarget": "Ki kell választanod egy pontot a Goto célponthoz.",
-		"tooManyZones": "Nem tudsz 5-nél több zónát hozzáadni a térképhez!"
+		"noGotoTarget": "Ki kell választanod egy pontot a Goto célponthoz."
 	},
 	"zones": {
 		"headerZones": "Konfigurált zónák",
@@ -122,7 +120,6 @@
 		"confirmDeleteZone": "Biztos vagy benne hogy ki akarod törölni a \"{{zone}}\" zónát?",
 		"zonesPageBack": "Zónák",
 		"zoneEditTitle": "Zóna szerkesztése: {{zone}}",
-		"tooManySubzones": "Nem tudsz 5-nél több alzónát hozzáadni a zónához!",
 		"tooManyMarkers": "Nem tudsz több tiltott zónát hozzáadni a térképhez!",
 		"zonesSavedOK": "Sikeresen mentésre került a zóna!",
 		"spotsPageBack": "Pontok",
@@ -209,7 +206,6 @@
 		"noMapSpecified": "Meg kell adni egy nevet a térképnek.",
 		"selectedZones": "Jelenleg kiválasztva: {{zonesList}} ({{subzonesCount}}/5 alzóna)",
 		"selectZoneIterations": "Kattints többször, hogy kiválaszd a takarítási körök számát.",
-		"tooManyZones": "Túl sok alzóna került kiválasztra! Engedélyezett - 5, kiválasztott - {{zonesCount}}.",
 		"noSegmentsSupported": "A szoba takarítás nem elérhető a porszívód jelenlegi firmware-jén.",
 		"selectedSegments": "Jelenleg kiválasztva: {{segmentsList}}",
 		"noMapAvailable": "A térkép jelenleg nem elérhető.",
@@ -445,7 +441,6 @@
 			"DNDSchedule": "A Ne zavarjanak időszak elindul {{startHour}}:{{startMinute}}-kor és véget ér {{endHour}}:{{endMinute}}-kor",
 			"noDNDSchedule": "Nincs jelenleg Ne zavarjanak időzítő beállítva.",
 			"confirmDisableDND": "Biztos ki akarod kapcsolni a Ne zavarjanak funkciót?",
-			"tooManyZones": "Nem jelölhetsz ki 5-nél több zónát egy takarítás során!",
 			"notEnoughDataDND": "Nem sikerült menteni a Ne zavarjanak beállításokat, mert nincs mindegyik kötelező mező kitöltve!",
 			"missingHoursMinutes": "Az óra és perc megadása is kötelező!",
 			"missingName": "Meg kell adnod egy nevet.",

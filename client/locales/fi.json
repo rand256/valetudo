@@ -62,7 +62,6 @@
 			"selectZones": "Valitse siivottavat alueet:",
 			"selectMapToLoad": "Valitse, mistä kartta ladataan:",
 			"emptyZoneChosen": "Tyhjä alue valittu. Ole hyvä ja luo ensin alue.",
-			"tooManyZones": "Liikaa alialueita valittuna. Valitsit {{count}}, kun maksimimäärä on 5.",
 			"chooseMapName": "Tallennettavan kartan nimi:",
 			"invalidMapName": "Nimi voi sisältää ainoastaan latinalaisia kirjaimia ja numeroita, välilyöntejä sekä tavuviivoja.",
 			"slotAlreadyTaken": "Kohta #{{slot}} on jo varattu",
@@ -94,8 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Aluesiivouksen käynnistäminen ei onnistu, koska aluetta ei ole määritetty. Haluatko suorittaa täyden imuroinnin sen sijaan?",
 		"cannotResume": "Jatkaminen ei ole mahdollista!",
-		"noGotoTarget": "Sinun on valittava spotti, johon mennä.",
-		"tooManyZones": "Voit lisätä korkeintaan 5 aluetta karttaan."
+		"noGotoTarget": "Sinun on valittava spotti, johon mennä."
 	},
 	"zones": {
 		"headerZones": "Määritellyt alueet",
@@ -122,7 +120,6 @@
 		"confirmDeleteZone": "Haluatko varmasti poistaa alueen \"{{zone}}\"?",
 		"zonesPageBack": "Alueet",
 		"zoneEditTitle": "Muokataan aluetta {{zone}}",
-		"tooManySubzones": "Yksi alue voi sisältää korkeintaan 5 alialuetta.",
 		"tooManyMarkers": "Et voi lisätä enempää kiellettyjä-merkkejä kartalle!",
 		"zonesSavedOK": "Alueen tallennus onnistui!",
 		"spotsPageBack": "Spotit",
@@ -209,7 +206,6 @@
 		"noMapSpecified": "Sinun on valittava kartan nimi.",
 		"selectedZones": "Tällä hetkellä valittu: {{zonesList}} ({{subzonesCount}}/5 alialueesta)",
 		"selectZoneIterations": "Napsauta useita kertoja säätääksesi iteraatioiden lukumäärän.",
-		"tooManyZones": "Liian monta aluetta määritetty!\nSuurin sallitty määrä - 5, Ilmoitettu määrä - {{zonesCount}}.",
 		"noSegmentsSupported": "Laitteen laiteohjelmisto ei tue huoneen siivousta.",
 		"selectedSegments": "Tällä hetkellä valittu: {{segmentsList}}",
 		"noMapAvailable": "Kartta ei ole saatavilla tällä hetkellä.",
@@ -445,7 +441,6 @@
 			"DNDSchedule": "Älä häiritse alkaa klo {{startHour}}:{{startMinute}} ja loppuu klo {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "Älä häiritse -aikaa ei ole määritelty.",
 			"confirmDisableDND": "Haluatko varmasti poistaa älä häiritse -ajoituksen?",
-			"tooManyZones": "Voit käyttää korkeintaan 5 aluetta yhdessä aluesiivouksessa.",
 			"notEnoughDataDND": "Älä häiritse ajastimen tallennus ei onnistunut, koska kaikkia tarvittavia tietoja ei ole annettu!",
 			"missingHoursMinutes": "Sekä tunnit että minuutit tulee määritellä.",
 			"missingName": "Nimi on määriteltävä.",

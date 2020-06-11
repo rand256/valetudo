@@ -62,7 +62,6 @@
 			"selectZones": "Select zones for cleaning:",
 			"selectMapToLoad": "Select a slot to load the map from:",
 			"emptyZoneChosen": "You've chosen an empty zone to clean. Please set it up first.",
-			"tooManyZones": "You've attempted to choose {{count}} subzones, while it is possible to use 5 subzones at most.",
 			"chooseMapName": "Choose a title to save the map files as:",
 			"invalidMapName": "Title may contain only latin letters or numbers, spaces and hyphen.",
 			"slotAlreadyTaken": "Slot #{{slot}} is already occupied",
@@ -94,8 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
 		"cannotResume": "Nothing to resume!",
-		"noGotoTarget": "You need to choose a spot for Goto on map.",
-		"tooManyZones": "You can't add more than 5 zones onto the map."
+		"noGotoTarget": "You need to choose a spot for Goto on map."
 	},
 	"zones": {
 		"headerZones": "Configured zones",
@@ -122,7 +120,6 @@
 		"confirmDeleteZone": "Are you sure you want to delete zone \"{{zone}}\"?",
 		"zonesPageBack": "Zones",
 		"zoneEditTitle": "Editing zone: {{zone}}",
-		"tooManySubzones": "You can't add more than 5 subzones into a single zone.",
 		"tooManyMarkers": "You can't add more forbidden markers on the map!",
 		"zonesSavedOK": "Successfully saved zone!",
 		"spotsPageBack": "Spots",
@@ -209,7 +206,6 @@
 		"noMapSpecified": "You need to select the map name.",
 		"selectedZones": "Currently selected: {{zonesList}} ({{subzonesCount}}/5 subzones)",
 		"selectZoneIterations": "Click multiple times for tuning iterations count.",
-		"tooManyZones": "Too many subzones selected! Allowed - 5, requested - {{zonesCount}}.",
 		"noSegmentsSupported": "Room cleaning is not supported in your device's firmware.",
 		"selectedSegments": "Currently selected: {{segmentsList}}",
 		"noMapAvailable": "Sorry, the map is currently unavailable.",
@@ -445,7 +441,6 @@
 			"DNDSchedule": "DND will start at {{startHour}}:{{startMinute}} and end on {{endHour}}:{{endMinute}}",
 			"noDNDSchedule": "No DND schedule is configured yet.",
 			"confirmDisableDND": "Do you really want to disable DND?",
-			"tooManyZones": "You can't use more than 5 zones in one cleaning session.",
 			"notEnoughDataDND": "Could not save DND Timer since not all required attributes are provided!",
 			"missingHoursMinutes": "Both minutes and hours must be specified.",
 			"missingName": "You should specify a name.",
