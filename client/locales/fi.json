@@ -471,8 +471,6 @@
 			"hideMapStatusExt": "piilottaa tilatekstipalkin",
 			"hideSegmentMarkers": "Älä näytä huonemerkkejä",
 			"hideSegmentMarkersExt": "piilottaa huonevalintamerkit kartalla",
-			"disableMapReload": "Poista kartan uudelleenlatauksen painike käytöstä",
-			"disableMapReloadExt": "piilottaa pakotetun uudelleenlatauksen painikkeen kartassa",
 			"disableDynamicButtons": "Poista dynaamiset painikkeet käytöstä",
 			"disableDynamicButtonsExt": "näyttää ainoastaan kartan peruspainikkeet",
 			"applyChangesConfirm": "Haluatko ottaa muutokset käyttöön nyt?",

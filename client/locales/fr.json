@@ -470,8 +470,6 @@
 			"hideMapStatusExt": "cache le bloc avec le texte d'état",
 			"hideSegmentMarkers": "Ne pas afficher les marqueurs de pièce",
 			"hideSegmentMarkersExt": "cache les marqueurs de sélection de pièce sur la carte",
-			"disableMapReload": "Désactiver le bouton de rechargement de carte",
-			"disableMapReloadExt": "masque le bouton de rechargement forcé sur la carte",
 			"disableDynamicButtons": "Désactiver les boutons dynamiques",
 			"disableDynamicButtonsExt": "affiche uniquement les boutons de base de la carte",
 			"applyChangesConfirm": "Souhaitez-vous appliquer les modifications maintenant?",

@@ -471,8 +471,6 @@
 			"hideMapStatusExt": "elrejti a szövegdobozt a térképen.",
 			"hideSegmentMarkers": "Ne mutassa a szoba jelölőket",
 			"hideSegmentMarkersExt": "elrejti a szoba választó jelölőket a térképen",
-			"disableMapReload": "Térkép újratöltés gomb letiltása",
-			"disableMapReloadExt": "elrejti a térkép újratöltése gombot.",
 			"disableDynamicButtons": "Dinamikus gombok elrejtése",
 			"disableDynamicButtonsExt": "csak az alapvető gombok megjelenítése a térképen",
 			"applyChangesConfirm": "Szeretnéd menteni a változtatásokat most?",

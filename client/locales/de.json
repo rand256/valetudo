@@ -470,8 +470,6 @@
 			"hideMapStatusExt": "Blendet den Block mit dem Statustext aus",
 			"hideSegmentMarkers": "Raummarkierungen nicht auf der Karte anzeigen",
 			"hideSegmentMarkersExt": "Blendet die Raumauswahlmarkierungen aus",
-			"disableMapReload": "Schaltfläche zum erneuten Laden der Karte deaktivieren",
-			"disableMapReloadExt": "Entfernt die Schaltfläche zum Erzwingen des Nachladens auf der Karte",
 			"disableDynamicButtons": "Deaktiviert die dynamischen Schaltflächen",
 			"disableDynamicButtonsExt": "Zeigt nur die grundlegenden Schaltflächen auf der Karte",
 			"applyChangesConfirm": "Sollen die Änderungen jetzt übernommen werden?",

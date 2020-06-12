@@ -470,8 +470,6 @@
 			"hideMapStatusExt": "nasconde la casella di testo sulla mappa.",
 			"hideSegmentMarkers": "Non mostrare i markers delle stanze",
 			"hideSegmentMarkersExt": "nasconde gli indicatori di selezione della stanza sulla mappa",
-			"disableMapReload": "Disabilita il pulsante di ricarica della mappa",
-			"disableMapReloadExt": "nasconde il pulsante di ricarica della mappa.",
 			"disableDynamicButtons": "Nascondi pulsanti dinamici",
 			"disableDynamicButtonsExt": "mostra solo i pulsanti di base sulla mappa",
 			"applyChangesConfirm": "Vuoi salvare le modifiche ora?",

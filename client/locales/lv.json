@@ -471,8 +471,6 @@
 			"hideMapStatusExt": "slēpj bloku ar statusa tekstu",
 			"hideSegmentMarkers": "Nerādīt telpas marķierus",
 			"hideSegmentMarkersExt": "slēpj telpas izvēles marķierus kartē",
-			"disableMapReload": "Atslēdz kartes atkārtotas ielādes pogu",
-			"disableMapReloadExt": "slēpj pārlādēšanas pogu kartē",
 			"disableDynamicButtons": "Atslēdz dinamiskās pogas",
 			"disableDynamicButtonsExt": "rāda tikai pamata pogas kartē",
 			"applyChangesConfirm": "Vai vēlaties izmantot izmaiņas tūlīt?",

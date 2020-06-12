@@ -475,8 +475,6 @@
 			"hideMapStatusExt": "скрывает блок состояния и заряда батареи робота",
 			"hideSegmentMarkers": "Не показывать маркеры комнат",
 			"hideSegmentMarkersExt": "убирает с карты маркеры выбора комнат",
-			"disableMapReload": "Скрыть кнопку обновления карты",
-			"disableMapReloadExt": "скрывает кнопку запроса ручного обновления карты",
 			"disableDynamicButtons": "Отключить динамические кнопки",
 			"disableDynamicButtonsExt": "показывает на карте только базовые кнопки",
 			"applyChangesConfirm": "Применить изменения прямо сейчас?",

@@ -12,12 +12,6 @@
 		<div style="display: none"><span data-i18n="common.time">Time</span>: <span class="map-page-time">00:00:00</span></div>
 	</div>
 
-	<div class="map-page-buttons map-page-top" style="display: none;">
-		<ons-fab ripple id="map_reload_button" style="display: none;">
-			<ons-icon icon="fa-refresh"></ons-icon>
-		</ons-fab>
-	</div>
-
 	<div class="map-page-buttons map-page-bottom" style="display: none;">
 		<ons-fab ripple id="promote_zone" style="display: none;">
 			<ons-icon icon="fa-angle-double-up"></ons-icon>
@@ -314,12 +308,6 @@
 		document.getElementById("promote_zone").onclick = () => {
 			map.promoteCurrentZone();
 		}
-		document.getElementById("map_reload_button").onclick = () => {
-			loadingBar.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/poll_map")
-			.then(null, (err) => fn.notificationToastError(err))
-			.finally (() => loadingBar.removeAttribute("indeterminate"));
-		}
 		document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
 			if (e.detail.state) setIterationsButton("set_iterations_number",map.getZoneIterations());
 			document.getElementById("promote_zone").style.display = e.detail.nf ? "" : "none";
@@ -363,7 +351,6 @@
 		}
 		ons.getScriptPage().onShow = function () {
 			document.querySelector('.map-page-stats').style.display = fn.webifSettings.hideMapStatus ? 'none' : '';
-			document.getElementById('map_reload_button').style.display = fn.webifSettings.hideMapReload ? 'none' : '';
 			document.querySelectorAll('.map-page-buttons').forEach(e => (e.style.display = ''));
 
 			updateMapPage();

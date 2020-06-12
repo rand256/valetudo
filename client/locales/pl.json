@@ -492,8 +492,6 @@
 			"hideMapStatusExt": "ukrywa blok z tekstem statusu",
 			"hideSegmentMarkers": "Nie wyświetlaj znaczników pokoi",
 			"hideSegmentMarkersExt": "ukrywa znaczniki pokoi na mapie",
-			"disableMapReload": "Wyłącz przycisk przeładowania mapy",
-			"disableMapReloadExt": "ukrywa przycisk siły przeładowania na mapie",
 			"disableDynamicButtons": "Wyłącz przyciski dynamiczne",
 			"disableDynamicButtonsExt": "pokazuje na mapie tylko podstawowe przyciski",
 			"applyChangesConfirm": "Czy chcesz teraz zastosować zmiany?",

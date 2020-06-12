@@ -471,8 +471,6 @@
 			"hideMapStatusExt": "Oculta el texto de estado",
 			"hideSegmentMarkers": "No mostrar marcadores de habitación",
 			"hideSegmentMarkersExt": "Oculta los contornos de las habitaciones seleccionadas",
-			"disableMapReload": "Deshabilitar el botón de recarga del mapa",
-			"disableMapReloadExt": "Oculta el botón de recarga de mapa",
 			"disableDynamicButtons": "Deshabilitar botones dinámicos",
 			"disableDynamicButtonsExt": "Muestra sólo los botones básicos en el mapa",
 			"applyChangesConfirm": "¿Desea aplicar los cambios ahora mismo?",
