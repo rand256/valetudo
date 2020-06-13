@@ -274,6 +274,7 @@
 				fn.notificationToastError(i18next.t('zones.segmentSplitNoLine',"You need to place the cutting line above the room to split it."));
 				return;
 			}
+			let targetSegment = map.getLocations().segments[0];
 			map.clearLocations();
 			if (Math.hypot(splitPoints[0]-linePoints[0], splitPoints[1]-linePoints[1]) > Math.hypot(splitPoints[0]-linePoints[2], splitPoints[1]-linePoints[3])) {
 				splitPoints.push(...splitPoints.splice(0,2));
@@ -283,7 +284,7 @@
 			.then(answer => {
 				if (answer === 1) {
 					loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
-					return fn.prequestWithPayload("api/split_segment", JSON.stringify([map.getLocations().segments[0], ...map.getLocations().virtualWalls[0]]), "PUT");
+					return fn.prequestWithPayload("api/split_segment", JSON.stringify([targetSegment, ...map.getLocations().virtualWalls[0]]), "PUT");
 				}
 				return Promise.reject("cancel");
 			})

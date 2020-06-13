@@ -150,7 +150,10 @@
 			button.setAttribute("disabled", "disabled");
 			fn.prequestWithPayload("api/start_cleaning_segment", JSON.stringify([segments, iterations]), "PUT")
 			.then(
-				(res) => fn.notificationToastOK(),
+				(res) => {
+					fn.notificationToastOK();
+					setTimeout(() => map.clearLocations(),3e3);
+				},
 				(err) => fn.notificationToastError(err)
 			)
 			.finally(() => {

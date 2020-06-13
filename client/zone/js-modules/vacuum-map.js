@@ -32,7 +32,7 @@ export function VacuumMap(canvasElement) {
 	canvas.height = canvas.clientHeight;
 
 	let parsedMap = {}, deviceStatus = {};
-	let locations = [];
+	let locations = [], storedLocations = {zones: [], segments: []};
 
 	let robotPosition = [25600, 25600];
 	let chargerPosition = [25600, 25600];
@@ -77,15 +77,14 @@ export function VacuumMap(canvasElement) {
 			if (event.data.constructor === ArrayBuffer) {
 				let data = parseMap(event.data);
 				updateMap(data);
-			} else if (event.data.slice(0,10) === '{"status":') {
+			} else if (event.data.startsWith('{"status":')) {
 				try {
 					let data = JSON.parse(event.data);
-					updateStatus(data.status);
 					deviceStatus = data.status;
-				} catch(e) {
-					//TODO something reasonable
-					console.log(e);
-				}
+					canvas.dispatchEvent(new CustomEvent('updateStatus', {detail: deviceStatus}));
+				} catch(e) {}
+			} else if (event.data.startsWith('{"restoreLocations":')) {
+				restoreLocations();
 			}
 		};
 
@@ -263,14 +262,6 @@ export function VacuumMap(canvasElement) {
 		}
 
 		if (redrawCanvas) redrawCanvas();
-	}
-
-	/**
-	 * Private function to fire status updates onto the map page (currently got from websocket connections only)
-	 * @param {object} status - the json data as in dummycloud.connectedRobot.status
-	 */
-	function updateStatus(status) {
-		canvas.dispatchEvent(new CustomEvent('updateStatus', {detail: status}));
 	}
 
 	/**
@@ -812,7 +803,43 @@ export function VacuumMap(canvasElement) {
 	}
 
 	function clearLocations() {
+		// saving
+		storedLocations = {zones: [], segments: []};
+		locations.filter(l => l instanceof Zone).forEach(l => {
+			storedLocations.zones.push([l.x1,l.y1,l.x2,l.y2,l.iterations,l.sequence]);
+		});
+		locations.filter(l => l instanceof Segment && !isNaN(l.sequence)).forEach(l => {
+			storedLocations.segments.push([l.idx,l.sequence]);
+		});
+		// clearing
 		locations = locations.filter(l => l.editable !== true);
+		locations.filter(l => l instanceof Segment && !isNaN(l.sequence)).forEach(segment => {
+			delete segment.sequence;
+			segment.highlighted = false;
+			segment.changed = true;
+		});
+		if (redrawCanvas) redrawCanvas();
+	}
+
+	function restoreLocations() {
+		if (!locations.some(l => l instanceof Zone)) {
+			storedLocations.zones.forEach(z => {
+				let l = new Zone(...z.slice(0,5));
+				l.active = false;
+				l.sequence = z[5];
+				locations.push(l);
+			});
+		}
+		if (!locations.some(l => l instanceof Segment && l.highlighted === true)) {
+			let found;
+			storedLocations.segments.forEach(segment => {
+				if (found = locations.find(l => l instanceof Segment && l.idx === segment[0])) {
+					found.highlighted = true;
+					found.changed = true;
+					found.sequence = segment[1];
+				}
+			});
+		}
 		if (redrawCanvas) redrawCanvas();
 	}
 
@@ -912,7 +939,6 @@ export function VacuumMap(canvasElement) {
 		closeWebSocket: closeWebSocket,
 		parseMap: parseMap,
 		updateMap: updateMap,
-		updateStatus: updateStatus,
 		getLocations: getLocations,
 		getParsedMap: getParsedMap,
 		addZone: addZone,
