@@ -1,0 +1,101 @@
+<ons-page id="settings-timers-map-page">
+	<div id="settings-timers-map-container">
+		<div class="page-with-map-header settings-timers-map-header">
+			<ons-back-button data-i18n="settings.timersTitle" data-i18n-target=".back-button__label">Timers</ons-back-button>
+			<span id="settings-timers-map-page-h1"></span>
+		</div>
+		<ons-progress-bar id="loading-bar-none2" value="0"></ons-progress-bar>
+		<canvas id="timers-map"></canvas>
+	</div>
+
+	<div class="map-page-buttons map-page-bottom">
+		<ons-fab ripple id="settings-timers-promote" style="display: none;">
+			<ons-icon icon="fa-angle-double-up"></ons-icon>
+		</ons-fab>
+		<ons-fab ripple id="settings-timers-iterations" style="display: none;">
+			<span style="font-weight: 700; font-family: monospace;">&#x00D7;<span id="zones_iterations_number">1</span></span>
+		</ons-fab>
+		<ons-fab ripple id="settings-timers-add-zone">
+			<ons-icon icon="fa-plus"></ons-icon>
+		</ons-fab>
+		<ons-fab ripple id="settings-timers-map-save">
+			<ons-icon icon="fa-save"></ons-icon>
+		</ons-fab>
+	</div>
+
+	<script type="module">
+		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
+		const map = new VacuumMap(document.getElementById('timers-map'));
+		const saveButton = document.getElementById('settings-timers-map-save');
+
+		document.querySelector("#settings-timers-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
+		const topPage = fn.getTopPage();
+		const timerName = topPage.data.timerName;
+		const timerCoords = topPage.data.timerCoords;
+
+		map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+
+		document.getElementById("settings-timers-map-page-h1").textContent = timerName;
+		for (let zone of timerCoords) {
+			map.addZone(zone, true, true);
+		}
+console.log(timerCoords);
+console.log(map.getLocations().zones);
+		document.getElementById("settings-timers-add-zone").onclick = () => {
+			map.addZone();
+		}
+		document.getElementById("settings-timers-iterations").onclick = () => {
+			map.addIterationsToZone();
+			document.getElementById('zones_iterations_number').textContent = map.getZoneIterations();
+		}
+		document.getElementById("settings-timers-promote").onclick = () => {
+			map.promoteCurrentZone();
+		}
+		document.getElementById("timers-map").addEventListener('zoneSelection', (e) => {
+			document.getElementById("settings-timers-promote").style.display = e.detail.nf ? "" : "none";
+			document.getElementById("settings-timers-iterations").style.display = e.detail.state ? "" : "none";
+			document.getElementById("settings-timers-add-zone").style.display = e.detail.state ? "none" : "";
+		})
+
+		saveButton.onclick = () => {
+			const zonesOnMap = map.getLocations().zones;
+			console.log(zonesOnMap);
+			fn.popPage().then(res => window.fn.processZoneCoordinates(zonesOnMap));
+		}
+	</script>
+	<script>
+		ons.getScriptPage().onInit = function() {
+		   fn.localize('#settings-timers-map-page');
+		}
+	</script>
+	<style>
+		#settings-timers-map-container {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto 1fr;
+			height: 100%;
+			width: 100%;
+		}
+
+		#settings-timers-map-page-h1 {
+			flex-grow: 1;
+			text-align: center;
+		}
+
+		.settings-timers-map-header {
+			display: flex;
+			align-items: center;
+		}
+
+		.settings-timers-buttons {
+			position: absolute;
+			right: 1.5em;
+			bottom: 1.5em;
+			display: grid;
+			grid-template-columns: auto;
+			grid-template-rows: auto;
+			grid-gap: 0.5em;
+		}
+	</style>
+</ons-page>

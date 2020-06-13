@@ -35,7 +35,7 @@
 				<ons-row class="ntimer-item" id="segment-ids"></ons-row>
 				<ons-row class="ztimer-item">
 					<ons-col width="100px" align="center" data-i18n="settings.timers.zones">Zones:</ons-col>
-					<ons-col align="left"><ons-button modifier="quiet" id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button></ons-col>
+					<ons-col align="left"><ons-button modifier="quiet" id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button> <ons-button modifier="quiet" id="preview_coordinates" class="button-margin" onclick="previewZoneCoordinatesClick()"><ons-icon icon="fa-search"></ons-icon></ons-button></ons-col>
 				</ons-row>
 				<ons-row class="ztimer-item" id="zone-coordinates"></ons-row>
 				<hr>
@@ -233,6 +233,31 @@
 				loadingBarSettingsTimers.removeAttribute("indeterminate");
 				addZoneCoordinatesButton.disabled = false;
 			});
+		};
+
+		function previewZoneCoordinatesClick() {
+			const form = document.getElementById('add-timer-form');
+			let coords = [], coordInputs = form.querySelectorAll("input[name='zoned_timer_coords[]']");
+			if (coordInputs.length) {
+				coords = Array.from(coordInputs).map(a => JSON.parse(a.value)).reduce((acc, val) => acc.concat(val), []);
+			}
+			loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/map/latest", "GET", "arraybuffer")
+			.then(mapData => {
+				fn.pushPage({
+					'id': 'settings-timers-map.html',
+					'title': 'Zoned Timers map preview',
+					'data': {
+						'map': mapData,
+						'timerName': form.timer_name.value || '',
+						'timerCoords': coords
+					}
+				});
+			})
+			.catch((err) => {
+				if (err !== "ok") fn.notificationToastError(err);
+			})
+			.finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
 		};
 
 		function getActualSegments() {
@@ -538,6 +563,18 @@
 			});
 		}
 
+		function clearZoneCoordinates() {
+			let inputs = document.getElementById('add-timer-form').querySelectorAll("input[name='zoned_timer_coords[]'], input[name='segment_timer_id[]'");
+			if (inputs.length) {
+				inputs.forEach(a => {
+					while (a.parentNode && a.nodeName !== "ONS-ROW") { a = a.parentNode; };
+					if (a) {
+						a.parentNode.removeChild(a);
+					}
+				});
+			}
+		}
+
 		function clearTimerDialog(zoned) {
 			let form = document.getElementById('add-timer-form');
 			form.zoned.value = zoned ? 1 : 0;
@@ -554,15 +591,58 @@
 			}
 			form.once.checked = false;
 			switchTimerOnce(form.once);
-			let inputs = form.querySelectorAll("input[name='zoned_timer_coords[]'], input[name='segment_timer_id[]'");
-			if (inputs.length) {
-				inputs.forEach(a => {
-					while (a.parentNode && a.nodeName !== "ONS-ROW") { a = a.parentNode; };
-					if (a) {
-						a.parentNode.removeChild(a);
+			clearZoneCoordinates();
+		}
+
+		function formatZoneCoordinates(coordinates) {
+			console.log('raw coordinates:',JSON.stringify(coordinates));
+			loadingBarSettingsTimers.setAttribute("indeterminate","indeterminate");
+			fn.prequest("api/zones")
+			.then(zones => {
+				if (zones && zones.length) {
+					clearZoneCoordinates();
+					zones.sort((a,b) => b.coordinates.length - a.coordinates.length);
+					let szcmp = (subzone,coords) => {
+						for (let i = 0; i < 4; i++) {
+							if (coords[i] !== subzone[i]) return false;
+						}
+						return true;
 					}
-				});
-			}
+					let i, j, k, len, len2, len3, found, currentCoords = [];
+					timerLoop:
+					for (i = 0, len = coordinates.length; i < len; i++) {
+						zonesLoop:
+						for (j = 0, len2 = zones.length; j < len2; j++) {
+							len3 = zones[j].coordinates.length;
+							if (i + len3 <= len) {
+								found = 0;
+								if (zones[j].coordinates.every((subzone,idx) => szcmp(subzone,coordinates[i+idx]))) {
+									found = 1;
+								} else if (zones[j].coordinates.every(subzone => coordinates.slice(i,i+len3).some(coords => szcmp(subzone,coords)))) {
+									found = 2;
+								}
+								if (found) {
+									if (currentCoords.length) {
+										addZoneCoordinates('-',currentCoords);
+										currentCoords = [];
+									}
+									addZoneCoordinates(zones[j].name + (found > 1 ? ' ⇆' : ''),coordinates.slice(i,i+len3));
+									i += len3 - 1;
+									continue timerLoop;
+								}
+							}
+						}
+						currentCoords.push(coordinates[i]);
+					}
+					if (currentCoords.length) {
+						addZoneCoordinates('-',currentCoords);
+					}
+				}
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => {
+				loadingBarSettingsTimers.removeAttribute("indeterminate");
+			});
 		}
 
 		function loadTimerDialog(timerId,zoned,timer) {
@@ -603,7 +683,7 @@
 				}
 			}
 			if (timer.coordinates) {
-				addZoneCoordinates('-',timer.coordinates);
+				processZoneCoordinates(timer.coordinates);
 			}
 			if (timer.segments) {
 				loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
@@ -768,6 +848,15 @@
 			});
 		}
 
+		function processZoneCoordinates(coordinates,ext) {
+			if (ext) {
+				clearZoneCoordinates();
+			}
+			addZoneCoordinates('-',coordinates);
+			formatZoneCoordinates(coordinates);
+		}
+		window.fn.processZoneCoordinates = processZoneCoordinates;
+
 		//if timerId is set to null then open new timer, else edit existing
 		function showTimerDialog(timerId,zoned) {
 			zoned = zoned ? true : false;
@@ -786,9 +875,9 @@
 			container.style.cssText = "height: " + Math.min(zoned ? 470 : 400,window.innerHeight * 0.75) + "px; overflow: auto;";
 			if (timerId !== null) {
 				loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+				let idx, tmr;
 				fn.prequest(zoned ? "api/ztimers" : "api/timers")
 				.then(res => {
-					let idx;
 					if ((idx = res.findIndex(timer => timer.id === timerId)) < 0) {
 						return Promise.reject(i18next.t('settings.timers.missingTimer',"No such timer."));
 					}
@@ -813,7 +902,10 @@
 			 white-space: nowrap;
 			 cursor: pointer;
 			 color: darkgrey;
-			 text-align: center
+			 line-height: 1.1;
+		}
+		.delete-field-link + ons-col {
+			line-height: 1.1;
 		}
 		.action-sheet {
 			max-height: 100%;

@@ -270,7 +270,7 @@ export function VacuumMap(canvasElement) {
 	 * @param {{x: number, y: number}} coordinatesInMapSpace
 	 */
 	function convertToRealCoords(coordinatesInMapSpace) {
-		return { x: Math.floor(coordinatesInMapSpace.x * 50), y: Math.floor(coordinatesInMapSpace.y * 50) };
+		return { x: Math.round(coordinatesInMapSpace.x * 50), y: Math.round(coordinatesInMapSpace.y * 50) };
 	}
 
 	/**
@@ -278,7 +278,7 @@ export function VacuumMap(canvasElement) {
 	 * @param {{x: number, y: number}} coordinatesInMillimeter
 	 */
 	function convertFromRealCoords(coordinatesInMillimeter) {
-		return { x: Math.floor(coordinatesInMillimeter.x / 50), y: Math.floor(coordinatesInMillimeter.y / 50) };
+		return { x: coordinatesInMillimeter.x / 50, y: coordinatesInMillimeter.y / 50 };
 	}
 
 	/**
