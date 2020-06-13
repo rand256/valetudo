@@ -544,7 +544,7 @@ export function VacuumMap(canvasElement) {
 			var currentlyActive = -1, takenAction = false;
 			var processTap = function(i,locations) {
 				const location = locations[i];
-				if(typeof location.tap === "function") {
+				if(typeof location.tap === "function" && !(location instanceof Segment && locations.some(l => l instanceof Zone))) {
 					const result = location.tap({x: tappedX, y: tappedY}, ctx.getTransform()) || {};
 					if(result.updatedLocation) {
 						locations[i] = result.updatedLocation;
