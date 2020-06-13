@@ -777,6 +777,12 @@ export function VacuumMap(canvasElement) {
 			newZone = new Zone(480, 480, 550, 550, 1);
 		}
 
+		// check whether this zone has nearly the same left top position as some other zone
+		while (locations.some(l => l instanceof Zone && Math.abs(l.x1 - newZone.x1) < 4 && Math.abs(l.y1 - newZone.y1) < 4)) {
+			newZone.x1 += 5; newZone.y1 += 5;
+			newZone.x2 += 5; newZone.y2 += 5;
+		}
+
 		// if there's a zone, hide all segments
 		locations.filter(l => l instanceof Segment).forEach(l => {
 			l.hidden = true;
