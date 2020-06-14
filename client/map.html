@@ -181,8 +181,8 @@
 			});
 		};
 
-		function setIterationsButton(targetID,value) {
-			let iterationsSpan = document.getElementById(targetID)
+		window.fn.setIterationsButton = function(targetID,value) {
+			let iterationsSpan = document.getElementById(targetID);
 			if (value) {
 				iterationsSpan.textContent = value;
 			} else {
@@ -307,16 +307,16 @@
 		}
 		document.getElementById("set_iterations").onclick = () => {
 			map.addIterationsToZone();
-			setIterationsButton("set_iterations_number",map.getZoneIterations());
+			window.fn.setIterationsButton("set_iterations_number",map.getZoneIterations());
 		}
 		document.getElementById("set_iterations_segment").onclick = () => {
-			setIterationsButton("set_iterations_segment_number");
+			window.fn.setIterationsButton("set_iterations_segment_number");
 		}
 		document.getElementById("promote_zone").onclick = () => {
 			map.promoteCurrentZone();
 		}
 		document.getElementById("map-canvas").addEventListener('zoneSelection', (e) => {
-			if (e.detail.state) setIterationsButton("set_iterations_number",map.getZoneIterations());
+			if (e.detail.state) window.fn.setIterationsButton("set_iterations_number",map.getZoneIterations());
 			document.getElementById("promote_zone").style.display = e.detail.nf ? "" : "none";
 			document.getElementById("set_iterations").style.display = e.detail.state ? "" : "none";
 			document.getElementById("set_iterations_segment").style.display = e.detail.state || !map.getLocations().segments.length ? "none" : "";

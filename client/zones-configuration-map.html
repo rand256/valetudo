@@ -47,12 +47,13 @@
 		}
 		document.getElementById("zones-configuration-iterations").onclick = () => {
 			map.addIterationsToZone();
-			document.getElementById('zones_iterations_number').textContent = map.getZoneIterations();
+			window.fn.setIterationsButton("zones_iterations_number",map.getZoneIterations());
 		}
 		document.getElementById("zones-configuration-promote").onclick = () => {
 			map.promoteCurrentZone();
 		}
 		document.getElementById("zone-configuration-map").addEventListener('zoneSelection', (e) => {
+			if (e.detail.state) window.fn.setIterationsButton("zones_iterations_number",map.getZoneIterations());
 			document.getElementById("zones-configuration-promote").style.display = e.detail.nf ? "" : "none";
 			document.getElementById("zones-configuration-iterations").style.display = e.detail.state ? "" : "none";
 			document.getElementById("zones-configuration-add-zone").style.display = e.detail.state ? "none" : "";

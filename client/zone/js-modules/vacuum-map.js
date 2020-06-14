@@ -802,6 +802,16 @@ export function VacuumMap(canvasElement) {
 		if (redrawCanvas) redrawCanvas();
 	}
 
+	function selectSegment(idx,sequence) {
+		let segment = locations.find(l => l instanceof Segment && l.idx === idx);
+		if (segment) {
+			segment.highlighted = true;
+			segment.changed = true;
+			segment.sequence = sequence;
+			if (redrawCanvas) redrawCanvas();
+		}
+	}
+
 	function clearLocations() {
 		// saving
 		storedLocations = {zones: [], segments: []};
@@ -943,6 +953,7 @@ export function VacuumMap(canvasElement) {
 		getParsedMap: getParsedMap,
 		addZone: addZone,
 		addSpot: addSpot,
+		selectSegment: selectSegment,
 		clearLocations: clearLocations,
 		addVirtualWall: addVirtualWall,
 		addForbiddenZone: addForbiddenZone,

@@ -13,9 +13,12 @@
 			<ons-icon icon="fa-angle-double-up"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="settings-timers-iterations" style="display: none;">
-			<span style="font-weight: 700; font-family: monospace;">&#x00D7;<span id="zones_iterations_number">1</span></span>
+			<span style="font-weight: 700; font-family: monospace;">&#x00D7;<span id="settings_timers_zones_iterations_number">1</span></span>
 		</ons-fab>
-		<ons-fab ripple id="settings-timers-add-zone">
+		<ons-fab ripple id="settings-timers-iterations-segment" style="display: none;">
+			<span style="font-weight: 700; font-family: monospace;">&#x00D7;<span id="settings_timers_iterations_segment_number">1</span></span>
+		</ons-fab>
+		<ons-fab ripple id="settings-timers-add-zone" style="display: none;">
 			<ons-icon icon="fa-plus"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="settings-timers-map-save">
@@ -26,43 +29,62 @@
 	<script type="module">
 		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
 		const map = new VacuumMap(document.getElementById('timers-map'));
-		const saveButton = document.getElementById('settings-timers-map-save');
+		const addZoneButton = document.getElementById('settings-timers-add-zone'),
+			iterationsSegmentsButton = document.getElementById('settings-timers-iterations-segment'),
+			iterationsSegmentsSpan = document.getElementById('settings_timers_iterations_segment_number'),
+			saveButton = document.getElementById('settings-timers-map-save');
 
 		document.querySelector("#settings-timers-map-page ons-back-button").onClick = () => fn.popPage(); // case matters!
 
-		const topPage = fn.getTopPage();
-		const timerName = topPage.data.timerName;
-		const timerCoords = topPage.data.timerCoords;
-
-		map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+		const topPage = fn.getTopPage(),
+			timerName = topPage.data.timerName,
+			timerType = topPage.data.timerType,
+			timerCoords = topPage.data.timerCoords,
+			timerSegments = topPage.data.timerSegments,
+			timerSegmentNames = topPage.data.timerSegmentNames,
+			timerSegmentIterations = topPage.data.timerSegmentIterations;
 
 		document.getElementById("settings-timers-map-page-h1").textContent = timerName;
-		for (let zone of timerCoords) {
-			map.addZone(zone, true, true);
+
+		if (timerType === 'rooms') {
+			map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true, showSegments: true, segmentNames: timerSegmentNames});
+			let seq = 0;
+			for (let segment of timerSegments) {
+				map.selectSegment(segment,++seq);
+			}
+			iterationsSegmentsButton.style.display = '';
+			iterationsSegmentsSpan.textContent = timerSegmentIterations;
+		} else {
+			map.initCanvas(topPage.data.map, {metaData: "forbidden", noGotoPoints: true});
+			for (let zone of timerCoords) {
+				map.addZone(zone, true, true);
+			}
+			addZoneButton.style.display = '';
 		}
-console.log(timerCoords);
-console.log(map.getLocations().zones);
-		document.getElementById("settings-timers-add-zone").onclick = () => {
+
+		addZoneButton.onclick = () => {
 			map.addZone();
+		}
+		iterationsSegmentsButton.onclick = () => {
+			window.fn.setIterationsButton("settings_timers_iterations_segment_number");
+		}
+		saveButton.onclick = () => {
+			let iterations = +iterationsSegmentsSpan.textContent || 1;
+			fn.popPage().then(res => timerType === 'rooms' ? window.fn.processSegmentIndexes(map.getLocations().segments,iterations) : window.fn.processZoneCoordinates(map.getLocations().zones));
 		}
 		document.getElementById("settings-timers-iterations").onclick = () => {
 			map.addIterationsToZone();
-			document.getElementById('zones_iterations_number').textContent = map.getZoneIterations();
+			window.fn.setIterationsButton("settings_timers_zones_iterations_number",map.getZoneIterations());
 		}
 		document.getElementById("settings-timers-promote").onclick = () => {
 			map.promoteCurrentZone();
 		}
 		document.getElementById("timers-map").addEventListener('zoneSelection', (e) => {
+			if (e.detail.state) window.fn.setIterationsButton("settings_timers_zones_iterations_number",map.getZoneIterations());
 			document.getElementById("settings-timers-promote").style.display = e.detail.nf ? "" : "none";
 			document.getElementById("settings-timers-iterations").style.display = e.detail.state ? "" : "none";
 			document.getElementById("settings-timers-add-zone").style.display = e.detail.state ? "none" : "";
 		})
-
-		saveButton.onclick = () => {
-			const zonesOnMap = map.getLocations().zones;
-			console.log(zonesOnMap);
-			fn.popPage().then(res => window.fn.processZoneCoordinates(zonesOnMap));
-		}
 	</script>
 	<script>
 		ons.getScriptPage().onInit = function() {

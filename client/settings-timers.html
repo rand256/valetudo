@@ -30,12 +30,12 @@
 				</ons-row>
 				<ons-row class="ntimer-item">
 					<ons-col width="100px" align="center" data-i18n="settings.timers.segments">Segments:</ons-col>
-					<ons-col align="left"><ons-button modifier="quiet" id="add_segment" class="button-margin" onclick="addSegmentClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addSegments">Add...</span></ons-button></ons-col>
+					<ons-col align="left"><ons-button modifier="quiet" id="add_segment" class="button-margin" onclick="addSegmentClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addSegments">Add...</span></ons-button> <ons-button modifier="quiet" class="button-margin" onclick="previewSegmentIndexesClick()"><ons-icon icon="fa-search"></ons-icon></ons-button></ons-col>
 				</ons-row>
 				<ons-row class="ntimer-item" id="segment-ids"></ons-row>
 				<ons-row class="ztimer-item">
 					<ons-col width="100px" align="center" data-i18n="settings.timers.zones">Zones:</ons-col>
-					<ons-col align="left"><ons-button modifier="quiet" id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button> <ons-button modifier="quiet" id="preview_coordinates" class="button-margin" onclick="previewZoneCoordinatesClick()"><ons-icon icon="fa-search"></ons-icon></ons-button></ons-col>
+					<ons-col align="left"><ons-button modifier="quiet" id="add_coordinates" class="button-margin" onclick="addZoneCoordinatesClick()"><ons-icon icon="fa-plus"></ons-icon> <span data-i18n="settings.timers.addZones">Add...</span></ons-button> <ons-button modifier="quiet" class="button-margin" onclick="previewZoneCoordinatesClick()"><ons-icon icon="fa-search"></ons-icon></ons-button></ons-col>
 				</ons-row>
 				<ons-row class="ztimer-item" id="zone-coordinates"></ons-row>
 				<hr>
@@ -250,6 +250,7 @@
 					'data': {
 						'map': mapData,
 						'timerName': form.timer_name.value || '',
+						'timerType': 'zones',
 						'timerCoords': coords
 					}
 				});
@@ -279,7 +280,7 @@
 
 		function addSegment(name,id) {
 			let ids = [], idInputs = document.querySelectorAll("#add-timer-form input[name='segment_timer_id[]']");
-			if (idInputs.length) {				
+			if (idInputs.length) {
 				idInputs.forEach(input => ids.push(+input.value));
 			}
 			if (ids.includes(id)) { fn.notificationToastError(i18next.t('settings.timers.duplicatedSegment',"You can't add the same room multiple times!")); return; }
@@ -319,6 +320,41 @@
 				loadingBarSettingsTimers.removeAttribute("indeterminate");
 				addSegmentButton.disabled = false;
 			});
+		};
+
+		function previewSegmentIndexesClick() {
+			const form = document.getElementById('add-timer-form');
+			let iterations = +form.iterations_select.value || 1;
+			let segments = [], segmentInputs = form.querySelectorAll("input[name='segment_timer_id[]']");
+			if (segmentInputs.length) {
+				segmentInputs.forEach(input => segments.push(+input.value));
+			}
+			loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+			let mapData, segmentNames = {};
+			fn.prequest("api/map/latest", "GET", "arraybuffer")
+			.then(res => {
+				mapData = res;
+				return fn.prequest("api/segment_names");
+			})
+			.then(res => {
+				res.forEach(pair => segmentNames[pair[0]] = pair[1]);
+				fn.pushPage({
+					'id': 'settings-timers-map.html',
+					'title': 'Zoned Timers map preview',
+					'data': {
+						'map': mapData,
+						'timerName': form.timer_name.value || '',
+						'timerType': 'rooms',
+						'timerSegments': segments,
+						'timerSegmentNames': segmentNames,
+						'timerSegmentIterations': iterations
+					}
+				});
+			})
+			.catch((err) => {
+				if (err !== "ok") fn.notificationToastError(err);
+			})
+			.finally(() => loadingBarSettingsTimers.removeAttribute("indeterminate"));
 		};
 
 		function switchTimerOnce(elem) {
@@ -563,7 +599,7 @@
 			});
 		}
 
-		function clearZoneCoordinates() {
+		function clearCoordinatesAndIndexes() {
 			let inputs = document.getElementById('add-timer-form').querySelectorAll("input[name='zoned_timer_coords[]'], input[name='segment_timer_id[]'");
 			if (inputs.length) {
 				inputs.forEach(a => {
@@ -591,7 +627,7 @@
 			}
 			form.once.checked = false;
 			switchTimerOnce(form.once);
-			clearZoneCoordinates();
+			clearCoordinatesAndIndexes();
 		}
 
 		function formatZoneCoordinates(coordinates) {
@@ -600,7 +636,7 @@
 			fn.prequest("api/zones")
 			.then(zones => {
 				if (zones && zones.length) {
-					clearZoneCoordinates();
+					clearCoordinatesAndIndexes();
 					zones.sort((a,b) => b.coordinates.length - a.coordinates.length);
 					let szcmp = (subzone,coords) => {
 						for (let i = 0; i < 4; i++) {
@@ -638,6 +674,20 @@
 						addZoneCoordinates('-',currentCoords);
 					}
 				}
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => {
+				loadingBarSettingsTimers.removeAttribute("indeterminate");
+			});
+		}
+
+		function formatSegmentIndexes(indexes) {
+			loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
+			getActualSegments()
+			.then(res => {
+				indexes.forEach(id => {
+					addSegment((res.find(r => r.id === +id) || '').name || (i18next.t('settings.timers.missingSegment',"Segment not found on current map!") + ' (#' + id + ')'),id);
+				})
 			})
 			.catch(err => fn.notificationToastError(err))
 			.finally(() => {
@@ -686,18 +736,7 @@
 				processZoneCoordinates(timer.coordinates);
 			}
 			if (timer.segments) {
-				loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-				getActualSegments()
-				.then(res => {
-					timer.segments.split(',').forEach(id => {
-						addSegment((res.find(r => r.id === +id) || '').name || i18next.t('settings.timers.missingSegment',"Segment not found on current map!"),id);
-					})
-				})
-				.catch(err => fn.notificationToastError(err))
-				.finally(() => {
-					loadingBarSettingsTimers.removeAttribute("indeterminate");
-					addSegmentButton.disabled = false;
-				});
+				processSegmentIndexes(timer.segments.split(','),timer.iterations);
 			}
 		}
 
@@ -850,12 +889,21 @@
 
 		function processZoneCoordinates(coordinates,ext) {
 			if (ext) {
-				clearZoneCoordinates();
+				clearCoordinatesAndIndexes();
 			}
 			addZoneCoordinates('-',coordinates);
 			formatZoneCoordinates(coordinates);
 		}
-		window.fn.processZoneCoordinates = processZoneCoordinates;
+		window.fn.processZoneCoordinates = (coordinates) => processZoneCoordinates(coordinates,true);
+
+		function processSegmentIndexes(idxs,iterations,ext) {
+			if (ext) {
+				clearCoordinatesAndIndexes();
+				document.getElementById('add-timer-form').iterations_select.value = parseInt(iterations) || 1;
+			}
+			formatSegmentIndexes(idxs);
+		}
+		window.fn.processSegmentIndexes = (indexes,iterations) => processSegmentIndexes(indexes,iterations,true);
 
 		//if timerId is set to null then open new timer, else edit existing
 		function showTimerDialog(timerId,zoned) {
