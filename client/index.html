@@ -108,7 +108,11 @@
 				request.onload = function () {
 					if (request.status >= 200 && request.status < 400) {
 						if (request.responseType === "") {
-							resolve(JSON.parse(request.responseText));
+							try {
+								resolve(JSON.parse(request.responseText));
+							} catch (e) {
+								resolve(request.responseText);
+							}
 						} else {
 							resolve(request.response);
 						}
@@ -218,18 +222,38 @@
 			fn.loadView(targetID);
 		}
 
-		var waitForGlobals = fn.prequest("api/current_status")
-		.then(res => {
-			fn.device = {
-				model: res.model,
-				ver: res.msg_ver
-			};
-		}, err => {
-			fn.device = {
-				model: "unknown",
-				ver: 1
-			};
-		})
+		var fetchDevice = function(retry) {
+			return fn.prequest("api/current_status")
+			.then(res => {
+				fn.device = {
+					model: res.model,
+					ver: res.msg_ver
+				};
+			}, err => {
+				fn.device = {
+					model: "unknown",
+					ver: 1
+				};
+				setTimeout(() => fetchDevice(true),5e3);
+				if (retry) {
+					throw null;
+				}
+			})
+			.then(res => {
+				let ploadImg = (name,file) => {
+					return new Promise((resolve,reject) => {
+						window.fn[name] = new Image();
+						window.fn[name].onload = () => resolve();
+						window.fn[name].onerror = () => reject("icon loading failed");
+						window.fn[name].src = 'img/' + file;
+					});
+				}
+				return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
+			})
+			.catch(e => {});
+		}
+
+		var waitForGlobals = fetchDevice()
 		.then(res => fn.prequest("api/get_interface_config"))
 		.then(res => {
 			fn.webifSettings = res;
@@ -256,17 +280,6 @@
 			})
 		})
 		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-		.then(res => {
-			let ploadImg = (name,file) => {
-				return new Promise((resolve,reject) => {
-					window.fn[name] = new Image();
-					window.fn[name].onload = () => resolve();
-					window.fn[name].onerror = () => reject("icon loading failed");
-					window.fn[name].src = 'img/' + file;
-				});
-			}
-			return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
-		})
 		.catch(e => {
 			fn.localize = function() {};
 			console.error('loading interface configuration has failed', e);

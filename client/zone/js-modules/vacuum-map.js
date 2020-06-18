@@ -31,7 +31,7 @@ export function VacuumMap(canvasElement) {
 	canvas.width = canvas.clientWidth;
 	canvas.height = canvas.clientHeight;
 
-	let parsedMap = {}, deviceStatus = {};
+	let parsedMap = {}, defaultMap = false, deviceStatus = {};
 	let locations = [], storedLocations = {zones: [], segments: []};
 
 	let robotPosition = [25600, 25600];
@@ -102,7 +102,8 @@ export function VacuumMap(canvasElement) {
 
 	function parseMap(gzippedMap) {
 		try {
-			return gzippedMap && gzippedMap.byteLength && RRMapParser.PARSE(pako.inflate(gzippedMap)) || FallbackMap.parsedData();
+			defaultMap = false;
+			return gzippedMap && gzippedMap.byteLength && RRMapParser.PARSE(pako.inflate(gzippedMap)) || (defaultMap = true, FallbackMap.parsedData());
 		} catch (e) { console.log(e); };
 		return null;
 	}
@@ -313,11 +314,16 @@ export function VacuumMap(canvasElement) {
 			canvas.width / (boundingBox.maxX - boundingBox.minX + 50),
 			canvas.height / (boundingBox.maxY - boundingBox.minY + 50)
 		),6.5),0.7);
-		const sst = fetchScaleTranslate();
-		currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
-		ctx.scale(currentScale, currentScale);
-		if (!isNaN(sst.x) && !isNaN(sst.y)) {
-			ctx.translate(-sst.x,-sst.y);
+		if (!defaultMap) {
+			const sst = fetchScaleTranslate();
+			currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
+			ctx.scale(currentScale, currentScale);
+			if (!isNaN(sst.x) && !isNaN(sst.y)) {
+				ctx.translate(-sst.x,-sst.y);
+			}
+		} else {
+			currentScale = initialScalingFactor;
+			ctx.scale(currentScale, currentScale);
 		}
 		checkTranslatePosition();
 
@@ -455,6 +461,7 @@ export function VacuumMap(canvasElement) {
 		updateMapInt();
 
 		function storeScaleTranslate() {
+			if (defaultMap) return
 			const { x, y } = ctx.transformedPoint(0,0);
 			localStorage.setItem('scaleTranslate', JSON.stringify({x: x, y: y, z: currentScale}));
 		}
