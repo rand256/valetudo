@@ -160,7 +160,7 @@
 					//ADD EDIT (equals create new + delete!)
 					var elem = ons.createElement(
 						"<ons-list-item data-id='" + client.id + "'>\n" +
-						"	<div class='left'>" + client.first_name + "</div>" +
+						"	<div class='left'><span>" + (client.title ? (client.title + " <ons-icon icon='fa-users'></ons-icon>") : client.username ? ('@' + client.username) : (client.first_name ? (client.first_name + (client.last_name ? ' ' + client.last_name : '')) : (client.id + " <ons-icon icon='fa-cogs'></ons-icon>"))) + "</span></div>" +
 						"	<div class='right'>" +
 						"		<ons-button modifier='quiet' class='button-margin client-delete'>" +
 						"			<ons-icon icon='fa-trash'></ons-icon>" +
