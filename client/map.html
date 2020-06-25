@@ -197,12 +197,15 @@
 
 		window.fn.reload_map_buttons = function(res) {
 			res = res || document.querySelector('.map-page-status').dataset;
+			if (!+res.state) {
+				return;
+			}
 			// basic rules from home page first
-			if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
-				if ([2,10,12].includes(res.state)) {
+			if (+res.in_cleaning > 0 || +res.state === 11 || +res.state === 16) {
+				if ([2,10,12].includes(+res.state)) {
 					document.getElementById("pause_cleaning").style.display = 'none';
 					document.getElementById("start_cleaning").style.display = '';
-					if (res.in_cleaning !== 2) {
+					if (+res.in_cleaning !== 2) {
 						document.getElementById("add_zone").style.display = '';
 					}
 				} else {
@@ -213,39 +216,40 @@
 			} else {
 				document.getElementById("add_zone").style.display = '';
 				document.getElementById("start_cleaning").style.display = '';
-				if (res.state === 6) {
+				if (+res.state === 6) {
 					document.getElementById("pause_cleaning").style.display = '';
 				} else {
 					document.getElementById("pause_cleaning").style.display = 'none';
 				}
 			}
 			// additionally allow starting cleaning to enqueue new zones or segments during already running cleaning
-			if (res.state === 17) {
+			if ([5,17,18].includes(+res.state)) {
 				document.getElementById("add_zone").style.display = '';
-			}
-			if (map && (res.state === 18 && map.getLocations().segments.length || res.state === 17 && map.getLocations().zones.length)) {
-				document.getElementById("start_cleaning").style.display = '';
+				console.log(map.getLocations().segments.length,map.getLocations().zones.length)
+				if (map.getLocations().segments.length || map.getLocations().zones.length) {
+					document.getElementById("start_cleaning").style.display = '';
+				}
 			}
 			// resume available in paused, error and charger disconnected while in cleaning states
-			if (res.state === 10 || [2,12].includes(res.state) && res.in_cleaning > 0) {
+			if (+res.state === 10 || [2,12].includes(+res.state) && +res.in_cleaning > 0) {
 				document.getElementById("resume_cleaning").style.display = '';
 			} else {
 				document.getElementById("resume_cleaning").style.display = 'none';
 			}
 			// stop not available in paused and idle states, as well as many other states not related to cleaning, and in spot cleaning
-			if ([0,3,6,8,9,11,14,15,16].includes(res.state) || (res.state === 10 && !res.in_cleaning)) { 
+			if ([0,3,6,8,9,11,14,15,16].includes(+res.state) || (+res.state === 10 && !+res.in_cleaning)) { 
 				document.getElementById("stop_cleaning").style.display = 'none';
 			} else {
 				document.getElementById("stop_cleaning").style.display = '';
 			}
 			// goto available in paused, idle and charging states
-			if ([2,3,8,10,12].includes(res.state)) {
+			if ([2,3,8,10,12].includes(+res.state)) {
 				document.getElementById("goto").style.display = '';
 			} else {
 				document.getElementById("goto").style.display = 'none';
 			}
 			// spot available in paused and idle states
-			if ([2,3,10,12].includes(res.state)) {
+			if ([2,3,10,12].includes(+res.state)) {
 				document.getElementById("spot_clean").style.display = '';
 			} else {
 				document.getElementById("spot_clean").style.display = 'none';
@@ -273,9 +277,9 @@
 			const segments = map.getLocations().segments;
 			const zones = map.getLocations().zones;
 			const res = document.querySelector('.map-page-status').dataset;
-			if (segments.length && [2,3,6,8,10,12,18].includes(+res.state)) {
+			if (segments.length && [2,3,6,8,10,12,17,18].includes(+res.state)) {
 				segmented_cleanup(segments);
-			} else if (zones.length && [2,3,6,8,10,12,17].includes(+res.state)) {
+			} else if (zones.length && [2,3,6,8,10,12,17,18].includes(+res.state)) {
 				zoned_cleanup(zones);
 			} else if (![5,11,16,17,18].includes(+res.state)) {
 				ons.notification.confirm(i18next.t('map.confirmFullCleaning',"Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
@@ -304,6 +308,9 @@
 
 		document.getElementById("add_zone").onclick = () => {
 			map.addZone();
+			if (!fn.webifSettings.staticMapButtons) {
+				fn.reload_map_buttons();
+			}
 		}
 		document.getElementById("set_iterations").onclick = () => {
 			map.addIterationsToZone();
@@ -324,6 +331,9 @@
 		});
 		document.getElementById("map-canvas").addEventListener('segmentSelection', (e) => {
 			document.getElementById("set_iterations_segment").style.display = map.getLocations().segments.length ? "" : "none";
+			if (!fn.webifSettings.staticMapButtons) {
+				fn.reload_map_buttons();
+			}
 		});
 		document.getElementById("map-canvas").addEventListener('updateStatus', (e) => {
 			let res = e.detail;
