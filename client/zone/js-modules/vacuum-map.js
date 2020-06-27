@@ -829,7 +829,7 @@ export function VacuumMap(canvasElement) {
 			storedLocations.segments.push([l.idx,l.sequence]);
 		});
 		// clearing
-		locations = locations.filter(l => l.editable !== true);
+		locations = locations.filter(l => l.editable !== true && !(l instanceof GotoPoint));
 		locations.filter(l => l instanceof Segment && !isNaN(l.sequence)).forEach(segment => {
 			delete segment.sequence;
 			segment.highlighted = false;

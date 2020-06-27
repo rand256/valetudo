@@ -119,7 +119,10 @@
 				}
 				return null;
 			})
-			.then(res => fn.notificationToastOK())
+			.then(res => {
+				fn.notificationToastOK();
+				setTimeout(() => map.clearLocations(),3e3);
+			})
 			.catch(err => fn.notificationToastError(err))
 			.finally(() => {
 				loadingBar.removeAttribute("indeterminate");
@@ -260,8 +263,8 @@
 			} else {
 				document.getElementById("stop_cleaning").style.display = '';
 			}
-			// goto available in paused, idle and charging states
-			if ([2,3,8,10,12].includes(+res.state)) {
+			// goto available in paused, idle and charging states, and also can be enqueued while already moving
+			if ([2,3,8,10,12,16].includes(+res.state)) {
 				document.getElementById("goto").style.display = '';
 			} else {
 				document.getElementById("goto").style.display = 'none';
