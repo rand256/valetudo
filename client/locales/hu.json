@@ -93,7 +93,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nem lehet a zóna takarítást elindítani: nincsenek zónák beállítva. El akarsz helyette egy teljes takarítást indítani?",
 		"cannotResume": "Nincsen folyamatban takarítás!",
-		"noGotoTarget": "Ki kell választanod egy pontot a Goto célponthoz."
+		"noGotoTarget": "Ki kell választanod egy pontot a Goto célponthoz.",
+		"selectEndGoto": "Ugrás a kiválasztott helyre és ...",
+		"selectEndCleaning": "Végezze el a kiválasztott tisztítást és ...",
+		"selectEndStop": "Álljon meg",
+		"selectEndSpot": "Helyszíni tisztítást végezzen",
+		"selectEndBase": "Vissza a bázishoz",
+		"selectEndMove": "Ugrás a kiválasztott helyre"
 	},
 	"zones": {
 		"headerZones": "Konfigurált zónák",

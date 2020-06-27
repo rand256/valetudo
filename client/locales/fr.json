@@ -92,7 +92,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Impossible de démarrer le nettoyage zoné: aucune zone spécifiée. Voulez-vous exécuter un nettoyage complet à la place?",
 		"cannotResume": "Aucun résumé!",
-		"noGotoTarget": "Vous devez choisir un emplacement pour Goto."
+		"noGotoTarget": "Vous devez choisir un emplacement pour Goto.",
+		"selectEndGoto": "Allez à l'endroit sélectionné et ...",
+		"selectEndCleaning": "Effectuez le nettoyage sélectionné et ...",
+		"selectEndStop": "Arrêtez",
+		"selectEndSpot": "Faire un nettoyage local",
+		"selectEndBase": "Retourner à la base",
+		"selectEndMove": "Aller à l'endroit sélectionné"
 	},
 	"zones": {
 		"headerZones": "Zones configurées",

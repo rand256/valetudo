@@ -114,7 +114,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nie można rozpocząć sprzątania strefowego. Czy rozpocząć pełne sprzątanie?",
 		"cannotResume": "Nie można kontynuować!",
-		"noGotoTarget": "Należy wybrać miejsce dla komendy Idź do na mapie."
+		"noGotoTarget": "Należy wybrać miejsce dla komendy Idź do na mapie.",
+		"selectEndGoto": "Przejdź do wybranego miejsca i ...",
+		"selectEndCleaning": "Wykonaj wybrane czyszczenie i ...",
+		"selectEndStop": "Zatrzymać",
+		"selectEndSpot": "Czyścić na miejscu",
+		"selectEndBase": "Powrót do bazy",
+		"selectEndMove": "Idź do wybranego miejsca"
 	},
 	"zones": {
 		"headerZones": "Skonfigurowane strefy",

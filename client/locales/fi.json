@@ -93,7 +93,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Aluesiivouksen käynnistäminen ei onnistu, koska aluetta ei ole määritetty. Haluatko suorittaa täyden imuroinnin sen sijaan?",
 		"cannotResume": "Jatkaminen ei ole mahdollista!",
-		"noGotoTarget": "Sinun on valittava spotti, johon mennä."
+		"noGotoTarget": "Sinun on valittava spotti, johon mennä.",
+		"selectEndGoto": "Siirry valittuun kohtaan ja ...",
+		"selectEndCleaning": "Suorita valittu puhdistus ja ...",
+		"selectEndStop": "Älä lopeta",
+		"selectEndSpot": "Suorita pistepuhdistus",
+		"selectEndBase": "Palaa tukikohtaan",
+		"selectEndMove": "Siirry valittuun kohtaan"
 	},
 	"zones": {
 		"headerZones": "Määritellyt alueet",

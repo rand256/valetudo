@@ -92,7 +92,13 @@
 		"errorText": "{{errore}}",
 		"confirmFullCleaning": "Impossibile avviare la pulizia delle zone: nessuna zona impostata. Vuoi invece iniziare una pulizia completa?",
 		"cannotResume": "Nessuna pulizia in corso!",
-		"noGotoTarget": "Devi selezionare un punto per il bersaglio"
+		"noGotoTarget": "Devi selezionare un punto per il bersaglio",
+		"selectEndGoto": "Vai al punto selezionato e ...",
+		"selectEndCleaning": "Eseguire la pulizia selezionata e ...",
+		"selectEndStop": "Smetti",
+		"selectEndSpot": "Pulisci i punti",
+		"selectEndBase": "Ritorna alla base",
+		"selectEndMove": "Vai al punto selezionato"
 	},
 	"zones": {
 		"headerZones": "Zone configurate",

@@ -93,7 +93,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?",
 		"cannotResume": "Nothing to resume!",
-		"noGotoTarget": "You need to choose a spot for Goto on map."
+		"noGotoTarget": "You need to choose a spot for Goto on the map.",
+		"selectEndGoto": "Go to selected spot and...",
+		"selectEndCleaning": "Perform selected cleaning and...",
+		"selectEndStop": "Do stop",
+		"selectEndSpot": "Do spot cleaning",
+		"selectEndBase": "Return to base",
+		"selectEndMove": "Go to selected spot"
 	},
 	"zones": {
 		"headerZones": "Configured zones",

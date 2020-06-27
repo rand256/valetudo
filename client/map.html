@@ -101,17 +101,26 @@
 		};
 
 		/**
-		 * Calls the goto api route with the currently set goto coordinates
+		 * Calls the goto api route
 		 */
-		function goto_point(point) {
+		function goto_point(withCleaning) {
+			const point = map.getLocations().gotoPoints[0];
+			if (!point) {
+				fn.notificationToastError(i18next.t('map.noGotoTarget',"You need to choose a spot for Goto on the map."));
+				return;
+			}
 			let button = document.getElementById("goto");
 			loadingBar.setAttribute("indeterminate", "indeterminate");
 			button.setAttribute("disabled", "disabled");
 			fn.prequestWithPayload("api/go_to", JSON.stringify(point), "PUT")
-			.then(
-				(res) => fn.notificationToastOK(),
-				(err) => fn.notificationToastError(err)
-			)
+			.then(res => {
+				if (withCleaning) {
+					return fn.prequestWithPayload("api/override_queue", JSON.stringify({gotoSpot: withCleaning}), "PUT")
+				}
+				return null;
+			})
+			.then(res => fn.notificationToastOK())
+			.catch(err => fn.notificationToastError(err))
 			.finally(() => {
 				loadingBar.removeAttribute("indeterminate");
 				button.removeAttribute("disabled");
@@ -119,47 +128,56 @@
 		};
 
 		/**
-		 * Calls the zoned cleanup api route with the currently set zones
+		 * Calls the appropriate start api route
 		 */
-		function zoned_cleanup(zones) {
-			let button = document.getElementById("start_cleaning");
-			loadingBar.setAttribute("indeterminate", "indeterminate");
-			button.setAttribute("disabled", "disabled");
-			fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT")
-			.then(
-				(res) => {
+		function start_cleaning(postCleaning) {
+			var point, promise, button = document.getElementById("start_cleaning");
+			const segments = map.getLocations().segments;
+			const zones = map.getLocations().zones;
+			const res = document.querySelector('.map-page-status').dataset;
+			if (postCleaning === 2 && !(point = map.getLocations().gotoPoints[0])) {
+				fn.notificationToastError(i18next.t('map.noGotoTarget',"You need to choose a spot for Goto."));
+				return;
+			}
+			if (segments.length && [0,2,3,6,8,10,12,17,18].includes(+res.state)) {
+				let iterations = parseInt(document.getElementById("set_iterations_segment_number").textContent);
+				if (!(iterations > 0 && iterations <= 3)) { iterations = 1; }
+				promise = () => fn.prequestWithPayload("api/start_cleaning_segment", JSON.stringify([segments, iterations]), "PUT");
+			} else if (zones.length && [0,2,3,6,8,10,12,17,18].includes(+res.state)) {
+				promise = () => fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(zones), "PUT");
+			} else if ([0,2,3,6,8,10,12].includes(+res.state)) {
+				promise = () => {
+					return ons.notification.confirm(i18next.t('map.confirmFullCleaning',"Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")})
+					.then(answer => {
+						if (answer === 1) {
+							return fn.prequest("api/start_cleaning_only", "PUT")
+						}
+						return Promise.reject('cancel');
+					});
+				};
+			}
+			if (promise) {
+				loadingBar.setAttribute("indeterminate", "indeterminate");
+				button.setAttribute("disabled", "disabled");
+				promise()
+				.then(res => {
+					if (postCleaning > -1 && postCleaning < 3) {
+						return fn.prequestWithPayload("api/override_queue", JSON.stringify({postCleaning: postCleaning === 2 ? point : postCleaning}), "PUT")
+					}
+					return null;
+				})
+				.then(res => {
 					fn.notificationToastOK();
 					setTimeout(() => map.clearLocations(),3e3);
-				},
-				(err) => fn.notificationToastError(err)
-			)
-			.finally(() => {
-				loadingBar.removeAttribute("indeterminate");
-				button.removeAttribute("disabled");
-			});
-		};
-
-		/**
-		 * Calls the segmented cleanup api route with the currently chosen segments
-		 */
-		function segmented_cleanup(segments) {
-			let button = document.getElementById("start_cleaning"),
-				iterations = parseInt(document.getElementById("set_iterations_segment_number").textContent);
-			if (!(iterations > 0 && iterations <= 3)) { iterations = 1; }
-			loadingBar.setAttribute("indeterminate", "indeterminate");
-			button.setAttribute("disabled", "disabled");
-			fn.prequestWithPayload("api/start_cleaning_segment", JSON.stringify([segments, iterations]), "PUT")
-			.then(
-				(res) => {
-					fn.notificationToastOK();
-					setTimeout(() => map.clearLocations(),3e3);
-				},
-				(err) => fn.notificationToastError(err)
-			)
-			.finally(() => {
-				loadingBar.removeAttribute("indeterminate");
-				button.removeAttribute("disabled");
-			});
+				})
+				.catch(err => {
+					if (err !== 'cancel') fn.notificationToastError(err);
+				})
+				.finally(() => {
+					loadingBar.removeAttribute("indeterminate");
+					button.removeAttribute("disabled");
+				});
+			}
 		};
 
 		/**
@@ -268,27 +286,90 @@
 			document.getElementById("stop_cleaning").style.display = 'none';
 		};
 
-		document.getElementById("goto").onclick = () => {
-			const gotoPoint = map.getLocations().gotoPoints[0];
-			if (!gotoPoint) fn.notificationToastError(i18next.t('map.noGotoTarget',"You need to choose a spot for Goto."));
-			else goto_point(gotoPoint);
-		}
-		document.getElementById("start_cleaning").onclick = () => {
-			const segments = map.getLocations().segments;
-			const zones = map.getLocations().zones;
-			const res = document.querySelector('.map-page-status').dataset;
-			if (segments.length && [2,3,6,8,10,12,17,18].includes(+res.state)) {
-				segmented_cleanup(segments);
-			} else if (zones.length && [2,3,6,8,10,12,17,18].includes(+res.state)) {
-				zoned_cleanup(zones);
-			} else if (![5,11,16,17,18].includes(+res.state)) {
-				ons.notification.confirm(i18next.t('map.confirmFullCleaning',"Can't start zoned cleaning: no zones specified. Do you want to run full cleaning instead?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(function (answer) {
-					if (answer === 1) {
-						put_command("start_cleaning_only","start_cleaning");
+		function processLongPress(target,doClick,doLongClick) {
+			let timeout = null,
+				pressed = false,
+				down = (e) => {
+					if (e.type === "click" && e.button !== 0) {
+						return;
 					}
-				});
+					pressed = false;
+					if (!timeout) {
+						timeout = setTimeout(() => {
+							pressed = true;
+							doLongClick();
+						},1e3);
+					}
+					return false;
+				},
+				click = (e) => {
+					if (timeout) {
+						clearTimeout(timeout);
+						timeout = null;
+					}
+					if (pressed) {
+						return;
+					}
+					doClick();
+				},
+				up = (e) => {
+					if (timeout) {
+						clearTimeout(timeout);
+						timeout = null;
+					}
+				};
+			target.addEventListener("mousedown", down);
+			target.addEventListener("touchstart", down);
+			target.addEventListener("click", click);
+			target.addEventListener("mouseleave", up);
+			target.addEventListener("touchend", up);
+			target.addEventListener("touchleave", up);
+			target.addEventListener("touchcancel", up);
+		};
+
+		processLongPress(
+			document.getElementById("goto"),
+			() => goto_point(),
+			() => {
+				ons.openActionSheet({
+					title: i18next.t('map.selectEndGoto',"Go to selected spot and..."),
+					cancelable: true,
+					buttons: [
+						i18next.t('map.selectEndStop',"Do stop"),
+						i18next.t('map.selectEndSpot',"Do spot cleaning"),
+						{label: i18next.t('common.cancel',"Cancel"), icon: 'md-close'}
+					]
+				})
+				.then(index => {
+					if (index > -1 && index < 2) {
+						goto_point(index)
+					}
+				})
 			}
-		}
+		);
+
+		processLongPress(
+			document.getElementById("start_cleaning"),
+			() => start_cleaning(-1),
+			() => {
+				ons.openActionSheet({
+					title: i18next.t('map.selectEndCleaning',"Perform selected cleaning and..."),
+					cancelable: true,
+					buttons: [
+						i18next.t('map.selectEndStop',"Do stop"),
+						i18next.t('map.selectEndBase',"Return to base"),
+						i18next.t('map.selectEndMove',"Go to selected spot"),
+						{label: i18next.t('common.cancel',"Cancel"), icon: 'md-close'}
+					]
+				})
+				.then(index => {
+					if (index > -1 && index < 3) {
+						start_cleaning(index);
+					}
+				})
+			}
+		);
+
 		document.getElementById("resume_cleaning").onclick = () => {
 			const res = document.querySelector('.map-page-status').dataset;
 			if ([2,10,12].includes(+res.state)) {

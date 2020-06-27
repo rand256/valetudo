@@ -93,7 +93,13 @@
 		"errorText": "{{error, lowercase}}",
 		"confirmFullCleaning": "Начать зональную уборку невозможно: не указано ни одной зоны. Хотите начать полную уборку?",
 		"cannotResume": "Нет действий для продолжения!",
-		"noGotoTarget": "Нужно выбрать точку для перемещения."
+		"noGotoTarget": "Нужно выбрать точку для перемещения.",
+		"selectEndGoto": "После перемещения:",
+		"selectEndCleaning": "После уборки:",
+		"selectEndStop": "Остановиться",
+		"selectEndSpot": "Запустить локальную уборку",
+		"selectEndBase": "Вернуться на базу",
+		"selectEndMove": "Перейти к указанной точке"
 	},
 	"zones": {
 		"headerZones": "Зоны уборки",

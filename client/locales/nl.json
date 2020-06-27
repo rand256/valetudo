@@ -113,7 +113,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Kan de zone(s) niet schoonmaken: geen zone opgegeven. Wil je een volledige schoonmaak starten?",
 		"cannotResume": "Niks om te hervatten!",
-		"noGotoTarget": "Je moet een plek op de kaart kiezen om naar te gaan."
+		"noGotoTarget": "Je moet een plek op de kaart kiezen om naar te gaan.",
+		"selectEndGoto": "Ga naar de geselecteerde plek en ...",
+		"selectEndCleaning": "Voer geselecteerde reiniging uit en ...",
+		"selectEndStop": "Stop",
+		"selectEndSpot": "Spot schoonmaken",
+		"selectEndBase": "Ga terug naar de basis",
+		"selectEndMove": "Ga naar de geselecteerde plek"
 	},
 	"zones": {
 		"headerZones": "Geconfigureerde zones",

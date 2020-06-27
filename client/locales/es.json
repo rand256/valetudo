@@ -93,7 +93,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "No puedo empezar la limpieza de zonas: no hay zonas seleccionadas. ¿Prefieres realizar una limpieza completa?",
 		"cannotResume": "Nada para reanudar!",
-		"noGotoTarget": "Necesitas elegir un punto (Ir a...) en el mapa."
+		"noGotoTarget": "Necesitas elegir un punto (Ir a...) en el mapa.",
+		"selectEndGoto": "Ir al lugar seleccionado y ...",
+		"selectEndCleaning": "Realice la limpieza seleccionada y ...",
+		"selectEndStop": "Para",
+		"selectEndSpot": "Hacer limpieza de manchas",
+		"selectEndBase": "Volver a la base",
+		"selectEndMove": "Ir al lugar seleccionado"
 	},
 	"zones": {
 		"headerZones": "Zonas configuradas",

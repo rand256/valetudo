@@ -93,7 +93,13 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Zonenreinigung nicht möglich, keine Zonen angegeben. Soll stattdessen eine komplette Reinigung gestartet werden?",
 		"cannotResume": "Keine Tätigkeiten zur Fortsetzung!",
-		"noGotoTarget": "Sie müssen ein Ziel auf der Karte auswählen."
+		"noGotoTarget": "Sie müssen ein Ziel auf der Karte auswählen.",
+		"selectEndGoto": "Gehe zum ausgewählten Ziel und...",
+		"selectEndCleaning": "Führen Sie die ausgewählte Reinigung durch und ...",
+		"selectEndStop": "Hör auf",
+		"selectEndSpot": "Reinigen Sie vor Ort",
+		"selectEndBase": "Rückkehr zu Basis",
+		"selectEndMove": "Gehe zum ausgewählten Ziel"
 	},
 	"zones": {
 		"headerZones": "Gespeicherte Zonen",
