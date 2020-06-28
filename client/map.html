@@ -246,7 +246,6 @@
 			// additionally allow starting cleaning to enqueue new zones or segments during already running cleaning
 			if ([5,17,18].includes(+res.state)) {
 				document.getElementById("add_zone").style.display = '';
-				console.log(map.getLocations().segments.length,map.getLocations().zones.length)
 				if (map.getLocations().segments.length || map.getLocations().zones.length) {
 					document.getElementById("start_cleaning").style.display = '';
 				}

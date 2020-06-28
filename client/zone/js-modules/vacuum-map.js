@@ -217,19 +217,17 @@ export function VacuumMap(canvasElement) {
 	 */
 	function updateMap(mapData,initial) {
 		parsedMap = mapData;
+		checkTranslatePosition();
 		updateMapInt();
-		if (initial) {
-			checkTranslatePosition();
-		}
 	}
 
 	// makes sure map is still visible on canvas and fixes that if it's not
-	function checkTranslatePosition() {
+	function checkTranslatePosition(forced) {
 		const ctx = canvas.getContext('2d'), tmatrix = ctx.getTransform();
-		if (!(-tmatrix.e < (parsedMap.image.box.maxX - 50)*currentScale && -tmatrix.e > (parsedMap.image.box.minX + 50)*currentScale - canvas.width)) {
+		if (forced || !(-tmatrix.e < (parsedMap.image.box.maxX - 50)*currentScale && -tmatrix.e > (parsedMap.image.box.minX + 50)*currentScale - canvas.width)) {
 			tmatrix.e = (-parsedMap.image.box.minX + 25)*currentScale;
 		}
-		if (!(-tmatrix.f < (parsedMap.image.box.maxY - 50)*currentScale && -tmatrix.f > (parsedMap.image.box.minY + 50)*currentScale - canvas.height)) {
+		if (forced || !(-tmatrix.f < (parsedMap.image.box.maxY - 50)*currentScale && -tmatrix.f > (parsedMap.image.box.minY + 50)*currentScale - canvas.height)) {
 			tmatrix.f = (-parsedMap.image.box.minY + 25)*currentScale;
 		}
 		ctx.setTransform(tmatrix.a,tmatrix.b,tmatrix.c,tmatrix.d,tmatrix.e,tmatrix.f);
@@ -321,11 +319,12 @@ export function VacuumMap(canvasElement) {
 			if (!isNaN(sst.x) && !isNaN(sst.y)) {
 				ctx.translate(-sst.x,-sst.y);
 			}
+			checkTranslatePosition();
 		} else {
 			currentScale = initialScalingFactor;
 			ctx.scale(currentScale, currentScale);
+			checkTranslatePosition(true);
 		}
-		checkTranslatePosition();
 
 		function clearContext(ctx) {
 			ctx.save();
