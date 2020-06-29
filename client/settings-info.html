@@ -104,6 +104,14 @@
 	<ons-list-title style="margin-top:5px;" data-i18n="settings.info.valetudo">Valetudo RE</ons-list-title>
 	<ons-list>
 		<ons-list-item>
+			<div class="left">
+				NODE.JS
+			</div>
+			<div class="right" id="info_nodejs_version" data-i18n="settings.loading">
+				loading...
+			</div>
+		</ons-list-item>
+		<ons-list-item>
 			<div class="left" data-i18n="settings.info.currentValetudoVersion">
 				Current version:
 			</div>
@@ -144,7 +152,8 @@
 			.then((res) => {
 				document.getElementById('info_fw_version').innerHTML = res.version;
 				document.getElementById('info_fw_build').innerHTML = res.build;
-				document.getElementById('info_valetudo_version').innerHTML = res.valetudoVersion;
+				document.getElementById('info_nodejs_version').innerHTML = res.nodejs;
+				document.getElementById('info_valetudo_version').innerHTML = res.valetudo;
 			}, (err) => fn.notificationToastError(err));
 			const updateAppLocaleInfo = fn.prequest("api/get_app_locale")
 			.then((res) => {
@@ -218,11 +227,11 @@
 			.then((res) => {
 				try {
 					var info_valetudo_new_release = res[0];
-					document.getElementById('info_new_valetudo_version').innerHTML = info_valetudo_new_release.tag_name;
+					document.getElementById('info_new_valetudo_version').textContent = 'v' + info_valetudo_new_release.tag_name;
 					document.getElementById('info_valetudo_update_url').innerHTML = '<a href="'+info_valetudo_new_release.html_url+'">'+info_valetudo_new_release.html_url+'</a>';
-					if( document.getElementById('info_valetudo_version').innerHTML != info_valetudo_new_release.tag_name)
+					if( document.getElementById('info_valetudo_version').textContent != 'v' + info_valetudo_new_release.tag_name)
 					{
-							document.getElementById('info_valetudo_update_url_list').style.display = ""; //make entry visible if newer version is availiable
+							document.getElementById('info_valetudo_update_url_list').style.display = ""; //make entry visible if newer version is available
 					}
 				} catch (e) {
 					ons.notification.toast(e, { buttonLabel: 'Dismiss', timeout: 1500 });
