@@ -510,7 +510,20 @@
 				batteryStatusText.textContent = res.battery;
 				batteryStatusBar.value = res.battery;
 
-				robotState.innerHTML = i18next.t('robot.states.n' + res.state, res.human_state);
+				robotState.textContent = i18next.t('robot.states.n' + res.state, res.human_state);
+				if (res.in_cleaning && [8,10,12].includes(res.state)) {
+					switch (res.in_cleaning) {
+						case 1:
+							robotState.textContent += " / " + i18next.t('robot.states.n5', "Cleaning");
+							break;
+						case 2:
+							robotState.textContent += " / " + i18next.t('robot.states.n17', "Zoned cleaning");
+							break;
+						case 3:
+							robotState.textContent += " / " + i18next.t('robot.states.n18', "Rooms cleaning");
+							break;
+					}
+				}
 				if (res.error_code != 0) {
 					robotState.innerHTML +=
 						'<span class="robot-error"><ons-icon icon="fa-exclamation-triangle"></ons-icon> ' +
@@ -518,25 +531,19 @@
 						' <ons-icon icon="fa-exclamation-triangle"></ons-icon></span>';
 				}
 
-				if (res.in_cleaning > 0 || res.state === 11 || res.state === 16) {
-					if ([2,3,10].includes(res.state)) {
-						pauseButton.setAttribute("disabled", "disabled");
-						startButton.removeAttribute("disabled");
-					} else {
-						pauseButton.removeAttribute("disabled");
-						startButton.setAttribute("disabled", "disabled");
-					}
+				if ([2,3,5,6,8,10,12,17,18].includes(res.state)) {
+					startButton.removeAttribute("disabled");
 				} else {
-					pauseButton.setAttribute("disabled", "disabled");
-					if (res.state !== 6) {
-						startButton.removeAttribute("disabled");
-					} else {
-						pauseButton.removeAttribute("disabled");
-						startButton.setAttribute("disabled", "disabled");
-					}
+					startButton.setAttribute("disabled", "disabled");
 				}
 
-				if ([3,6,8,11,15,16].includes(res.state) || (res.state === 10 && !res.in_cleaning)) {
+				if ([5,6,11,16,17,18].includes(res.state)) {
+					pauseButton.removeAttribute("disabled");
+				} else {
+					pauseButton.setAttribute("disabled", "disabled");
+				}
+
+				if ([3,6,11,15,16].includes(res.state) || ([8,10].includes(res.state) && !res.in_cleaning)) {
 					stopButton.setAttribute("disabled", "disabled");
 				} else {
 					stopButton.removeAttribute("disabled");
@@ -554,7 +561,7 @@
 					spotButton.setAttribute("disabled", "disabled");
 				}
 
-				if ([3,8].includes(res.state) || (res.state === 2 && res.in_cleaning === 0)) {
+				if ([2,3,8].includes(res.state) && !res.in_cleaning) {
 					storeMapButton.removeAttribute("disabled");
 					loadMapButton.removeAttribute("disabled");
 				} else {
