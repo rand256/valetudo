@@ -93,7 +93,7 @@
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Nevar sākt zonu tīrīšanu: nav norādītas zonas. Vai vēlaties tā vietā veikt pilnu tīrīšanu?",
 		"cannotResume": "Nav darbības ko atsākt!",
-		"noGotoTarget": "Norādiet punktu kartē uz kuru doties."
+		"noGotoTarget": "Norādiet punktu kartē uz kuru doties.",
 		"selectEndGoto": "Doties uz izvēlēto vietu un ...",
 		"selectEndCleaning": "Veikt izvēlēto tīrīšanu un ...",
 		"selectEndStop": "Apstāties",
