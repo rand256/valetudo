@@ -61,7 +61,7 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 					buf.readUInt16LE(0x08 + offset),
 					buf.readUInt16LE(0x0c + offset)
 				],
-				angle: length >= 12 ? buf.readInt32LE(0x10 + offset) : 0 // gen3+
+				angle: length >= 12 ? buf.readInt32LE(0x10 + offset) : null // gen3+
 			};
 			break;
 		case RRMapParser.TYPES.IMAGE:
@@ -311,7 +311,7 @@ RRMapParser.PARSE = function parse(inputMapBuf) {
 				parsedMapData.robot = blocks[RRMapParser.TYPES.ROBOT_POSITION].position;
 				parsedMapData.robot[1] = Tools.DIMENSION_MM - parsedMapData.robot[1];
 			}
-			parsedMapData.robot_angle = parsedMapData.robot && parsedMapData.robot.angle || parsedMapData.path && parsedMapData.path.current_angle || 0;
+			parsedMapData.robot_angle = blocks[RRMapParser.TYPES.ROBOT_POSITION] && blocks[RRMapParser.TYPES.ROBOT_POSITION].angle !== null ? (90 - blocks[RRMapParser.TYPES.ROBOT_POSITION].angle) : parsedMapData.path && (parsedMapData.path.current_angle + 90) || 0;
 			if(blocks[RRMapParser.TYPES.GOTO_TARGET]) {
 				parsedMapData.goto_target = blocks[RRMapParser.TYPES.GOTO_TARGET].position;
 				parsedMapData.goto_target[1] = Tools.DIMENSION_MM - parsedMapData.goto_target[1];

@@ -1,17 +1,22 @@
 <ons-page id="manualcontrol-page">
 	<ons-progress-bar id="loading-bar-manualcontrol" value="0" indeterminate="indeterminate"></ons-progress-bar>
 
-	<div class="aspect-ratio" style="text-align: center; position: relative; height: 99%;" id="notouchmovementsarea">
-			<canvas id="manual-control-area"  class="fit-img fit-img-tight" style="background-color: #9ea7b833; height: 90%; width: 90%; position:relative;"></canvas>
-			<div>
-				<ons-button id="start-manual-control-button" class="button-margin" onclick="startManualControl()" data-i18n="control.startButton">Start Manual Control</ons-button>
-				<ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" data-i18n="control.stopButton" style="display:none;">Stop Manual Control</ons-button>
-			</div>
+<div id="controlcontainer">
+	<div id="controlmaparea">
+		<canvas id="control-map"></canvas>
 	</div>
+	<div id="notouchmovementsarea">
+		<canvas id="manual-control-area"></canvas>
+	</div>
+	<div id="controlbuttons">
+		<ons-button id="start-manual-control-button" class="button-margin" onclick="startManualControl()" data-i18n="control.startButton">Start Manual Control</ons-button>
+		<ons-button id="stop-manual-control-button" class="button-margin" onclick="stopManualControl()" data-i18n="control.stopButton" style="display:none;">Stop Manual Control</ons-button>
+	</div>
+</div>
 
 	<script>
 		var manualControlSequenceId = 1;
-		var manualControlDurationMS = 100;
+		var manualControlDurationMS = 150;
 		var maxVelocity = 0.3;
 		var manualControlMinimalVelocity = 0.02;		  //below this abs limit robot will not move
 		var manualControlMinimalOmega = 0.1;			  //below this abs limit (currentAngle) robot will not turn
@@ -25,13 +30,38 @@
 		var manualControlEnabled = false;
 		var manualControlStateRefreshTimer, manualControlRefreshInProgress = false;
 		var manualControlToastInProgress = false;
-		var timedManualControlLoop;
+		var timedManualControlLoop = 0;
 
 		var startManualControlButton = document.getElementById("start-manual-control-button");
 		var endManualControlButton = document.getElementById("stop-manual-control-button");
 		var manualControlLoadingBar = document.getElementById('loading-bar-manualcontrol');
 
 		var cX, cY, manualControlCanvasContext, manualControlCanvas = document.getElementById("manual-control-area");
+
+		var controlMap = null;
+
+		function controlMapAvailable() {
+			return fn.device.ver === 3;
+		}
+
+		function updateControlMapPage() {
+			let gzippedMapData;
+			manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");
+			fn.prequest("api/map/latest", "GET", "arraybuffer")
+			.then(res => {
+				if(controlMap === null) {
+					controlMap = fn.createVacuumMap(document.getElementById('control-map'));
+					controlMap.initCanvas(res,{controlMap: true, noGotoPoints: true, metaData: "forbidden"});
+				} else {
+					controlMap.updateMap(controlMap.parseMap(res),true);
+				}
+				controlMap.initWebSocket();
+			})
+			.catch(err => fn.notificationToastError(err))
+			.finally(() => {
+				loadingBar.removeAttribute("indeterminate");
+			});
+		};
 
 		//API / Manual Control Handling
 		function manualMoveRobot(angle, velocity) {
@@ -59,6 +89,7 @@
 				setTimeout(() => { endManualControlButton.disabled = false; }, 1e3);
 				document.getElementById('sidemenu').removeAttribute("swipeable");
 				document.getElementById('appTabbar').removeAttribute("swipeable");
+				drawValuesToCanvas();
 			}
 		}
 
@@ -130,7 +161,6 @@
 
 		function startManualControlTimer() {
 			if (!timedManualControlLoop && manualControlEnabled) {
-				sendManualControl(); //send + start repetitive timer
 				timedManualControlLoop = setInterval(function(){
 					sendManualControl();
 				}, manualControlDurationMS);
@@ -158,39 +188,57 @@
 			manualControlCanvasContext.arc(cX, cY, 5, 0, 360, false);
 			manualControlCanvasContext.fill();
 		}
-		resizer();
 		window.addEventListener('resize',resizer);
 
 		function drawValuesToCanvas () {
-			//delete old values / draw background
-			manualControlCanvasContext.fillStyle="#FFFFFF"; //#9ea7b833
-			manualControlCanvasContext.fillRect(0,0,200,50);
-			//draw values
+			if (!manualControlCanvasContext) return;
 			manualControlCanvasContext.font = "12px Helvetica";
 			manualControlCanvasContext.textAlign = 'left';
+			manualControlCanvasContext.textBaseline = 'top';
+			let text = "Velocity:\t" + currentVelocity.toPrecision(2) + "\tOmega:\t" + currentOmega.toPrecision(2),
+				width = manualControlCanvasContext.measureText(text).width;
+			//delete old values / draw background
+			manualControlCanvasContext.fillStyle="#dee0e8";
+			manualControlCanvasContext.fillRect(0,0,200,50);
+			manualControlCanvasContext.fillStyle="#FFFFFF";
+			manualControlCanvasContext.fillRect(0,0,(width+20),25);
+			//draw values
 			manualControlCanvasContext.fillStyle = '#8A8A8A';
-			manualControlCanvasContext.fillText("Velocity:\t" + currentVelocity.toPrecision(2) + "\tOmega:\t" + currentOmega.toPrecision(2), 30, 30);
+			manualControlCanvasContext.fillText(text, 10, 8);
 		}
 
 		//Mouse Handling
-		function getMousePos(canvasDom, mouseEvent) {
-			var rect = canvasDom.getBoundingClientRect();
-			return {
-				x: mouseEvent.clientX - rect.left,
-				y: mouseEvent.clientY - rect.top
-			};
+		function getMousePos(mouseEvent) {
+			var rect = manualControlCanvas.getBoundingClientRect();
+			if (mouseEvent && mouseEvent.clientX) {
+				return {
+					x: mouseEvent.clientX - rect.left,
+					y: mouseEvent.clientY - rect.top
+				};
+			} else {
+				return {x: 0, y: 0};
+			}
 		}
 
-		["mousedown", "mouseenter", "mouseup", "mouseleave","mouseout"].forEach(function(evt){
-			manualControlCanvas.addEventListener(evt, function() {
-				startManualControlTimer();
+		manualControlCanvas.addEventListener("mousedown", function(e) {
+			e.preventDefault();
+			startManualControlTimer();
+			calculateAngleAndDistance(getMousePos(e));
+		});
+
+		["mouseup", "mouseleave", "mouseout"].forEach(function(evt){
+			manualControlCanvas.addEventListener(evt, function(e) {
+				e.preventDefault();
+				resetAngleAndDistance();
+				stopManualControlTimer();
 			}, false);
 		});
 
 		manualControlCanvas.addEventListener("mousemove", function(e) {
-			event.preventDefault();
-			var m = getMousePos(manualControlCanvas, e);
-			calculateAngleAndDistance(m);
+			e.preventDefault();
+			if (timedManualControlLoop) {
+				calculateAngleAndDistance(getMousePos(e));
+			}
 		}, false);
 
 		//Touch Handling
@@ -201,32 +249,30 @@
 				if (evt.touches.length === 1) { // Only deal with one finger
 					var touch = evt.touches[0]; // Get the information for finger #1
 					return {
-						x : touch.pageX - rect.left,  //-touch.target.offsetLeft,
-						y : touch.pageY - rect.top //-touch.target.offsetTop
+						x: touch.pageX - rect.left,  //-touch.target.offsetLeft,
+						y: touch.pageY - rect.top //-touch.target.offsetTop
 					};
 				}
 			} else {
-				return {
-					x : 0,
-					y : 0
-				};
+				return {x: 0, y: 0};
 			}
 		}
 
 		function touchStart(e) {
 			e.preventDefault();
 			startManualControlTimer();
-			var m = getTouchPos();
-			calculateAngleAndDistance(m);
+			calculateAngleAndDistance(getTouchPos(e));
 		}
 
 		function touchMove(e) {
 			e.preventDefault();
-			var m = getTouchPos(e);
-			calculateAngleAndDistance(m);
+			if (timedManualControlLoop) {
+				calculateAngleAndDistance(getTouchPos(e));
+			}
 		}
 
 		function touchEnd() {
+			resetAngleAndDistance();
 			stopManualControlTimer();
 		}
 
@@ -269,6 +315,12 @@
 			}
 		};
 
+		function resetAngleAndDistance() {
+			currentOmega = currentAngle = 0;
+			currentVelocity = currentYDistance = currentXYDistance = 0;
+			drawValuesToCanvas();
+		}
+
 		//Page Handling (refresh/update/onload/onhide)
 		function refreshManualControlMode() {
 			if (manualControlRefreshInProgress) {
@@ -295,12 +347,20 @@
 		};
 
 		ons.getScriptPage().onInit = function() {
-		   fn.localize('#manualcontrol-page');
+			fn.localize('#manualcontrol-page');
 		}
 
 		ons.getScriptPage().onShow = function () {
 			manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");
 			refreshManualControlMode();
+			// check availability of control map
+			if (controlMapAvailable()) {
+				updateControlMapPage();
+				document.getElementById('controlcontainer').classList.remove('noControlMap');
+			} else {
+				document.getElementById('controlcontainer').classList.add('noControlMap');
+			}
+			setTimeout(() => { resizer(); drawValuesToCanvas(); },200);
 			//Since the robot may disable manual control mode by itself, this timer keeps the
 			//state of the robot in track with the UI
 			manualControlStateRefreshTimer = setInterval(function(){
@@ -311,10 +371,46 @@
 		ons.getScriptPage().onHide = function () {
 			stopManualControl();
 			clearInterval(manualControlStateRefreshTimer);
+			if (controlMap !== null) {
+				controlMap.closeWebSocket();
+			}
 		};
 
 	</script>
 	<style>
+		#controlcontainer {
+			display: grid;
+			height: 99%;
+			grid-template-columns: 50% 50%;
+			grid-template-rows: auto 0 60px;
+		}
+		#controlcontainer.noControlMap {
+			grid-template-columns: 0 100%;
+		}
+
+		#controlbuttons {
+			grid-column: 1 / span 2;
+			grid-row: 3;
+			place-self: center;
+		}
+
+		canvas#control-map,
+		#manual-control-area {
+			height: 98%;
+			width: 98%;
+		}
+
+		#controlmaparea,
+		#notouchmovementsarea {
+			grid-row: 1;
+			text-align: center;
+			padding: 2% 2% 0 2%;
+		}
+
+		#manual-control-area {
+			background-color: #dee0e8;
+		}
+
 		#notouchmovementsarea {
 			/* Prevent nearby text being highlighted when accidentally dragging mouse outside confines of the canvas */
 			-webkit-touch-callout: none;
@@ -324,5 +420,23 @@
 			-ms-user-select: none;
 			user-select: none;
 		}
+
+		@media (max-aspect-ratio: 1/1) {
+			#controlcontainer {
+				grid-template-columns: 1fr;
+				grid-template-rows: 1fr 1fr 50px;
+			}
+			#controlcontainer.noControlMap {
+				grid-template-columns: 1fr;
+				grid-template-rows: 0% auto 50px;
+			}
+			#controlbuttons,
+			#controlmaparea,
+			#notouchmovementsarea {
+				grid-row: unset;
+				grid-column: unset;
+			}
+		}
+
 	</style>
 </ons-page>

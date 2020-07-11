@@ -312,7 +312,9 @@ export function VacuumMap(canvasElement) {
 			canvas.width / (boundingBox.maxX - boundingBox.minX + 50),
 			canvas.height / (boundingBox.maxY - boundingBox.minY + 50)
 		),6.5),0.7);
-		if (!defaultMap) {
+		if (options.controlMap) {
+			currentScale = Math.min(5.4, canvas.width / 80);
+		} else if (!defaultMap) {
 			const sst = fetchScaleTranslate();
 			currentScale = sst.z >= 0.7 && sst.z <= 6.5 ? sst.z : initialScalingFactor;
 			ctx.scale(currentScale, currentScale);
@@ -363,15 +365,14 @@ export function VacuumMap(canvasElement) {
 				canvasimg.height = img.height + 4
 				var ctximg = canvasimg.getContext('2d');
 				ctximg.imageSmoothingQuality = 'high';
-				const offset = 90;
 				ctximg.clearRect(0, 0, canvasimg.width, canvasimg.height);
 				ctximg.translate(canvasimg.width / 2, canvasimg.height / 2);
-				ctximg.rotate((angle + offset) * Math.PI / 180);
+				ctximg.rotate(angle * Math.PI / 180);
 				ctximg.drawImage(img, -img.width / 2, -img.height / 2);
 				return canvasimg;
 			}
 			const robotPositionInPixels = new DOMPoint(robotPosition[0] / 50, robotPosition[1] / 50).matrixTransform(transformMapToScreenSpace);
-			const robotIcon = robotAngle ? rotateRobot(img_rocky_scaled, robotAngle) : img_rocky_scaled;
+			const robotIcon = robotAngle && !options.controlMap ? rotateRobot(img_rocky_scaled, robotAngle) : img_rocky_scaled;
 			ctx.drawImage(
 				robotIcon,
 				robotPositionInPixels.x - robotIcon.width / 2,
@@ -404,7 +405,13 @@ export function VacuumMap(canvasElement) {
 		 */
 		function redraw() {
 			clearContext(ctx);
-
+			if (options.controlMap) {
+				ctx.setTransform(currentScale, 0, 0, currentScale, 0, 0);
+				if (robotAngle) ctx.rotate((-robotAngle % 360)*Math.PI / 180);
+				const transformedPoint = new DOMPoint(robotPosition[0] / 50, robotPosition[1] / 50).matrixTransform(ctx.getTransform());
+				const {a, b, c, d, e, f} = ctx.getTransform();
+				ctx.setTransform(a, b, c, d, Math.floor(canvas.width/2 - e - transformedPoint.x), Math.floor(canvas.height/2 - f - transformedPoint.y)); // there should be a better way, obviously
+			}
 			// place map
 			ctx.drawImage(mapDrawer.canvas, 0, 0);
 
@@ -643,6 +650,7 @@ export function VacuumMap(canvasElement) {
 
 			if (scaleX > 6.5 || scaleX < 0.7) {
 				ctx.restore();
+				return evt.preventDefault() && false;
 			}
 
 			// translate
