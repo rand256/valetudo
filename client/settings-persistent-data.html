@@ -90,7 +90,7 @@
 					<option value="0" data-i18n="settings.persistentData.afterCleanDefault">Default</option>
 					<option value="1" data-i18n="settings.persistentData.afterCleanNowhere">Nowhere</option>
 					<option value="2" id="after_clean_spot" style="display: none;" data-i18n="settings.persistentData.afterCleanSpot">Spot</option>
-					<option value="3" id="after_clean_spot_new" data-i18n="settings.persistentData.afterCleanChooseSpot">Choose spot...</option>
+					<option value="3" data-i18n="settings.persistentData.afterCleanChooseSpot">Choose spot...</option>
 				</ons-select>
 			</div>
 		</ons-list-item>
@@ -104,7 +104,20 @@
 					<option value="0" data-i18n="settings.persistentData.autoDockNever">Never</option>
 					<option value="1" data-i18n="settings.persistentData.autoDockSleep">On sleep</option>
 					<option value="2" id="auto_dock_delay" style="display: none;" data-i18n="settings.persistentData.autoDockDelay">After</option>
-					<option value="3" id="auto_dock_delay_new" data-i18n="settings.persistentData.autoDockChooseDelay">Choose delay...</option>
+					<option value="3" data-i18n="settings.persistentData.autoDockChooseDelay">Choose delay...</option>
+				</ons-select>
+			</div>
+		</ons-list-item>
+		<ons-list-item>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.autoMapTitle">Auto Map Restore</div>
+				<div class="small" data-i18n="settings.persistentData.autoMapDesc">defines whether to restore a map when returning to the dock</div>
+			</div></div>
+			<div class="right">
+				<ons-select select-id="auto_map_restore" onchange="autoMapChanged(this);">
+					<option value="0" data-i18n="settings.persistentData.autoMapNone">None</option>
+					<option value="1" id="auto_map_name" style="display: none;" data-i18n="settings.persistentData.autoMapName">Map</option>
+					<option value="2" data-i18n="settings.persistentData.autoMapSelectName">Select map...</option>
 				</ons-select>
 			</div>
 		</ons-list-item>
@@ -182,9 +195,10 @@
 		var loadingBarSettingsPersistentData = document.getElementById('loading-bar-settings-persistent-data'),
 			afterCleanDestSelect = document.getElementById('after_clean_dest'),
 			autoDockReturnSelect = document.getElementById('auto_dock_return'),
+			autoMapRestoreSelect = document.getElementById('auto_map_restore'),
 			mapRestoreTypeSelect = document.getElementById('map_restore_type'),
 			labModeSwitch = document.getElementById('lab_mode_enabled');
-		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords, oldADR, ADR, oldMRT, MRT;
+		var oldLabStatus, oldACD, oldACDCoords, ACD, ACDCoords, oldADR, ADR, oldAMR, oldAMRName, AMR, AMRName, oldMRT, MRT;
 
 		ons.getScriptPage().onInit = function() {
 			fn.localize('#settings-persistent-data-page');
@@ -222,6 +236,13 @@
 			option.parentNode.selectedIndex = 2;
 		}
 
+		function setAMRNameOptionText(name) {
+			const option = document.getElementById('auto_map_name')
+			option.textContent = option.textContent.replace(/: (.+?)$/,'') + ': ' + name;
+			option.style.display = '';
+			option.parentNode.selectedIndex = 1;
+		}
+
 		function updateSettingsPersistentDataPage() {
 			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
 			Promise.all([
@@ -255,6 +276,14 @@
 						setADRDelayOptionText(oldADR);
 					}
 					autoDockReturnSelect.value = oldADR;
+					oldAMR = AMR = res.autoMapRestore || 0;
+					oldAMRName = '';
+					if (typeof oldAMR !== 'number') {
+						oldAMRName = AMRName = oldAMR;
+						oldAMR = AMR = 1;
+						setAMRNameOptionText(oldAMRName);
+					}
+					autoMapRestoreSelect.value = oldAMR;
 					oldMRT = MRT = res.mapRestoreType || 0;
 					mapRestoreTypeSelect.value = oldMRT;
 				})
@@ -342,6 +371,7 @@
 				loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
 				fn.prequest("api/spots")
 				.then(res => {
+					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
 					let spots = res,
 						options = [];
 					if (!spots.length) {
@@ -372,7 +402,6 @@
 				})
 				.catch(err => fn.notificationToastError(err))
 				.finally(() => {
-					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
 					updateSavePersistentDataButton();
 				});
 			} else {
@@ -405,6 +434,53 @@
 			}
 		}
 
+		function autoMapChanged(select) {
+			if (select.value === "2") {
+				let slots = [], options = [];
+				loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
+				fn.prequest("api/list_maps")
+				.then(data => {
+					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
+					data.sort((a, b) => a.localeCompare(b));
+					slots = data;
+					for (var i = 0; i < data.length; i++) {
+						options.push((/^[0-9]+$/.test(data[i]) ? i18next.t('home.popups.slotNo',"slot #") : "") + data[i]);
+					}
+					options.push({
+						label: options.length ? i18next.t('common.cancel',"Cancel") : i18next.t('home.popups.noMapsStored',"No saved maps!"),
+						icon: 'md-close'
+					});
+					let slotsList = ons.openActionSheet({
+						title: i18next.t('settings.persistentData.autoMapMenuSelect',"Select a map to load upon returning to the dock:"),
+						cancelable: true,
+						buttons: options
+					});
+					var slotsButtons = document.querySelectorAll('ons-action-sheet-button');
+					for (var i = 0; i < slotsButtons.length; i++) {
+						if (!i) slotsButtons[i].parentNode.parentNode.title = '';
+						slotsButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+					}
+					return slotsList;
+				})
+				.then(index => {
+					if (index > -1 && index < slots.length) {
+						AMR = 1;
+						AMRName = slots[index];
+						setAMRNameOptionText(AMRName);
+					} else {
+						select.value = oldAMR;
+					}
+				})
+				.catch(err => fn.notificationToastError(err))
+				.finally(() => {
+					updateSavePersistentDataButton();
+				});
+			} else {
+				AMR = +select.value;
+				updateSavePersistentDataButton();
+			}
+		}
+
 		function restoreTypeChanged(select) {
 			MRT = +select.value;
 			updateSavePersistentDataButton();
@@ -413,7 +489,8 @@
 		function updateSavePersistentDataButton() {
 			const button = document.getElementById('persistent_data_save_button');
 			if (labModeSwitch.checked !== oldLabStatus || ADR !== oldADR || MRT !== oldMRT ||
-				ACD !== 2 && ACD !== oldACD || ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords)) {
+				ACD !== 2 && ACD !== oldACD || ACD === 2 && JSON.stringify(oldACDCoords) !== JSON.stringify(ACDCoords) ||
+				AMR !== 1 && AMR !== oldAMR || AMR === 1 && JSON.stringify(oldAMRName) !== JSON.stringify(AMRName)) {
 				button.removeAttribute('disabled');
 			} else {
 				button.setAttribute('disabled','disabled');
@@ -421,10 +498,12 @@
 		}
 
 		function savePersistentData() {
+			console.log('asdf')
 			const labStatus = true === labModeSwitch.checked;
 			let promises = [fn.prequestWithPayload("api/system_config", JSON.stringify({
 				afterCleanDest: +afterCleanDestSelect.value === 2 ? ACDCoords : +afterCleanDestSelect.value,
 				autoDockReturn: +autoDockReturnSelect.value,
+				autoMapRestore: +autoMapRestoreSelect.value === 1 ? AMRName : +autoMapRestoreSelect.value,
 				mapRestoreType: +mapRestoreTypeSelect.value
 			}), "PUT")];
 			if (labModeSwitch.checked !== oldLabStatus) {
@@ -451,4 +530,9 @@
 			} catch (e) { return {}; }
 		}
 	</script>
+	<style>
+		#settings-persistent-data-page ons-select {
+			text-align-last: right;
+		}
+	</style>
 </ons-page>
