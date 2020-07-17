@@ -369,25 +369,86 @@
 
 		function handleStoreMapButton() {
 			window.clearTimeout(currentRefreshTimer);
-			let slotName;
-			ons.notification.prompt({message: i18next.t('home.popups.chooseMapName',"Choose a title to save the map files as:"), title: i18next.t('common.prompt',"Prompt"), placeholder: "name", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")] })
-			.then(slot => {
-				if (slot === null) {
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			let slotName, slots = [], options = [];
+			return fn.prequest("api/list_maps")
+			.then(data => {
+				data.sort((a, b) => a.localeCompare(b));
+				loadingBarHome.removeAttribute("indeterminate");
+				slots = data;
+				for (var i = 0; i < data.length; i++) {
+					options.push((/^[0-9]+$/.test(data[i]) ? i18next.t('home.popups.slotNo',"slot #") : "") + data[i]);
+				}
+				options.push({
+					label: '[' + i18next.t('home.popups.newSave',"new save") + ']',
+					icon: 'md-crop-free'
+				});
+				options.push({
+					label: i18next.t('common.cancel',"Cancel"),
+					icon: 'md-close'
+				});
+				let slotsList = ons.openActionSheet({
+					title: i18next.t('home.popups.selectMapToSave',"Select a slot to save the map to:"),
+					cancelable: true,
+					buttons: options
+				});
+				var slotsButtons = document.querySelectorAll('ons-action-sheet-button');
+				for (var i = 0; i < slotsButtons.length; i++) {
+					if (!i) slotsButtons[i].parentNode.parentNode.title = '';
+					slotsButtons[i].title = ''; // get rid of stupid title repeating on all buttons
+					if (slotsButtons[i].getAttribute('icon') === null) {
+						slotsButtons[i].insertAdjacentHTML('beforeend','<span class="remove-stored-map" data-id="' + i + '"><i class="fas fa-times"></i></span>')
+					}
+				}
+				document.querySelector('ons-action-sheet').addEventListener('click',function(e) {
+					if (e.button || e.target.getAttribute('icon') === 'md-close') { return; }
+					if (e.target.className === 'remove-stored-map') {
+						e.stopPropagation();
+						slotName = slots[e.target.dataset.id];
+						ons.notification.confirm(i18next.t('home.popups.confirmMapDelete',{defaultValue: "Are you sure you want to delete \"{{name}}\"?",name: options[e.target.dataset.id]}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(answer => {
+							if (answer === 1) {
+								loadingBarHome.setAttribute("indeterminate", "indeterminate");
+								fn.prequestWithPayload("api/remove_map", JSON.stringify({ name: slotName }), "PUT").then(
+									(res) => fn.notificationToastOK(i18next.t('home.popups.mapDeletedOK',"Stored map successfully deleted!")),
+									(err) => fn.notificationToastError(err)
+								)
+								.finally(() => document.querySelector('ons-action-sheet ons-action-sheet-button:last-of-type').click());
+							}
+						});
+					}
+				},true);
+				return slotsList;
+			})
+			.then(index => {
+				if (index > -1 && index < slots.length) {
+					slotName = slots[index];
+					return 1;
+				} else if (index === slots.length) {
+					return ons.notification.prompt({message: i18next.t('home.popups.chooseMapName',"Choose a title to save the map files as:"), title: i18next.t('common.prompt',"Prompt"), placeholder: "name", cancelable: true, buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")] })
+					.then(slot => {
+						if (slot === null) {
+							return Promise.reject("cancel");
+						}
+						slot = slot.trim();
+						if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
+							return Promise.reject(i18next.t('home.popups.invalidMapName',"Title may contain only latin letters or numbers, spaces and hyphen."));
+						}
+						slotName = slot;
+						if (slots.includes(slotName)) {
+							return 1;
+						}
+						return 0;
+					});
+				} else {
 					return Promise.reject("cancel");
 				}
-				slot = slot.trim();
-				if (!/^[a-zа-яё0-9\-_\ ]+$/i.test(slot)) {
-					return Promise.reject(i18next.t('home.popups.invalidMapName',"Title may contain only latin letters or numbers, spaces and hyphen."));
-				}
-				slotName = slot;
-				loadingBarHome.setAttribute("indeterminate", "indeterminate");
-				return fn.prequest("api/list_maps");
 			})
-			.then(res => {
-				if (res.includes(slotName)) {
+			.then(overwrite => {
+				if (overwrite) {
 					return ons.notification.confirm((/^[0-9]+$/.test(slotName) ? i18next.t('home.popups.slotAlreadyTaken',{defaultValue: "Slot #{{slot}} is already occupied", slot: slotName}) : i18next.t('home.popups.nameAlreadyTaken',{defaultValue: "Name \"{{name}}\" is already taken", name: slotName})) + ". " + i18next.t('common.overwrite',"Overwrite") + "?",{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.overwrite',"Overwrite")], title: i18next.t('common.confirm',"Confirm")});
+				} else {
+					return 1;
 				}
-				return 1;
 			})
 			.then(res => {
 				if (res === 0) {
@@ -410,7 +471,7 @@
 		function handleLoadMapButton() {
 			window.clearTimeout(currentRefreshTimer);
 			loadingBarHome.setAttribute("indeterminate", "indeterminate");
-			let slots = [], options = [];
+			let slotName, slots = [], options = [];
 			fn.prequest("api/list_maps")
 			.then(data => {
 				data.sort((a, b) => a.localeCompare(b));
@@ -459,10 +520,17 @@
 				if (index > -1 && index < slots.length) {
 					document.querySelectorAll('#robot-control-buttons ons-button').forEach(button => button.setAttribute('disabled','disabled'));
 					loadingBarHome.setAttribute("indeterminate", "indeterminate");
-					return fn.prequestWithPayload("api/load_map", JSON.stringify({ name: slots[index] }), "PUT");
+					slotName = slots[index];
+					return ons.notification.confirm(i18next.t('home.popups.confirmMapLoad',{defaultValue: "Are you sure you want to load map \"{{name}}\"?", name: slotName}),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")});
 				} else {
 					return Promise.reject("cancel");
 				}
+			})
+			.then(res => {
+				if (res === 0) {
+					return Promise.reject("cancel");
+				}
+				return fn.prequestWithPayload("api/load_map", JSON.stringify({name: slotName}), "PUT");
 			})
 			.then(res => {
 				if (res.message === 'wait') {
