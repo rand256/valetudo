@@ -39,7 +39,7 @@
 	},
 	"home": {
 		"labels": {
-			"state": "État de chargement..."
+			"state": "Chargement de l'état..."
 		},
 		"buttons": {
 			"start": "Start",
@@ -50,9 +50,9 @@
 			"find": "Rechercher",
 			"goto": "Aller à",
 			"zones": "Zones",
-			"storeMap": "Carte de magasin",
-			"loadMap": "Charger la carte ",
-			"unknownPower": "Inconnue allumer",
+			"storeMap": "Sauvegarder la carte",
+			"loadMap": "Charger une carte",
+			"unknownPower": "Alimentation inconnue",
 			"invalid": "bouton invalide"
 		},
 		"popups": {
@@ -61,7 +61,7 @@
 			"selectZones": "Sélectionnez les zones à nettoyer:",
 			"selectMapToLoad": "Sélectionnez un emplacement à partir duquel charger la carte:",
 			"emptyZoneChosen": "Vous avez choisi une zone vide à nettoyer. Veuillez d'abord la configurer.",
-			"chooseMapName": "Choisissez un titre pour enregistrer les fichiers de carte sous:",
+			"chooseMapName": "Choisissez un titre pour enregistrer les fichiers de la carte:",
 			"invalidMapName": "Le titre ne peut contenir que des lettres ou des chiffres latins, des espaces et des tirets.",
 			"slotAlreadyTaken": "Le slot #{{slot}} est déjà occupé",
 			"nameAlreadyTaken": "Nom \"{{name}}\" est déjà pris",
@@ -80,7 +80,7 @@
 			"mapRestoredOK": "La carte a été restaurée avec succès!"
 		},
 		"fanspeedPresets": {
-			"whisper": "Chuchoter",
+			"whisper": "Chuchotement",
 			"quiet": "Calme",
 			"balanced": "Equilibré",
 			"turbo": "Turbo",
@@ -94,7 +94,7 @@
 		"statusText": "{{status}}",
 		"errorText": "{{error}}",
 		"confirmFullCleaning": "Impossible de démarrer le nettoyage zoné: aucune zone spécifiée. Voulez-vous exécuter un nettoyage complet à la place?",
-		"cannotResume": "Aucun résumé!",
+		"cannotResume": "Rien a reprendre!",
 		"noGotoTarget": "Vous devez choisir un emplacement pour Goto.",
 		"selectEndGoto": "Allez à l'endroit sélectionné et ...",
 		"selectEndCleaning": "Effectuez le nettoyage sélectionné et ...",
@@ -105,7 +105,7 @@
 	},
 	"zones": {
 		"headerZones": "Zones configurées",
-		"headerGotoLocations": "Emplacements aller à configurés",
+		"headerGotoLocations": "Emplacements \"aller à\" configurés",
 		"headerForbiddenMarkers": "Marqueurs interdits",
 		"headerSegments": "Configuration des pièces",
 		"noZonesConfigured": "Aucune zone n'est encore configurée.",
@@ -113,7 +113,7 @@
 		"editForbiddenZones": "Configurer les zones interdites",
 		"editSegments": "Modifier les pièces",
 		"noPersistentData": "Les données persistantes sont désactivées ou indisponibles, impossible de modifier les marqueurs interdits.",
-		"noPersistentDataSegments": "Les données persistantes sont désactivées, impossible de modifier les salles.",
+		"noPersistentDataSegments": "Les données persistantes sont désactivées, impossible de modifier les pièces.",
 		"noSegmentsSupport": "Le micrologiciel de votre appareil ne prend pas en charge la division de la carte en pièces.",
 		"addButton": "Ajouter",
 		"renameButton": "Renommer",
@@ -153,7 +153,7 @@
 		"segmentSplitSingleLine": "Il ne peut y avoir qu'une seule ligne de division!",
 		"confirmSegmentsAutosplit": "La carte sera automatiquement divisée en pièces après avoir effectué un nettoyage complet, mais vous pouvez essayer de la diviser dès maintenant. Continuer?",
 		"autosplitSegmentsNow": "Séparer maintenant",
-		"segmentsSplitOK": "Carte divisée en chambres avec succès!"
+		"segmentsSplitOK": "Carte divisée en pièces avec succès!"
 	},
 	"control": {
 		"startButton": "Démarrer le contrôle manuel",
@@ -161,7 +161,7 @@
 	},
 	"telegram": {
 		"fanpower": {
-			"whisper": "Chuchoter",
+			"whisper": "Chuchotement",
 			"quiet": "Silencieux",
 			"balanced": "Équilibré",
 			"turbo": "Turbo",
@@ -236,11 +236,11 @@
 		"title": "Paramètres",
 		"infoTitle": "Info",
 		"infoDesc": "Afficher les informations sur l'appareil",
-		"timersTitle": "Timers",
+		"timersTitle": "Minuteurs",
 		"timersDesc": "Gérer les minuteurs et les paramètres de fuseau horaire",
 		"carpetModeTitle": "Mode tapis",
 		"carpetModeDesc": "Configurer le mode tapis",
-		"persistentDataTitle": "Persistent Data et Paramètres Système",
+		"persistentDataTitle": "Persistance des données et Paramètres Système",
 		"persistentDataDesc": "Configurer le mode laboratoire pour activer les murs virtuels, etc.",
 		"consumablesTitle": "Consommables",
 		"consumablesDesc": "Afficher/réinitialiser les compteurs d'utilisation des consommables",
@@ -250,7 +250,7 @@
 		"wifiDesc": "Afficher/modifier les détails et les paramètres wifi",
 		"soundAndVoiceTitle": "Son & Voix",
 		"soundAndVoiceDesc": " Changer le volume sonore et la voix du robot",
-		"webInterfaceTitle": "Web Interface",
+		"webInterfaceTitle": "Interface Web",
 		"webInterfaceDesc": "Modifier les paramètres de l'interface Web",
 		"accessControlTitle": "Contrôle d'accès",
 		"accessControlDesc": "Configurer les clés SSH et l'authentification HTTP",
@@ -298,8 +298,8 @@
 			"mainBrush": "Brosse principal",
 			"sideBrush": "Brosse latéral",
 			"filter": "Filtre",
-			"sensorCleaning": "Capteur de nettoyage",
-			"allStatistics": "statistiques tout temps",
+			"sensorCleaning": "Nettoyage des Capteurs",
+			"allStatistics": "statistique globale",
 			"totalCleanedArea": "Surface totale nettoyée:",
 			"totalHours": "Total des heures de nettoyage:",
 			"totalCount": "Nombre total de nettoyages:",
@@ -334,8 +334,8 @@
 			"firmwareUpdateSentOK": "La demande de mise à jour doit être envoyée! Attendez l'indication LED du processus de mise à jour."
 		},
 		"persistentData": {
-			"pageTitle": "Configuration des données persistantes",
-			"explanation": "Les données persistantes ou \"lab mode\" est une fonctionnalité du Roborock S5x qui permet de sauvegarder les zones interdites et les murs virtuels. Il permet également au robot de revenir au quai où qu'il se trouve et empêche la carte d'être tourné.",
+			"pageTitle": "Configuration de la persistantes des données",
+			"explanation": "Les données persistantes ou \"lab mode\" est une fonctionnalité du Roborock S5x qui permet de sauvegarder les zones interdites et les murs virtuels. Il permet également au robot de revenir au quai où qu'il se trouve et empêche la carte d'être remplacé.",
 			"notSupported": "Désolé, seul Roborock S5x prend en charge les fonctionnalités de carte persistantes.",
 			"genericConfirm": "Voulez-vous vraiment continuer?",
 			"genericOverwriteWarning": "Les données précédemment enregistrées seront écrasées.",
@@ -385,7 +385,7 @@
 			"autoDockDelay": "Retard",
 			"autoDockChooseDelay": "Choisissez le délai...",
 			"autoDockDelayPrompt": "Veuillez entrer le délai en minutes ({{range}}) après lequel le robot inactif devrait retourner au quai:",
-			"autoDockDelayErr": "La valeur spécifiée ne tombe pas dans la plage autorisée.",
+			"autoDockDelayErr": "La valeur spécifiée n'est pas compris dans la plage autorisée.",
 			"autoMapTitle": "Restauration automatique de la carte",
 			"autoMapDesc": "définit s'il faut restaurer une carte lors du retour au dock",
 			"autoMapNone": "Nul",
@@ -409,7 +409,7 @@
 			"uploadVoicePack": "Télécharger le pack vocal",
 			"volumeSavedOK": "Volume enregistré avec succès.",
 			"voicePackMissing": "Veuillez sélectionner un pack vocal avant le téléchargement.",
-			"voicePackUploading": "Uploading voice pack...",
+			"voicePackUploading": "Envoi du pack vocal...",
 			"voicePackInstalling": "Installation du pack vocal...",
 			"voicePackInstallFailed": "Échec de l'installation du pack vocal.",
 			"voicePackInstallOK": "Le pack vocal a été installé avec succès."
@@ -419,14 +419,14 @@
 			"day": "Jour",
 			"hour": "Heure",
 			"minute": "Minute",
-			"startAt": "Start:",
+			"startAt": "Démarrage:",
 			"endAt": "Fin:",
 			"hours": "heures",
 			"minutes": "minutes",
 			"name": "Nom:",
-			"namePlaceholder": "nom d'une minuterie",
+			"namePlaceholder": "nom de la minuterie",
 			"iterations": "Itérations:",
-			"fanPower": "Force d'aspiration:",
+			"fanPower": "Mode d'aspiration:",
 			"zones": "Zones:",
 			"addZones": "Ajouter...",
 			"segments": "Pièces:",
@@ -464,7 +464,7 @@
 		},
 		"webInterface": {
 			"general": "Général",
-			"localization": "Localisation de l'interface Web",
+			"localization": "Langue de l'interface Web",
 			"localizationExt": "bascule entre les traductions disponibles",
 			"style": "Theme",
 			"styleExt": "change le thème de couleur de l'interface web",
@@ -486,7 +486,7 @@
 			"enableMultimapConfirm": "Cette fonction ne fait pas partie de la fonctionnalité de roborock mais un certain nombre de hacks autour d' elle Bien qu'il puisse fonctionner correctement , il pourrait également provoquer une réinitialisation d'usine si quelque chose va de façon inattendue mauvaise Voulez - vous toujours continuer..?"
 		},
 		"wifi": {
-			 "currentConnection": "Current Connection",
+			 "currentConnection": "Connexion actuel",
 			 "status": "Status",
 			 "ssid": "SSID",
 			 "signal": "Signal",
@@ -506,7 +506,7 @@
 			"url": "URL:",
 			"capath": "Chemin d'accès CA (pour SSL):",
 			"qos": "QoS:",
-			"identifier": "Identifier:",
+			"identifier": "Identifiant:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Publier la carte:",
@@ -514,9 +514,9 @@
 		},
 		"telegram": {
 			"explanation": "Créez un nouveau chat dans Telegram et recherchez le compte \"Botfather\", créez un nouveau bot avec /newbot, puis copiez le jeton et insérez-le sur cette page.",
-			"general": "Paramètres télégramme",
+			"general": "Paramètres Telegram",
 			"token": "HTTP API Token:",
-			"tokenPlaceholder": "HTTP API Token from Botfather",
+			"tokenPlaceholder": "HTTP API Token de Botfather",
 			"authPassword": "Mot de passe du bot:",
 			"authPasswordPlaceholder": "pour autoriser le bot",
 			"host": "Hôte API (facultatif):",
@@ -530,8 +530,8 @@
 			"notifyAll": "Tout",
 			"notifyCleaning": "Nettoyage + Erreurs",
 			"notifyErrors": "Seulement des erreurs",
-			"status": "état actuel du télégramme",
-			"clientsList": "Clients télégrammes",
+			"status": "état actuel de Telegram",
+			"clientsList": "Clients Telegram",
 			"noClients": "Il n'y a pas encore de clients autorisés.",
 			"confirmDeleteClient": "Voulez-vous vraiment supprimer ce client?",
 			"connectedAs": "Telegrambot connecté en tant que {{botname}}",
@@ -552,12 +552,12 @@
 			"n8": "En charge",
 			"n9": "Problème de charge",
 			"n10": "En pause",
-			"n11": "Nettoyage des taches",
+			"n11": "Nettoyage ciblé",
 			"n12": "Erreur",
 			"n13": "Arrêt",
 			"n14": "Mise à jour",
 			"n15": "Amarrage",
-			"n16": "Aller à",
+			"n16": "Se dirige vers la cible",
 			"n17": "Nettoyage zoné",
 			"n18": "Nettoyage de la pièces"
 		},
@@ -571,7 +571,7 @@
 			"n6": "Brosse latérale coincée",
 			"n7": "Roues principales bloquées",
 			"n8": "Appareil bloqué, transportez le robot à un autre endroit",
-			"n9": "collecteur de poussière manquant ou filtre mauvais",
+			"n9": "Collecteur de poussière manquant ou mauvais filtre",
 			"n10": "Filtre à poussière sale",
 			"n11": "Coincé dans la barrière magnétique",
 			"n12": "Batterie faible",
@@ -585,7 +585,7 @@
 			"n21": "Capot supérieur du capteur de distance laser épinglé",
 			"n22": "Capteur de pare-chocs avant sale",
 			"n23": "Zone d'émission de signal sur le dock sale",
-			"n24": "Zone interdite détectée, évacuer le robot à l'endroit autorisé"
+			"n24": "Zone interdite détectée, évacuer le robot à un endroit autorisé"
 		}
 	}
 }
