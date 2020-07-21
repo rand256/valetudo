@@ -347,6 +347,7 @@
 			"newValetudoVersion": "Nieuwe Valetudo RE versie:",
 			"newVersionURL": "Nieuwe versie URL",
 			"checkVersion": "Controleer",
+			"valetudoLog": "Valetudo Systeemlogboek",
 			"firmwareUpdateWarning": "Deze actie zal de firmware van de robot updaten gebruikmakend van de opgegeven pkg URL en de MD5 hash waarde. Merk op dat URL naar een extern IP-adres moet verwijzen en geen omleidingen mag hebben.",
 			"firmwareUpdateEnterURL": "Geef de URL op die verwijst naar het firmware pkg bestand:",
 			"firmwareUpdateEnterMD5": "Geef de MD5 hash waarde op van het pkg bestand:",

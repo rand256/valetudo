@@ -328,6 +328,7 @@
 			"newValetudoVersion": "Neuste Version:",
 			"newVersionURL": "Link zur neuen Version",
 			"checkVersion": "Überprüfen",
+			"valetudoLog": "Valetudo Systemprotokoll",
 			"firmwareUpdateWarning": "Es wird versucht, die Firmware des Gerätes mithilfe einer manuell eingegebenen URL zur pkg-Datei und des MD5-Hashwerts zu aktualisieren. Die URL sollte auf eine öffentliche IP-Adresse verweisen und keine Weiterleitungen enthalten.",
 			"firmwareUpdateEnterURL": "Bitte geben Sie den Link zur Firmware-Paketdatei ein:",
 			"firmwareUpdateEnterMD5": "Bitte geben Sie den MD5-Hash der soeben angegebenen Datei ein:",

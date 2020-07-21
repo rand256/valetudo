@@ -328,6 +328,7 @@
 			"newValetudoVersion": "Új Valetudo RE verzió:",
 			"newVersionURL": "Új verzió URL",
 			"checkVersion": "Ellenőrzés",
+			"valetudoLog": "Valetudo Rendszernapló",
 			"firmwareUpdateWarning": "Ez a funkcióval megpróbálhatja frissíteni a robot firmware-jét egy adott pkg fájllal és a hozzá tartozó MD5 ellenőrzőösszeggel. Kérlek vedd figyelembe, hogy a megadott URL-nek egy publikusan elérhető IP-t kell tartalmaznia, ami egy direkt link, nincs benne átirányítás.",
 			"firmwareUpdateEnterURL": "Kérlek add meg a firmware URL-jét:",
 			"firmwareUpdateEnterMD5": "Kérlek add meg az MD5 ellenőrzőösszegét a fenti fájlnak:",

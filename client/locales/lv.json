@@ -328,6 +328,7 @@
 			"newValetudoVersion": "Jaunākā versija:",
 			"newVersionURL": "Jaunās versijas saite",
 			"checkVersion": "Pārbaudīt",
+			"valetudoLog": "Valetudo sistēmas žurnāls",
 			"firmwareUpdateWarning": "Tas mēģinās atjaunināt ierīces programmaparatūru, izmantojot manuāli ievadītu saiti uz pkg failu un tā MD5 hash vērtību. Ņemiet vērā, ka saitei vajadzētu būt publiskai IP adresei bez redirektiem.",
 			"firmwareUpdateEnterURL": "Lūdzu ievadiet saiti uz programmaparatūras pkg failu:",
 			"firmwareUpdateEnterMD5": "Lūdzu, ievadiet tikko norādītā faila MD5 hash:",

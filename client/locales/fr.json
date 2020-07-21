@@ -327,6 +327,7 @@
 			"newValetudoVersion": "Nouvelle version Valetudo RE:",
 			"newVersionURL": "URL de nouvelle version",
 			"checkVersion": "Vérifier",
+			"valetudoLog": "Journal de Valetudo",
 			"firmwareUpdateWarning": "Cela tentera de mettre à jour le micrologiciel de l'appareil en utilisant l'URL entrée manuellement dans le fichier pkg et sa valeur de hachage MD5. Notez que l'URL doit pointer vers une adresse IP publique et ne pas avoir de redirection.",
 			"firmwareUpdateEnterURL": "Veuillez saisir l'URL du fichier de package du firmware:",
 			"firmwareUpdateEnterMD5": "Veuillez saisir le hachage MD5 du fichier que vous venez de spécifier:",

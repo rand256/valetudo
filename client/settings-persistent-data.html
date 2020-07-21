@@ -425,7 +425,6 @@
 				})
 				.catch(err => fn.notificationToastError(err))
 				.finally(() => {
-					loadingBarSettingsPersistentData.removeAttribute("indeterminate");
 					updateSavePersistentDataButton();
 				});
 			} else {

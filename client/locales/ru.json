@@ -329,6 +329,7 @@
 			"newValetudoVersion": "Новая версия:",
 			"newVersionURL": "URL новой версии:",
 			"checkVersion": "Проверить",
+			"valetudoLog": "Системный лог Valetudo",
 			"firmwareUpdateWarning": "Эта опция позволяет отправить устройству запрос на обновление прошивки с ручным указанием ссылки на PKG-файл, а также его MD5-хэша. Обратите внимание, что ссылка должна вести на внешний IP-адрес и не иметь перенаправлений.",
 			"firmwareUpdateEnterURL": "Введите URL на PKG-файл прошивки:",
 			"firmwareUpdateEnterMD5": "Введите MD5-хэш PKG-файла прошивки:",

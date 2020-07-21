@@ -328,6 +328,7 @@
 			"newValetudoVersion": "Uusin Valetudo RE -versio:",
 			"newVersionURL": "Uuden version URL",
 			"checkVersion": "Tarkista",
+			"valetudoLog": "Valetudo Järjestelmäloki",
 			"firmwareUpdateWarning": "Tämä yrittää päivittää imurin laiteohjelmiston käyttämällä käsinsyötettyä pkg-tiedoston ja sen MD5-hashin URLia. Huomaa, että URLin tulee kohdistua julkiseen IP-osoitteeseen eikä siinä saa olla uudelleenohjauksia.",
 			"firmwareUpdateEnterURL": "Syötä pkg-tiedoston URL:",
 			"firmwareUpdateEnterMD5": "Syötä pkg-tiedoston MD5-hash:",

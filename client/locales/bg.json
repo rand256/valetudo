@@ -327,6 +327,7 @@
 			"newValetudoVersion": "Нова версия:",
 			"newVersionURL": "URL на новата версия:",
 			"checkVersion": "Провери",
+			"valetudoLog": "Системен дневник Valetudo",
 			"firmwareUpdateWarning": "Тази опция позволява устройството да започне обновяване версията на фърмуера с ръчно зададени URL на PKG файл и неговия MD5 хеш. Обърнете внимание, че URL адресът трябва да сочи към публичен IP адрес и да няма пренасочвания.",
 			"firmwareUpdateEnterURL": "Въведете URL на PKG файл с фърмуера:",
 			"firmwareUpdateEnterMD5": "Въведете MD5 хеш на PKG файла с фърмуера:",

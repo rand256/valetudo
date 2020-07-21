@@ -328,6 +328,7 @@
 			"newValetudoVersion": "Nueva versión de Valetudo RE:",
 			"newVersionURL": "URL de la nueva versión",
 			"checkVersion": "Verificar",
+			"valetudoLog": "Registro de Valetudo",
 			"firmwareUpdateWarning": "Esto intentará actualizar el firmware del dispositivo usando la URL ingresada manualmente al archivo pkg y su valor hash MD5. Tenga en cuenta que la URL debe apuntar a una dirección IP pública y no tener redireccionamientos.",
 			"firmwareUpdateEnterURL": "Introduzca la URL del archivo pkd de firmware:",
 			"firmwareUpdateEnterMD5": "Ingrese el hash MD5 del archivo que acaba de especificar:",
