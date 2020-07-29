@@ -484,6 +484,9 @@
 			"hideSegmentMarkersExt": "hides room selection markers on the map",
 			"disableDynamicButtons": "Disable dynamic buttons",
 			"disableDynamicButtonsExt": "shows on map basic buttons only",
+			"controlTab": "Manual control tab",
+			"hideControlMap": "Do not show mini-map",
+			"hideControlMapExt": "it may work improperly on some devices and can't be fixed",
 			"applyChangesConfirm": "Would you like to apply changes right now?",
 			"enableMultimapConfirm": "This feature is not a part of roborock functionality but rather a number of hacks around it. While it may work well, it could also cause a factory reset if something unexpectedly goes wrong. Do you still want to continue?"
 		},

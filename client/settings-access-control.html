@@ -112,7 +112,7 @@
 				httpAuthInputPassword.value = "";
 			},(err) => fn.notificationToastError(err));
 
-			const getSshCfg = fn.prequest("api/get_ssh_keys")
+			const getSshCfg = fn.prequest("api/ssh_keys")
 			.then((res) => {
 				sshKeysTextArea.value = res;
 				sshKeysTitle.style.display = "block";
@@ -123,7 +123,7 @@
 		};
 		function handleSSHKeysSettingsSaveButton() {
 			loadingBarSettingsAccessControl.setAttribute("indeterminate", "indeterminate");
-			fn.prequestWithPayload("api/set_ssh_keys", JSON.stringify({
+			fn.prequestWithPayload("api/ssh_keys", JSON.stringify({
 				 keys: sshKeysTextArea.value
 			}), "PUT")
 			.then((res) => fn.notificationToastOK(i18next.t('common.ok',"OK")), (err) => fn.notificationToastError(err))

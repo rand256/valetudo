@@ -484,6 +484,9 @@
 			"hideSegmentMarkersExt": "piilottaa huonevalintamerkit kartalla",
 			"disableDynamicButtons": "Poista dynaamiset painikkeet käytöstä",
 			"disableDynamicButtonsExt": "näyttää ainoastaan kartan peruspainikkeet",
+			"controlTab": "Manuaalinen hallinta-välilehti",
+			"hideControlMap": "Älä näytä minikarttaa",
+			"hideControlMapExt": "se ei välttämättä toimi oikein joissain laitteissa, eikä sitä voida korjata",
 			"applyChangesConfirm": "Haluatko ottaa muutokset käyttöön nyt?",
 			"enableMultimapConfirm": "Tämä ominaisuus ei ole osa Roborockin toiminnallisuutta, vaan se koostuu useista sen ympärille rakennetuista viritelmistä. Ominaisuus voi toimia hyvin, mutta se voi myös aiheuttaa tehdasasetusten palautuksen jonkin mennessä pieleen. Haluatko varmasti jatkaa?"
 		},

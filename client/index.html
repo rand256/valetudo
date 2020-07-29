@@ -254,7 +254,7 @@
 		}
 
 		var waitForGlobals = fetchDevice()
-		.then(res => fn.prequest("api/get_interface_config"))
+		.then(res => fn.prequest("api/interface_config"))
 		.then(res => {
 			fn.webifSettings = res;
 			if (fn.webifSettings.style === "dark") {

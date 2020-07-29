@@ -483,6 +483,9 @@
 			"hideSegmentMarkersExt": "cache les marqueurs de sélection de pièce sur la carte",
 			"disableDynamicButtons": "Désactiver les boutons dynamiques",
 			"disableDynamicButtonsExt": "affiche uniquement les boutons de base de la carte",
+			"controlTab": "Onglet Contrôle manuel",
+			"hideControlMap": "Ne pas afficher la mini-carte",
+			"hideControlMapExt": "cela peut ne pas fonctionner correctement sur certains appareils et ne peut pas être réparé",
 			"applyChangesConfirm": "Souhaitez-vous appliquer les modifications maintenant?",
 			"enableMultimapConfirm": "Cette fonction ne fait pas partie de la fonctionnalité de roborock mais un certain nombre de hacks autour d' elle Bien qu'il puisse fonctionner correctement , il pourrait également provoquer une réinitialisation d'usine si quelque chose va de façon inattendue mauvaise Voulez - vous toujours continuer..?"
 		},

@@ -484,6 +484,9 @@
 			"hideSegmentMarkersExt": "elrejti a szoba választó jelölőket a térképen",
 			"disableDynamicButtons": "Dinamikus gombok elrejtése",
 			"disableDynamicButtonsExt": "csak az alapvető gombok megjelenítése a térképen",
+			"controlTab": "Kézi vezérlés fül",
+			"hideControlMap": "Ne mutasson mini-térképet",
+			"hideControlMapExt": "előfordulhat, hogy egyes készülékeken nem működik megfelelően, és nem javítható",
 			"applyChangesConfirm": "Szeretnéd menteni a változtatásokat most?",
 			"enableMultimapConfirm": "Ez nem a robot beépített funkciója, hanem csak egy pár hack kihasználása. Alapvetően működőképes funkció, de lehetséges, hogy a robotot vissza kell állítani a gyári beállításokra. Biztos hogy folytatni akarod?"
 		},

@@ -40,10 +40,6 @@
 
 		var controlMap = null;
 
-		function controlMapAvailable() {
-			return fn.device.ver === 3;
-		}
-
 		function updateControlMapPage() {
 			let gzippedMapData;
 			manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");
@@ -354,7 +350,7 @@
 			manualControlLoadingBar.setAttribute("indeterminate", "indeterminate");
 			refreshManualControlMode();
 			// check availability of control map
-			if (controlMapAvailable()) {
+			if (!fn.webifSettings.hideControlMap) {
 				updateControlMapPage();
 				document.getElementById('controlcontainer').classList.remove('noControlMap');
 			} else {
@@ -405,6 +401,7 @@
 			grid-row: 1;
 			text-align: center;
 			padding: 2% 2% 0 2%;
+			overflow: hidden;
 		}
 
 		#manual-control-area {

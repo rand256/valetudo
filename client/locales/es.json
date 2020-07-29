@@ -484,6 +484,9 @@
 			"hideSegmentMarkersExt": "Oculta los contornos de las habitaciones seleccionadas",
 			"disableDynamicButtons": "Deshabilitar botones dinámicos",
 			"disableDynamicButtonsExt": "Muestra sólo los botones básicos en el mapa",
+			"controlTab": "Pestaña de control manual",
+			"hideControlMap": "No mostrar minimapa",
+			"hideControlMapExt": "Es posible que no funcione correctamente en algunos dispositivos y no se pueda arreglar",
 			"applyChangesConfirm": "¿Desea aplicar los cambios ahora mismo?",
 			"enableMultimapConfirm": "Esta característica no es parte de la funcionalidad de roborock, sino más bien una serie de hacks a su alrededor. Si bien puede funcionar bien, también podría provocar un restablecimiento de fábrica si algo inesperadamente sale mal. ¿Todavía quieres continuar?"
 		},

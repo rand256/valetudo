@@ -505,6 +505,9 @@
 			"hideSegmentMarkersExt": "ukrywa znaczniki pokoi na mapie",
 			"disableDynamicButtons": "Wyłącz przyciski dynamiczne",
 			"disableDynamicButtonsExt": "pokazuje na mapie tylko podstawowe przyciski",
+			"controlTab": "Karta sterowania ręcznego",
+			"hideControlMap": "Nie pokazuj mini-mapy",
+			"hideControlMapExt": "może działać nieprawidłowo na niektórych urządzeniach i nie można go naprawić",
 			"applyChangesConfirm": "Czy chcesz teraz zastosować zmiany?",
 			"enableMultimapConfirm": "Ta funkcja nie jest częścią funkcjonalności roborock, ale raczej szeregiem hacków wokół niej. Chociaż może działać dobrze, może również spowodować przywrócenie ustawień fabrycznych, jeśli coś nieoczekiwanie pójdzie nie tak. Czy nadal chcesz kontynuować?"
 		},

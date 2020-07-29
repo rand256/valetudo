@@ -483,6 +483,9 @@
 			"hideSegmentMarkersExt": "Blendet die Raumauswahlmarkierungen aus",
 			"disableDynamicButtons": "Deaktiviert die dynamischen Schaltflächen",
 			"disableDynamicButtonsExt": "Zeigt nur die grundlegenden Schaltflächen auf der Karte",
+			"controlTab": "Manuelle Steuerung",
+			"hideControlMap": "Mini-Karte nicht anzeigen",
+			"hideControlMapExt": "Auf einigen Geräten funktioniert es möglicherweise nicht richtig und kann nicht behoben werden",
 			"applyChangesConfirm": "Sollen die Änderungen jetzt übernommen werden?",
 			"enableMultimapConfirm": "Diese Funktion ist kein Teil der Roborock-Funktionalität, sondern eine Reihe von Hacks. Es kann gut funktionieren, aber auch in unerwarteten Fällen zu einem Zurücksetzen auf die Werkseinstellungen führen. Soll dennoch fortgefahren werden?"
 		},

@@ -484,6 +484,9 @@
 			"hideSegmentMarkersExt": "slēpj telpas izvēles marķierus kartē",
 			"disableDynamicButtons": "Atslēdz dinamiskās pogas",
 			"disableDynamicButtonsExt": "rāda tikai pamata pogas kartē",
+			"controlTab": "Manuālās kontrole cilne",
+			"hideControlMap": "Nerādīt mini-karti",
+			"hideControlMapExt": "dažās ierīcēs tas var darboties nepareizi, un to nevar labot",
 			"applyChangesConfirm": "Vai vēlaties izmantot izmaiņas tūlīt?",
 			"enableMultimapConfirm": "Šis režīms neietilpst sākotnējās programmaparatūras funkcionalitātē, bet drīzāk ir tam paredzēto haku kopums. Lai gan tas darbojas pietiekami labi, ja kaut kas pēkšņi noiet greizi - tā izmantošana var izraisīt programmatūras atiestatīšanu uz rūpnīcas iestatījumiem. Vai jūs joprojām vēlaties turpināt?"
 		},

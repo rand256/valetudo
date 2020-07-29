@@ -74,6 +74,15 @@
 			<div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-static-map-buttons"></ons-switch></div>
 		</ons-list-item>
 	</ons-list>
+	<ons-list-title style="margin-top:5px;" data-i18n="settings.webInterface.controlTab">
+		Manual control tab
+	</ons-list-title>
+	<ons-list>
+		<ons-list-item>
+			<div class='left'><div><div data-i18n="settings.webInterface.hideControlMap">Do not show mini-map</div><div class="small" data-i18n="settings.webInterface.hideControlMapExt">it may work improperly on some devices and can't be fixed</div></div></div>
+			<div class='right'><ons-switch class="settings-webif-switch" id="settings-webif-hide-control-map"></ons-switch></div>
+		</ons-list-item>
+	</ons-list>
 	<ons-list-item>
 		<div class="center">
 			<ons-button modifier="large" class="button-margin" data-i18n="common.save" onclick="setWebifSettings();">Save</ons-button>
@@ -137,7 +146,7 @@
 
 		function setWebifSettings() {
 			loadingBarWebif.setAttribute("indeterminate", "indeterminate");
-			fn.prequestWithPayload("api/set_interface_config", JSON.stringify(window.fn.webifSettings), "PUT")
+			fn.prequestWithPayload("api/interface_config", JSON.stringify(window.fn.webifSettings), "PUT")
 			.then((res) => {
 				if (oldLocalization !== window.fn.webifSettings.localization || oldStyle !== window.fn.webifSettings.style || oldHideSegmentMarkers !== window.fn.webifSettings.hideSegmentMarkers)
 				ons.notification.confirm(i18next.t('settings.webInterface.applyChangesConfirm',"Would you like to apply changes right now?"),{buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")], title: i18next.t('common.confirm',"Confirm")}).then(res => {

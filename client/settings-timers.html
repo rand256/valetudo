@@ -374,10 +374,10 @@
 		function showTimeZoneDialog() {
 			loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
 			let currentTimeZone, promises = [];
-			promises.push(fn.prequest("api/get_timezone").then(res => (currentTimeZone = res)));
+			promises.push(fn.prequest("api/timezone").then(res => (currentTimeZone = res)));
 			let timeZoneSelection = document.getElementById('timezone-selection');
 			if (!timeZoneSelection.childElementCount) {
-				promises.push(fn.prequest("api/get_timezone_list").then(res => {
+				promises.push(fn.prequest("api/timezone_list").then(res => {
 					res.forEach(function (timezone) {
 						let option = document.createElement("option");
 						option.innerText = timezone;
@@ -407,7 +407,7 @@
 			ons.notification.confirm(i18next.t('settings.timers.confirmTimezone',{defaultValue: "Do you really want to set your timezone to \"{{newTimezone}}\"?", newTimezone: newTimezone}),{title: i18next.t('common.confirm',"Confirm"), buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]}).then(function (answer) {
 				if (answer === 1) {
 					loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-					fn.prequestWithPayload("api/set_timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
+					fn.prequestWithPayload("api/timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
 					.then(
 						(res) => editTimezoneDialog.hide(),
 						(err) => fn.notificationToastError(err)

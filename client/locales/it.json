@@ -483,6 +483,9 @@
 			"hideSegmentMarkersExt": "nasconde gli indicatori di selezione della stanza sulla mappa",
 			"disableDynamicButtons": "Nascondi pulsanti dinamici",
 			"disableDynamicButtonsExt": "mostra solo i pulsanti di base sulla mappa",
+			"controlTab": "Scheda Telecomando",
+			"hideControlMap": "Non mostrare la mini-mappa",
+			"hideControlMapExt": "potrebbe non funzionare correttamente su alcuni dispositivi e non può essere riparato",
 			"applyChangesConfirm": "Vuoi salvare le modifiche ora?",
 			"enableMultimapConfirm": "Questa funzione non fa parte della funzionalità originali roborock, ma é un hack permesso da Valetudo. Anche se potrebbe funzionare bene, potrebbe anche causare un ripristino di fabbrica. Vuoi ancora continuare?"
 		},
