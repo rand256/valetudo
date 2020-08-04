@@ -607,7 +607,7 @@
 					pauseButton.setAttribute("disabled", "disabled");
 				}
 
-				if ([3,6,11,15,16].includes(res.state) || ([8,10].includes(res.state) && !res.in_cleaning)) {
+				if ([3,11,15,16].includes(res.state) || ([8,10].includes(res.state) && !(res.in_cleaning || res.in_returning))) {
 					stopButton.setAttribute("disabled", "disabled");
 				} else {
 					stopButton.removeAttribute("disabled");
