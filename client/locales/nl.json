@@ -356,10 +356,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Persistente Data instellingen",
-			"explanation": "Persistente data of \"lab mode\" is een feature voor de Roborock S5x welke verboden gebieden en virtuele muren mogelijk maakt. Het zorgt tevens voor de terugkeer naar de oplader en houdt de map geroteerd.",
-			"notSupported": "Sorry, alleen Roborock S5x ondersteunt de persistente map features.",
+			"notSupported": "Alleen Roborock S5x ondersteunt de persistente map features.",
 			"genericConfirm": "Weet je zeker dat je verder wilt?",
 			"genericOverwriteWarning": "Reeds opgeslagen gegevens worden overschreven.",
+			"enableDataTitle": "Persistente data (\"lab mode\")",
+			"enableDataDesc": "Maakt het mogelijk de kaart, verboden zones en virtuele muren op te slaan, laat het apparaat de locatie van het oplaadstation weten en voorkomt dat de kaart wordt gedraaid",
 			"deleteDataTitle": "Verwijder persistente data",
 			"deleteDataDesc": "Dit verwijdert de huidige map, verboden gebieden and virtuele muren!",
 			"deleteDataButton": "Reset Map",

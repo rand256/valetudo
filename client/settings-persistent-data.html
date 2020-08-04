@@ -8,27 +8,20 @@
 		</div>
 	</ons-toolbar>
 	<ons-progress-bar id="loading-bar-settings-persistent-data" value="0" indeterminate="indeterminate"></ons-progress-bar>
-	<ons-list-item>
-		<label class="right" style="width:100%">
-			<ons-row>
-				<ons-col vertical-align='center' style='text-align:center;' data-i18n="settings.persistentData.explanation">Persistent data or "lab mode" is a feature of the Roborock S5x which allows saving forbidden zones and virtual walls. It also allows the robot to drive back to the dock wherever it is and keeps the map from being rotated.</ons-col>
-			</ons-row>
-		</label>
-	</ons-list-item>
 	<ons-list-title style="margin-top:5px;" data-i18n="settings.persistentData.pageTitle">Persistent Data Configuration</ons-list-title>
-	<ons-list-item class="persistent_data_not_supported hidden">
-		<label class="right" style="width:100%">
+	<ons-list class="persistent_data_not_supported hidden">
+		<ons-list-item>
 			<ons-row>
-				<ons-col vertical-align='center' style='text-align:center; font-weigth: 700;' data-i18n="settings.persistentData.notSupported">Sorry, only Roborock S5x supports the persistent map features.</ons-col>
+				<ons-col vertical-align='center' style='text-align:center; font-weigth: 700;' data-i18n="settings.persistentData.notSupported">Only Roborock S5x supports the persistent map features.</ons-col>
 			</ons-row>
-		</label>
-	</ons-list-item>
-
+		</ons-list-item>
+	</ons-list>
 	<ons-list class="persistent_data_form hidden">
 		<ons-list-item>
-			<div data-i18n="common.enabled" class="left">
-				Enabled:
-			</div>
+			<div class="left"><div>
+				<div data-i18n="settings.persistentData.enableDataTitle">Persistent data ("lab mode")</div>
+				<div class="small" data-i18n="settings.persistentData.enableDataDesc">allows saving forbidden zones and virtual walls, makes the robot able to drive back to the dock wherever it is, and keeps the map from being rotated</div>
+			</div></div>
 			<div class="right">
 				<ons-switch id="lab_mode_enabled" onchange="disableMapFunctions(!this.checked);"></ons-switch>
 			</div>
@@ -75,7 +68,7 @@
 				<div class="small" data-i18n="settings.persistentData.rebootDesc">will attempt to restart the onboard operating system</div>
 			</div></div>
 			<div class="right">
-				<ons-button id="export_persistent_data" modifier="large" class="button-margin" onclick="rebootDevice();" data-i18n="settings.persistentData.reboot">
+				<ons-button modifier="large" class="button-margin" onclick="rebootDevice();" data-i18n="settings.persistentData.reboot">
 					Reboot
 				</ons-button>
 			</div>

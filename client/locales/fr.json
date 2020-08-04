@@ -336,10 +336,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configuration de la persistantes des données",
-			"explanation": "Les données persistantes ou \"lab mode\" est une fonctionnalité du Roborock S5x qui permet de sauvegarder les zones interdites et les murs virtuels. Il permet également au robot de revenir au quai où qu'il se trouve et empêche la carte d'être remplacé.",
-			"notSupported": "Désolé, seul Roborock S5x prend en charge les fonctionnalités de carte persistantes.",
+			"notSupported": "Seul Roborock S5x prend en charge les fonctionnalités de carte persistantes.",
 			"genericConfirm": "Voulez-vous vraiment continuer?",
 			"genericOverwriteWarning": "Les données précédemment enregistrées seront écrasées.",
+			"enableDataTitle": "Données persistantes (\"lab mode\")",
+			"enableDataDesc": "Permet d'enregistrer la carte, les zones interdites et les murs virtuels, permet à l'appareil de connaître l'emplacement du quai de chargement et empêche la carte de pivoter",
 			"deleteDataTitle": "Supprimer les données persistantes",
 			"deleteDataDesc": "Cela supprime la carte actuelle, toutes les zones interdites et les murs virtuels!",
 			"deleteDataButton": "Réinitialiser la carte",

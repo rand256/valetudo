@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configuración de datos persistentes",
-			"explanation": "Datos persistentes o \"lab mode\" es una característica del Roborock S5x que permite guardar zonas prohibidas y muros virtuales. También permite que el robot regrese a la base donde sea que esté y evita que el mapa gire.",
-			"notSupported": "Lo sentimos, solo Roborock S5x admite las características de mapas persistentes.",
+			"notSupported": "Solo Roborock S5x admite las características de mapas persistentes.",
 			"genericConfirm": "¿Estás seguro de continuar?",
 			"genericOverwriteWarning": "Los datos guardados anteriormente se sobreescribirán.",
+			"enableDataTitle": "Datos persistentes (\"lab mode\")",
+			"enableDataDesc": "permite guardar el mapa, zonas prohibidas y muros virtuales, hace que el dispositivo conozca la ubicación de la base y evita que el mapa gire",
 			"deleteDataTitle": "Borrar datos persistentes",
 			"deleteDataDesc": "Esto elimina el mapa actual, todas las zonas prohibidas y paredes virtuales",
 			"deleteDataButton": "Reiniciar mapa",

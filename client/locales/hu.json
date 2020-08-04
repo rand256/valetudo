@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Tárolt térkép adatok beállítása",
-			"explanation": "A tárolt térkép funkció vagy \"fejlesztői mód\" a Roborock S5x egy funkciója ami engedélyezi, hogy mentésre kerüljenek a tiltott zónák és virtuális falak. Emellett még lehetővé teszi, hogy a porszívó visszatérjen a dock-ra bárhol is legyen és megakadályozza, hogy a térkép elforogjon.",
 			"notSupported": "Csak a Roborock S5x szérián elérhető a tárolt térkép funkció.",
 			"genericConfirm": "Biztos vagy benne, hogy engedélyezni akarod?",
 			"genericOverwriteWarning": "Az előzőleg mentett adatok felül lesznek írva.",
+			"enableDataTitle": "Tárolt térkép adatok (\"lab mode\")",
+			"enableDataDesc": "Lehetővé teszi a térkép, a tiltott zónák és a virtuális falak mentését, megismeri a készüléket a töltőállomás helyét és megakadályozza a térkép forgatását.",
 			"deleteDataTitle": "Tárolt térkép adatok törlése",
 			"deleteDataDesc": "Ezzel törlődik az aktuális térkép az összes tiltott zónával és virtuális falakkal.",
 			"deleteDataButton": "Térkép visszaállítása",

@@ -359,9 +359,11 @@
 		"persistentData": {
 			"pageTitle": "Trwała konfiguracja danych",
 			"explanation": "Trwałe dane lub „tryb laboratoryjny” to funkcja Roborock S5x, która umożliwia zapisywanie zabronionych stref i wirtualnych ścian. Pozwala także robotowi wjechać z powrotem do stacji dokującej, gdziekolwiek się znajduje, i zapobiega obracaniu mapy.",
-			"notSupported": "Niestety, tylko Roborock S5x obsługuje trwałe funkcje map.",
+			"notSupported": "Tylko Roborock S5x obsługuje trwałe funkcje map.",
 			"genericConfirm": "Czy na pewno chcesz kontynuować?",
 			"genericOverwriteWarning": "Wcześniej zapisane dane zostaną zastąpione.",
+			"enableDataTitle": "Trwałe dane (\"lab mode\")",
+			"enableDataDesc": "Umożliwia zapisanie mapy, zakazanych stref i wirtualnych ścian, informuje urządzenie o lokalizacji stacji ładującej i zapobiega obracaniu mapy",
 			"deleteDataTitle": "Usuń trwałe dane",
 			"deleteDataDesc": "Spowoduje to usunięcie bieżącej mapy, wszystkich zakazanych stref i wirtualnych ścian!",
 			"deleteDataButton": "Resetuj mapę",

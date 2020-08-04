@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "\"Dauerhafte Daten\"-Konfiguration",
-			"explanation": "Dauerhafte Daten oder der \"Labormodus\" ist eine Funktion des Roborock S5x, mit der Verbotszonen und virtuelle Wände gespeichert werden können. Es ermöglicht dem Roboter auch, zum Dock zurückzukehren, egal wo er sich befindet, und verhindert weiterhin, dass die Karte gedreht wird.",
-			"notSupported": "Leider unterstützt nur der Roborock S5x die permanenten Kartenfunktionen.",
+			"notSupported": "Nur der Roborock S5x unterstützt die permanenten Kartenfunktionen.",
 			"genericConfirm": "Wirklich fortsetzen?",
 			"genericOverwriteWarning": "Zuvor gespeicherte Daten werden überschrieben.",
+			"enableDataTitle": "Dauerhafte Daten (\"lab mode\")",
+			"enableDataDesc": "Ermöglicht das Speichern der Karte, verbotener Zonen und virtueller Wände und macht das Gerät über den Standort der Ladestation informiert",
 			"deleteDataTitle": "Dauerhafte Daten löschen",
 			"deleteDataDesc": "Dies löscht die aktuelle Karte, alle Verbotszonen und virtuellen Wände",
 			"deleteDataButton": "Karten-Reset",

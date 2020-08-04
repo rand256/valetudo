@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Kartes saglabāšanas uzstādījumi",
-			"explanation": "Kartes saglabāšanas uzstādījumi, jeb ir Roborock S5x iezīme, kas ļauj saglabāt aizliegtas zonas un virtuālās sienas. Tas arī ļauj robotam doties atpakaļ uz doku, lai kur arī tas atrastos, un novērš kartes rotāciju.",
-			"notSupported": "Atvainojiet, tikai Roborock S5x atbalsta pastāvīgās kartes funkcijas.",
+			"notSupported": "Tikai Roborock S5x atbalsta pastāvīgās kartes funkcijas.",
 			"genericConfirm": "Vai tiešām vēlaties turpināt?",
 			"genericOverwriteWarning": "Iepriekš saglabātie dati tiks pārrakstīti.",
+			"enableDataTitle": "Noturīgi dati (\"lab mode\")",
+			"enableDataDesc": "ļauj saglabāt karti, ierobežotos apgabalus un virtuālās sienas, ļauj ierīcei uzzināt uzlādes doka atrašanās vietu un novērš kartes pagriešanos.",
 			"deleteDataTitle": "Dzēst saglabātos datus",
 			"deleteDataDesc": "Tas izdzēš pašreizējo karti, visas aizliegtās zonas un virtuālās sienas!",
 			"deleteDataButton": "Atiestatīt karti",

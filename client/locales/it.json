@@ -336,10 +336,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configurazione dati persistenti/Lab mode",
-			"explanation": "Dati persistenti/Lab mode é una funzione dei Roborock S50/S55 che permette di salvare zone proibite e muri virtuali. Inoltre permette il ritorno del robot alla base ovunque esso sia e impesisce che la mappa venga ruotata.",
-			"notSupported": "Mi dispiace, solo i Roborock S50/S55 supportano queste funzioni.",
+			"notSupported": "Solo i Roborock S50/S55 supportano queste funzioni.",
 			"genericConfirm": "Sei sicuro di voler procedere?",
 			"genericOverwriteWarning": "I dati salvati precedentemente saranno sovrascritti.",
+			"enableDataTitle": "Dati persistenti (\"lab mode\")",
+			"enableDataDesc": "Consente di salvare la mappa, le zone proibite e i muri virtuali, fa conoscere al dispositivo la posizione del dock e impedisce la rotazione della mappa.",
 			"deleteDataTitle": "Cancella dati persistenti",
 			"deleteDataDesc": "Questo cancella l'attuale mappa, tutte le zone proibite e i muri virtuali.",
 			"deleteDataButton": "Cancella mappa",

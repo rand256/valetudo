@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Persistent Data Configuration",
-			"explanation": "Persistent data or \"lab mode\" is a feature of the Roborock S5x which allows saving forbidden zones and virtual walls. It also allows the robot to drive back to the dock wherever it is and keeps the map from being rotated.",
-			"notSupported": "Sorry, only Roborock S5x supports the persistent map features.",
+			"notSupported": "Only Roborock S5x supports the persistent map features.",
 			"genericConfirm": "Are you sure to proceed?",
 			"genericOverwriteWarning": "Previously saved data will be overwritten.",
+			"enableDataTitle": "Persistent data (\"lab mode\")",
+			"enableDataDesc": "allows saving the map, forbidden zones and virtual walls, makes the device know charging dock location and keeps the map from being rotated",
 			"deleteDataTitle": "Delete persistent data",
 			"deleteDataDesc": "deletes the current map, all forbidden zones and virtual walls",
 			"deleteDataButton": "Reset Map",

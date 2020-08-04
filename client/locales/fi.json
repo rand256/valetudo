@@ -337,10 +337,11 @@
 		},
 		"persistentData": {
 			"pageTitle": "Pysyvän datan asetukset",
-			"explanation": "Pysyvä data tai \"lab mode\" on Roborock S5x -imurin ominaisuus, joka mahdollistaa kiellettyjen alueiden tai virtuaalisten seinien tallentamisen. Se myös mahdollistaa imurin menemisen takaisin telakkaan mistä tahansa ja estää karttaa kääntymästä.",
-			"notSupported": "Pahoittelut. Vain Roborock S5x tukee tätä ominaisuutta.",
+			"notSupported": "Vain Roborock S5x tukee tätä ominaisuutta.",
 			"genericConfirm": "Haluatko varmasti jatkaa?",
 			"genericOverwriteWarning": "Aiemmin tallennettu data tullaan ylikirjoittamaan.",
+			"enableDataTitle": "Pysyvä data (\"lab mode\")",
+			"enableDataDesc": "Mahdollistaa kartan, kiellettyjen vyöhykkeiden ja virtuaaliseinien tallentamisen, antaa laitteelle tiedon latauslaiturin sijainnista ja estää karttaa pyörimästä",
 			"deleteDataTitle": "Poista pysyvä data",
 			"deleteDataDesc": "Tämä poistaa nykyisen kartan sekä kaikki kielletyt alueet ja virtuaaliset seinät!",
 			"deleteDataButton": "Nollaa kartta",
