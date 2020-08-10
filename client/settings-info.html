@@ -141,7 +141,7 @@
 	</ons-list-title>
 	<ons-list>
 		<ons-list-item>
-			<div class="system-log-field"><textarea id="system_log_data" class="system-log-textarea" disabled></textarea></div>
+			<div class="system-log-field"><textarea id="system_log_data" class="system-log-textarea" readonly></textarea></div>
 		</ons-list-item>
 	</ons-list>
 	<ons-popover direction="left" id="exp_fw_update" cancelable>
@@ -153,6 +153,19 @@
 		var loadingBarSettingsInfo = document.getElementById('loading-bar-settings-info');
 
 		document.querySelector("#settings-info-page ons-back-button").onClick = () => fn.popPage(); // case matters!
+
+		document.getElementById('system_log_data').addEventListener('mouseover',siDisableSwipe,false);
+		document.getElementById('system_log_data').addEventListener('mouseout',siEnableSwipe,false);
+		function siDisableSwipe() {
+			document.getElementById('sidemenu').removeAttribute("swipeable");
+			document.getElementById('appTabbar').removeAttribute("swipeable");
+			document.getElementById('appNavigator').removeAttribute("swipeable");
+		}
+		function siEnableSwipe() {
+			document.getElementById('sidemenu').setAttribute("swipeable","swipeable");
+			document.getElementById('appTabbar').setAttribute("swipeable","swipeable");
+			document.getElementById('appNavigator').setAttribute("swipeable","swipeable");
+		}
 
 		ons.getScriptPage().onShow = function() {
 			loadingBarSettingsInfo.setAttribute("indeterminate", "indeterminate");
@@ -260,7 +273,7 @@
 			.finally(() => loadingBarSettingsInfo.removeAttribute("indeterminate"));
 		}
 		ons.getScriptPage().onInit = function() {
-		   fn.localize('#settings-info-page');
+			fn.localize('#settings-info-page');
 		};
 	</script>
 	<style>
