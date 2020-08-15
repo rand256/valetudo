@@ -116,11 +116,11 @@
 
 		function handleHomeButton() {
 			loadingBarHome.setAttribute("indeterminate", "indeterminate");
-			new Promise((resolve,reject) => {
+			Promise.resolve()
+			.then(res => {
 				if (fn.device.ver !== 3) {
 					return fn.prequest("api/stop_cleaning", "PUT");
 				}
-				resolve();
 			})
 			.then(res => fn.prequest("api/drive_home", "PUT"))
 			.then(() => {
