@@ -331,7 +331,7 @@
 			"valetudoLog": "Valetudo System Log",
 			"firmwareUpdateWarning": "This will try to update device's firmware using manually entered URL to pkg file and its MD5 hash value. Note that URL should point to public IP address and have no redirects.",
 			"firmwareUpdateEnterURL": "Please enter URL to firmware pkg file:",
-			"firmwareUpdateEnterMD5": "Please enter MD5 hash of the file you just specified (NO link!):",
+			"firmwareUpdateEnterMD5": "Please enter MD5 hash of the file you just specified:",
 			"firmwareUpdateSend": "Send!",
 			"firmwareUpdateSentOK": "Update request should be sent! Wait for LED indication of update process."
 		},
