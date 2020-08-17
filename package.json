@@ -1,6 +1,6 @@
 {
 	"name": "valetudo-re",
-	"version": "0.9.7",
+	"version": "0.9.8",
 	"versionSuffix": "",
 	"description": "Self-contained control webinterface for xiaomi vacuum robots",
 	"main": "index.js",
