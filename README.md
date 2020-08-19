@@ -27,7 +27,7 @@ And this is a quick list of features first appeared here:
 * Scheduled rooms cleaning - the same thing for newer firmware of Gen2;
 * Ability to specify the number of iterations to clean the same zone multiple times;
 * Display device's status on the map, as well as a set of quick action buttons that are dynamically switching at state changes;
-* Multilanguage support, currently available in bg/de/en/es/fi/fr/hu/it/lv/nl/ru/pl;
+* Multilanguage support, currently available in bg/ca/de/en/es/fi/fr/hu/it/lv/nl/ru/pl;
 * A telegram bot software for controlling the vacuum from the outside world;
 * Experimental ability to SAVE and RESTORE the main map (with per-map list of saved zones and spots);
 * Full support of room cleaning (requires Gen2 with firmware 2008+).
