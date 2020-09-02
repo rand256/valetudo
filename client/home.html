@@ -17,7 +17,7 @@
 		<div>
 			<ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
 		</div><div>
-			<ons-button id="stop-button" class="button-margin" onclick="handleControlButton('stop')" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleHomeButton()" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
+			<ons-button id="stop-button" class="button-margin" onclick="handleStopButton()" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleHomeButton()" disabled style="width:40%"><ons-icon icon="fa-home"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
 		</div><div>
 			<ons-button id="spot-button" class="button-margin" onclick="handleControlButton('spot')" disabled style="width:40%"><ons-icon icon="fa-caret-down"></ons-icon> <span data-i18n="home.buttons.spot">Spot</span></ons-button><ons-button id="area-button" class="button-margin" onclick="handleAreaButton()" disabled style="width:40%"><ons-icon icon="fa-map"></ons-icon> <span data-i18n="home.buttons.zones">Zones</span></ons-button>
 		</div><div>
@@ -72,10 +72,6 @@
 				button: pauseButton,
 				url: "api/pause_cleaning"
 			},
-			"stop": {
-				button: stopButton,
-				url: "api/stop_cleaning"
-			},
 			"find": {
 				button: findRobotButton,
 				url: "api/find_robot"
@@ -114,12 +110,34 @@
 			});
 		}
 
-		function handleHomeButton() {
+		function handleStopButton() {
 			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			stopButton.setAttribute("disabled", "disabled");
 			Promise.resolve()
 			.then(res => {
-				if (fn.device.ver !== 3) {
-					return fn.prequest("api/stop_cleaning", "PUT");
+				if (fn.device.state === 6 && fn.device.ver !== 3) {
+					return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+				}
+			})
+			.then(res => fn.prequest("api/stop_cleaning", "PUT"))
+			.then(() => {
+				clearTimeout(currentRefreshTimer);
+				setTimeout(() => updateHomePage(), 500);
+			})
+			.catch(err => {
+				stopButton.removeAttribute("disabled");
+				loadingBarHome.removeAttribute("indeterminate");
+				fn.notificationToastError(err);
+			});
+		}
+
+		function handleHomeButton() {
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			homeButton.setAttribute("disabled", "disabled");
+			Promise.resolve()
+			.then(res => {
+				if ([5,11,16,17,18].includes(fn.device.state) && fn.device.ver !== 3) {
+					return fn.prequest("api/stop_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
 				}
 			})
 			.then(res => fn.prequest("api/drive_home", "PUT"))
@@ -128,7 +146,7 @@
 				setTimeout(() => updateHomePage(), 500);
 			})
 			.catch(err => {
-				btn.button.removeAttribute("disabled");
+				homeButton.removeAttribute("disabled");
 				loadingBarHome.removeAttribute("indeterminate");
 				fn.notificationToastError(err);
 			});
@@ -209,7 +227,13 @@
 						}});
 						return Promise.reject("cancel");
 					} else {
-						return fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT");
+						return Promise.resolve()
+						.then(res => {
+							if (fn.device.state === 6) {
+								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+							}
+						})
+						.then(res => fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT"));
 					}
 				}
 				return Promise.reject("cancel");
@@ -359,7 +383,13 @@
 						return Promise.reject("cancel");
 					} else {
 						loadingBarHome.setAttribute("indeterminate", "indeterminate");
-						return fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT")
+						return Promise.resolve()
+						.then(res => {
+							if (fn.device.state === 6 && fn.device.ver !== 3) {
+								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+							}
+						})
+						.then(res => fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT"));
 					}
 				} else {
 					return Promise.reject("cancel");
@@ -571,6 +601,8 @@
 			loadingBarHome.setAttribute("indeterminate", "indeterminate");
 			fn.prequest("api/current_status")
 			.then((res) => {
+				fn.device.state = res.state;
+
 				batteryStatusText.textContent = res.battery;
 				batteryStatusBar.value = res.battery;
 

@@ -422,6 +422,7 @@
 			let res = e.detail;
 			document.querySelector('.map-page-battery').textContent = (res.battery || 0) + '%';
 			if (res.stateHR !== undefined) {
+				fn.device.state = res.state;
 				let mapPageStatus = document.querySelector('.map-page-status');
 				mapPageStatus.textContent = i18next.t('map.statusText',{defaultValue: '{{status}}', status: i18next.t('robot.states.n' + res.state, res.stateHR)});
 				if (res.state === 12 && res.error_code !== 0) {

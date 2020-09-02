@@ -324,16 +324,17 @@
 			}
 			manualControlRefreshInProgress = true;
 			fn.prequest("api/current_status")
-			.then((res) => {
+			.then(res => {
+				fn.device.state = res.state;
 				if (res.state === 7) { //7: manual
 					_startManualControl();
 				} else {
 					_stopManualControl();
 				}
-			}, (err) => {
+			}, err => {
 				if (!manualControlToastInProgress) {
 					manualControlToastInProgress = true;
-					ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: window.fn.toastErrorTimeout }).then(() => { manualControlToastInProgress = false; });
+					ons.notification.toast(err, { buttonLabel: 'Dismiss', timeout: fn.toastErrorTimeout }).then(() => { manualControlToastInProgress = false; });
 				}
 			})
 			.finally(() => {
