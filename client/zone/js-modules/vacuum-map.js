@@ -842,6 +842,7 @@ export function VacuumMap(canvasElement) {
 			segment.highlighted = false;
 			segment.changed = true;
 		});
+		emitZoneSelection(false);
 		if (redrawCanvas) redrawCanvas();
 	}
 
