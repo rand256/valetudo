@@ -516,7 +516,7 @@
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Térképadatok közzététele:",
-			"save": MQTT konfiguráció mentése"
+			"save": "MQTT konfiguráció mentése"
 		},
 		"telegram": {
 			"explanation": "Indíts egy új beszélgetést Telegramon a \"Botfather\" bottal, majd készíts egy új botot a /newbot paranccsal, majd illeszd be ide a kapott Tokent.",
