@@ -23,6 +23,7 @@
 		"compression": "^1.7.4",
 		"express": "^4.17.1",
 		"express-basic-auth": "^1.2.0",
+		"express-force-ssl": "^0.3.2",
 		"express-dynamic-middleware": "^1.0.0",
 		"mqtt": "^4.2.1",
 		"multer": "^1.4.2",
