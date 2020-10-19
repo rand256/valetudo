@@ -89,6 +89,16 @@ file on the robot.
 Second edit the `/etc/rc.local` file and add the content of
 `deployment/etc/rc.local` before the `exit 0` line.
 
+### Create self-signed rsa key and cert for enforced https (optional)
+```
+mkdir -p /mnt/data/valetudo
+cd /mnt/data/valetudo
+openssl genrsa -out key.pem 4096
+openssl req -new -key key.pem -out csr.pem
+openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
+rm csr.pem
+```
+
 ### Reboot
 
 You can now reboot the robot.

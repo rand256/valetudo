@@ -44,7 +44,7 @@ if [ ! -d "./develop/local" ]; then
     echo "" >> ./develop/local/env
 
     # IMPORTANT: adjust the number of lines to be copied in case the example environment changes.
-    tail -n 9 ./develop/env.example >> ./develop/local/env
+    tail -n 13 ./develop/env.example >> ./develop/local/env
 
     echo "Local configuration created. Please edit the files in ./develop/local/"
     echo "to suit your needs, then start this script again."
