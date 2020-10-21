@@ -10,13 +10,14 @@
 	<script src="js/i18n.min.js" ></script>
 	<script src="js/i18n.html5.min.js"></script>
 	<script src="js/i18n.xhr.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#4285f4">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<meta charset="utf-8">
 	<link rel="icon" sizes="192x192" href="icon.png">
-	<link rel="apple-touch-icon" href="icon.png">
+	<link rel="apple-touch-icon" href="icon-apple.png">
 	<title>Mi Robot Vacuum</title>
 </head>
 <body>
@@ -480,10 +481,10 @@
 					font-weight: bolder;
 				}
 
-					.profile-header > span {
-						display: block;
-						max-width: 100%;
-					}
+				.profile-header > span {
+					display: block;
+					max-width: 100%;
+				}
 
 				ons-list-item {
 					color: #444;
@@ -492,6 +493,16 @@
 				.progress-bar-container {
 					position: fixed;
 					width: 100%;
+				}
+
+				.ons-tabbar__content,
+				.ons-tabbar__footer {
+					padding-bottom: env(safe-area-inset-bottom) !important;
+				}
+
+				.page__content {
+					padding-left: env(safe-area-inset-left) !important;
+					padding-right: env(safe-area-inset-right) !important;
 				}
 			</style>
 		</ons-page>
