@@ -10,6 +10,7 @@
 	<script src="js/i18n.min.js" ></script>
 	<script src="js/i18n.html5.min.js"></script>
 	<script src="js/i18n.xhr.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#4285f4">
@@ -496,7 +497,12 @@
 
 				.ons-tabbar__content,
 				.ons-tabbar__footer {
-					padding-bootom: env(safe-area-inset-bottom);
+					padding-bottom: env(safe-area-inset-bottom) !important;
+				}
+
+				.page__content {
+					padding-left: env(safe-area-inset-left) !important;
+					padding-right: env(safe-area-inset-right) !important;
 				}
 			</style>
 		</ons-page>
