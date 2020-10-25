@@ -30,7 +30,7 @@
 		"timedOut": "s'ha superat el temps d'espera de l'operació"
 	},
 	"navi": {
-		"home": "Base de càrrega",
+		"home": "Inici",
 		"map": "Mapa",
 		"zones": "Zones",
 		"control": "Control",
@@ -248,7 +248,7 @@
 		"cleaningHistoryTitle": "Historial de neteges",
 		"cleaningHistoryDesc": "Vegeu l'historial de neteges.",
 		"wifiTitle": "Sense fil",
-		"wifiDesc": "Vegeu i canvieu els detalls i els paràmetres de la connexió sense fil",
+		"wifiDesc": "Vegeu i canvieu els detalls i els paràmetres de la connexió sense fil.",
 		"soundAndVoiceTitle": "So i veu",
 		"soundAndVoiceDesc": "Canvieu el volum del so i la veu del robot.",
 		"webInterfaceTitle": "Interfície web",
