@@ -116,7 +116,7 @@
 			Promise.resolve()
 			.then(res => {
 				if (fn.device.state === 6 && fn.device.ver !== 3) {
-					return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+					return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 				}
 			})
 			.then(res => fn.prequest("api/stop_cleaning", "PUT"))
@@ -137,7 +137,7 @@
 			Promise.resolve()
 			.then(res => {
 				if ([5,11,16,17,18].includes(fn.device.state) && fn.device.ver !== 3) {
-					return fn.prequest("api/stop_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+					return fn.prequest("api/stop_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 				}
 			})
 			.then(res => fn.prequest("api/drive_home", "PUT"))
@@ -230,7 +230,7 @@
 						return Promise.resolve()
 						.then(res => {
 							if (fn.device.state === 6) {
-								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 							}
 						})
 						.then(res => fn.prequestWithPayload("api/go_to", JSON.stringify({x: spots[index].coordinates[0],y: spots[index].coordinates[1]}), "PUT"));
@@ -386,7 +386,7 @@
 						return Promise.resolve()
 						.then(res => {
 							if (fn.device.state === 6 && fn.device.ver !== 3) {
-								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,9e2)));
+								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 							}
 						})
 						.then(res => fn.prequestWithPayload("api/start_cleaning_zone", JSON.stringify(payload), "PUT"));
