@@ -721,7 +721,7 @@
 			form.day.value = cron[2] || "";
 			form.hour.value = cron[1] || "";
 			form.minute.value = cron[0] || "";
-			if (cron[4] === "*" && fn.device.ver === 3 && !zoned) {
+			if (cron[4] === "*" && fn.device.features.v3 && !zoned) {
 				form.once.checked = true;
 				switchTimerOnce(form.once);
 			} else if (cron[4] !== "0,1,2,3,4,5,6") {
@@ -812,9 +812,9 @@
 			if (daySelection.length) {
 				daySelection = daySelection.sort().join(",");
 			} else {
-				daySelection = fn.device.ver === 3 && !zoned ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete" for native cleaning
+				daySelection = fn.device.features.v3 && !zoned ? "0,1,2,3,4,5,6" : "*"; // in 2008 a single asterisk in days means "run once and delete" for native cleaning
 			}
-			if (form.once.checked && fn.device.ver === 3) {
+			if (form.once.checked && fn.device.features.v3) {
 				daySelection = "*"; // that's it, clean and forget
 			}
 			// do not allow meaningless timers
@@ -827,12 +827,12 @@
 			// fanpower
 			var fanPower;
 			switch (form.fan_power_select.value) {
-				case "0": fanPower = fn.device.ver === 3 ? 101 : 1 ; break;
-				case "1": fanPower = fn.device.ver === 3 ? 101 : 38; break;
-				case "3": fanPower = fn.device.ver === 3 ? 103 : 75; break;
-				case "4": fanPower = fn.device.ver === 3 ? 104 : 100; break;
+				case "0": fanPower = fn.device.features.v3 ? 101 : 1 ; break;
+				case "1": fanPower = fn.device.features.v3 === 3 ? 101 : 38; break;
+				case "3": fanPower = fn.device.features.v3 === 3 ? 103 : 75; break;
+				case "4": fanPower = fn.device.features.v3 === 3 ? 104 : 100; break;
 				case "5": fanPower = 105; break;
-				default: fanPower = fn.device.ver === 3 ? 102 : 60; break;
+				default: fanPower = fn.device.features.v3 === 3 ? 102 : 60; break;
 			}
 			var iterations = +form.iterations_select.value;
 			// next promises
@@ -910,12 +910,12 @@
 			zoned = zoned ? true : false;
 			// show different headers for different modes and fw
 			editTimerDialog.querySelectorAll('.ztimer-item').forEach(item => item.style.display = (zoned ? '' : 'none'));
-			editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && fn.device.ver === 3 ? '' : 'none'));
+			editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && fn.device.features.v3 ? '' : 'none'));
 			editTimerDialog.querySelector('.edit-timer-desc').textContent = zoned ? i18next.t('settings.timers.timerZoneDesc',"Choose timer name and zone coordinates.") : i18next.t('settings.timers.timerDesc',"Choose timer settings.");
-			if (fn.device.ver === 3) {
-				editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none';
+			if (fn.device.features.v3) {
+				editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none'; // v3 devices doesn't have Whisper fanspeed
 			}
-			if (fn.device.model === "rockrobo.vacuum.v1") {
+			if (fn.device.features.nmop) {
 				editTimerDialog.querySelector('select > option[value="5"]').style.display = 'none';
 			}
 			clearTimerDialog(zoned);

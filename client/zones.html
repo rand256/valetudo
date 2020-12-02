@@ -111,7 +111,7 @@
 			let mapData, segmentNames = {};
 			fn.prequest("api/current_status")
 			.then ((res) => {
-				if (fn.device.ver !== 3) {
+				if (!fn.device.features.rooms) {
 					return Promise.reject(i18next.t('zones.noSegmentsSupport',"Your device's firmware doesn't support splitting the map into rooms."));
 				}
 				if (res['lab_status'] !== 1) {
@@ -356,10 +356,10 @@
 		}
 
 		ons.getScriptPage().onShow = function () {
-			if (fn.device.model === "rockrobo.vacuum.v1") {
+			if (fn.device.features.npd) {
 				document.getElementById("forbidden-markers-configuration-section").style.display = "none";
 			}
-			if (fn.device.ver !== 3) {
+			if (!fn.device.features.rooms) {
 				document.getElementById("rooms-configuration-section").style.display = "none";
 			}
 			loadingBarZones.setAttribute("indeterminate", "indeterminate");

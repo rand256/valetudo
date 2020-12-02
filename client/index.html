@@ -224,21 +224,18 @@
 		}
 
 		var fetchDevice = function(retry) {
-			return fn.prequest("api/current_status")
+			return fn.prequest("api/device_features")
 			.then(res => {
-				fn.device = {
-					model: res.model,
-					ver: res.msg_ver
-				};
-			}, err => {
-				fn.device = {
-					model: "unknown",
-					ver: 1
-				};
-				setTimeout(() => fetchDevice(true),5e3);
+				if (res.error) throw res.error;
+				fn.device = res;
+			})
+			.catch(err => {
 				if (retry) {
-					throw null;
+					throw "can't get device features: " + err;
 				}
+				return new Promise((resolve,reject) => {
+					setTimeout(() => fetchDevice(true).then(resolve).catch(e => reject(e)),5e3);
+				});
 			})
 			.then(res => {
 				let ploadImg = (name,file) => {
@@ -251,7 +248,6 @@
 				}
 				return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
 			})
-			.catch(e => {});
 		}
 
 		var waitForGlobals = fetchDevice()
@@ -281,12 +277,8 @@
 			})
 		})
 		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
-		.catch(e => {
-			fn.localize = function() {};
-			console.error('loading interface configuration has failed', e);
-		});
 	</script>
-	<div>Loading...</div>
+	<div id="initial_loading_msg">Loading...</div>
 	<script type="module" crossorigin>
 		import { RRMapParser } from "./zone/js-modules/rr-map-parser.js";
 		import { VacuumMap } from "./zone/js-modules/vacuum-map.js"
@@ -294,7 +286,10 @@
 		window.fn.createVacuumMap = function(canvasElement) { return new VacuumMap(canvasElement); }
 
 		ons.ready(function () {
-			waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html'));
+			waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html')).catch(e => {
+			document.getElementById('initial_loading_msg').textContent = "Loading interface configuration has failed.";
+			console.error(e);
+		});
 
 			// todo: make it work without timeout hacks
 			switch (window.location.hash) {

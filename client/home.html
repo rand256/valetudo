@@ -115,7 +115,7 @@
 			stopButton.setAttribute("disabled", "disabled");
 			Promise.resolve()
 			.then(res => {
-				if (fn.device.state === 6 && fn.device.ver !== 3) {
+				if (fn.device.state === 6 && !fn.device.features.v3) {
 					return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 				}
 			})
@@ -136,7 +136,7 @@
 			homeButton.setAttribute("disabled", "disabled");
 			Promise.resolve()
 			.then(res => {
-				if ([5,11,16,17,18].includes(fn.device.state) && fn.device.ver !== 3) {
+				if ([5,11,16,17,18].includes(fn.device.state) && !fn.device.features.v3) {
 					return fn.prequest("api/stop_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 				}
 			})
@@ -385,7 +385,7 @@
 						loadingBarHome.setAttribute("indeterminate", "indeterminate");
 						return Promise.resolve()
 						.then(res => {
-							if (fn.device.state === 6 && fn.device.ver !== 3) {
+							if (fn.device.state === 6 && !fn.device.features.v3) {
 								return fn.prequest("api/pause_cleaning", "PUT").then(res => new Promise(res => setTimeout(res,19e2)));
 							}
 						})
@@ -668,7 +668,7 @@
 				robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
 				robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
-				fanspeedPresets = fn.device.ver !== 3 ? {
+				fanspeedPresets = !fn.device.features.v3 ? {
 					1: i18next.t('home.fanspeedPresets.whisper',"Whisper"),
 					38: i18next.t('home.fanspeedPresets.quiet',"Quiet"),
 					60: i18next.t('home.fanspeedPresets.balanced',"Balanced"),
@@ -680,7 +680,7 @@
 					103: i18next.t('home.fanspeedPresets.turbo',"Turbo"),
 					104: i18next.t('home.fanspeedPresets.max',"Max")
 				};
-				if (fn.device.model !== "rockrobo.vacuum.v1") {
+				if (!fn.device.features.nmop) {
 					fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
 				}
 				fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);

@@ -240,14 +240,14 @@
 			loadingBarSettingsPersistentData.setAttribute("indeterminate", "indeterminate");
 			Promise.all([
 				fn.prequest("api/current_status").then(res => {
-					if(fn.device.model === "roborock.vacuum.s5") {
+					if (!fn.device.features.npd) {
 						oldLabStatus = res.lab_status === 1;
 						document.querySelector('.persistent_data_form').classList.remove('hidden');
 						labModeSwitch.checked = oldLabStatus;
 						disableMapFunctions(!oldLabStatus);
 						if (oldLabStatus) {
 							mapRestoreTypeSelect.options[2].removeAttribute('disabled');
-							if (res.msg_ver === 3) {
+							if (fn.device.features.v3) {
 								mapRestoreTypeSelect.options[3].removeAttribute('disabled');
 							}
 						}

@@ -61,7 +61,7 @@
 				fn.prequest("api/map/latest", "GET", "arraybuffer")
 				.then(res => {
 					gzippedMapData = res;
-					return fn.device.ver === 3 ? fn.prequest("api/segment_names") : null;
+					return fn.device.features.rooms ? fn.prequest("api/segment_names") : null;
 				})
 				.then(res => {
 					var segmentNames = {};
@@ -375,7 +375,7 @@
 		document.getElementById("resume_cleaning").onclick = () => {
 			const res = document.querySelector('.map-page-status').dataset;
 			if ([2,10,12].includes(+res.state)) {
-				if (+res.in_returning === 1 || res.model === "rockrobo.vacuum.v1" && +res.in_cleaning === 0 && +res.state === 10) { // Gen1 is missing in_returning state
+				if (+res.in_returning === 1 || fn.device.features.nret && +res.in_cleaning === 0 && +res.state === 10) { // Gen1 is missing in_returning state
 					put_command("drive_home","resume_cleaning");
 					return;
 				} else if (+res.in_cleaning > 0) {
@@ -431,7 +431,6 @@
 				mapPageStatus.dataset['state'] = res['state'];
 				mapPageStatus.dataset['in_cleaning'] = res['in_cleaning'];
 				mapPageStatus.dataset['in_returning'] = res['in_returning'];
-				mapPageStatus.dataset['model'] = res['model'];
 				if (!fn.webifSettings.staticMapButtons) {
 					fn.reload_map_buttons(res);
 				}

@@ -50,19 +50,6 @@ if [ ! -d "./develop/local" ]; then
     echo "to suit your needs, then start this script again."
     echo ""
 
-    echo "Initializing local (development) maps and paths ..."
-    # Create empty map files for initial run, to prevent errors.
-    # This should be revisited when the map testing logic is adapted.
-    if [ ! -f "./map" ]; then
-        echo "Creating empty map file"
-        touch ./map
-    fi
-
-    if [ ! -f "./log" ]; then
-        echo "Creating empty path log file"
-        touch ./log
-    fi
-
     exit 1
 fi
 
