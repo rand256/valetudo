@@ -16,6 +16,10 @@
 		<ons-fab ripple id="forbidden-markers-configuration-add-zone">
 			<ons-icon icon="fa-window-close-o"></ons-icon>
 		</ons-fab>
+		<ons-fab ripple id="forbidden-markers-configuration-add-mop-zone" style="display:none;">
+			<span class="mop_box"><ons-icon icon="fa-square"></ons-icon></span>
+			<span class="mop_broom"><ons-icon icon="fa-broom"></ons-icon></span>
+		</ons-fab>
 		<ons-fab ripple id="forbidden-markers-configuration-save">
 			<ons-icon icon="fa-save"></ons-icon>
 		</ons-fab>
@@ -34,6 +38,11 @@
 
 		const parsedMap = map.getParsedMap();
 
+		function checkMarkerCount(req) {
+			const loc = map.getLocations();
+			return 2*loc.virtualWalls.length + 4*(loc.forbiddenZones.length + loc.forbiddenMopZones.length) + req > 68; // max stored points seems to be 68
+		}
+
 		if (parsedMap.forbidden_zones)
 		for (let zone of parsedMap.forbidden_zones) {
 			map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
@@ -45,7 +54,7 @@
 		}
 
 		document.getElementById("forbidden-markers-configuration-add-wall").onclick = () => {
-			if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 66) {
+			if (checkMarkerCount(2)) {
 				fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
 				return;
 			}
@@ -53,15 +62,24 @@
 		}
 
 		document.getElementById("forbidden-markers-configuration-add-zone").onclick = () => {
-			if (map.getLocations().virtualWalls.length * 2 + map.getLocations().forbiddenZones.length * 4 > 64) {
+			if (checkMarkerCount(4)) {
 				fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
 				return;
 			}
 			map.addForbiddenZone(null, false, true);
 		}
 
+		document.getElementById("forbidden-markers-configuration-add-mop-zone").onclick = () => {
+			if (checkMarkerCount(4)) {
+				fn.notificationToastError(i18next.t('zones.tooManyMarkers',"You can't add more forbidden markers on the map!"));
+				return;
+			}
+			map.addForbiddenZone(null, false, true, true);
+		}
+
 		saveButton.onclick = () => {
-			const persistentData = {virtual_walls: map.getLocations().virtualWalls, forbidden_zones: map.getLocations().forbiddenZones};
+			const loc = map.getLocations();
+			const persistentData = {virtual_walls: loc.virtualWalls, forbidden_zones: loc.forbiddenZones, forbidden_mop_zones: loc.forbiddenMopZones};
 			loadingBarSaveMarkers.setAttribute("indeterminate", "indeterminate");
 			saveButton.setAttribute("disabled", "disabled");
 			fn.prequestWithPayload("api/persistent_data", JSON.stringify(persistentData), "PUT")
@@ -77,7 +95,10 @@
 	</script>
 	<script>
 		ons.getScriptPage().onInit = function() {
-		   fn.localize('#forbidden-markers-configuration-map-page');
+			if (fn.device.features.nmopzones) {
+				document.getElementById("forbidden-markers-configuration-add-mop-zone").style.display = '';
+			}
+			fn.localize('#forbidden-markers-configuration-map-page');
 		}
 	</script>
 	<style>
@@ -114,6 +135,17 @@
 			grid-template-columns: auto;
 			grid-template-rows: auto;
 			grid-gap: 0.5em;
+		}
+
+		.map-page-buttons .mop_broom {
+			position: absolute;
+			left: 15px;
+			transform: scale(0.50);
+			overflow-x: hidden;
+		}
+		
+		.map-page-buttons .mop_box .ons-icon {
+			font-weight: 400;
 		}
 	</style>
 </ons-page>

@@ -902,3 +902,96 @@ export class Segment {
 	}
 
 }
+
+/**
+ * Represents a special forbidden zone the robot does not enter when mopping
+ */
+export class ForbiddenMopZone extends ForbiddenZone {
+
+	draw(ctx, transformMapToScreenSpace, scaleFactor, idx) {
+		this.buttonSize = initialButtonSize * Math.min(scaleFactor,maxButtonSizeMultiplier);
+		const p1 = new DOMPoint(this.x1, this.y1).matrixTransform(transformMapToScreenSpace);
+		const p2 = new DOMPoint(this.x2, this.y2).matrixTransform(transformMapToScreenSpace);
+		const p3 = new DOMPoint(this.x3, this.y3).matrixTransform(transformMapToScreenSpace);
+		const p4 = new DOMPoint(this.x4, this.y4).matrixTransform(transformMapToScreenSpace);
+
+		ctx.save();
+		if (!this.active) {
+			ctx.strokeStyle = "rgb(66, 224, 255)";
+			ctx.fillStyle = "rgba(66, 224, 255, 0.5)";
+		} else {
+			ctx.setLineDash([8, 6]);
+			ctx.strokeStyle = "rgb(66, 224, 255)";
+			ctx.fillStyle = "rgba(66, 224, 255, 0)";
+		}
+
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(p1.x, p1.y);
+		ctx.lineTo(p2.x, p2.y);
+		ctx.lineTo(p3.x, p3.y);
+		ctx.lineTo(p4.x, p4.y);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+		ctx.restore();
+
+		if (this.active) {
+			ctx.fillStyle = 'white';
+			ctx.strokeStyle = 'white';
+
+			ctx.lineWidth = 2;
+			ctx.beginPath();
+			ctx.arc(p1.x, p1.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.arc(p2.x, p2.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.arc(p3.x, p3.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.arc(p4.x, p4.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.stroke();
+
+			ctx.fillStyle = 'black';
+			ctx.strokeStyle = 'black';
+
+			ctx.beginPath();
+			ctx.arc((p1.x + p2.x)/2, (p1.y + p2.y)/2, this.buttonSize / 2, 0, 2 * Math.PI, false);
+			ctx.fill();
+			ctx.stroke();
+
+			ctx.font = 'bold ' + (0.65 * this.buttonSize) + 'px "Font Awesome 5 Free"';
+			ctx.fillStyle = 'rgb(44, 150, 222)';
+
+			ctx.textBaseline = 'middle';
+			ctx.textAlign = 'center';
+			ctx.fillText('\uf31e', p1.x , p1.y);
+
+			ctx.textBaseline = 'middle';
+			ctx.textAlign = 'center';
+			ctx.fillText('\uf31e', p2.x , p2.y);
+
+			ctx.textBaseline = 'middle';
+			ctx.textAlign = 'center';
+			ctx.fillText('\uf31e', p3.x , p3.y);
+
+			ctx.textBaseline = 'middle';
+			ctx.textAlign = 'center';
+			ctx.fillText('\uf31e', p4.x , p4.y);
+
+			ctx.textBaseline = 'middle';
+			ctx.textAlign = 'center';
+			ctx.fillStyle = 'white';
+			ctx.fillText('\uf00d', (p1.x + p2.x)/2, (p1.y + p2.y)/2);
+		}
+	}
+}

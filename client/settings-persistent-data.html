@@ -517,7 +517,8 @@
 				const mapData = RRMapParser.PARSE(pako.inflate(gzippedMap)) || {};
 				return {
 					virtual_walls: mapData.virtual_walls || [],
-					forbidden_zones: mapData.forbidden_zones || []
+					forbidden_zones: mapData.forbidden_zones || [],
+					forbidden_mop_zones: mapData.forbidden_mop_zones || []
 				};
 			} catch (e) { return {}; }
 		}

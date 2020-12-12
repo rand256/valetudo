@@ -39,6 +39,7 @@ RRMapParser.TYPES = {
 	"FORBIDDEN_ZONES": 9,
 	"VIRTUAL_WALLS": 10,
 	"CURRENTLY_CLEANED_BLOCKS": 11,
+	"FORBIDDEN_MOP_ZONES": 12,
 	"DIGEST": 1024
 };
 
@@ -195,6 +196,7 @@ RRMapParser.PARSE_BLOCK = function parseBlock(buf, offset, result) {
 			}
 			break;
 		case RRMapParser.TYPES.FORBIDDEN_ZONES:
+		case RRMapParser.TYPES.FORBIDDEN_MOP_ZONES:
 			const forbiddenZoneCount = buf.readUInt32LE(0x08 + offset);
 			const forbiddenZones = [];
 
@@ -347,6 +349,17 @@ RRMapParser.PARSE = function parse(inputMapBuf) {
 			}
 			if(blocks[RRMapParser.TYPES.CURRENTLY_CLEANED_BLOCKS]) {
 				parsedMapData.currently_cleaned_blocks = blocks[RRMapParser.TYPES.CURRENTLY_CLEANED_BLOCKS];
+			}
+			if(blocks[RRMapParser.TYPES.FORBIDDEN_MOP_ZONES]) {
+				parsedMapData.forbidden_mop_zones = blocks[RRMapParser.TYPES.FORBIDDEN_MOP_ZONES];
+				parsedMapData.forbidden_mop_zones = parsedMapData.forbidden_mop_zones.map(zone => {
+					zone[1] = Tools.DIMENSION_MM - zone[1];
+					zone[3] = Tools.DIMENSION_MM - zone[3];
+					zone[5] = Tools.DIMENSION_MM - zone[5];
+					zone[7] = Tools.DIMENSION_MM - zone[7];
+
+					return zone;
+				})
 			}
 			return parsedMapData;
 		} else {
