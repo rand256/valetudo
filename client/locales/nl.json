@@ -356,7 +356,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Persistente Data instellingen",
-			"notSupported": "Alleen Roborock S5x ondersteunt de persistente map features.",
+			"notSupported": "Permanente kaartfuncties worden niet ondersteund op dit apparaat.",
 			"genericConfirm": "Weet je zeker dat je verder wilt?",
 			"genericOverwriteWarning": "Reeds opgeslagen gegevens worden overschreven.",
 			"enableDataTitle": "Persistente data (\"lab mode\")",

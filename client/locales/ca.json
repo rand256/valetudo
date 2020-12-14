@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Paràmetres de les dades persistents",
-			"notSupported": "Només el Roborock S5x és compatible amb les característiques de mapes persistents.",
+			"notSupported": "Aquest dispositiu no admet les funcions de mapa persistents.",
 			"genericConfirm": "Segur que voleu continuar?",
 			"genericOverwriteWarning": "Les dades desades anteriorment se sobreescriuran.",
 			"enableDataTitle": "Dades persistents («mode de laboratori»)",

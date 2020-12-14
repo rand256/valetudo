@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Pysyvän datan asetukset",
-			"notSupported": "Vain Roborock S5x tukee tätä ominaisuutta.",
+			"notSupported": "Pysyviä karttaominaisuuksia ei tueta tässä laitteessa.",
 			"genericConfirm": "Haluatko varmasti jatkaa?",
 			"genericOverwriteWarning": "Aiemmin tallennettu data tullaan ylikirjoittamaan.",
 			"enableDataTitle": "Pysyvä data (\"lab mode\")",

@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Konfigrace tvrale uložených dat",
-			"notSupported": "Pouze Roborock S5x podporuje funkce trvale uložené mapy.",
+			"notSupported": "Trvalé funkce mapy nejsou na tomto zařízení podporovány.",
 			"genericConfirm": "Opravdu chcete pokračovat?",
 			"genericOverwriteWarning": "Původně uložená data budou přepsána.",
 			"enableDataTitle": "Trvale uložená data (\"laboratorní režim\")",

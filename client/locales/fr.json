@@ -336,7 +336,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configuration de la persistantes des données",
-			"notSupported": "Seul Roborock S5x prend en charge les fonctionnalités de carte persistantes.",
+			"notSupported": "Les fonctionnalités de carte persistante ne sont pas prises en charge sur cet appareil.",
 			"genericConfirm": "Voulez-vous vraiment continuer?",
 			"genericOverwriteWarning": "Les données précédemment enregistrées seront écrasées.",
 			"enableDataTitle": "Données persistantes (\"lab mode\")",

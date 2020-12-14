@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Kartes saglabāšanas uzstādījumi",
-			"notSupported": "Tikai Roborock S5x atbalsta pastāvīgās kartes funkcijas.",
+			"notSupported": "Šajā ierīcē netiek atbalstītas pastāvīgas kartes funkcijas.",
 			"genericConfirm": "Vai tiešām vēlaties turpināt?",
 			"genericOverwriteWarning": "Iepriekš saglabātie dati tiks pārrakstīti.",
 			"enableDataTitle": "Noturīgi dati (\"lab mode\")",

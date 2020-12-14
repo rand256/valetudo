@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Tárolt térkép adatok beállítása",
-			"notSupported": "Csak a Roborock S5x szérián elérhető a tárolt térkép funkció.",
+			"notSupported": "Az állandó térképfunkciókat ez a készülék nem támogatja.",
 			"genericConfirm": "Biztos vagy benne, hogy engedélyezni akarod?",
 			"genericOverwriteWarning": "Az előzőleg mentett adatok felül lesznek írva.",
 			"enableDataTitle": "Tárolt térkép adatok (\"lab mode\")",

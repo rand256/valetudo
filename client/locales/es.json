@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configuración de datos persistentes",
-			"notSupported": "Solo Roborock S5x admite las características de mapas persistentes.",
+			"notSupported": "Las funciones de mapas persistentes no son compatibles con este dispositivo.",
 			"genericConfirm": "¿Estás seguro de continuar?",
 			"genericOverwriteWarning": "Los datos guardados anteriormente se sobreescribirán.",
 			"enableDataTitle": "Datos persistentes (\"lab mode\")",

@@ -336,7 +336,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "Configurazione dati persistenti/Lab mode",
-			"notSupported": "Solo i Roborock S50/S55 supportano queste funzioni.",
+			"notSupported": "Le funzionalità delle mappe persistenti non sono supportate su questo dispositivo.",
 			"genericConfirm": "Sei sicuro di voler procedere?",
 			"genericOverwriteWarning": "I dati salvati precedentemente saranno sovrascritti.",
 			"enableDataTitle": "Dati persistenti (\"lab mode\")",
