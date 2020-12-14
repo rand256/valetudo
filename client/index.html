@@ -246,7 +246,7 @@
 						window.fn[name].src = 'img/' + file;
 					});
 				}
-				return Promise.all([ploadImg('robotImg',(fn.device.model === 'rockrobo.vacuum.v1' ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
+				return Promise.all([ploadImg('robotImg',((fn.device.model === 'rockrobo.vacuum.v1' || fn.device.model === 'roborock.vacuum.s4') ? 'robot_v1.png' : 'robot.png')),ploadImg('chargerImg','charger.png')]);
 			})
 		}
 

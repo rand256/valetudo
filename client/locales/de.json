@@ -337,7 +337,7 @@
 		},
 		"persistentData": {
 			"pageTitle": "\"Dauerhafte Daten\"-Konfiguration",
-			"notSupported": "Nur der Roborock S5x unterstützt die permanenten Kartenfunktionen.",
+			"notSupported": "Dieses Gerät unterstützt die permanenten Kartenfunktionen nicht.",
 			"genericConfirm": "Wirklich fortsetzen?",
 			"genericOverwriteWarning": "Zuvor gespeicherte Daten werden überschrieben.",
 			"enableDataTitle": "Dauerhafte Daten (\"lab mode\")",
