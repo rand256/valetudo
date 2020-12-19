@@ -39,7 +39,7 @@
 			<ons-icon icon="fa-stop"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="spot_clean" style="display: none;">
-			<ons-icon icon="fa-caret-down"></ons-icon>
+			<ons-icon icon="fa-chevron-circle-down"></ons-icon>
 		</ons-fab>
 		<ons-fab ripple id="goto">
 			<ons-icon icon="fa-map-marker"></ons-icon>
@@ -292,7 +292,7 @@
 			let timeout = null,
 				pressed = false,
 				down = (e) => {
-					if (e.type === "click" && e.button !== 0) {
+					if (e.type === "mousedown" && e.button !== 0) {
 						return;
 					}
 					pressed = false;
