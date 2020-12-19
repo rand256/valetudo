@@ -607,6 +607,9 @@
 				batteryStatusBar.value = res.battery;
 
 				robotState.textContent = i18next.t('robot.states.n' + res.state, res.human_state);
+				if (res.state === 12 && res.error_code !== 0) {
+					robotState.textContent += ' #' + res.error_code;
+				}
 				if (res.in_cleaning && [8,10,12].includes(res.state)) {
 					switch (res.in_cleaning) {
 						case 1:
