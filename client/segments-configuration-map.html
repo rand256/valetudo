@@ -90,7 +90,7 @@
 			.then(answer => {
 				if (answer === 1) {
 					loadingBarSegmentsConfiguration.setAttribute("indeterminate", "indeterminate");
-					return fn.prequest("api/autosplit_segments");
+					return fn.prequest("api/autosplit_segments", "PUT");
 				}
 				return Promise.reject("cancel");
 			})

@@ -83,7 +83,7 @@
 
 		function updateSettingsCarpetModePage() {
 			loadingBarSettingsCarpetMode.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/get_carpet_mode")
+			fn.prequest("api/carpet_mode")
 			.then((res) => {
 				var carpetForm = document.getElementById('carpet-mode-form');
 				var result = res[0];
@@ -106,7 +106,7 @@
 					var current_integral = carpetForm.current_integral.value;
 					var stall_time = carpetForm.stall_time.value;
 					var enable = (document.getElementById('carpet_mode_enabled').checked == true);
-					fn.prequestWithPayload("api/set_carpet_mode", JSON.stringify({ enable, current_low, current_high, current_integral, stall_time }), "PUT")
+					fn.prequestWithPayload("api/carpet_mode", JSON.stringify({ enable, current_low, current_high, current_integral, stall_time }), "PUT")
 					.then(
 						(res) => { updateSettingsCarpetModePage() },
 						(err) => fn.notificationToastError(err)

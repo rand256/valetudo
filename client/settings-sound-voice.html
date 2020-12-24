@@ -79,7 +79,7 @@
 
 		function updateSettingsSoundVolumePage() {
 			loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/get_sound_volume")
+			fn.prequest("api/sound_volume")
 			.then(
 				(res) => { soundVolumeInputVolume.value = res; },
 				(err) => fn.notificationToastError(err)
@@ -97,7 +97,7 @@
 
 		function handleSoundVolumeSettingsSaveButton() {
 			loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
-			fn.prequestWithPayload("api/set_sound_volume", JSON.stringify({
+			fn.prequestWithPayload("api/sound_volume", JSON.stringify({
 				 volume: soundVolumeInputVolume.value
 			}), "PUT")
 			.then(
@@ -110,11 +110,11 @@
 		function handleSoundVolumeSettingsTestButton() {
 			loadingBarSettingsSoundVolume.setAttribute("indeterminate", "indeterminate");
 			let currentVolume = 0;
-			fn.prequest("api/get_sound_volume")
+			fn.prequest("api/sound_volume")
 			.then(res => { currentVolume = res; })
 			.then(res => {
 				if (currentVolume !== +soundVolumeInputVolume.value) {
-					return fn.prequestWithPayload("api/set_sound_volume", JSON.stringify({
+					return fn.prequestWithPayload("api/sound_volume", JSON.stringify({
 						volume: soundVolumeInputVolume.value
 					}), "PUT");
 				} else {
@@ -125,7 +125,7 @@
 			.then(res => { return new Promise((resolve,reject) => setTimeout(() => resolve(),1e3)); })
 			.then(res => {
 				if (currentVolume !== +soundVolumeInputVolume.value) {
-					return fn.prequestWithPayload("api/set_sound_volume", JSON.stringify({
+					return fn.prequestWithPayload("api/sound_volume", JSON.stringify({
 						volume: currentVolume
 					}), "PUT");
 				} else {

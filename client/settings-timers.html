@@ -407,7 +407,7 @@
 			ons.notification.confirm(i18next.t('settings.timers.confirmTimezone',{defaultValue: "Do you really want to set your timezone to \"{{newTimezone}}\"?", newTimezone: newTimezone}),{title: i18next.t('common.confirm',"Confirm"), buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]}).then(function (answer) {
 				if (answer === 1) {
 					loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-					fn.prequestWithPayload("api/timezone", JSON.stringify({ new_zone : newTimezone }), "POST")
+					fn.prequestWithPayload("api/timezone", JSON.stringify({ new_zone : newTimezone }), "PUT")
 					.then(
 						(res) => editTimezoneDialog.hide(),
 						(err) => fn.notificationToastError(err)
@@ -437,7 +437,7 @@
 
 		function updateDndTimerPage() {
 			loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-			fn.prequest("api/get_dnd")
+			fn.prequest("api/dnd")
 			.then((res) => {
 				while (dndTimerList.lastElementChild !== dndTimerList.firstElementChild) {
 					dndTimerList.removeChild(dndTimerList.lastElementChild);
@@ -481,7 +481,7 @@
 			ons.notification.confirm(i18next.t('settings.timers.confirmDisableDND',"Do you really want to disable DND?"),{title: i18next.t('common.confirm',"Confirm"), buttonLabels: [i18next.t('common.cancel',"Cancel"), i18next.t('common.ok',"OK")]}).then(function (answer) {
 				if (answer === 1) {
 					loadingBarSettingsTimers.setAttribute("indeterminate", "indeterminate");
-					fn.prequest("api/delete_dnd", "PUT")
+					fn.prequest("api/dnd", "DELETE")
 					.then(
 						(res) => updateDndTimerPage(),
 						(err) => fn.notificationToastError(err)
@@ -497,7 +497,7 @@
 			var end_hour = document.getElementById('edit-dnd-form').end_hour.value;
 			var end_minute = document.getElementById('edit-dnd-form').end_minute.value;
 			if (start_hour && start_minute && end_hour && end_minute) {
-				fn.prequestWithPayload("api/set_dnd", JSON.stringify({ start_hour, start_minute, end_hour, end_minute}), "POST")
+				fn.prequestWithPayload("api/dnd", JSON.stringify({ start_hour, start_minute, end_hour, end_minute}), "PUT")
 				.then((res) => {
 					hideDndTimerDialog();
 					updateDndTimerPage();
@@ -874,7 +874,7 @@
 				})
 				.catch(e => reject(e))
 			})
-			.then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ enabled: true, id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, segments: segments, iterations: iterations, edit: edit }), "PUT"))
+			.then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, segments: segments, iterations: iterations, edit: edit }), "PUT"))
 			.then(() => {
 				updateSettingsTimersPage(zoned);
 				editTimerDialog.hide();
