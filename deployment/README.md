@@ -1,12 +1,17 @@
 ### Conformance notice
 
-The instuctions below are suitable for devices with firmware based on full-featured
-Ubuntu 14.04 distribution. As of 20.04.2020 any firmware fits this term except
-for 3.5.7_002008 version for Gen2 devices.
+The instuctions below were suitable for devices with firmware based on full-featured
+Ubuntu 14.04 distribution (all gen1 firmware and gen2 firmware below version 2008)
+
+# For Gen2 devices with firmware version 2008 and newer:
 
 To initially install valetudo into 2008 firmware, users would have to create a special
 version of firmware image using [rand256](https://github.com/rand256/vacuum)'s or [zvldz](https://github.com/zvldz/vacuum)'s image builder.
-For further updating valetudo on that firmware, continue to the [wiki page](https://github.com/rand256/valetudo/wiki/Updating-valetudo-binary-on-2008-firmware).
+For further updating valetudo on that firmware, continue to the [this wiki page](https://github.com/rand256/valetudo/wiki/Updating-valetudo-binary-on-2008-firmware).
+
+# For all Gen3 devices:
+
+Please proceed to [this wiki page](https://github.com/rand256/valetudo/wiki/Installing-and-updating-valetudo-on-Gen3-devices).
 
 ### Downloading pre-built Valetudo
 

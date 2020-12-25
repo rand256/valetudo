@@ -1,6 +1,12 @@
 <div align="center">
     <img src="https://github.com/rand256/valetudo/blob/testing/assets/logo/valetudo_logo_with_name.svg" width="800" alt="valetudo">
-    <p align="center"><h2>Free your vacuum from the cloud</h2><h5>Supported devices: Roborock S5, Xiaomi Mi Robot Vacuum Cleaner (v1)</p>
+    <p>&nbsp;</p>
+    <h2>Free your vacuum from the cloud</h2>
+</div><div>
+    <h5>
+        Fully supported devices: Roborock S5 and Xiaomi Mi Robot Vacuum Cleaner (v1)<br>
+        Preliminary supported devices: Roborock S6 and other III-generation Roborock vacuums
+    </h5>
 </div>
 
 ----
@@ -10,12 +16,11 @@
 This is a fork of [Valetudo by Hypfer](https://github.com/Hypfer/Valetudo), created by me since I found too many features missing in the original package when I've tried to use it for the first time. 
 
 Features added lately:
+* Preliminary support for Roborock gen3 devices;
+* MQTT: Tracking the time when the dustbin was last emptied or for how long it was in use;
+* MQTT: Possibility of playing sound files on the device by issuing a mqtt command;
+* Optional ability to see a live map on the Remote Control tab;
 
-* Cleaning queue, allowing the use of zoned cleaning with more than 5 zones via enqueuing any number of additional cleanups at once;
-* Possibility to enqueue additional zones and segments during cleaning or additional goto spots during the movement;
-* Ability to run Goto + Spot cleaning (by long pressing "Goto" button on the map tab);
-* Selecting the destination for the device to go when the cleaning is finished (configured globally in settings or per-cleaning by long pressing "Start" button on the map tab);
-* Visual preview and edit of zones and rooms for corresponding scheduled cleaning.
 
 And this is a quick list of features first appeared here:
 
@@ -30,7 +35,13 @@ And this is a quick list of features first appeared here:
 * Multilanguage support, currently available in bg/ca/cz/de/en/es/fi/fr/hu/it/lv/nl/ru/pl;
 * A telegram bot software for controlling the vacuum from the outside world;
 * Experimental ability to SAVE and RESTORE the main map (with per-map list of saved zones and spots);
-* Full support of room cleaning (requires Gen2 with firmware 2008+).
+* Full support of room cleaning (requires Gen2 with firmware 2008+);
+* Cleaning queue, allowing the use of zoned cleaning with more than 5 zones via enqueuing any number of additional cleanups at once;
+* Possibility to enqueue additional zones and segments during cleaning or additional goto spots during the movement;
+* Ability to run Goto + Spot cleaning (by long pressing "Goto" button on the map tab);
+* Selecting the destination for the device to go when the cleaning is finished (configured globally in settings or per-cleaning by long pressing "Start" button on the map tab);
+* Visual preview and edit of zones and rooms for corresponding scheduled cleaning.
+
 
 You can add or improve your own native language support by using ./client/locales/en.json template as an example and sending a PR.
 
