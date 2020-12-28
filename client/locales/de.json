@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Start",
 			"pause": "Pause",
+			"resume": "Fortsetzen",
 			"stop": "Stop",
 			"home": "Zur Station",
 			"spot": "Spotreinigung",

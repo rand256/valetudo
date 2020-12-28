@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Start",
 			"pause": "Pause",
+			"resume": "Resume",
 			"stop": "Stop",
 			"home": "Home",
 			"spot": "Spot",
