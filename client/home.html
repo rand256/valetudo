@@ -15,7 +15,7 @@
 
 	<section id="robot-control-buttons">
 		<div>
-			<ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button>
+			<ons-button id="start-button" class="button-margin" onclick="handleControlButton('start')" disabled style="width:40%"><ons-icon icon="fa-play"></ons-icon> <span data-i18n="home.buttons.start">Start</span></ons-button><ons-button id="pause-button" class="button-margin" onclick="handleControlButton('pause')" disabled style="width:40%"><ons-icon icon="fa-pause"></ons-icon> <span data-i18n="home.buttons.pause">Pause</span></ons-button><ons-button id="resume-button" class="button-margin" onclick="handleResumeButton()" disabled style="width:40%"><span class="resume-button"><ons-icon icon="fa-redo"></ons-icon></span><span data-i18n="home.buttons.resume">Resume</span></ons-button>
 		</div><div>
 			<ons-button id="stop-button" class="button-margin" onclick="handleStopButton()" disabled style="width:40%"><ons-icon icon="fa-stop"></ons-icon> <span data-i18n="home.buttons.stop">Stop</span></ons-button><ons-button id="home-button" class="button-margin" onclick="handleHomeButton()" disabled style="width:40%"><ons-icon icon="fa-charging-station"></ons-icon> <span data-i18n="home.buttons.home">Home</span></ons-button>
 		</div><div>
@@ -45,6 +45,7 @@
 
 		var startButton = document.getElementById("start-button"),
 			pauseButton = document.getElementById("pause-button"),
+			resumeButton = document.getElementById("resume-button"),
 			stopButton = document.getElementById("stop-button"),
 			spotButton = document.getElementById("spot-button"),
 			goToButton = document.getElementById("go-to-button"),
@@ -243,6 +244,34 @@
 				if (e !== "cancel") fn.notificationToastError(e);
 			})
 			.finally(() => setTimeout(() => updateHomePage(), 200));
+		}
+
+		function handleResumeButton() {
+			loadingBarHome.setAttribute("indeterminate", "indeterminate");
+			resumeButton.setAttribute("disabled", "disabled");
+			fn.prequest("api/current_status")
+			.then(res => {
+				if ([2,10,12].includes(res.state)) {
+					if (res.in_returning === 1 || fn.device.features.nret && res.in_cleaning === 0 && res.state === 10) {
+						fn.prequest("api/drive_home", "PUT")
+						.then(()=> {
+							clearTimeout(currentRefreshTimer);
+							setTimeout(() => updateHomePage(), 200);
+						})
+						return;
+					} else if (res.in_cleaning > 0) {
+						fn.prequest("api/start_cleaning", "PUT")
+						.then(()=> {
+							clearTimeout(currentRefreshTimer);
+							setTimeout(() => updateHomePage(), 200);
+						})
+						return;
+					}
+				}
+			})
+			.catch(err => {
+				if (err !== "cancel") fn.notificationToastError(err);
+			})
 		}
 
 		function handleAreaButton() {
@@ -668,6 +697,16 @@
 					loadMapButton.setAttribute("disabled", "disabled");
 				}
 
+				if (res.state === 10 || ([2,12].includes(res.state) && res.in_cleaning > 0)) {
+					document.getElementById("pause-button").style.display = 'none';
+					document.getElementById("resume-button").style.display = '';
+					resumeButton.removeAttribute("disabled");
+				} else {
+					document.getElementById("pause-button").style.display = '';
+					document.getElementById("resume-button").style.display = 'none';
+					resumeButton.setAttribute("disabled", "disabled");
+				}
+
 				robotStateDetailsM2.textContent = ("00" + (res.clean_area / 1000000).toFixed(2)).slice(-6);
 				robotStateDetailsTime.textContent = fn.secondsToHms(res.clean_time);
 
@@ -699,6 +738,8 @@
 
 		ons.getScriptPage().onInit = function() {
 			fn.localize('#home-page');
+			/* hide resume button on inital loading */
+			document.getElementById("resume-button").style.display = 'none';
 		}
 
 		ons.getScriptPage().onHide = function () {
@@ -739,6 +780,10 @@
 		#robot-control-buttons > ons-button {
 			margin: 5px;
 			font-size: 1.2em;
+		}
+
+		#robot-control-buttons .resume-button {
+			padding: 0 0.3em;
 		}
 
 		#robot-state-details-m2 {
