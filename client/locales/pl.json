@@ -66,6 +66,7 @@
 		"buttons": {
 			"start": "Start",
 			"pause": "Pauza",
+			"resume": "Wznawianie",
 			"stop": "Stop",
 			"home": "Dom",
 			"spot": "Miejsce",

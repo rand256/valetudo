@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Sākt",
 			"pause": "Pauze",
+			"resume": "Turpināt",
 			"stop": "Apturēt",
 			"home": "Stacija",
 			"spot": "Lokālā",

@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Käynnistä",
 			"pause": "Pysäytä",
+			"resume": "Jatkaa",
 			"stop": "Lopeta",
 			"home": "Koti",
 			"spot": "Spotti",

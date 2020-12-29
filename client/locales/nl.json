@@ -65,6 +65,7 @@
 		"buttons": {
 			"start": "Start",
 			"pause": "Pause",
+			"resume": "Hervat",
 			"stop": "Stop",
 			"home": "Naar oplader",
 			"spot": "Plek",

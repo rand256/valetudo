@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Inicia",
 			"pause": "Pausa",
+			"resume": "Reprèn",
 			"stop": "Atura",
 			"home": "Base de càrrega",
 			"spot": "Ubicació",

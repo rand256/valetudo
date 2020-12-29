@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Start",
 			"pause": "Pauza",
+			"resume": "Pokračovat",
 			"stop": "Stop",
 			"home": "Domů",
 			"spot": "Spot",

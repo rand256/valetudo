@@ -45,6 +45,7 @@
 		"buttons": {
 			"start": "Indítás",
 			"pause": "Szünet",
+			"resume": "Folytatás",
 			"stop": "Stop",
 			"home": "Dokkoló",
 			"spot": "Spot",
