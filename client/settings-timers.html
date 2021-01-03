@@ -828,11 +828,11 @@
 			var fanPower;
 			switch (form.fan_power_select.value) {
 				case "0": fanPower = fn.device.features.v3 ? 101 : 1 ; break;
-				case "1": fanPower = fn.device.features.v3 === 3 ? 101 : 38; break;
-				case "3": fanPower = fn.device.features.v3 === 3 ? 103 : 75; break;
-				case "4": fanPower = fn.device.features.v3 === 3 ? 104 : 100; break;
+				case "1": fanPower = fn.device.features.v3 ? 101 : 38; break;
+				case "3": fanPower = fn.device.features.v3 ? 103 : 75; break;
+				case "4": fanPower = fn.device.features.v3 ? 104 : 100; break;
 				case "5": fanPower = 105; break;
-				default: fanPower = fn.device.features.v3 === 3 ? 102 : 60; break;
+				default: fanPower = fn.device.features.v3 ? 102 : 60; break;
 			}
 			var iterations = +form.iterations_select.value;
 			// next promises
