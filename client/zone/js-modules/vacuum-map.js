@@ -383,6 +383,23 @@ export function VacuumMap(canvasElement) {
 				robotPositionInPixels.x - robotIcon.width / 2,
 				robotPositionInPixels.y - robotIcon.height / 2,
 			);
+			if (options.controlMap) {
+				ctx.save();
+				ctx.lineWidth = Math.max(2,currentScale*0.7);
+				ctx.strokeStyle = 'rgba(255,0,0,0.8)';
+				ctx.setLineDash([Math.max(6,currentScale*3), Math.max(2,currentScale*1)]);
+				ctx.beginPath();
+				ctx.moveTo(robotPositionInPixels.x, robotPositionInPixels.y + img_rocky_scaled.height/1.2);
+				ctx.lineTo(robotPositionInPixels.x, robotPositionInPixels.y + img_rocky_scaled.height*4);
+				ctx.moveTo(robotPositionInPixels.x, robotPositionInPixels.y - img_rocky_scaled.height/1.2);
+				ctx.lineTo(robotPositionInPixels.x, robotPositionInPixels.y - img_rocky_scaled.height*4);
+				ctx.moveTo(robotPositionInPixels.x + img_rocky_scaled.height/1.2, robotPositionInPixels.y);
+				ctx.lineTo(robotPositionInPixels.x + img_rocky_scaled.height*4,   robotPositionInPixels.y);
+				ctx.moveTo(robotPositionInPixels.x - img_rocky_scaled.height/1.2, robotPositionInPixels.y);
+				ctx.lineTo(robotPositionInPixels.x - img_rocky_scaled.height*4,   robotPositionInPixels.y);
+				ctx.stroke();
+				ctx.restore();
+			}
 		}
 
 		/**
