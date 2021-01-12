@@ -276,7 +276,11 @@
 				debug: false
 			})
 		})
-		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); })
+		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); });
+
+		window.addEventListener('resize', _ => {
+			Array.from(document.getElementsByTagName('canvas')).forEach(a => a.dispatchEvent(new Event('resizeCanvas')));
+		});
 	</script>
 	<div id="initial_loading_msg">Loading...</div>
 	<script type="module" crossorigin>

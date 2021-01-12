@@ -297,7 +297,7 @@ export function VacuumMap(canvasElement) {
 		ctx.imageSmoothingEnabled = false;
 		trackTransforms(ctx);
 
-		window.addEventListener('resize', () => {
+		canvas.addEventListener('resizeCanvas', () => {
 			// Save the current transformation and recreate it
 			// as the transformation state is lost when changing canvas size
 			// https://stackoverflow.com/questions/48044951/canvas-state-lost-after-changing-size

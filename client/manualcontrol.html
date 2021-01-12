@@ -343,16 +343,15 @@
 				if (!fn.webifSettings.hideControlMap) {
 					manualControlCanvas.classList.add('control-map');
 					updateControlMapPage();
-					window.addEventListener('resize',resizer);
 					controlMapMode = 2;
 				} else {
 					manualControlCanvas.classList.remove('control-map');
-					window.addEventListener('resize',_ => { resizer(true); });
 					controlMapMode = 1;
 				}
-				resizer();
 				updateControlStates();
+				resizer();
 			},200);
+			manualControlCanvas.addEventListener("resizeCanvas", resizer);
 			//Since the robot may disable manual control mode by itself, this timer keeps the
 			//state of the robot in track with the UI
 			manualControlStateRefreshTimer = setInterval(function(){
