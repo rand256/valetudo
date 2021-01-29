@@ -442,7 +442,7 @@
 			"timerEmptyDayNote": "Lasciare vuoto corrisponde a ogni giorno",
 			"runOnce": "Esegui una sola volta e poi cancella.",
 			"currentTimezone": "Il tuo fuso é impostato su:",
-			"zonedCleaningHeader": "Pulizia a zone programmata (beta)",
+			"zonedCleaningHeader": "Pulizia a zone programmata",
 			"noZonedCleaningSchedule": "Nessuna pulizia a zone ancora programmata.",
 			"cleaningHeader": "Pulizie programmate",
 			"noCleaningSchedule": "Nessuna pulizia programmata ancora configurata.",

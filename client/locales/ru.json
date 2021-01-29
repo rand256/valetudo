@@ -446,7 +446,7 @@
 			"timerEmptyDayNote": "(если пусто - любой день)",
 			"runOnce": "Выполнить однократно и удалить",
 			"currentTimezone": "Выбранный часовой пояс:",
-			"zonedCleaningHeader": "Расписание зональных уборок (бета)",
+			"zonedCleaningHeader": "Расписание зональных уборок",
 			"noZonedCleaningSchedule": "Нет запланированных зональных уборок.",
 			"cleaningHeader": "Расписание уборок",
 			"noCleaningSchedule": "Нет запланированных уборок.",

@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Tyhjä tarkoittaa minä päivänä tahansa.",
 			"runOnce": "Aja kerran ja poista",
 			"currentTimezone": "Aikavyöhykkeesi on:",
-			"zonedCleaningHeader": "Aluesiivouksen aikataulut (beta)",
+			"zonedCleaningHeader": "Aluesiivouksen aikataulut",
 			"noZonedCleaningSchedule": "Yhtään ajoitettua aluesiivousta ei ole määritelty.",
 			"cleaningHeader": "Siivousaikataulut",
 			"noCleaningSchedule": "Yhtään ajoitettua siivousta ei ole määritelty.",

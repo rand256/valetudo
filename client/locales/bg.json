@@ -441,7 +441,7 @@
 			"timerEmptyDayNote": "(празно означава всеки ден)",
 			"runOnce": "Изпълнете веднъж и премахнете",
 			"currentTimezone": "Избрана часова зона:",
-			"zonedCleaningHeader": "График на зоново почистване (beta)",
+			"zonedCleaningHeader": "График на зоново почистване",
 			"noZonedCleaningSchedule": "Няма планирани зонови почиствания.",
 			"cleaningHeader": "График на пълно почистване",
 			"noCleaningSchedule": "Няма планирани пълни почиствания.",

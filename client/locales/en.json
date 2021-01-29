@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Empty means any day.",
 			"runOnce": "Run once and remove",
 			"currentTimezone": "Your current timezone is set to:",
-			"zonedCleaningHeader": "Zoned Cleaning Schedule (beta)",
+			"zonedCleaningHeader": "Zoned Cleaning Schedule",
 			"noZonedCleaningSchedule": "No zoned cleaning schedule is configured yet.",
 			"cleaningHeader": "Cleaning Schedule",
 			"noCleaningSchedule": "No cleaning schedule is configured yet.",

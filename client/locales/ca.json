@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Si no en seleccioneu cap, s'activarà qualsevol dia.",
 			"runOnce": "Inicia una vegada i suprimeix",
 			"currentTimezone": "El fus horari actual és:",
-			"zonedCleaningHeader": "Programació de neteja per zones (beta)",
+			"zonedCleaningHeader": "Programació de neteja per zones",
 			"noZonedCleaningSchedule": "Encara no s'ha configurat cap programació de neteja per zones.",
 			"cleaningHeader": "Programació de neteja",
 			"noCleaningSchedule": "Encara no s'ha configurat cap programació de neteja.",

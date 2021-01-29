@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Prázdné znamená každý den.",
 			"runOnce": "Spustit jednou a odstranit",
 			"currentTimezone": "Aktuální časová zóna je nastavena na:",
-			"zonedCleaningHeader": "Zoned Cleaning Schedule (beta)",
+			"zonedCleaningHeader": "Zoned Cleaning Schedule",
 			"noZonedCleaningSchedule": "No zoned cleaning schedule is configured yet.",
 			"cleaningHeader": "Rozvrh úklidu",
 			"noCleaningSchedule": "Rozvrh úklidu zatím není nakonfigurován.",

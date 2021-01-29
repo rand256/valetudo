@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Üresen hagyva mindegyik nap elindul",
 			"runOnce": "Csak egyszer fusson le az időzítő, utána törlődjön.",
 			"currentTimezone": "A jelenlegi időzónád:",
-			"zonedCleaningHeader": "Zóna takarítás ütemezése (béta)",
+			"zonedCleaningHeader": "Zóna takarítás ütemezése",
 			"noZonedCleaningSchedule": "Nincs időzített zóna takarítás beállítva jelenleg.",
 			"cleaningHeader": "Takarítási ütemterv",
 			"noCleaningSchedule": "Nincs takarítás ütemezés beállítva jelenleg.",

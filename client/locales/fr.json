@@ -442,7 +442,7 @@
 			"timerEmptyDayNote": "Vide signifie n'importe quel jour.",
 			"runOnce": "Exécutez une fois et supprimez",
 			"currentTimezone": "Votre fuseau horaire actuel est défini sur:",
-			"zonedCleaningHeader": "Calendrier de nettoyage zoné (beta)",
+			"zonedCleaningHeader": "Calendrier de nettoyage zoné",
 			"noZonedCleaningSchedule": "Aucun programme de nettoyage zoné n'est encore configuré.",
 			"cleaningHeader": "Calendrier de nettoyage",
 			"noCleaningSchedule": "Aucun programme de nettoyage n'est encore configuré.",

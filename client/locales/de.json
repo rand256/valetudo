@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Leer bedeutet \"jeden Tag\".",
 			"runOnce": "Einmal ausführen und entfernen",
 			"currentTimezone": "Ihre aktuelle Zeitzone ist eingestellt auf:",
-			"zonedCleaningHeader": "Reinigungsplan für Zonen (Beta)",
+			"zonedCleaningHeader": "Reinigungsplan für Zonen",
 			"noZonedCleaningSchedule": "Es ist noch kein Reinigungsplan für Zonen konfiguriert.",
 			"cleaningHeader": "Allgemeiner Reinigungsplan",
 			"noCleaningSchedule": "Es ist noch kein allgemeiner Reinigungsplan konfiguriert.",

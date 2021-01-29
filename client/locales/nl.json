@@ -462,7 +462,7 @@
 			"timerEmptyDayNote": "Leeg betekent iedere dag.",
 			"runOnce": "Voer een keer uit en verwijder",
 			"currentTimezone": "Je huidige timezone is:",
-			"zonedCleaningHeader": "Schoonmaakschema Zones (beta)",
+			"zonedCleaningHeader": "Schoonmaakschema Zones",
 			"noZonedCleaningSchedule": "Er is geen schoonmaakschema voor zones actief.",
 			"cleaningHeader": "Schoonmaakschema",
 			"noCleaningSchedule": "Schoonmaakschema is niet geconfigureerd.",

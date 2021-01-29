@@ -443,7 +443,7 @@
 			"timerEmptyDayNote": "Vacío significa cualquier día.",
 			"runOnce": "Ejecutar una vez y eliminar",
 			"currentTimezone": "Tu zona horaria está ajustada en:",
-			"zonedCleaningHeader": "Calendario de limpieza por zonas (beta)",
+			"zonedCleaningHeader": "Calendario de limpieza por zonas",
 			"noZonedCleaningSchedule": "El calendario de limpieza por zonas no está configurado todavía.",
 			"cleaningHeader": "Calendario de limpieza",
 			"noCleaningSchedule": "El calendario de limpieza no está configurado aún.",
