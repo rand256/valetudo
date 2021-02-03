@@ -244,7 +244,7 @@ export class TouchHandler {
 		evt.preventDefault();
 
 		changedTouches.forEach(e => {
-            this.ongoingGesture = this.ongoingGesture.removePointer(e);
-        });
+			this.ongoingGesture = this.ongoingGesture.removePointer(e);
+		});
 	}
 }
