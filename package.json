@@ -14,7 +14,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prebuild": "cp -a client client.b && find client/ -type f \\( -iname \\*.json -o -iname \\*.js -o -iname \\*.html -o -iname \\*.css \\) -exec gzip -9 {} +",
-		"build": "pkg --targets node12.16.1-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo",
+		"build": "pkg --targets node14-linux-armv7 --no-bytecode --options expose-gc,max-heap-size=30,optimize-for-size,always-compact,lite-mode --public-packages=prettycron . --output valetudo",
 		"postbuild": "if [ -d client.b ]; then rm -fr client && mv client.b client; fi"
 	},
 	"author": "",
@@ -34,6 +34,7 @@
 		"ws": "^7.4.1"
 	},
 	"devDependencies": {
-		"pkg": "4.4.9"
+		"pkg": "4.4.9",
+		"cross-env": "7.0.2"
 	}
 }
