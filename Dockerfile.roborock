@@ -1,0 +1,13 @@
+FROM multiarch/qemu-user-static:x86_64-arm as qemu
+
+FROM arm32v7/node:14-stretch-slim
+COPY --from=qemu /usr/bin/qemu-arm-static /usr/bin
+
+RUN apt-get update && apt-get install -y git ca-certificates subversion --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+# Get prebuilt node binaries and rename them to what node tries to fetch, ugly hack, but work more reliable compared to previous method.
+RUN mkdir -p ~/.pkg-cache/ && cd ~/.pkg-cache/ && svn export https://github.com/Hypfer/Valetudo.git/trunk/build_dependencies/pkg/v2.6 && chmod +x ~/.pkg-cache/*/* && rename 's/built/fetched/g' ~/.pkg-cache/*/* && rename 's,v14.16.0,v14.4.0,g' ~/.pkg-cache/*/* && ls -la ~/.pkg-cache/*/*
+WORKDIR /src
+COPY . .
+
+RUN npm install --quiet
