@@ -45,7 +45,12 @@
 
 		if (parsedMap.forbidden_zones)
 		for (let zone of parsedMap.forbidden_zones) {
-			map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true);
+			map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true, false);
+		}
+
+		if (parsedMap.forbidden_mop_zones)
+		for (let zone of parsedMap.forbidden_mop_zones) {
+			map.addForbiddenZone([zone[0], zone[1], zone[2], zone[3], zone[4], zone[5], zone[6], zone[7]], true, true, true);
 		}
 
 		if (parsedMap.virtual_walls)
