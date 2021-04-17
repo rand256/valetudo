@@ -22,11 +22,13 @@
 		"area": "Area",
 		"time": "Time",
 		"m2": "m²",
+		"mop": "Mop",
 		"hours": "hour",
 		"hours_plural": "hours",
 		"months": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 		"days": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
 		"unknownState": "returned unknown state: {{state}}",
+		"waterbox": "Waterbox",
 		"timedOut": "operation timed out"
 	},
 	"navi": {
@@ -55,10 +57,12 @@
 			"storeMap": "Store map",
 			"loadMap": "Load map",
 			"unknownPower": "Unknown power",
+			"unknownWaterGrade": "Unknown water grade",
 			"invalid": "Invalid button"
 		},
 		"popups": {
 			"selectFanspeed": "Select power mode:",
+			"selectWaterGrade": "Select water grade:",
 			"selectGotoTarget": "Select goto target:",
 			"selectZones": "Select zones for cleaning:",
 			"selectMapToLoad": "Select a slot to load the map from:",
@@ -88,6 +92,20 @@
 			"turbo": "Turbo",
 			"max": "Max",
 			"mop": "Mop"
+		},
+		"waterBoxStatusTexts": {
+			"not": "Not installed",
+			"installed": "Installed"
+		},
+		"mopStatusTexts": {
+			"not": "Carriage not installed",
+			"installed": "Carriage installed"
+		},
+		"waterGradePresets": {
+			"off": "Off",
+			"low": "Low",
+			"medium": "Medium",
+			"high": "High"
 		}
 	},
 	"map": {
@@ -170,6 +188,12 @@
 			"max": "MAX",
 			"mop": "Mop Mode"
 		},
+		"waterGradePresets": {
+			"off": "Off",
+			"low": "Low",
+			"medium": "Medium",
+			"high": "High"
+		},
 		"buttons": {
 			"status": "Status",
 			"map": "Map",
@@ -201,6 +225,7 @@
 		"selectZones": "Select zones to clean.",
 		"selectSegments": "Select rooms to clean.",
 		"selectPower": "Select fan power mode.",
+		"selectWater": "Select water grade.",
 		"selectMap": "Select a map to restore.",
 		"performingCleaning": "Going to do a full cleaning.",
 		"performingZoned": "Going to zoned cleaning:\n{{zoneNames}}",
@@ -220,6 +245,7 @@
 		"selectedSegments": "Currently selected: {{segmentsList}}",
 		"noMapAvailable": "Sorry, the map is currently unavailable.",
 		"powerChanged": "Fan power changed to {{fanPower}}.",
+		"waterChanged": "Water grade changed to {{waterGrade}}.",
 		"mapLoadOK": "Map should be reloaded now.",
 		"mapLoadWait": "Map should be reloaded in 30 seconds. Please wait.",
 		"notificationsEnabled": "Status notifications enabled.",
@@ -231,6 +257,7 @@
 		"currentStatus": "Current status: ",
 		"statusChanged": "Status changed: ",
 		"power": "Power: ",
+		"water": "Water: ",
 		"battery": "Battery: ",
 		"errorReply": "There was an error: {{error}}"
 	},
@@ -431,6 +458,7 @@
 			"namePlaceholder": "name of a timer",
 			"iterations": "Iterations:",
 			"fanPower": "Fan power:",
+			"waterGrade": "Water grade:",
 			"zones": "Zones:",
 			"addZones": "Add...",
 			"segments": "Rooms:",

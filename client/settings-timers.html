@@ -20,6 +20,15 @@
 						<option value="5" data-i18n="home.fanspeedPresets.mop">Mop</option>
 					</ons-select></ons-col>
 				</ons-row>
+				<ons-row>
+					<ons-col width="100px" align="center" data-i18n="settings.timers.waterGrade">Water Grade:</ons-col>
+					<ons-col align="left"><ons-select select-id="water_grade_select">
+						<option value="0" data-i18n="home.waterGradePresets.off">Off</option>
+						<option value="1" data-i18n="home.waterGradePresets.low">Low</option>
+						<option value="2" data-i18n="home.waterGradePresets.medium">Medium</option>
+						<option value="3" data-i18n="home.waterGradePresets.high">High</option>
+					</ons-select></ons-col>
+				</ons-row>
 				<ons-row class="ntimer-item">
 					<ons-col width="100px" align="center" data-i18n="settings.timers.iterations">Iterations:</ons-col>
 					<ons-col align="left"><ons-select select-id="iterations_select">
@@ -714,6 +723,15 @@
 				default: fanPower = 2;
 			}
 			form.fan_power_select.value = fanPower;
+			let waterGrade;
+			switch (timer.waterGrade) {
+				case 200: waterGrade = 0; break;
+				case 201: waterGrade = 1; break;
+				case 202: waterGrade = 2; break;
+				case 203: waterGrade = 3; break;
+				default: waterGrade = 2;
+			}
+			form.water_grade_select.value = waterGrade;
 			form.iterations_select.value = timer.iterations || 1;
 			form.zoned.value = zoned ? 1 : 0;
 			form.edit.value = timerId;

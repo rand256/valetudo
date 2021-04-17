@@ -32,11 +32,18 @@
 			<ons-button id="load-map-button" onclick="handleLoadMapButton()" disabled><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
 		</div><div>
 		   <ons-button id="fanspeed-button" onclick="handleFanspeedButton()" disabled><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
-		</div>
+		   <ons-button id="watergrade-button" onclick="handleWaterGradeButton()" style="display:none;" disabled><ons-icon icon="fa-tint"></ons-icon> <span data-i18n="home.buttons.unknownWaterGrade">Unknown Water Grade</span></ons-button>
+                </div>
 	</section>
 	<hr style="width:98%; opacity: 0.3">
 
 	<section style="margin: 10px 16px">
+		<p id="waterbox-status-text" style="display:none;">
+			<span data-i18n="common.waterbox">Waterbox</span>: <span id="waterbox-status-text-value"></span>
+		</p>
+		<p id="mop-status-text" style="display:none;">
+			<span data-i18n="common.mop">Mop</span>: <span id="mop-status-text-value"></span>
+		</p>
 		<p id="battery-status-text">
 			<span data-i18n="common.battery">Battery</span>: <span id="battery-status-text-value">0</span>%
 		</p>
@@ -59,6 +66,7 @@
 			storeMapButton = document.getElementById("store-map-button"),
 			loadMapButton = document.getElementById("load-map-button"),
 			fanspeedButton = document.getElementById("fanspeed-button"),
+			watergradeButton = document.getElementById("watergrade-button"),
 			findRobotButton = document.getElementById("find-robot-button"),
 			homeButton = document.getElementById("home-button"),
 			batteryStatusText = document.getElementById('battery-status-text-value'),
@@ -66,9 +74,14 @@
 			robotState = document.getElementById('robot-state'),
 			robotStateDetailsM2 = document.getElementById("robot-state-details-m2-value"),
 			robotStateDetailsTime = document.getElementById("robot-state-details-time-value"),
+			waterBoxStatus = document.getElementById("waterbox-status-text"),
+			mopInstallStatus = document.getElementById("mop-status-text"),
+			waterBoxStatusValue = document.getElementById("waterbox-status-text-value"),
+			mopInstallStatusValue = document.getElementById("mop-status-text-value"),
 			loadingBarHome = document.getElementById('loading-bar-home');
 
 		var fanspeedPresets = {};
+		var waterGradePresets = {};
 
 		var BUTTONS = {
 			"start": {
@@ -184,6 +197,40 @@
 					})
 					.catch(err => {
 						fanspeedButton.removeAttribute("disabled");
+						loadingBarHome.removeAttribute("indeterminate");
+						fn.notificationToastError(err);
+					});
+				} else {
+					currentRefreshTimer = setTimeout(() => updateHomePage(), 3000);
+				}
+			});
+		}
+
+		function handleWaterGradeButton() {
+			clearTimeout(currentRefreshTimer);
+			ons.openActionSheet({
+				title: i18next.t('home.popups.selectWaterGrade',"Select water grade:"),
+				cancelable: true,
+				buttons: [
+					...Object.values(waterGradePresets),
+					{
+						label: i18next.t('common.cancel',"Cancel"),
+						icon: 'md-close'
+					}
+				]
+			})
+			.then(index => {
+				var level = Object.keys(waterGradePresets)[index];
+				if (level) {
+					loadingBarHome.setAttribute("indeterminate", "indeterminate");
+					watergradeButton.setAttribute("disabled", "disabled");
+					fn.prequestWithPayload("api/watergrade", JSON.stringify({ speed: level }), "PUT")
+					.then(() => {
+						clearTimeout(currentRefreshTimer);
+						setTimeout(() => updateHomePage(), 500);
+					})
+					.catch(err => {
+						watergradeButton.removeAttribute("disabled");
 						loadingBarHome.removeAttribute("indeterminate");
 						fn.notificationToastError(err);
 					});
@@ -641,6 +688,21 @@
 				batteryStatusText.textContent = res.battery;
 				batteryStatusBar.value = res.battery;
 
+				if (fn.device.features.water_box_status) {
+					var waterBoxStatusTexts = {
+						0: i18next.t('home.waterBoxStatusTexts.not',"Not installed"),
+						1: i18next.t('home.waterBoxStatusTexts.installed',"Installed"),
+					};
+					waterBoxStatusValue.textContent = "" + (waterBoxStatusTexts[res.water_box_status] || `Unknown ${res.water_box_status}%`);
+				}
+				if (fn.device.features.mop_install_status) {
+					var mopStatusTexts = {
+						0: i18next.t('home.mopStatusTexts.not',"Carriage not installed"),
+						1: i18next.t('home.mopStatusTexts.installed',"Carriage installed"),
+					};
+					mopInstallStatusValue.textContent = "" + (mopStatusTexts[res.water_box_carriage_status] || `Unknown ${res.water_box_carriage_status}%`);
+				}
+
 				robotState.textContent = i18next.t('robot.states.n' + res.state, res.human_state);
 				if (res.state === 12 && res.error_code !== 0) {
 					robotState.textContent += ' #' + res.error_code;
@@ -732,11 +794,30 @@
 					fanspeedPresets[105] = i18next.t('home.fanspeedPresets.mop',"Mop");
 				}
 				fanspeedButton.innerHTML = "<ons-icon icon=\"fa-superpowers\"></ons-icon> " + (fanspeedPresets[res.fan_power] || `Custom ${res.fan_power}%`);
+				if (fn.device.features.water_usage_ctrl) {
+					waterGradePresets = {
+						200: i18next.t('home.waterGradePresets.off',"Off"),
+						201: i18next.t('home.waterGradePresets.low',"Low"),
+						202: i18next.t('home.waterGradePresets.medium',"Medium"),
+						203: i18next.t('home.waterGradePresets.high',"High"),
+					};
+					watergradeButton.innerHTML = "<ons-icon icon=\"fa-tint\"></ons-icon> " + (waterGradePresets[res.water_box_mode] || `Custom ${res.water_box_mode}%`);
+				}
 			}, (err) => fn.notificationToastError(err))
 			.finally(() => {
 				refreshInProgress = false;
 				loadingBarHome.removeAttribute("indeterminate");
 				fanspeedButton.removeAttribute("disabled");
+				if (fn.device.features.water_usage_ctrl) {
+					watergradeButton.removeAttribute("disabled");
+					watergradeButton.style.display = "";
+				}
+				if (fn.device.features.water_box_status) {
+					waterBoxStatus.style.display = "";
+				}
+				if (fn.device.features.mop_install_status) {
+					mopInstallStatus.style.display = "";
+				}
 				findRobotButton.removeAttribute("disabled");
 				currentRefreshTimer = setTimeout(() => updateHomePage(), 5e3)
 			});

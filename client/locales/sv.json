@@ -22,6 +22,7 @@
     "area": "Yta",
     "time": "Tid",
     "m2": "m²",
+    "mop": "Mopp",
     "hours": "timme",
     "hours_plural": "timmar",
     "months": [
@@ -48,6 +49,7 @@
       "Söndag"
     ],
     "unknownState": "returnerade okänt tillstånd: {{state}}",
+    "waterbox": "Vattentank",
     "timedOut": "tidsgräns gick ut för åtgärd"
   },
   "navi": {
@@ -75,11 +77,13 @@
       "zones": "Områden",
       "storeMap": "Spara karta",
       "loadMap": "Ladda karta",
-      "unknownPower": "Okänd laddning",
+      "unknownPower": "Okänd styrka",
+      "unknownWaterGrade": "Okänt vattenflöde",
       "invalid": "Ogiltig knapp"
     },
     "popups": {
       "selectFanspeed": "Välj styrka:",
+      "selectWaterGrade": "Välj vattenflöde:",
       "selectGotoTarget": "Välj position:",
       "selectZones": "Välj områden för städning:",
       "selectMapToLoad": "Välj karta att ladda från:",
@@ -109,6 +113,20 @@
       "turbo": "Turbo",
       "max": "Max",
       "mop": "Moppläge"
+    },
+    "waterBoxStatusTexts": {
+     "not": "Ej installerad",
+      "installed": "Installerad"
+    },
+    "mopStatusTexts": {
+      "not": "Infästning ej installerad",
+      "installed": "Infästning installerad"
+    },
+    "waterGradePresets": {
+      "off": "Av",
+      "low": "Lågt",
+      "medium": "Medium",
+      "high": "Högt"
     }
   },
   "map": {
@@ -191,6 +209,12 @@
       "max": "MAX",
       "mop": "Moppläge"
     },
+    "waterGradePresets": {
+      "off": "Av",
+      "low": "Lågt",
+      "medium": "Medium",
+      "high": "Högt"
+    },
     "buttons": {
       "status": "Status",
       "map": "Karta",
@@ -222,6 +246,7 @@
     "selectZones": "Välj områden för städning.",
     "selectSegments": "Välj rum för städning.",
     "selectPower": "Välj sugkraft.",
+    "selectWater": "Välj vattenflöde.",
     "selectMap": "Välj en karta att återställa.",
     "performingCleaning": "Utför fullständig städning.",
     "performingZoned": "Utför områdesstädning:\n{{zoneNames}}",
@@ -241,6 +266,7 @@
     "selectedSegments": "Nuvarande val: {{segmentsList}}",
     "noMapAvailable": "Kartan är ej tillgänglig.",
     "powerChanged": "Sugkraft ändrad till {{fanPower}}.",
+    "waterChanged": "Vattenflöde ändrad till {{waterGrade}}.",
     "mapLoadOK": "Kartan skall nu vara omladdad.",
     "mapLoadWait": "Kartan skall nu vara omladdad inom 30 sekunder. Vänligen vänta.",
     "notificationsEnabled": "Statusnotifikationer på.",
@@ -252,6 +278,7 @@
     "currentStatus": "Nuvarande status: ",
     "statusChanged": "Status ändrad: ",
     "power": "Sugkraft: ",
+    "water": "Vattenflöde: ",
     "battery": "Batteri: ",
     "errorReply": "Ett fel uppstod: {{error}}"
   },
@@ -452,6 +479,7 @@
       "namePlaceholder": "name på timer",
       "iterations": "Iterationer:",
       "fanPower": "Sugkraft:",
+      "waterGrade": "Vattenflöde:",
       "zones": "Områden:",
       "addZones": "Läggtill...",
       "segments": "Rum:",
