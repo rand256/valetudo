@@ -64,6 +64,14 @@ npm run build
 ```
 
 You can also create the build with the provider Dockerfile (e.g. when you're on a different OS than Linux). Create the build environment container with:
+You need to download the precompiled binaries first
+
+```
+svn export https://github.com/Hypfer/Valetudo.git/trunk/build_dependencies
+```
+
+then build the container
+
 ```
 docker build .
 ```
@@ -73,7 +81,7 @@ Run the container with
 docker run <image_id>
 ```
 
-Copy the output file from the container with
+Copy the output file from the container with (can be found via `docker container ls -a`)
 ```
 docker cp <container_id>:valetudo valetudo
 ```

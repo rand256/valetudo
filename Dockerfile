@@ -1,8 +1,8 @@
-FROM node:10-alpine
+FROM node:14-alpine
 
 WORKDIR /
 COPY . .
 
-RUN npm install --quiet
+RUN apk update && apk add -q git && npm install --quiet
 
 ENTRYPOINT [ "npm", "run-script", "build" ]
