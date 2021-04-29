@@ -19,6 +19,17 @@
 	<link rel="icon" sizes="192x192" href="icon.png">
 	<link rel="apple-touch-icon" href="icon-apple.png">
 	<title>Mi Robot Vacuum</title>
+	<style>
+		#initial_loading_msg {
+			margin: 5px;
+			position: absolute;
+			z-index: 3;
+		}
+		
+		#initial_loading_msg > a {
+			text-decoration: underline;
+		}
+	</style>
 </head>
 <body>
 	<script>
@@ -250,33 +261,43 @@
 			})
 		}
 
-		var waitForGlobals = fetchDevice()
-		.then(res => fn.prequest("api/interface_config"))
-		.then(res => {
-			fn.webifSettings = res;
-			if (fn.webifSettings.style === "dark") {
-				document.getElementById('color-theme').setAttribute('href', 'css/dark-onsen-css-components.min.css');
-			}
-			else if (fn.webifSettings.style === "system") {
-				document.getElementById('color-theme').setAttribute('href', 'css/system-onsen-css-components.min.css');
-			}
-			return i18next.use(i18nextXHRBackend).init({
-				interpolation: {
-					format: function(value, format, lng) {
-						if (format === 'lowercase') return value.toLowerCase();
-						if (format === 'uppercase') return value.toUpperCase();
-						return value;
-					}
-				},
-				lng: res.localization || '',
-				fallbackLng: '',
-				backend: {
-					loadPath: 'locales/{{lng}}.json'
-				},
-				debug: false
+		var waitForGlobals = function(skipDevice) {
+			return Promise.resolve()
+			.then(() => {
+				if (skipDevice) {
+					fn.device = {features: {}};
+					return;
+				} else {
+					return fetchDevice();
+				}
 			})
-		})
-		.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); });
+			.then(res => fn.prequest("api/interface_config"))
+			.then(res => {
+				fn.webifSettings = res;
+				if (fn.webifSettings.style === "dark") {
+					document.getElementById('color-theme').setAttribute('href', 'css/dark-onsen-css-components.min.css');
+				}
+				else if (fn.webifSettings.style === "system") {
+					document.getElementById('color-theme').setAttribute('href', 'css/system-onsen-css-components.min.css');
+				}
+				return i18next.use(i18nextXHRBackend).init({
+					interpolation: {
+						format: function(value, format, lng) {
+							if (format === 'lowercase') return value.toLowerCase();
+							if (format === 'uppercase') return value.toUpperCase();
+							return value;
+						}
+					},
+					lng: res.localization || '',
+					fallbackLng: '',
+					backend: {
+						loadPath: 'locales/{{lng}}.json'
+					},
+					debug: false
+				})
+			})
+			.then(res => { window.fn.localize = locI18next.init(i18next,{selectorAttr: 'data-i18n', targetAttr: 'data-i18n-target' }); });
+		}
 
 		window.addEventListener('resize', _ => {
 			Array.from(document.getElementsByTagName('canvas')).forEach(a => a.dispatchEvent(new Event('resizeCanvas')));
@@ -290,10 +311,13 @@
 		window.fn.createVacuumMap = function(canvasElement) { return new VacuumMap(canvasElement); }
 
 		ons.ready(function () {
-			waitForGlobals.then(() => document.getElementById("appNavigator").pushPage('app-splitter.html')).catch(e => {
-			document.getElementById('initial_loading_msg').textContent = "Loading interface configuration has failed.";
-			console.error(e);
-		});
+			var ilm = document.getElementById('initial_loading_msg');
+			waitForGlobals().then(() => { ilm.textContent = ''; document.getElementById("appNavigator").pushPage('app-splitter.html'); })
+			.catch(e => {
+				ilm.innerHTML = "Loading interface configuration has failed.</br></br><a href='' id='wfg_fallback'>Continue anyway?</a>";
+				document.getElementById('wfg_fallback').onclick = function() { waitForGlobals(true).then(() => { ilm.textContent = ''; document.getElementById("appNavigator").pushPage('app-splitter.html'); }); return false; }
+				console.error(e);
+			});
 
 			// todo: make it work without timeout hacks
 			switch (window.location.hash) {
