@@ -31,9 +31,9 @@
 			<ons-button id="store-map-button" onclick="handleStoreMapButton()" disabled><ons-icon icon="fa-file-export"></ons-icon> <span data-i18n="home.buttons.storeMap">Store Map</span></ons-button>
 			<ons-button id="load-map-button" onclick="handleLoadMapButton()" disabled><ons-icon icon="fa-file-import"></ons-icon> <span data-i18n="home.buttons.loadMap">Load Map</span></ons-button>
 		</div><div>
-		   <ons-button id="fanspeed-button" onclick="handleFanspeedButton()" disabled><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
-		   <ons-button id="watergrade-button" onclick="handleWaterGradeButton()" style="display:none;" disabled><ons-icon icon="fa-tint"></ons-icon> <span data-i18n="home.buttons.unknownWaterGrade">Unknown Water Grade</span></ons-button>
-                </div>
+			<ons-button id="fanspeed-button" onclick="handleFanspeedButton()" disabled><ons-icon icon="fa-superpowers"></ons-icon> <span data-i18n="home.buttons.unknownPower">Unknown power</span></ons-button>
+			<ons-button id="watergrade-button" onclick="handleWaterGradeButton()" style="display:none;" disabled><ons-icon icon="fa-tint"></ons-icon> <span data-i18n="home.buttons.unknownWaterGrade">Unknown Water Grade</span></ons-button>
+		</div>
 	</section>
 	<hr style="width:98%; opacity: 0.3">
 
@@ -693,14 +693,14 @@
 						0: i18next.t('home.waterBoxStatusTexts.not',"Not installed"),
 						1: i18next.t('home.waterBoxStatusTexts.installed',"Installed"),
 					};
-					waterBoxStatusValue.textContent = "" + (waterBoxStatusTexts[res.water_box_status] || `Unknown ${res.water_box_status}%`);
+					waterBoxStatusValue.textContent = "" + (waterBoxStatusTexts[res.water_box_status] || `Unknown ${res.water_box_status}`);
 				}
 				if (fn.device.features.mop_install_status) {
 					var mopStatusTexts = {
 						0: i18next.t('home.mopStatusTexts.not',"Carriage not installed"),
 						1: i18next.t('home.mopStatusTexts.installed',"Carriage installed"),
 					};
-					mopInstallStatusValue.textContent = "" + (mopStatusTexts[res.water_box_carriage_status] || `Unknown ${res.water_box_carriage_status}%`);
+					mopInstallStatusValue.textContent = "" + (mopStatusTexts[res.water_box_carriage_status] || `Unknown ${res.water_box_carriage_status}`);
 				}
 
 				robotState.textContent = i18next.t('robot.states.n' + res.state, res.human_state);

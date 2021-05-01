@@ -20,7 +20,7 @@
 						<option value="5" data-i18n="home.fanspeedPresets.mop">Mop</option>
 					</ons-select></ons-col>
 				</ons-row>
-				<ons-row>
+				<ons-row class="wtimer-item">
 					<ons-col width="100px" align="center" data-i18n="settings.timers.waterGrade">Water Grade:</ons-col>
 					<ons-col align="left"><ons-select select-id="water_grade_select">
 						<option value="0" data-i18n="home.waterGradePresets.off">Off</option>
@@ -852,6 +852,16 @@
 				case "5": fanPower = 105; break;
 				default: fanPower = fn.device.features.v3 ? 102 : 60; break;
 			}
+			// water
+			var waterGrade = null;
+			if (fn.device.features.water_usage_ctrl)
+			switch (form.waterGrade) {
+				case "0": waterGrade = 200; break;
+				case "1": waterGrade = 201; break;
+				case "2": waterGrade = 202; break;
+				case "3": waterGrade = 203; break;
+				default: waterGrade = 202;
+			}
 			var iterations = +form.iterations_select.value;
 			// next promises
 			let promise, coords = "";
@@ -892,7 +902,7 @@
 				})
 				.catch(e => reject(e))
 			})
-			.then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({ id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, segments: segments, iterations: iterations, edit: edit }), "PUT"))
+			.then(() => fn.prequestWithPayload(zoned ? "api/ztimers" : "api/timers", JSON.stringify({id: timerName, cron: cronTimer, coordinates: coords, fanpower: fanPower, watergrade: waterGrade, segments: segments, iterations: iterations, edit: edit}), "PUT"))
 			.then(() => {
 				updateSettingsTimersPage(zoned);
 				editTimerDialog.hide();
@@ -929,6 +939,7 @@
 			// show different headers for different modes and fw
 			editTimerDialog.querySelectorAll('.ztimer-item').forEach(item => item.style.display = (zoned ? '' : 'none'));
 			editTimerDialog.querySelectorAll('.ntimer-item').forEach(item => item.style.display = (!zoned && fn.device.features.v3 ? '' : 'none'));
+			editTimerDialog.querySelectorAll('.wtimer-item').forEach(item => item.style.display = (!zoned && fn.device.features.water_usage_ctrl ? '' : 'none'));
 			editTimerDialog.querySelector('.edit-timer-desc').textContent = zoned ? i18next.t('settings.timers.timerZoneDesc',"Choose timer name and zone coordinates.") : i18next.t('settings.timers.timerDesc',"Choose timer settings.");
 			if (fn.device.features.v3) {
 				editTimerDialog.querySelector('select > option[value="0"]').style.display = 'none'; // v3 devices doesn't have Whisper fanspeed
