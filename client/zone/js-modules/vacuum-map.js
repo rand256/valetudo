@@ -40,6 +40,8 @@ export function VacuumMap(canvasElement) {
 
 	let redrawCanvas = null;
 
+	let lastTap = {x: null, y: null, d: 0};
+
 	function probeWebSocket() {
 		clearTimeout(probeTimeout);
 		probeTimeout = setTimeout(() => {
@@ -624,6 +626,14 @@ export function VacuumMap(canvasElement) {
 			locations = locations.filter(l => !(l instanceof GotoPoint));
 			if(!takenAction && !options.noGotoPoints) {
 				locations.push(new GotoPoint(tappedPoint.x, tappedPoint.y));
+				// show current coordinates in alert message by double tap (but only when allowed to set a new point on the map)
+				if ((Date.now() - lastTap.d < 5e2) && Math.abs(lastTap.x - tappedX) < 10 && Math.abs(lastTap.y - tappedY) < 10) {
+					window.alert(JSON.stringify(convertToRealCoords(lastTap)));
+					lastTap = {x: null, y: null, d: 0};
+				} else {
+					lastTap = {x: tappedX, y: tappedY, d: Date.now()};
+				}
+
 			}
 
 			redraw();
