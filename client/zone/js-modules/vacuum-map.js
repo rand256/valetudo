@@ -806,7 +806,7 @@ export function VacuumMap(canvasElement) {
 			const p2 = convertFromRealCoords({x: zoneCoordinates[2], y: zoneCoordinates[3]});
 			newZone = new Zone(p1.x, p1.y, p2.x, p2.y, zoneCoordinates[4]);
 		} else {
-			newZone = new Zone(480, 480, 550, 550, 1);
+			newZone = new Zone(480, 480, 555, 550, 1);
 		}
 
 		// check whether this zone has nearly the same left top position as some other zone

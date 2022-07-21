@@ -78,6 +78,12 @@ export class Zone {
 		ctx.setLineDash([]);
 
 		if(this.active) {
+			ctx.font = 'bold ' + (0.55 * this.buttonSize) + 'px "Font Awesome 5 Free"';
+			ctx.textBaseline = 'top';
+			ctx.textAlign = 'left';
+			ctx.fillStyle = 'white';
+			ctx.fillText(((Math.abs(p1.x - p2.x) > Math.abs(p1.y - p2.y)) ? '\uf337' : '\uf338'), p1.x + 2.5*scaleFactor , p1.y + 1.5*scaleFactor, Math.abs(p2.x - p1.x));
+
 			ctx.lineWidth = 2;
 			ctx.beginPath();
 			ctx.arc(p2.x, p1.y, this.buttonSize / 2, 0, 2 * Math.PI, false);
