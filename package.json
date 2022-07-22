@@ -14,26 +14,26 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prebuild": "cp -a client client.b && find client/ -type f \\( -iname \\*.json -o -iname \\*.js -o -iname \\*.html -o -iname \\*.css \\) -exec gzip -9 {} +",
-		"build": "pkg --targets node12.22.1-linux-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo",
+		"build": "pkg --targets node16.16.0-linuxstatic-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo",
 		"postbuild": "if [ -d client.b ]; then rm -fr client && mv client.b client; fi"
 	},
 	"author": "",
 	"dependencies": {
-		"body-parser": "^1.19.0",
+		"body-parser": "^1.20.0",
 		"compression": "^1.7.4",
-		"express": "^4.17.1",
-		"express-basic-auth": "^1.2.0",
+		"express": "^4.18.1",
+		"express-basic-auth": "^1.2.1",
 		"express-dynamic-middleware": "^1.0.0",
 		"express-force-ssl": "^0.3.2",
-		"mqtt": "^4.2.6",
-		"multer": "^1.4.2",
+		"mqtt": "^4.3.7",
+		"multer": "^1.4.5-lts.1",
 		"pngjs": "^5.0.0",
 		"prettycron": "^0.10.0",
-		"slimbot": "^4.4.0",
+		"slimbot": "^5.1.0",
 		"socks5-client": "^1.2.8",
-		"ws": "^7.4.5"
+		"ws": "^8.8.1"
 	},
 	"devDependencies": {
-		"pkg": "5.1.0"
+		"pkg": "5.8.0"
 	}
 }
