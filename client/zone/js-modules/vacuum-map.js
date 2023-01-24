@@ -627,11 +627,11 @@ export function VacuumMap(canvasElement) {
 			if(!takenAction && !options.noGotoPoints) {
 				locations.push(new GotoPoint(tappedPoint.x, tappedPoint.y));
 				// show current coordinates in alert message by double tap (but only when allowed to set a new point on the map)
-				if ((Date.now() - lastTap.d < 5e2) && Math.abs(lastTap.x - tappedX) < 10 && Math.abs(lastTap.y - tappedY) < 10) {
+				if ((Date.now() - lastTap.d < 5e2) && Math.abs(lastTap.x - tappedPoint.x) < 10 && Math.abs(lastTap.y - tappedPoint.y) < 10) {
 					window.alert(JSON.stringify(convertToRealCoords(lastTap)));
 					lastTap = {x: null, y: null, d: 0};
 				} else {
-					lastTap = {x: tappedX, y: tappedY, d: Date.now()};
+					lastTap = {x: tappedPoint.x, y: tappedPoint.y, d: Date.now()};
 				}
 
 			}
