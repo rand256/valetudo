@@ -514,6 +514,7 @@
 			"capath": "Ruta de CA (para SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Nombre del dispositivo:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Publicar datos del mapa:",

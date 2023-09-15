@@ -53,6 +53,14 @@
 			</label>
 		</ons-list-item>
 		<ons-list-item>
+			<div data-i18n="settings.mqtt.devicename" class="left">
+				Device Name:
+			</div>
+			<label class="right" style="width:75%">
+				<ons-input id="settings-mqtt-input-device-name" type="text" style="width:100%;"></ons-input>
+			</label>
+		</ons-list-item>
+		<ons-list-item>
 			<div data-i18n="settings.mqtt.prefix" class="left">
 				Topic Prefix:
 			</div>
@@ -93,6 +101,7 @@
 			mqttInputCaPath = document.getElementById("settings-mqtt-input-ca-path"),
 			mqttInputQoS = document.getElementById("settings-mqtt-input-qos")
 			mqttInputIdentifier = document.getElementById("settings-mqtt-input-identifier"),
+			mqttInputDeviceName = document.getElementById("settings-mqtt-input-device-name"),
 			mqttInputTopicPrefix = document.getElementById("settings-mqtt-input-topic-prefix"),
 			mqttInputAutoconfPrefix = document.getElementById("settings-mqtt-input-autoconf-prefix"),
 			mqttInputProvideMapData = document.getElementById("settings-mqtt-input-provide-map-data"),
@@ -102,6 +111,7 @@
 		mqttInputProvideMapData.addEventListener("change", updateMqttSaveButton);
 		mqttInputURL.addEventListener("input", updateMqttSaveButton);
 		mqttInputIdentifier.addEventListener("input", updateMqttSaveButton);
+		mqttInputDeviceName.addEventListener("input", updateMqttSaveButton);
 		mqttInputTopicPrefix.addEventListener("input", updateMqttSaveButton);
 		mqttInputAutoconfPrefix.addEventListener("input", updateMqttSaveButton);
 
@@ -115,6 +125,7 @@
 				mqttInputCaPath.value = res.caPath || "";
 				mqttInputQoS.value = res.qos || 0;
 				mqttInputIdentifier.value = res.identifier || "rockrobo";
+				mqttInputDeviceName.value = res.deviceName || "vacuum";
 				mqttInputTopicPrefix.value = res.topicPrefix || "valetudo";
 				mqttInputAutoconfPrefix.value = res.autoconfPrefix || "";
 				mqttInputProvideMapData.checked = !!res.provideMapData;
@@ -123,7 +134,7 @@
 		}
 
 		function updateMqttSaveButton() {
-			if (mqttInputIdentifier.value && mqttInputTopicPrefix.value && mqttInputURL.value) {
+			if (mqttInputIdentifier.value && mqttInputDeviceName.value && mqttInputTopicPrefix.value && mqttInputURL.value) {
 				mqttInputSaveButton.removeAttribute("disabled");
 			} else {
 				mqttInputSaveButton.setAttribute("disabled", "disabled");
@@ -139,6 +150,7 @@
 				caPath: mqttInputCaPath.value,
 				qos: parseInt(mqttInputQoS.value),
 				identifier: mqttInputIdentifier.value,
+				deviceName: mqttInputDeviceName.value,
 				topicPrefix: mqttInputTopicPrefix.value,
 				autoconfPrefix: mqttInputAutoconfPrefix.value,
 				provideMapData: mqttInputProvideMapData.checked

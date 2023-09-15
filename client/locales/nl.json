@@ -533,6 +533,7 @@
 			"capath": "CA pad (voor SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Toestelnaam:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Publiceer kaartgegevens:",

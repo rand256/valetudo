@@ -514,6 +514,7 @@
 			"capath": "Camí de l'AC (per a SSL):",
 			"qos": "Qualitat de servei:",
 			"identifier": "Identificador:",
+			"devicename": "Nom del dispositiu:",
 			"prefix": "Prefix del tema:",
 			"autoprefix": "Prefix de configuració automàtica:",
 			"mapdata": "Proporciona les dades del mapa:",

@@ -563,6 +563,7 @@
       "capath": "CA väg (för SSL):",
       "qos": "Quality of Service:",
       "identifier": "Identifierare:",
+      "devicename": "Enhetsnamn:",
       "prefix": "Ämnes Prefix:",
       "autoprefix": "Autokonfigurationsprefix:",
       "mapdata": "Ange kart-data:",

@@ -513,6 +513,7 @@
 			"capath": "Chemin d'accès CA (pour SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifiant:",
+			"devicename": "Nom de l'appareil:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Publier la carte:",

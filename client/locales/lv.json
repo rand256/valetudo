@@ -514,6 +514,7 @@
 			"capath": "CA ceļš (SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Device Name:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Publicēt kartes datus:",

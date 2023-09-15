@@ -512,6 +512,7 @@
 			"capath": "CA път (за SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Име на устройството:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Публикуване на карта:",

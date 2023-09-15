@@ -514,6 +514,7 @@
 			"capath": "CA Path (pro SSL):",
 			"qos": "Quality of Service:",
 			"identifier": "Identifikátor:",
+			"devicename": "Název zařízení:",
 			"prefix": "Prefix topiku:",
 			"autoprefix": "Autokonfigurace prefixu:",
 			"mapdata": "Poskytnout data s mapou:",

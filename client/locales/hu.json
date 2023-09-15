@@ -514,6 +514,7 @@
 			"capath": "CA út (SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Eszköz neve:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Térképadatok közzététele:",

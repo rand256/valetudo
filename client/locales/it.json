@@ -513,6 +513,7 @@
 			"capath": "CA Path (per SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Nome del dispositivo:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Pubblica mappa:",
