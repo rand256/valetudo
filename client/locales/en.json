@@ -542,6 +542,7 @@
 			"capath": "CA Path (for SSL):",
 			"qos": "Quality of Service:",
 			"identifier": "Identifier:",
+			"devicename": "Device Name:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Provide map data:",

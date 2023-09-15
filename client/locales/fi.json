@@ -514,6 +514,7 @@
 			"capath": "CA-polku (SSL):",
 			"qos": "QoS:",
 			"identifier": "Identifier:",
+			"devicename": "Laitteen nimi:",
 			"prefix": "Topic Prefix:",
 			"autoprefix": "Autoconfiguration Prefix:",
 			"mapdata": "Julkaise karttatiedot:",
