@@ -14,12 +14,12 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prebuild": "cp -a client client.b && find client/ -type f \\( -iname \\*.json -o -iname \\*.js -o -iname \\*.html -o -iname \\*.css \\) -exec gzip -9 {} +",
-		"build": "pkg --targets node16.16.0-linuxstatic-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo",
+		"build": "pkg --targets node16-linuxstatic-armv7 --no-bytecode --options max-old-space-size=32,optimize_for_size --public-packages=prettycron . --output valetudo",
 		"postbuild": "if [ -d client.b ]; then rm -fr client && mv client.b client; fi"
 	},
 	"author": "",
 	"dependencies": {
-		"body-parser": "^1.20.1",
+		"body-parser": "^1.20.2",
 		"compression": "^1.7.4",
 		"express": "^4.18.2",
 		"express-basic-auth": "^1.2.1",
@@ -31,9 +31,9 @@
 		"prettycron": "^0.10.0",
 		"slimbot": "^5.1.0",
 		"socks5-client": "^1.2.8",
-		"ws": "^8.12.0"
+		"ws": "^8.14.1"
 	},
 	"devDependencies": {
-		"pkg": "5.8.0"
+		"pkg": "5.8.1"
 	}
 }
